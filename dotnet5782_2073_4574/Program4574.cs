@@ -17,9 +17,7 @@ namespace Targil0
             string name = Console.ReadLine();
             Console.WriteLine($"{name}, welcome to our first(more like 200th) console application");
         }
-        
-        static partial void Welcome2073()
-        {
-        }
+
+        static partial void Welcome2073();
     }
 }
