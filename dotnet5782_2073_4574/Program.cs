@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotnet5782_2073_4574
+namespace Targil0
 {
     class Program
     {
