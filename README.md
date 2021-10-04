@@ -2,4 +2,4 @@
 
 this is the text of Gil
 
-shnizel word
+shnizel2 word
