@@ -39,6 +39,12 @@ namespace DAL.DO
         public double TimeToGetDrone { get; set; }
         public double TimeToGetPackedge { get; set; }
         public double TimeToRecive { get; set; }
+
+        public override string ToString()
+        {
+            return $"Package {Id}"
+        }
+    }
         public struct Station
         {
             public int Id { get; set; }
@@ -79,5 +85,4 @@ namespace DAL.DO
 
 
         }
-    }
 }
