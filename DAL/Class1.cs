@@ -41,7 +41,7 @@ namespace DAL.DO
         public double TimeToRecive { get; set; }
 
         public override string ToString()
-        {
+        {//TODO
             return $"Package {Id}"
         }
     }
@@ -85,4 +85,29 @@ namespace DAL.DO
 
 
         }
+}
+namespace DAL.DalObject
+{
+    public class DataSource
+    {
+        internal static DO.Drone[] Drones = new DO.Drone[10];
+        internal static DO.DroneStates[] States = new DO.DroneStates[5];
+        internal static DO.Customer[] Customers = new DO.Customer[100];
+        internal static DO.Package[] Packages = new DO.Package[1000];
+
+        internal class Config
+        {
+            internal static uint DronesCounter = 0;
+            internal static uint StatesCounter = 0;
+            internal static uint CustomersCounter = 0;
+            internal static uint PackagesCounter = 0;
+            internal static uint RunNumber = 0;
+
+        }
+
+        public void Initialize()
+        {
+            //TODO
+        }
+    }
 }
