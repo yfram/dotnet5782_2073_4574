@@ -42,7 +42,7 @@ namespace DAL.DO
 
         public override string ToString()
         {
-            return $"Package {Id}"
+            return $"Package {Id}";
         }
     }
         public struct Station
