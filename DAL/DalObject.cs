@@ -32,7 +32,7 @@ namespace DalObject
             GivePackageDrone(package, drone);
             drone.State = DroneStates.Shipping;
         }
-        public void DeliverPackadge(Drone drone, Package package)
+        public void DeliverPackage(Drone drone, Package package)
         {
             drone.State = DroneStates.Empty;
             DataSource.Packages.Remove(package);
@@ -43,11 +43,27 @@ namespace DalObject
             drone.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
             station.ChargeSlots--;
         }
-        public void ReleeseDroneFromCharge(Drone drone, Station station)
+        public void ReleaseDroneFromCharge(Drone drone, Station station)
         {
             drone.State = DroneStates.Empty;
             station.ChargeSlots++;
         }
         #endregion
+
+        #region Get by Id Functions
+        public string GetStationString(int id) => DataSource.Stations.Where(s => s.Id == id).ToList()[0].ToString();
+        public string GetDroneString(int id) => DataSource.Drones.Where(d => d.Id == id).ToList()[0].ToString();
+        public string GetCustomerString(int id) => DataSource.Customers.Where(c => c.Id == id).ToList()[0].ToString();
+        public string GetPackageString(int id) => DataSource.Packages.Where(p => p.Id == id).ToList()[0].ToString();
+        #endregion
+
+
+        #region Get all IDAL.DO object Functions
+        public string GetAllStationString() => String.Join('\n', DataSource.Stations);
+
+
+
+        #endregion
+
     }
 }
