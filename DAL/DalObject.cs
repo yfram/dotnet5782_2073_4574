@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IDAL.DO;
 
 namespace DalObject
@@ -9,26 +10,33 @@ namespace DalObject
         {
             DataSource.Initialize();
         }
-
-        public void AddDroneStation(int id, string model, double charge, WeightGroup weight, DroneStates state)
-        {
-
-        }
     }
     public class DataSource
     {
 
         internal class Config
         {
-            internal static int FirstDrone = 0;
-            internal static int FirstStation = 0;
+            //using Lists, so no need for the rest
             internal static int RunNumber = 0;
         }
 
-        internal static Drone[] Drones = new Drone[10];
-        internal static Station[] Stations = new Station[5];
-        internal static Customer[] Customers = new Customer[100];
-        internal static Package[] Packages = new Package[1000];
+        private static readonly List<string> DroneModels = new List<string>()
+        {
+            "DJIM1", "DJIF3", "Mavic Pro", "DJI Phantom 4","DJI Mavic 2 Zoom", "DJI Mavic 2 Pro"
+        };
+        private static readonly List<string> StationNames = new List<string>()
+        {
+            "Tel Aviv", "Bear Sheava", "Modiein", "Jeruselam","Heifa"
+        };
+        private static readonly List<string> CustomerNames = new List<string>()
+        {
+            "Yoni", "Gil", "Guy","Gal","Pete","Winston","Nick","Neo","Morpheus", "Trinity"
+        };
+
+        internal static List<Drone> Drones = new(10);
+        internal static List<Station> Stations = new(5);
+        internal static List<Customer> Customers = new(100);
+        internal static List<Package> Packages = new(1000);
         internal static Config Configuration { get; set; }
 
         public static void Initialize()
@@ -36,20 +44,20 @@ namespace DalObject
             Configuration = new Config();  //Config is all 0's anyways
             Random random = new Random();
             for (int i = 0; i < 2; i++)
-                Stations[i] = InitStation(i, random);
+                Stations.Add(InitStation(i, random));
             for (int i = 0; i < 5; i++)
-                Drones[i] = InitDrone(i, random);
+                Drones.Add(InitDrone(i, random));
             for (int i = 0; i < 10; i++)
-                Customers[i] = InitCustumer(i, random);
+                Customers.Add(InitCustumer(i, random));
             for (int i = 0; i < 10; i++)
-                Packages[i] = InitPackage(i, random);
+                Packages.Add(InitPackage(i, random));
         }
 
-        private static Package InitPackage(int i, Random random) => new(i, Customers[i].Id, Customers[(i + 11) % 10].Id, (WeightGroup)random.Next(), (Priority)(i % 3),
-            0, 0, 0, 0, 0);
-        private static Station InitStation(int i, Random random) => new(i, $"Station {i}", 0, 0, random.Next() % Station.MaxChargingPorts);
-        private static Drone InitDrone(int i, Random random) => new(i, "TBD", random.NextDouble(), (WeightGroup)(random.Next()), (DroneStates)(i % 3));
-        private static Customer InitCustumer(int i, Random random) => new(i, $"Person #{i}", GeneratePhone(), random.NextDouble(), random.NextDouble());
+        private static Package InitPackage(int i, Random random) => new(i, Customers[i].Id, Customers[random.Next() % 10].Id, (WeightGroup)random.Next(), (Priority)(i % 3),
+            0, random.NextDouble(), random.NextDouble(), random.NextDouble(), random.NextDouble());
+        private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 0, 0, random.Next() % Station.MaxChargingPorts);
+        private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], random.NextDouble(), (WeightGroup)(random.Next()), (DroneStates)(i % 3));
+        private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), random.NextDouble(), random.NextDouble());
 
         private static string GeneratePhone()
         {
