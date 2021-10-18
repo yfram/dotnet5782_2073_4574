@@ -2,7 +2,7 @@
 {
     public struct Customer
     {
-        public Customer(int id, int name, string phone, double lattitude, double longitude)
+        public Customer(int id, string name, string phone, double lattitude, double longitude)
         {
             Id = id;
             Name = name;
@@ -12,7 +12,7 @@
         }
 
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public string Phone { get; set; }
         public double Lattitude { get; set; }
         public double Longitude { get; set; }

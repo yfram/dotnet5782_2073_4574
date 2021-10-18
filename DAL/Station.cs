@@ -1,9 +1,9 @@
 ﻿namespace IDAL.DO
 {
     public struct Station
-
     {
-        public Station(int id, int name, double longitude, double lattitude, int chargeSlots)
+        internal static int MaxChargingPorts = 10;
+        public Station(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
             Id = id;
             Name = name;
@@ -13,7 +13,7 @@
         }
 
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public double Longitude { get; set; }
         public double Lattitude { get; set; }
         public int ChargeSlots { get; set; }
