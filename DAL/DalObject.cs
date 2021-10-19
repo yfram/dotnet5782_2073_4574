@@ -64,7 +64,7 @@ namespace DalObject
         public string GetAllCustomersString() => String.Join('\n', DataSource.Customers);
         public string GetAllPackagesString() => String.Join('\n', DataSource.Packages);
         public string GetAllUndronedPackagesString() => String.Join('\n', DataSource.Packages.Where(p=>p.DroneId==null));
-        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p=>p.ChargeSlots>=0));
+        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p=>p.ChargeSlots>0));
 
 
 
