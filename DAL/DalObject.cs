@@ -59,7 +59,13 @@ namespace DalObject
 
 
         #region Get all IDAL.DO object Functions
-        public string GetAllStationString() => String.Join('\n', DataSource.Stations);
+        public string GetAllStationsString() => String.Join('\n', DataSource.Stations);
+        public string GetAllDronesString() => String.Join('\n', DataSource.Drones);
+        public string GetAllCustomersString() => String.Join('\n', DataSource.Customers);
+        public string GetAllPackagesString() => String.Join('\n', DataSource.Packages);
+        public string GetAllUndronedPackagesString() => String.Join('\n', DataSource.Packages.Where(p=>p.DroneId==null));
+        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p=>p.ChargeSlots>=0));
+
 
 
 

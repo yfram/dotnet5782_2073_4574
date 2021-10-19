@@ -50,7 +50,7 @@ namespace DalObject
         }
 
         private static Package InitPackage(int i, Random random) => new(i, Customers[i].Id, Customers[random.Next() % 10].Id, (WeightGroup)random.Next(), (Priority)(i % 3),
-            0, random.NextDouble(), random.NextDouble(), random.NextDouble(), random.NextDouble());
+           null, random.NextDouble(), random.NextDouble(), random.NextDouble(), random.NextDouble());
         private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 0, 0, random.Next() % Station.MaxChargingPorts);
         private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], random.NextDouble(), (WeightGroup)(random.Next()), (DroneStates)(i % 3));
         private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), random.NextDouble(), random.NextDouble());
