@@ -42,11 +42,13 @@ namespace DalObject
         {
             drone.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
             station.ChargeSlots--;
+            DataSource.DroneCharges.Add(new(drone.Id, station.Id));
         }
         public void ReleaseDroneFromCharge(Drone drone, Station station)
         {
             drone.State = DroneStates.Empty;
             station.ChargeSlots++;
+            DataSource.DroneCharges.RemoveAll(d => d.DroneId == drone.Id && d.StationId == station.Id);
         }
         #endregion
 
@@ -63,8 +65,8 @@ namespace DalObject
         public string GetAllDronesString() => String.Join('\n', DataSource.Drones);
         public string GetAllCustomersString() => String.Join('\n', DataSource.Customers);
         public string GetAllPackagesString() => String.Join('\n', DataSource.Packages);
-        public string GetAllUndronedPackagesString() => String.Join('\n', DataSource.Packages.Where(p=>p.DroneId==null));
-        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p=>p.ChargeSlots>0));
+        public string GetAllUndronedPackagesString() => String.Join('\n', DataSource.Packages.Where(p => p.DroneId == null));
+        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p => p.ChargeSlots > 0));
 
 
 

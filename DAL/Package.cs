@@ -2,7 +2,7 @@
 {
     public struct Package
     {
-        public Package(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId = null, double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive)
+        public Package(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId, double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive)
         {
             Id = id;
             SenderId = senderId;

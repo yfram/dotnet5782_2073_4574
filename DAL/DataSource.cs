@@ -22,7 +22,7 @@ namespace DalObject
         };
         private static readonly List<string> StationNames = new List<string>()
         {
-            "Tel Aviv", "Bear Sheava", "Modiein", "Jeruselam","Heifa"
+            "Tel Aviv", "Bear Sheava", "Modi'in", "Jeruselam","Heifa"
         };
         private static readonly List<string> CustomerNames = new List<string>()
         {
@@ -33,6 +33,7 @@ namespace DalObject
         internal static List<Station> Stations = new(5);
         internal static List<Customer> Customers = new(100);
         internal static List<Package> Packages = new(1000);
+        internal static List<DroneCharge> DroneCharges = new();
         internal static Config Configuration { get; set; }
 
         public static void Initialize()
