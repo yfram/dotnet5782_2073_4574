@@ -26,14 +26,15 @@ namespace DalObject
         #endregion
 
         #region Update functions
-        public void GivePackageDrone(Package package, Drone drone) => package.DroneId = drone.Id;
+        public void GivePackageDrone(int packageId, int droneId) {  GetPackage(packageId).Id = GetDrone(droneId).Id; }
         public void PickUpPackage(Package package, Drone drone)
         {
             GivePackageDrone(package, drone);
             drone.State = DroneStates.Shipping;
         }
-        public void DeliverPackage(Drone drone, Package package)
+        public void DeliverPackage(Package package, Drone drone)
         {
+            
             drone.State = DroneStates.Empty;
             DataSource.Packages.Remove(package);
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
@@ -46,6 +47,7 @@ namespace DalObject
         }
         public void ReleaseDroneFromCharge(Drone drone, Station station)
         {
+            
             drone.State = DroneStates.Empty;
             station.ChargeSlots++;
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == drone.Id && d.StationId == station.Id);
@@ -72,6 +74,11 @@ namespace DalObject
 
 
         #endregion
+
+        private Drone GetDrone(int id) => DataSource.Drones.Where(d => d.Id == id).ToList()[0];
+        private Station GetStation(int id) => DataSource.Stations.Where(d => d.Id == id).ToList()[0];
+        private Customer GetCustomer(int id) => DataSource.Customers.Where(d => d.Id == id).ToList()[0];
+        private Package GetPackage(int id) => DataSource.Packages.Where(d => d.Id == id).ToList()[0];
 
     }
 }

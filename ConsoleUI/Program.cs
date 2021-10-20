@@ -2,6 +2,8 @@
 using IDAL;
 using IDAL.DO;
 using DalObject;
+using System.Collections.Generic;
+
 
 namespace ConsoleUI
 {
@@ -150,7 +152,29 @@ namespace ConsoleUI
                 Console.Write(updateMenu);
                 menu = Console.Read();
             } while (!(menu <= 5 && menu >= 1));
+            // all need a drone
+            List<Int32> needPackage = new List<Int32>(new int[] { 1, 2,3});
+            List<Int32> needStation = new List<Int32>(new int[] { 4, 5 });
+            int droneId, packageId, stationId;
+            Drone drone;
+            Package p;
+            Station s;
 
+            Console.WriteLine("enter drone Id");
+            
+            droneId = Console.Read();
+            DataSource.
+
+            if (needPackage.Contains(menu))
+            {
+                Console.WriteLine("enter package id");
+                packageId = Console.Read();
+            }
+            else if(needStation.Contains(menu))
+            {
+                Console.WriteLine("enter station id");
+                stationId = Console.Read();
+            }
 
 
         }
