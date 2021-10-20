@@ -23,7 +23,6 @@ namespace ConsoleUI
                 "for get lists menu, press 4\n" +
                 "to exit press 5\n";
 
-
             int menu;
             do
             {
@@ -50,7 +49,6 @@ namespace ConsoleUI
                 case Menus.Exit:
                     Console.WriteLine("GoodBye!");
                     return;
-
             }
         }
 
@@ -210,90 +208,69 @@ namespace ConsoleUI
                 "to add a new packeage for delivering, press 4\n";
 
             Console.Write(addMenu);
-
             int menu;
             do
             {
-                Console.Write(addMenu);
-                menu = Console.Read();
+                menu = GetIntInput(addMenu);
                 if (menu > 4 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
             } while (menu <= 4 && menu >= 1);
-            Console.WriteLine("Enter ID:");
-            int id = Console.Read();
-            Console.WriteLine(id);
-            string nameOrModel = "";
-            if (menu != 4)
-            {
-                Console.WriteLine($"Enter {(menu == 2 ? "model" : "name")}");
-                nameOrModel = Console.ReadLine();
-            }
             switch (menu)
             {
                 case 1:
-                    Console.WriteLine("Enter drone position(longitude):");
-                    int longitude = Console.Read();
-                    Console.WriteLine("Enter drone position(lattitude):");
-                    int lattitude = Console.Read();
-                    Console.WriteLine("Enter amount of charge slots:");
-                    int chargeSlots = Console.Read();
-                    d.AddStation(id, nameOrModel, longitude, lattitude, chargeSlots);
+                    d.AddStation(GetIntInput("Enter ID:"), GetStringInput("Enter name:"),
+                        GetDoubleInput("Enter drone position(longitude):"), GetDoubleInput("Enter drone position(lattitude):"),
+                        GetIntInput("Enter amount of charge slots:"));
                     break;
                 case 2:
-                    Console.WriteLine("Enter battery charge:");
-                    int charge = Console.Read();
-                    int weight = 0;
-                    do
-                    {
-                        Console.WriteLine("Enter weight group(1 for light, 2 for mid, 3 for heavy)");
-                        weight = Console.Read();
-                    } while (weight > 3 || weight < 1);
-                    int state = 0;
-                    do
-                    {
-                        Console.WriteLine("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)");
-                        state = Console.Read();
-                    } while (state > 3 || state < 1);
-                    d.AddDrone(id, nameOrModel, charge, (WeightGroup)weight, (DroneStates)state);
+                    d.AddDrone(GetIntInput("Enter ID:"), GetStringInput("Enter model:"),
+                        GetIntInput("Enter battery charge:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
+                        (DroneStates)GetEnumInput("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)", 1, 3));
                     break;
                 case 3:
-                    Console.WriteLine("Enter phone number:");
-                    string phone = Console.ReadLine();
-                    Console.WriteLine("Enter customer position(longitude):");
-                    int longitudeC = Console.Read();
-                    Console.WriteLine("Enter customer position(lattitude):");
-                    int lattitudeC = Console.Read();
-                    d.AddCustomer(id, nameOrModel, phone, lattitudeC, longitudeC);
+                    d.AddCustomer(GetIntInput("Enter ID"), GetStringInput("Enter name:"), GetStringInput("Enter phone number"),
+                        GetDoubleInput("Enter customer position(longitude):"), GetDoubleInput("Enter customer position(lattitude):"));
                     break;
                 case 4:
-                    Console.WriteLine("Enter sender ID:");
-                    int Sid = Console.Read();
-                    Console.WriteLine("Enter reciver ID:");
-                    int Rid = Console.Read();
-                    int weightP = 0;
-                    do
-                    {
-                        Console.WriteLine("Enter weight group(1 for light, 2 for mid, 3 for heavy)");
-                        weightP = Console.Read();
-                    } while (weightP > 3 || weightP < 1);
-                    int priority = 0;
-                    do
-                    {
-                        Console.WriteLine("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)");
-                        priority = Console.Read();
-                    } while (priority > 3 || priority < 1);
-                    Console.WriteLine("Enter time to package:");
-                    int Ttp = Console.Read();
-                    Console.WriteLine("Enter time to get drone:");
-                    int Tgd = Console.Read();
-                    Console.WriteLine("Enter time to get package:");
-                    int Tgp = Console.Read();
-                    Console.WriteLine("Enter time to recive:");
-                    int Ttr = Console.Read();
-                    d.AddPackage(id, Sid, Rid, (WeightGroup)weightP, (Priority)priority, -1, Ttp, Tgd, Tgp, Ttr);
+                    d.AddPackage(GetIntInput("Enter ID:"), GetIntInput("Enter sender ID:"),
+                        GetIntInput("Enter reciver ID:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
+                        (Priority)GetEnumInput("Enter prioraty(1 for low, 2 for mid, 3 for high)", 1, 3),
+                        -1, GetIntInput("Enter time to package:"), GetIntInput("Enter time to get drone:"),
+                        GetIntInput("Enter time to get package:"), GetIntInput("Enter time to recive:"));
                     break;
             }
+        }
 
+        private static int GetEnumInput(string print, int min, int max)
+        {
+            int ret;
+            bool cont;
+            do
+            {
+                Console.WriteLine(print);
+                cont = int.TryParse(Console.ReadLine(), out ret);
+            } while (ret > 3 || ret < 1 || !cont);
+            return ret;
+        }
+
+        private static int GetIntInput(string print)
+        {
+            Console.WriteLine(print);
+            int ret;
+            return int.TryParse(Console.ReadLine(), out ret) ? ret : GetIntInput(print);
+        }
+
+        private static double GetDoubleInput(string print)
+        {
+            Console.WriteLine(print);
+            double ret;
+            return double.TryParse(Console.ReadLine(), out ret) ? ret : GetDoubleInput(print);
+        }
+
+        private static string GetStringInput(string print)
+        {
+            Console.WriteLine(print);
+            return Console.ReadLine();
         }
     }
 }
