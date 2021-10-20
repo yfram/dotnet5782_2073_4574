@@ -11,7 +11,7 @@ namespace ConsoleUI
     {
         enum Menus { Add = 1, Update, GetById, GetList, Exit }
 
-        
+
         static void Main(string[] args)
         {
             DalObject.DalObject d = new DalObject.DalObject();
@@ -29,6 +29,8 @@ namespace ConsoleUI
             {
                 Console.Write(openMsg);
                 menu = Console.Read();
+                if (menu > 5 || menu < 1)
+                    Console.WriteLine("Error! unrecognized op-code");
             } while (menu <= 5 && menu >= 1);
 
             switch ((Menus)menu)
@@ -68,8 +70,9 @@ namespace ConsoleUI
             {
                 Console.Write(getListsMenu);
                 menu = Console.Read();
-            } while (!(menu <= 6 && menu >= 1));
-
+                if (menu > 6 || menu < 1)
+                    Console.WriteLine("Error! unrecognized op-code");
+            } while (menu <= 6 && menu >= 1);
             String str = "";
             switch (menu)
             {
@@ -111,7 +114,9 @@ namespace ConsoleUI
             {
                 Console.Write(getByIdMenu);
                 menu = Console.Read();
-            } while (!(menu <= 4 && menu >= 1));
+                if (menu > 4 || menu < 1)
+                    Console.WriteLine("Error! unrecognized op-code");
+            } while (menu <= 4 && menu >= 1);
 
             Console.Write("enter ID:\n");
             int id = Console.Read();
@@ -119,7 +124,7 @@ namespace ConsoleUI
             String str = "";
             switch (menu)
             {
-                case 1: 
+                case 1:
                     str = d.GetStationString(id);
                     break;
                 case 2:
@@ -151,31 +156,49 @@ namespace ConsoleUI
             {
                 Console.Write(updateMenu);
                 menu = Console.Read();
-            } while (!(menu <= 5 && menu >= 1));
+                if (menu > 5 || menu < 1)
+                    Console.WriteLine("Error! unrecognized op-code");
+            } while (menu <= 5 && menu >= 1);
             // all need a drone
-            List<Int32> needPackage = new List<Int32>(new int[] { 1, 2,3});
-            List<Int32> needStation = new List<Int32>(new int[] { 4, 5 });
-            int droneId, packageId, stationId;
-            Drone drone;
-            Package p;
-            Station s;
-
-            Console.WriteLine("enter drone Id");
-            
-            droneId = Console.Read();
-            DataSource.
-
+            List<int> needPackage = new() { 1, 2, 3 };
+            List<int> needStation = new() { 4, 5 };
+            int droneId = 0, packageId = 0, stationId = 0;
+            if (menu != 3)
+            {
+                Console.WriteLine("enter drone Id:");
+                droneId = Console.Read();
+            }
             if (needPackage.Contains(menu))
             {
                 Console.WriteLine("enter package id");
                 packageId = Console.Read();
             }
-            else if(needStation.Contains(menu))
+            else if (needStation.Contains(menu))
             {
                 Console.WriteLine("enter station id");
                 stationId = Console.Read();
             }
 
+            switch (menu)
+            {
+                case 1:
+                    d.GivePackageDrone(packageId, droneId);
+                    break;
+                case 2:
+                    d.PickUpPackage(packageId, droneId);
+                    break;
+                case 3:
+                    d.DeliverPackage(packageId);
+                    break;
+                case 4:
+                    d.SendDroneToCharge(droneId, stationId);
+                    break;
+                case 5:
+                    d.ReleaseDroneFromCharge(droneId, stationId);
+                    break;
+                default:
+                    break;
+            }
 
         }
 
@@ -193,15 +216,82 @@ namespace ConsoleUI
             {
                 Console.Write(addMenu);
                 menu = Console.Read();
-            } while (!(menu <= 4 && menu >= 1));
-
-            switch(menu)
+                if (menu > 4 || menu < 1)
+                    Console.WriteLine("Error! unrecognized op-code");
+            } while (menu <= 4 && menu >= 1);
+            Console.WriteLine("Enter ID:");
+            int id = Console.Read();
+            Console.WriteLine(id);
+            string nameOrModel = "";
+            if (menu != 4)
+            {
+                Console.WriteLine($"Enter {(menu == 2 ? "model" : "name")}");
+                nameOrModel = Console.ReadLine();
+            }
+            switch (menu)
             {
                 case 1:
-                    DalObject.DalObject.AddStation(Console.Read(), Console.ReadLine(), Double.TryParse(Console.ReadLine()), );
+                    Console.WriteLine("Enter drone position(longitude):");
+                    int longitude = Console.Read();
+                    Console.WriteLine("Enter drone position(lattitude):");
+                    int lattitude = Console.Read();
+                    Console.WriteLine("Enter amount of charge slots:");
+                    int chargeSlots = Console.Read();
+                    d.AddStation(id, nameOrModel, longitude, lattitude, chargeSlots);
+                    break;
                 case 2:
+                    Console.WriteLine("Enter battery charge:");
+                    int charge = Console.Read();
+                    int weight = 0;
+                    do
+                    {
+                        Console.WriteLine("Enter weight group(1 for light, 2 for mid, 3 for heavy)");
+                        weight = Console.Read();
+                    } while (weight > 3 || weight < 1);
+                    int state = 0;
+                    do
+                    {
+                        Console.WriteLine("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)");
+                        state = Console.Read();
+                    } while (state > 3 || state < 1);
+                    d.AddDrone(id, nameOrModel, charge, (WeightGroup)weight, (DroneStates)state);
+                    break;
                 case 3:
+                    Console.WriteLine("Enter phone number:");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter customer position(longitude):");
+                    int longitudeC = Console.Read();
+                    Console.WriteLine("Enter customer position(lattitude):");
+                    int lattitudeC = Console.Read();
+                    d.AddCustomer(id, nameOrModel, phone, lattitudeC, longitudeC);
+                    break;
                 case 4:
+                    Console.WriteLine("Enter sender ID:");
+                    int Sid = Console.Read();
+                    Console.WriteLine("Enter reciver ID:");
+                    int Rid = Console.Read();
+                    int weightP = 0;
+                    do
+                    {
+                        Console.WriteLine("Enter weight group(1 for light, 2 for mid, 3 for heavy)");
+                        weightP = Console.Read();
+                    } while (weightP > 3 || weightP < 1);
+                    int priority = 0;
+                    do
+                    {
+                        Console.WriteLine("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)");
+                        priority = Console.Read();
+                    } while (priority > 3 || priority < 1);
+                    Console.WriteLine("Enter time to package:");
+                    int Ttp = Console.Read();
+                    Console.WriteLine("Enter time to get drone:");
+                    int Tgd = Console.Read();
+                    Console.WriteLine("Enter time to get package:");
+                    int Tgp = Console.Read();
+                    Console.WriteLine("Enter time to recive:");
+                    int Ttr = Console.Read();
+                    d.AddPackage(id, Sid, Rid, (WeightGroup)weightP, (Priority)priority, -1, Ttp, Tgd, Tgp, Ttr);
+                    break;
             }
 
         }
