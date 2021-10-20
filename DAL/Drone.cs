@@ -2,13 +2,13 @@
 {
     public struct Drone
     {
-        public Drone(int id, string model, double charge, WeightGroup weight, DroneStates state)
+        public Drone(int id, string model, double _charge, WeightGroup weight, DroneStates state)
         {
             Id = id;
             Model = model;
             Weight = weight;
             State = state;
-            Charge = charge;
+            charge = _charge;
         }
 
         public int Id { get; set; }
