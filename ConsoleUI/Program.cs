@@ -16,21 +16,20 @@ namespace ConsoleUI
         {
             DalObject.DalObject d = new DalObject.DalObject();
 
-            String openMsg = "Welcome to John&G Drones administiration system!\n" +
+            string openMsg = "Welcome to John&G Drones administiration system!\n" +
                 "for add menu, press 1\n" +
                 "for update menu, press 2\n" +
                 "for get by id menu, press 3\n" +
                 "for get lists menu, press 4\n" +
-                "to exit press 5\n";
+                "to exit press 5";
 
             int menu;
             do
             {
-                Console.Write(openMsg);
-                menu = Console.Read();
+                menu = GetIntInput(openMsg);
                 if (menu > 5 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu <= 5 && menu >= 1);
+            } while (menu > 5 || menu < 1);
 
             switch ((Menus)menu)
             {
@@ -54,24 +53,20 @@ namespace ConsoleUI
 
         private static void GetListMenu(DalObject.DalObject d)
         {
-            String getListsMenu = "to get the station list press 1\n" +
+            string getListsMenu = "to get the station list press 1\n" +
                 "to get the drones list press 2\n" +
                 "to get the customers list press 3\n" +
                 "to get the packages list press 4\n" +
                 "to get a list of all packages wihtout drones press 5\n" +
-                "to get a list of all the available stations press 6\n";
-
-            Console.Write(getListsMenu);
-
+                "to get a list of all the available stations press 6";
             int menu;
             do
             {
-                Console.Write(getListsMenu);
-                menu = Console.Read();
+                menu = GetIntInput(getListsMenu);
                 if (menu > 6 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu <= 6 && menu >= 1);
-            String str = "";
+            } while (menu > 6 || menu < 1);
+            string str = "";
             switch (menu)
             {
                 case 1:
@@ -100,26 +95,24 @@ namespace ConsoleUI
 
         private static void GetByIdMenu(DalObject.DalObject d)
         {
-            String getByIdMenu = "to get a station by id press 1\n" +
+            string getByIdMenu = "to get a station by id press 1\n" +
                 "to get a drone by id press 2\n" +
                 "to get a customer by id press 3\n" +
-                "to get a package by id press 4\n";
-
-            Console.Write(getByIdMenu);
+                "to get a package by id press 4";
 
             int menu;
             do
             {
-                Console.Write(getByIdMenu);
+                menu = GetIntInput(getByIdMenu);
                 menu = Console.Read();
                 if (menu > 4 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu <= 4 && menu >= 1);
+            } while (menu > 4 || menu < 1);
 
             Console.Write("enter ID:\n");
             int id = Console.Read();
 
-            String str = "";
+            string str = "";
             switch (menu)
             {
                 case 1:
@@ -141,22 +134,18 @@ namespace ConsoleUI
 
         private static void UpdateMenu(DalObject.DalObject d)
         {
-            String updateMenu = "to associate a package to a drone, press 1\n" +
+            string updateMenu = "to associate a package to a drone, press 1\n" +
                 "to pick up a package by a drone, press 2\n" +
                 "to deliver a package to a customer, press 3\n" +
                 "to send a drone to charge, press 4\n" +
-                "to release a drone from a station, press 5\n";
-
-            Console.Write(updateMenu);
-
+                "to release a drone from a station, press 5";
             int menu;
             do
             {
-                Console.Write(updateMenu);
-                menu = Console.Read();
+                menu = GetIntInput(updateMenu);
                 if (menu > 5 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu <= 5 && menu >= 1);
+            } while (menu > 5 || menu < 1);
             // all need a drone
             List<int> needPackage = new() { 1, 2, 3 };
             List<int> needStation = new() { 4, 5 };
@@ -202,19 +191,17 @@ namespace ConsoleUI
 
         private static void AddMenu(DalObject.DalObject d)
         {
-            String addMenu = "to add a base station, press 1\n" +
+            string addMenu = "to add a base station, press 1\n" +
                 "to add a drone, press 2\n" +
                 "to add a new customer, press 3\n" +
-                "to add a new packeage for delivering, press 4\n";
-
-            Console.Write(addMenu);
+                "to add a new packeage for delivering, press 4";
             int menu;
             do
             {
                 menu = GetIntInput(addMenu);
                 if (menu > 4 || menu < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu <= 4 && menu >= 1);
+            } while (menu > 4 || menu < 1);
             switch (menu)
             {
                 case 1:
