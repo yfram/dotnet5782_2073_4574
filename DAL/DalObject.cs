@@ -26,59 +26,83 @@ namespace DalObject
         #endregion
 
         #region Update functions
-        public void GivePackageDrone(int packageId, int droneId) {  GetPackage(packageId).Id = GetDrone(droneId).Id; }
-        public void PickUpPackage(Package package, Drone drone)
+        public void GivePackageDrone(int packageId, int droneId)
         {
-            GivePackageDrone(package, drone);
-            drone.State = DroneStates.Shipping;
+            //this function could be one line, but Package is a struct, so that would not work. I hate structs.
+            int index = GetPackageIndex(packageId);
+            Package tmp = DataSource.Packages[index];
+            tmp.Id = droneId;
+            DataSource.Packages[index] = tmp;
         }
-        public void DeliverPackage(Package package, Drone drone)
+        public void PickUpPackage(int packageId, int droneID)
         {
-            
-            drone.State = DroneStates.Empty;
-            DataSource.Packages.Remove(package);
+            GivePackageDrone(packageId, droneID);
+            int index = GetDroneIndex(droneID);
+            Drone tmp = DataSource.Drones[index];
+            tmp.State = DroneStates.Shipping;
+            DataSource.Drones[index] = tmp;
+        }
+        public void DeliverPackage(int packageId)
+        {
+            int packageIndex = GetPackageIndex(packageId);
+            int droneIndex = GetDroneIndex(DataSource.Packages[packageIndex].DroneId.Value);
+            Drone tmp = DataSource.Drones[droneIndex];
+            tmp.State = DroneStates.Empty;
+            DataSource.Drones[droneIndex] = tmp;
+            DataSource.Packages.RemoveAt(packageIndex);
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
         }
-        public void SendDroneToCharge(Drone drone, Station station)
+        public void SendDroneToCharge(int droneId, int stationId)
         {
-            drone.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
-            station.ChargeSlots--;
-            DataSource.DroneCharges.Add(new(drone.Id, station.Id));
+            int droneIndex = GetDroneIndex(droneId);
+            Drone tmp = DataSource.Drones[droneIndex];
+            tmp.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
+            int stationIndex = GetStationIndex(stationId);
+            Station tmp1 = DataSource.Stations[stationIndex];
+            tmp1.ChargeSlots--;
+            DataSource.DroneCharges.Add(new(droneId, stationId));
+            DataSource.Drones[droneIndex] = tmp;
+            DataSource.Stations[stationIndex] = tmp1;
         }
-        public void ReleaseDroneFromCharge(Drone drone, Station station)
+        public void ReleaseDroneFromCharge(int droneId, int stationId)
         {
-            
-            drone.State = DroneStates.Empty;
-            station.ChargeSlots++;
-            DataSource.DroneCharges.RemoveAll(d => d.DroneId == drone.Id && d.StationId == station.Id);
+            int droneIndex = GetDroneIndex(droneId);
+            Drone tmp = DataSource.Drones[droneIndex];
+            tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
+            int stationIndex = GetStationIndex(stationId);
+            Station tmp1 = DataSource.Stations[stationIndex];
+            tmp1.ChargeSlots++;
+            DataSource.Drones[droneIndex] = tmp;
+            DataSource.Stations[stationIndex] = tmp1;
+            DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);
         }
         #endregion
 
         #region Get by Id Functions
-        public string GetStationString(int id) => DataSource.Stations.Where(s => s.Id == id).ToList()[0].ToString();
-        public string GetDroneString(int id) => DataSource.Drones.Where(d => d.Id == id).ToList()[0].ToString();
-        public string GetCustomerString(int id) => DataSource.Customers.Where(c => c.Id == id).ToList()[0].ToString();
-        public string GetPackageString(int id) => DataSource.Packages.Where(p => p.Id == id).ToList()[0].ToString();
+        public string GetStationString(int id) => DataSource.Stations[GetStationIndex(id)].ToString();
+        public string GetDroneString(int id) => DataSource.Drones.[GetDroneIndex(id)].ToString();
+        public string GetCustomerString(int id) => DataSource.Customers[GetCustomerIndex(id)].ToString();
+        public string GetPackageString(int id) => DataSource.Packages[GetPackageIndex(id)].ToString();
         #endregion
 
 
         #region Get all IDAL.DO object Functions
-        public string GetAllStationsString() => String.Join('\n', DataSource.Stations);
-        public string GetAllDronesString() => String.Join('\n', DataSource.Drones);
-        public string GetAllCustomersString() => String.Join('\n', DataSource.Customers);
-        public string GetAllPackagesString() => String.Join('\n', DataSource.Packages);
-        public string GetAllUndronedPackagesString() => String.Join('\n', DataSource.Packages.Where(p => p.DroneId == null));
-        public string GetAllAvailableStationsString() => String.Join('\n', DataSource.Stations.Where(p => p.ChargeSlots > 0));
+        public string GetAllStationsString() => string.Join('\n', DataSource.Stations);
+        public string GetAllDronesString() => string.Join('\n', DataSource.Drones);
+        public string GetAllCustomersString() => string.Join('\n', DataSource.Customers);
+        public string GetAllPackagesString() => string.Join('\n', DataSource.Packages);
+        public string GetAllUndronedPackagesString() => string.Join('\n', DataSource.Packages.Where(p => p.DroneId == null));
+        public string GetAllAvailableStationsString() => string.Join('\n', DataSource.Stations.Where(p => p.ChargeSlots > 0));
 
 
 
 
         #endregion
 
-        private Drone GetDrone(int id) => DataSource.Drones.Where(d => d.Id == id).ToList()[0];
-        private Station GetStation(int id) => DataSource.Stations.Where(d => d.Id == id).ToList()[0];
-        private Customer GetCustomer(int id) => DataSource.Customers.Where(d => d.Id == id).ToList()[0];
-        private Package GetPackage(int id) => DataSource.Packages.Where(d => d.Id == id).ToList()[0];
+        private int GetDroneIndex(int id) => DataSource.Drones.FindIndex(d => d.Id == id);
+        private int GetStationIndex(int id) => DataSource.Stations.FindIndex(s => s.Id == id);
+        private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
+        private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
 
     }
 }
