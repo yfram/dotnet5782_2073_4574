@@ -15,14 +15,16 @@
         public string Model { get; set; }
         public double Charge
         {
-            get => Charge;
+            get => charge;
             set
             {
-                Charge = value < 100 && value > 0 ? value : Charge;
+                charge = value < 100 && value > 0 ? value : charge;
             }
         }
         public WeightGroup Weight { get; set; }
         public DroneStates State { get; set; }
+
+        private double charge;
 
         public override string ToString()
         {

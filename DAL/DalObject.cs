@@ -80,7 +80,7 @@ namespace DalObject
 
         #region Get by Id Functions
         public string GetStationString(int id) => DataSource.Stations[GetStationIndex(id)].ToString();
-        public string GetDroneString(int id) => DataSource.Drones.[GetDroneIndex(id)].ToString();
+        public string GetDroneString(int id) => DataSource.Drones[GetDroneIndex(id)].ToString();
         public string GetCustomerString(int id) => DataSource.Customers[GetCustomerIndex(id)].ToString();
         public string GetPackageString(int id) => DataSource.Packages[GetPackageIndex(id)].ToString();
         #endregion
