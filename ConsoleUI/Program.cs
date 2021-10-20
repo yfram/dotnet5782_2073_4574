@@ -9,7 +9,7 @@ namespace ConsoleUI
 {
     class Program
     {
-        enum Menus { Add = 1, Update, GetById, GetList, Exit }
+        enum MenueOptions { Add = 1, Update, GetById, GetList, Exit }
 
 
         static void Main(string[] args)
@@ -17,37 +17,39 @@ namespace ConsoleUI
             DalObject.DalObject d = new DalObject.DalObject();
 
             string openMsg = "Welcome to John&G Drones administiration system!\n" +
-                "for add menu, press 1\n" +
-                "for update menu, press 2\n" +
-                "for get by id menu, press 3\n" +
-                "for get lists menu, press 4\n" +
+                "for add menue, press 1\n" +
+                "for update menue, press 2\n" +
+                "for get by id menue, press 3\n" +
+                "for get lists menue, press 4\n" +
                 "to exit press 5";
-
-            int menu;
-            do
+            int menue;
+            while (true)//you can exit on case MenueOptions.Exit
             {
-                menu = GetIntInput(openMsg);
-                if (menu > 5 || menu < 1)
-                    Console.WriteLine("Error! unrecognized op-code");
-            } while (menu > 5 || menu < 1);
+                do
+                {
+                    menue = GetIntInput(openMsg);
+                    if (menue > 5 || menue < 1)
+                        Console.WriteLine("Error! unrecognized op-code");
+                } while (menue > 5 || menue < 1);
 
-            switch ((Menus)menu)
-            {
-                case Menus.Add:
-                    AddMenu(d);
-                    break;
-                case Menus.Update:
-                    UpdateMenu(d);
-                    break;
-                case Menus.GetById:
-                    GetByIdMenu(d);
-                    break;
-                case Menus.GetList:
-                    GetListMenu(d);
-                    break;
-                case Menus.Exit:
-                    Console.WriteLine("GoodBye!");
-                    return;
+                switch ((MenueOptions)menue)
+                {
+                    case MenueOptions.Add:
+                        AddMenu(d);
+                        break;
+                    case MenueOptions.Update:
+                        UpdateMenu(d);
+                        break;
+                    case MenueOptions.GetById:
+                        GetByIdMenu(d);
+                        break;
+                    case MenueOptions.GetList:
+                        GetListMenu(d);
+                        break;
+                    case MenueOptions.Exit:
+                        Console.WriteLine("GoodBye!");
+                        return;
+                }
             }
         }
 
@@ -59,15 +61,15 @@ namespace ConsoleUI
                 "to get the packages list press 4\n" +
                 "to get a list of all packages wihtout drones press 5\n" +
                 "to get a list of all the available stations press 6";
-            int menu;
+            int menue;
             do
             {
-                menu = GetIntInput(getListsMenu);
-                if (menu > 6 || menu < 1)
+                menue = GetIntInput(getListsMenu);
+                if (menue > 6 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu > 6 || menu < 1);
+            } while (menue > 6 || menue < 1);
             string str = "";
-            switch (menu)
+            switch (menue)
             {
                 case 1:
                     str = d.GetAllStationsString();
@@ -100,20 +102,18 @@ namespace ConsoleUI
                 "to get a customer by id press 3\n" +
                 "to get a package by id press 4";
 
-            int menu;
+            int menue;
             do
             {
-                menu = GetIntInput(getByIdMenu);
-                menu = Console.Read();
-                if (menu > 4 || menu < 1)
+                menue = GetIntInput(getByIdMenu);
+                if (menue > 4 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu > 4 || menu < 1);
+            } while (menue > 4 || menue < 1);
 
-            Console.Write("enter ID:\n");
-            int id = Console.Read();
+            int id = GetIntInput("Enter ID:");
 
             string str = "";
-            switch (menu)
+            switch (menue)
             {
                 case 1:
                     str = d.GetStationString(id);
@@ -139,34 +139,31 @@ namespace ConsoleUI
                 "to deliver a package to a customer, press 3\n" +
                 "to send a drone to charge, press 4\n" +
                 "to release a drone from a station, press 5";
-            int menu;
+            int menue;
             do
             {
-                menu = GetIntInput(updateMenu);
-                if (menu > 5 || menu < 1)
+                menue = GetIntInput(updateMenu);
+                if (menue > 5 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu > 5 || menu < 1);
+            } while (menue > 5 || menue < 1);
             // all need a drone
             List<int> needPackage = new() { 1, 2, 3 };
             List<int> needStation = new() { 4, 5 };
             int droneId = 0, packageId = 0, stationId = 0;
-            if (menu != 3)
+            if (menue != 3)
             {
-                Console.WriteLine("enter drone Id:");
-                droneId = Console.Read();
+                droneId = GetIntInput("Enter drone ID:");
             }
-            if (needPackage.Contains(menu))
+            if (needPackage.Contains(menue))
             {
-                Console.WriteLine("enter package id");
-                packageId = Console.Read();
+                packageId = GetIntInput("Enter package ID:");
             }
-            else if (needStation.Contains(menu))
+            else if (needStation.Contains(menue))
             {
-                Console.WriteLine("enter station id");
-                stationId = Console.Read();
+                stationId = GetIntInput("Enter station ID:");
             }
 
-            switch (menu)
+            switch (menue)
             {
                 case 1:
                     d.GivePackageDrone(packageId, droneId);
@@ -195,14 +192,14 @@ namespace ConsoleUI
                 "to add a drone, press 2\n" +
                 "to add a new customer, press 3\n" +
                 "to add a new packeage for delivering, press 4";
-            int menu;
+            int menue;
             do
             {
-                menu = GetIntInput(addMenu);
-                if (menu > 4 || menu < 1)
+                menue = GetIntInput(addMenu);
+                if (menue > 4 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
-            } while (menu > 4 || menu < 1);
-            switch (menu)
+            } while (menue > 4 || menue < 1);
+            switch (menue)
             {
                 case 1:
                     d.AddStation(GetIntInput("Enter ID:"), GetStringInput("Enter name:"),
