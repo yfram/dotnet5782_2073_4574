@@ -31,7 +31,7 @@ namespace DalObject
             //this function could be one line, but Package is a struct, so that would not work. I hate structs.
             int index = GetPackageIndex(packageId);
             Package tmp = DataSource.Packages[index];
-            tmp.Id = droneId;
+            tmp.DroneId = droneId;
             DataSource.Packages[index] = tmp;
         }
         public void PickUpPackage(int packageId, int droneID)
@@ -42,6 +42,7 @@ namespace DalObject
             tmp.State = DroneStates.Shipping;
             DataSource.Drones[index] = tmp;
         }
+
         public void DeliverPackage(int packageId)
         {
             int packageIndex = GetPackageIndex(packageId);

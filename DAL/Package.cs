@@ -29,7 +29,8 @@
 
         public override string ToString()
         {
-            return $"Package {Id} to: {RecevirId} from:{SenderId}\nArriving in aprox. {TimeToPackage + TimeToGetPackage + TimeToGetDrone + TimeToRecive}";
+            return $"Package {Id} to: {RecevirId} from:{SenderId}\nArriving in aprox. {TimeToPackage + TimeToGetPackage + TimeToGetDrone + TimeToRecive}." +
+                $"{(DroneId is not null ?  $"\nDroneId: {DroneId}" : "")}";
         }
     }
 }
