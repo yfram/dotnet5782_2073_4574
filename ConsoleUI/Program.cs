@@ -181,7 +181,7 @@ namespace ConsoleUI
                     d.ReleaseDroneFromCharge(droneId, stationId);
                     break;
                 default:
-                    break;
+                    break; ;
             }
 
         }
