@@ -2,29 +2,19 @@
 {
     public struct Drone
     {
-        public Drone(int id, string model, double _charge, WeightGroup weight, DroneStates state)
+        public Drone(int id, string model, WeightGroup weight)
         {
             Id = id;
             Model = model;
             Weight = weight;
-            State = state;
-            charge = _charge;
+
         }
 
         public int Id { get; set; }
         public string Model { get; set; }
-        public double Charge
-        {
-            get => charge;
-            set
-            {
-                charge = value < 100 && value > 0 ? value : charge;
-            }
-        }
-        public WeightGroup Weight { get; set; }
-        public DroneStates State { get; set; }
 
-        private double charge;
+        public WeightGroup Weight { get; set; }
+
 
         public override string ToString()
         {
