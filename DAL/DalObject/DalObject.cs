@@ -6,7 +6,7 @@ using IDAL.DO;
 
 namespace DalObject
 {
-    public class DalObject
+    public class DalObject : IDAL.IDal
     {
         public DalObject()
         {
@@ -52,7 +52,7 @@ namespace DalObject
             //tmp.State = DroneStates.Empty;
             DataSource.Drones[droneIndex] = tmp;
             DataSource.Packages.RemoveAt(packageIndex);
-            
+
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
         }
         public void SendDroneToCharge(int droneId, int stationId)
@@ -89,7 +89,7 @@ namespace DalObject
         #endregion
 
         #region Get all IDAL.DO object Functions
-        public IEnumerable<Station> GetAllStations() =>  DataSource.Stations;
+        public IEnumerable<Station> GetAllStations() => DataSource.Stations;
         public IEnumerable<Drone> GetAllDrones() => DataSource.Drones;
         public IEnumerable<Customer> GetAllCustomers() => DataSource.Customers;
         public IEnumerable<Package> GetAllPackages() => DataSource.Packages;
@@ -106,5 +106,10 @@ namespace DalObject
         private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
         private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
 
+
+        public IEnumerable<double> GetElectricity(int droneId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

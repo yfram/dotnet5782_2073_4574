@@ -10,7 +10,7 @@ namespace IDAL
     interface IDal
     {
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
-        public void AddDrone(int id, string model, double charge, WeightGroup weight, DroneStates state);
+        public void AddDrone(int id, string model, double charge, WeightGroup weight);
         public void AddCustomer(int id, string name, string phone, double lattitude, double longitude);
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
             double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive);
