@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using IDAL.DO;
@@ -15,8 +16,8 @@ namespace DalObject
         #region Add functions
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots) =>
             DataSource.Stations.Add(new(id, name, longitude, lattitude, chargeSlots));
-        public void AddDrone(int id, string model, double charge, WeightGroup weight, DroneStates state) =>
-            DataSource.Drones.Add(new(id, model, charge, weight, state));
+        public void AddDrone(int id, string model, WeightGroup weight) =>
+            DataSource.Drones.Add(new(id, model, weight));
         public void AddCustomer(int id, string name, string phone, double lattitude, double longitude) =>
             DataSource.Customers.Add(new(id, name, phone, lattitude, longitude));
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
@@ -39,7 +40,7 @@ namespace DalObject
             GivePackageDrone(packageId, droneID);
             int index = GetDroneIndex(droneID);
             Drone tmp = DataSource.Drones[index];
-            tmp.State = DroneStates.Shipping;
+            //tmp.State = DroneStates.Shipping;
             DataSource.Drones[index] = tmp;
         }
 
@@ -48,16 +49,17 @@ namespace DalObject
             int packageIndex = GetPackageIndex(packageId);
             int droneIndex = GetDroneIndex(DataSource.Packages[packageIndex].DroneId.Value);
             Drone tmp = DataSource.Drones[droneIndex];
-            tmp.State = DroneStates.Empty;
+            //tmp.State = DroneStates.Empty;
             DataSource.Drones[droneIndex] = tmp;
             DataSource.Packages.RemoveAt(packageIndex);
+            
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
         }
         public void SendDroneToCharge(int droneId, int stationId)
         {
             int droneIndex = GetDroneIndex(droneId);
             Drone tmp = DataSource.Drones[droneIndex];
-            tmp.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
+            //tmp.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
             tmp1.ChargeSlots--;
@@ -69,7 +71,7 @@ namespace DalObject
         {
             int droneIndex = GetDroneIndex(droneId);
             Drone tmp = DataSource.Drones[droneIndex];
-            tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
+            //tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
             tmp1.ChargeSlots++;
@@ -88,12 +90,12 @@ namespace DalObject
 
 
         #region Get all IDAL.DO object Functions
-        public string GetAllStationsString() => string.Join('\n', DataSource.Stations);
-        public string GetAllDronesString() => string.Join('\n', DataSource.Drones);
-        public string GetAllCustomersString() => string.Join('\n', DataSource.Customers);
-        public string GetAllPackagesString() => string.Join('\n', DataSource.Packages);
-        public string GetAllUndronedPackagesString() => string.Join('\n', DataSource.Packages.Where(p => p.DroneId == null));
-        public string GetAllAvailableStationsString() => string.Join('\n', DataSource.Stations.Where(p => p.ChargeSlots > 0));
+        public IEnumerable GetAllStationsString() =>  DataSource.Stations;
+        public IEnumerable GetAllDronesString() => DataSource.Drones;
+        public IEnumerable GetAllCustomersString() => DataSource.Customers;
+        public IEnumerable GetAllPackagesString() => DataSource.Packages;
+        public IEnumerable GetAllUndronedPackagesString() => DataSource.Packages.Where(p => p.DroneId == null);
+        public IEnumerable GetAllAvailableStationsString() => DataSource.Stations.Where(p => p.ChargeSlots > 0);
 
 
 
