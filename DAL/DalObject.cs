@@ -90,12 +90,12 @@ namespace DalObject
 
 
         #region Get all IDAL.DO object Functions
-        public IEnumerable GetAllStationsString() =>  DataSource.Stations;
-        public IEnumerable GetAllDronesString() => DataSource.Drones;
-        public IEnumerable GetAllCustomersString() => DataSource.Customers;
-        public IEnumerable GetAllPackagesString() => DataSource.Packages;
-        public IEnumerable GetAllUndronedPackagesString() => DataSource.Packages.Where(p => p.DroneId == null);
-        public IEnumerable GetAllAvailableStationsString() => DataSource.Stations.Where(p => p.ChargeSlots > 0);
+        public IEnumerable<Station> GetAllStations() =>  DataSource.Stations;
+        public IEnumerable<Drone> GetAllDrones() => DataSource.Drones;
+        public IEnumerable<Customer> GetAllCustomers() => DataSource.Customers;
+        public IEnumerable<Package> GetAllPackages() => DataSource.Packages;
+        public IEnumerable<Package> GetAllUndronedPackages() => DataSource.Packages.Where(p => p.DroneId == null);
+        public IEnumerable<Station> GetAllAvailableStations() => DataSource.Stations.Where(p => p.ChargeSlots > 0);
 
 
 
