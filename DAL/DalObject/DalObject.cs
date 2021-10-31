@@ -86,7 +86,6 @@ namespace DalObject
         public string GetPackageString(int id) => DataSource.Packages[GetPackageIndex(id)].ToString();
         #endregion
 
-
         #region Get all IDAL.DO object Functions
         public string GetAllStationsString() => string.Join('\n', DataSource.Stations);
         public string GetAllDronesString() => string.Join('\n', DataSource.Drones);
