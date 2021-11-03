@@ -14,7 +14,7 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
-            DalObject.DalObject d = new DalObject.DalObject();
+            IDal d = new DalObject.DalObject();
 
             string openMsg = "Welcome to John&G Drones administiration system!\n" +
                 "for add menue, press 1\n" +
@@ -53,7 +53,7 @@ namespace ConsoleUI
             }
         }
 
-        private static void GetListMenu(DalObject.DalObject d)
+        private static void GetListMenu(IDal d)
         {
             string getListsMenu = "to get the station list press 1\n" +
                 "to get the drones list press 2\n" +
@@ -95,7 +95,7 @@ namespace ConsoleUI
 
         }
 
-        private static void GetByIdMenu(DalObject.DalObject d)
+        private static void GetByIdMenu(IDal d)
         {
             string getByIdMenu = "to get a station by id press 1\n" +
                 "to get a drone by id press 2\n" +
@@ -132,7 +132,7 @@ namespace ConsoleUI
             Console.WriteLine(str);
         }
 
-        private static void UpdateMenu(DalObject.DalObject d)
+        private static void UpdateMenu(IDal d)
         {
             string updateMenu = "to associate a package to a drone, press 1\n" +
                 "to pick up a package by a drone, press 2\n" +
@@ -186,7 +186,7 @@ namespace ConsoleUI
 
         }
 
-        private static void AddMenu(DalObject.DalObject d)
+        private static void AddMenu(IDal d)
         {
             string addMenu = "to add a base station, press 1\n" +
                 "to add a drone, press 2\n" +
