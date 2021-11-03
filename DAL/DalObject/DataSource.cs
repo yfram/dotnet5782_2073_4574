@@ -13,6 +13,11 @@ namespace DalObject
         internal class Config
         {
             //using Lists, so no need for the rest
+            internal static double ElecEmpty = 0;
+            internal static double ElecLow = 0;
+            internal static double ElecMid = 0;
+            internal static double ElecHigh = 0;
+            internal static double ElecRatePercent = 0;
             internal static int RunNumber = 0;
         }
 
@@ -40,6 +45,10 @@ namespace DalObject
         {
             Configuration = new Config();  //Config is all 0's anyways
             Random random = new Random();
+
+            double elec = random.NextDouble()+3;
+            Config.ElecEmpty = elec; Config.ElecLow = elec * 2; Config.ElecMid = elec * 4; Config.ElecHigh = elec * 8; Config.ElecRatePercent = random.NextDouble();
+
             for (int i = 0; i < 2; i++)
                 Stations.Add(InitStation(i, random));
             for (int i = 0; i < 5; i++)
