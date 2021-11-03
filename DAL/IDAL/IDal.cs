@@ -7,33 +7,33 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    interface IDal
+    public interface IDal
     {
-        public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
-        public void AddDrone(int id, string model, double charge, WeightGroup weight);
-        public void AddCustomer(int id, string name, string phone, double lattitude, double longitude);
-        public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
+        void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
+        void AddDrone(int id, string model, WeightGroup weight);
+        void AddCustomer(int id, string name, string phone, double lattitude, double longitude);
+        void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
             double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive);
-        public void GivePackageDrone(int packageId, int droneId);
-        public void PickUpPackage(int packageId, int droneID);
+        void GivePackageDrone(int packageId, int droneId);
+        void PickUpPackage(int packageId, int droneID);
 
-        public void DeliverPackage(int packageId);
-        public void SendDroneToCharge(int droneId, int stationId);
-        public void ReleaseDroneFromCharge(int droneId, int stationId);
+        void DeliverPackage(int packageId);
+        void SendDroneToCharge(int droneId, int stationId);
+        void ReleaseDroneFromCharge(int droneId, int stationId);
 
-        public string GetStationString(int id);
-        public string GetDroneString(int id);
-        public string GetCustomerString(int id);
-        public string GetPackageString(int id);
+        string GetStationString(int id);
+        string GetDroneString(int id);
+        string GetCustomerString(int id);
+        string GetPackageString(int id);
 
 
-        public IEnumerable<Station> GetAllStations();
-        public IEnumerable<Drone> GetAllDrones();
-        public IEnumerable<Customer> GetAllCustomers();
-        public IEnumerable<Package> GetAllPackages();
-        public IEnumerable<Package> GetAllUndronedPackages();
-        public IEnumerable<Station> GetAllAvailableStations();
+        IEnumerable<Station> GetAllStations();
+        IEnumerable<Drone> GetAllDrones();
+        IEnumerable<Customer> GetAllCustomers();
+        IEnumerable<Package> GetAllPackages();
+        IEnumerable<Package> GetAllUndronedPackages();
+        IEnumerable<Station> GetAllAvailableStations();
 
-        public IEnumerable<double> GetElectricity(int droneId);
+        IEnumerable<double> GetElectricity(int droneId);
     }
 }
