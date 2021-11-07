@@ -109,9 +109,9 @@ namespace DalObject
 
         #endregion
 
-        private int GetDroneIndex(int id) => DataSource.Drones.FindIndex(d => d.Id == id);
+        //private int GetDroneIndex(int id) => DataSource.Drones.FindIndex(d => d.Id == id);
         //private int GetStationIndex(int id) => DataSource.Stations.FindIndex(s => s.Id == id);
-        private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
+        //private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
         //private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
 
 
