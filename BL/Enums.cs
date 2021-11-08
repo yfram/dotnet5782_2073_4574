@@ -10,7 +10,7 @@ namespace IBL.BO
     {
         Light, Mid, Heavy
     }
-    public enum Priority
+    public enum PriorityGroup
     {
         Normal, Fast, Urgent
     }
