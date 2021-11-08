@@ -12,7 +12,7 @@ namespace DalObject
         public void AddDrone(int id, string model, WeightGroup weight) =>
             DataSource.Drones.Add(new(GetDroneIndex(id) != -1? throw new Exception($"the drone {id} is already exsist!") : id, model, weight));
 
-        public IEnumerable<Drone> GetAllDrones() => DataSource.Drones;
+        public IEnumerable<Drone> GetAllDrones() => new List<Drone>(DataSource.Drones);
 
         private int GetDroneIndex(int id) => DataSource.Drones.FindIndex(d => d.Id == id);
         public string GetDroneString(int id) {

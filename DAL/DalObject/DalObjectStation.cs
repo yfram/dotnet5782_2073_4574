@@ -14,7 +14,7 @@ namespace DalObject
         public string GetStationString(int id) => DataSource.Stations[GetStationIndex(id)].ToString();
         private int GetStationIndex(int id) => DataSource.Stations.FindIndex(s => s.Id == id);
 
-        public IEnumerable<Station> GetAllStations() => DataSource.Stations;
+        public IEnumerable<Station> GetAllStations() => new List<Station>(DataSource.Stations);
 
         public IEnumerable<Station> GetAllAvailableStations() => DataSource.Stations.Where(p => p.ChargeSlots > 0);
 

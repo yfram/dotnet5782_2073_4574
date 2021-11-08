@@ -30,7 +30,7 @@ namespace DalObject
 
         public string GetPackageString(int id) => DataSource.Packages[GetPackageIndex(id)].ToString();
 
-        public IEnumerable<Package> GetAllPackages() => DataSource.Packages;
+        public IEnumerable<Package> GetAllPackages() => new List<Package>(DataSource.Packages);
         public IEnumerable<Package> GetAllUndronedPackages() => DataSource.Packages.Where(p => p.DroneId == null);
 
         private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);

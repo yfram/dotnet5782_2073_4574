@@ -23,7 +23,7 @@ namespace DalObject
 
         private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
 
-        public IEnumerable<Customer> GetAllCustomers() => DataSource.Customers;
+        public IEnumerable<Customer> GetAllCustomers() => new List<Customer>(DataSource.Customers);
 
         
     }
