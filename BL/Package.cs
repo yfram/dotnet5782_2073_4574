@@ -13,7 +13,7 @@ namespace IBL.BO
         public CustomerForPackage Reciver { get; set; }
         public WeightGroup Weight { get; set; }
         public PriorityGroup Priority { get; set; }
-        public DroneInPackage Drone { get; set; }
+        public DroneForPackage Drone { get; set; }
         ///<summary>
         ///Time to package in minutes
         ///</summary>
