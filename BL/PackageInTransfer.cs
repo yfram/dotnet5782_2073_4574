@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    class PackageInTransfer
+    public class PackageInTransfer
     {
         public int Id { get; set; }
         public bool InDelivery { get; set; }
