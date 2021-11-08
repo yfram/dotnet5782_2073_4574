@@ -18,7 +18,7 @@ namespace DalObject
         public string GetDroneString(int id) {
             int ix = GetDroneIndex(id);
             if (ix == -1)
-                throw new Exception($"the drone {id} is not exsist!");
+                throw new ArgumentException($"the drone {id} is not exsist!");
             return DataSource.Drones[ix].ToString();
         }
 
