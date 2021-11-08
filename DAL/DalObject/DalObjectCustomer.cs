@@ -11,13 +11,13 @@ namespace DalObject
     {
 
         public void AddCustomer(int id, string name, string phone, double lattitude, double longitude) =>
-            DataSource.Customers.Add(new(GetCustomerIndex(id)!=-1? throw new Exception($"cannot create the customer {id} .it is already exsist!") : id, name, phone, lattitude, longitude));
+            DataSource.Customers.Add(new(GetCustomerIndex(id)!=-1? throw new ArgumentException($"cannot create the customer {id} .it is already exsist!") : id, name, phone, lattitude, longitude));
 
         public string GetCustomerString(int id)
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
-                throw new Exception($"the customer {id} is not exsist!");
+                throw new ArgumentException($"the customer {id} is not exsist!");
             return DataSource.Customers[id].ToString();
         }
 

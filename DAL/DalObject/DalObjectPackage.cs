@@ -13,7 +13,8 @@ namespace DalObject
     {
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
             double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive) =>
-            DataSource.Packages.Add(new(id, senderId, recevirId, weight, packagePriority, droneId,
+
+            DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new Exception($"the Package {id} is already exsist!") : id, senderId, recevirId, weight, packagePriority, droneId,
                 timeToPackage, timeToGetDrone, timeToGetPackedge, timeToRecive));
 
         public void DeliverPackage(int packageId)
@@ -28,7 +29,14 @@ namespace DalObject
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
         }
 
-        public string GetPackageString(int id) => DataSource.Packages[GetPackageIndex(id)].ToString();
+        public string GetPackageString(int id)
+        {
+            int ix = GetPackageIndex(id);
+            if (ix == -1)
+                throw new ArgumentException($"the Package {id} is not exsist!");
+            return DataSource.Packages[ix].ToString();
+
+        }
 
         public IEnumerable<Package> GetAllPackages() => new List<Package>(DataSource.Packages);
         public IEnumerable<Package> GetAllUndronedPackages() => DataSource.Packages.Where(p => p.DroneId == null);
