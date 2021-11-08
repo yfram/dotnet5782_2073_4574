@@ -14,4 +14,8 @@ namespace IBL.BO
     {
         Normal, Fast, Urgent
     }
+    public enum PackageStatus
+    {
+        Initialized, Paired, PickedUp, Accepted
+    }
 }
