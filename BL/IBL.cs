@@ -18,7 +18,7 @@ namespace IBL
 
         void AddCustomer(int id, string name, string phone, Location loc);
 
-        void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority);
+        void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, PriorityGroup packagePriority);
 
         #endregion
 
