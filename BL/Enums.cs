@@ -18,4 +18,8 @@ namespace IBL.BO
     {
         Initialized, Paired, PickedUp, Accepted
     }
+    public enum DroneState
+    {
+        Empty, Maitenance, Bussy
+    }
 }
