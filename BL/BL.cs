@@ -15,6 +15,64 @@ namespace IBL
         public BL()
         {
             Idal = new DalObject.DalObject();
+
+            foreach(IDAL.DO.Drone DALdrone in Idal.GetAllDrones())
+            {
+                Drone BLdrone= new Drone();
+                BLdrone.Id = DALdrone.Id;
+                BLdrone.Model = DALdrone.Model;
+                BLdrone.Weight = DALdrone.Weight;
+
+                //TODO: BLdrone.Package
+
+                IEnumerable<IDAL.DO.Package> AccosiatedButNotDelivered = Idal.GetAllPackages().Where(p => p.DroneId.HasValue && p.DroneId == DALdrone.Id&&(p.Delivered == DateTime.MinValue)).();
+                
+                if (AccosiatedButNotDelivered.Count() != 0) // there are packages that accosiated but not delivered
+                {
+                    BLdrone.State = DroneState.Bussy;
+                    IDAL.DO.Package p = AccosiatedButNotDelivered.First();
+
+                    bool WasPickUp = (p.PickUp != DateTime.MinValue);
+
+                    if(WasPickUp) // the location of the sender
+                    {
+                        IDAL.DO.Customer customer = Idal.GetCustomer(p.SenderId); // TODO: TRY CATCH
+                        BLdrone.CurrentLocation = new Location(customer.Longitude, customer.Lattitude);
+                    }
+                    else // the closet station to the sender
+                    {
+
+                    }
+                    // add batery
+
+
+                } // and if AccosiatedButNotDelivered
+
+                else
+                {
+                    int state = new Random().Next(0, 2);
+                    if(state == 0) // Maitenance
+                    {
+                        BLdrone.State = DroneState.Maitenance;
+
+                        // batery between 0 to 20
+                        BLdrone.Battery = ((double)new Random().Next(0,21))/100;
+
+                        // location in one of the stations
+                        var stations = Idal.GetAllStations();
+                        var station = stations.ElementAt(new Random().Next(0,stations.Count()));
+                        BLdrone.CurrentLocation = new Location(station.Longitude, station.Lattitude);
+                           
+                    }
+                    else //empty
+                    {
+                        // מיקומו יוגרל בין לקוחות שיש חבילות שסופקו להם
+                        
+                    }
+                }
+
+            }
+
         }
 
 
@@ -85,52 +143,52 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public string DisplayStation(int StationId)
+        public IEnumerable<StationForList> DisplayStation(int StationId)
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayDrone(int DroneId)
+        public IEnumerable<DroneForList> DisplayDrone(int DroneId)
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayCustomer(int CustomerId)
+        public IEnumerable<CustomerForList> DisplayCustomer(int CustomerId)
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayPackage(int PackageId)
+        public IEnumerable<PackageForList> DisplayPackage(int PackageId)
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayStations()
+        public IEnumerable<StationForList> DisplayStations()
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayDrones()
+        public IEnumerable<DroneForList> DisplayDrones()
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayCustomers()
+        public IEnumerable<CustomerForList> DisplayCustomers()
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayPackages()
+        public IEnumerable<PackageForList> DisplayPackages()
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayPackagesWithoutDrone()
+        public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
         {
             throw new NotImplementedException();
         }
 
-        public string DisplayStationsWithCharges()
+        public IEnumerable<StationForList> DisplayStationsWithCharges()
         {
             throw new NotImplementedException();
         }

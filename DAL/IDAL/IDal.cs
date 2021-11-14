@@ -13,7 +13,7 @@ namespace IDAL
         void AddDrone(int id, string model, WeightGroup weight);
         void AddCustomer(int id, string name, string phone, double lattitude, double longitude);
         void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int droneId,
-            double timeToPackage, double timeToGetDrone, double timeToGetPackedge, double timeToRecive);
+            DateTime Created, DateTime Associated, DateTime PickUp, DateTime Delivered);
         void GivePackageDrone(int packageId, int droneId);
         void PickUpPackage(int packageId, int droneID);
 
@@ -23,7 +23,7 @@ namespace IDAL
 
         string GetStationString(int id);
         string GetDroneString(int id);
-        string GetCustomerString(int id);
+        Customer GetCustomer(int id);
         string GetPackageString(int id);
 
 

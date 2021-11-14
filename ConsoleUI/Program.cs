@@ -72,22 +72,22 @@ namespace ConsoleUI
             switch (menue)
             {
                 case 1:
-                    str = d.GetAllStationsString();
+                    str = d.GetAllStations();
                     break;
                 case 2:
-                    str = d.GetAllDronesString();
+                    str = d.GetAllDrones();
                     break;
                 case 3:
-                    str = d.GetAllCustomersString();
+                    str = d.GetAllCustomers();
                     break;
                 case 4:
-                    str = d.GetAllPackagesString();
+                    str = d.GetAllPackages();
                     break;
                 case 5:
-                    str = d.GetAllUndronedPackagesString();
+                    str = d.GetAllUndronedPackages();
                     break;
                 case 6:
-                    str = d.GetAllAvailableStationsString();
+                    str = d.GetAllAvailableStations();
                     break;
             }
 

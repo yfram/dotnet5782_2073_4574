@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,26 +43,26 @@ namespace IBL
 
         #region Display Options
 
-        string DisplayStation(int StationId);
-        string DisplayDrone(int DroneId);
-        string DisplayCustomer(int CustomerId);
+        IEnumerable<StationForList> DisplayStation(int StationId);
+        IEnumerable<DroneForList> DisplayDrone(int DroneId);
+        IEnumerable<CustomerForList> DisplayCustomer(int CustomerId);
 
-        string DisplayPackage(int PackageId);
+        IEnumerable<PackageForList> DisplayPackage(int PackageId);
 
         #endregion
 
 
         #region Lists Display
 
-        string DisplayStations();
-        string DisplayDrones();
+        IEnumerable<StationForList> DisplayStations();
+        IEnumerable<DroneForList> DisplayDrones();
 
-        string DisplayCustomers();
-        string DisplayPackages();
+        IEnumerable<CustomerForList> DisplayCustomers();
+        IEnumerable<PackageForList> DisplayPackages();
 
-        string DisplayPackagesWithoutDrone();
+        IEnumerable<PackageForList> DisplayPackagesWithoutDrone();
 
-        string DisplayStationsWithCharges();
+        IEnumerable<StationForList> DisplayStationsWithCharges();
 
 
         #endregion
