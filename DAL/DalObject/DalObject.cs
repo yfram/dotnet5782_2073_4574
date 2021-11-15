@@ -115,7 +115,7 @@ namespace DalObject
         //private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
 
 
-        public IEnumerable<double> GetElectricity(int droneId)
+        public double[] GetElectricity()
         {
              double[] ans =new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
             return ans;

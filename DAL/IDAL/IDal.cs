@@ -44,6 +44,6 @@ namespace IDAL
         IEnumerable<Package> GetAllUndronedPackages();
         IEnumerable<Station> GetAllAvailableStations();
 
-        IEnumerable<double> GetElectricity(int droneId);
+        double[] GetElectricity();
     }
 }

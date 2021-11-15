@@ -13,7 +13,7 @@ namespace IBL
     {
 
         #region Add Options
-        void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
+        void AddStation(Station s);
 
         void AddDrone(int id, string model, WeightGroup weight, int stationId);
 
@@ -28,7 +28,7 @@ namespace IBL
 
         void UpdateStation(int id, string newName="", int newChargeSlots=-1);
 
-        void UpdateCustomer(int id, string newName = "", int newPhone = -1);
+        void UpdateCustomer(int id, string newName = "", string newPhone = "");
         void SendDroneToCharge(int DroneId);
 
         void ReleaseDrone(int DroneId, double time);
