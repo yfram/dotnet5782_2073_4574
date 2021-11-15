@@ -8,7 +8,7 @@ namespace IBL.BO
 {
     public enum WeightGroup
     {
-        Light, Mid, Heavy
+        Light=1, Mid, Heavy
     }
     public enum PriorityGroup
     {

@@ -39,15 +39,22 @@ namespace DalObject
             int index = GetPackageIndex(packageId);
             Package tmp = DataSource.Packages[index];
             tmp.DroneId = droneId;
+            tmp.Associated = DateTime.Now;
             DataSource.Packages[index] = tmp;
+
         }
         public void PickUpPackage(int packageId, int droneID)
         {
-            GivePackageDrone(packageId, droneID);
+            int index = GetPackageIndex(packageId);
+            Package tmp = DataSource.Packages[index];
+            tmp.PickUp = DateTime.Now;
+            DataSource.Packages[index] = tmp;
+            /*
             int index = GetDroneIndex(droneID);
             Drone tmp = DataSource.Drones[index];
             //tmp.State = DroneStates.Shipping;
             DataSource.Drones[index] = tmp;
+            */
         }
 
         /*
@@ -75,18 +82,30 @@ namespace DalObject
             DataSource.Drones[droneIndex] = tmp;
             DataSource.Stations[stationIndex] = tmp1;
         }
-        public void ReleaseDroneFromCharge(int droneId, int stationId)
+        public void ReleaseDroneFromCharge(int droneId, int stationId = -1)
         {
-            int droneIndex = GetDroneIndex(droneId);
-            Drone tmp = DataSource.Drones[droneIndex];
+            //int droneIndex = GetDroneIndex(droneId);
+            //Drone tmp = DataSource.Drones[droneIndex];
+
             //tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
+
+            if(stationId < 0)
+            {
+                stationId = DataSource.DroneCharges.Find(dc => dc.DroneId == droneId).StationId;
+            }
+
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
+
             tmp1.ChargeSlots++;
-            DataSource.Drones[droneIndex] = tmp;
+
+            //DataSource.Drones[droneIndex] = tmp;
             DataSource.Stations[stationIndex] = tmp1;
+
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);
         }
+
+
         #endregion
 
         #region Get by Id Functions
