@@ -12,14 +12,14 @@ namespace IBL.BO
     }
     public enum PriorityGroup
     {
-        Normal, Fast, Urgent
+        Normal=1, Fast, Urgent
     }
     public enum PackageStatus
     {
-        Initialized, Paired, PickedUp, Accepted
+        Initialized=1, Paired, PickedUp, Accepted
     }
     public enum DroneState
     {
-        Empty, Maitenance, Bussy
+        Empty=1, Maitenance, Bussy
     }
 }

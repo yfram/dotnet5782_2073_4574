@@ -15,11 +15,11 @@ namespace IBL
         #region Add Options
         void AddStation(Station s);
 
-        void AddDrone(int id, string model, WeightGroup weight, int stationId);
+        void AddDrone(Drone s);
 
-        void AddCustomer(int id, string name, string phone, Location loc);
+        void AddCustomer(Customer c);
 
-        void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, PriorityGroup packagePriority);
+        void AddPackage(Package p);
 
         #endregion
 
