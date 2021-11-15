@@ -15,11 +15,11 @@ namespace DalObject
         public IEnumerable<Drone> GetAllDrones() => new List<Drone>(DataSource.Drones);
 
         private int GetDroneIndex(int id) => DataSource.Drones.FindIndex(d => d.Id == id);
-        public string GetDroneString(int id) {
+        public Drone GetDrone(int id) {
             int ix = GetDroneIndex(id);
             if (ix == -1)
                 throw new ArgumentException($"the drone {id} is not exsist!");
-            return DataSource.Drones[ix].ToString();
+            return DataSource.Drones[ix];
         }
 
 

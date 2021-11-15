@@ -29,12 +29,12 @@ namespace DalObject
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
         }
 
-        public string GetPackageString(int id)
+        public Package GetPackage(int id)
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
                 throw new ArgumentException($"the Package {id} is not exsist!");
-            return DataSource.Packages[ix].ToString();
+            return DataSource.Packages[ix];
 
         }
 

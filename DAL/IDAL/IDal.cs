@@ -21,11 +21,21 @@ namespace IDAL
         void SendDroneToCharge(int droneId, int stationId);
         void ReleaseDroneFromCharge(int droneId, int stationId);
 
-        string GetStationString(int id);
-        string GetDroneString(int id);
+        Station GetStation(int id);
+        Drone GetDrone(int id);
         Customer GetCustomer(int id);
-        string GetPackageString(int id);
+        Package GetPackage(int id);
 
+
+        void DeleteStation(int id);
+        void DeletePackage(int id);
+        void DeleteCustomer(int id);
+        void DeleteDrone(int id);
+
+        void UpdateStation(Station s);
+        void UpdatePackage(Package p);
+        void UpdateCustomer(Customer c);
+        void UpdateDrone(Drone d);
 
         IEnumerable<Station> GetAllStations();
         IEnumerable<Drone> GetAllDrones();

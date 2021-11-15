@@ -117,7 +117,73 @@ namespace DalObject
 
         public IEnumerable<double> GetElectricity(int droneId)
         {
-            throw new NotImplementedException();
+             double[] ans =new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
+            return ans;
+        }
+
+        public void DeleteStation(int id)
+        {
+            int ix = GetStationIndex(id);
+            if (ix == -1)
+                throw new ArgumentException($"the Station {id} is not exsist!");
+            DataSource.Stations.RemoveAt(ix);
+
+        }
+
+        public void DeletePackage(int id)
+        {
+            int ix = GetPackageIndex(id);
+            if (ix == -1)
+                throw new ArgumentException($"the Package {id} is not exsist!");
+            DataSource.Packages.RemoveAt(ix);
+        }
+
+        public void DeleteCustomer(int id)
+        {
+            int ix = GetCustomerIndex(id);
+            if (ix == -1)
+                throw new ArgumentException($"the Customer {id} is not exsist!");
+            DataSource.Customers.RemoveAt(ix);
+        }
+
+        public void DeleteDrone(int id)
+        {
+            int ix = GetDroneIndex(id);
+            if (ix == -1)
+                throw new ArgumentException($"the Drone {id} is not exsist!");
+            DataSource.Drones.RemoveAt(ix);
+        }
+
+        public void UpdateStation(Station s)
+        {
+            int ix = GetStationIndex(s.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Station {s.Id} is not exsist!");
+            DataSource.Stations[ix] = s;
+        }
+
+        public void UpdatePackage(Package p)
+        {
+            int ix = GetPackageIndex(p.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Package {p.Id} is not exsist!");
+            DataSource.Packages[ix] = p;
+        }
+
+        public void UpdateCustomer(Customer c)
+        {
+            int ix = GetCustomerIndex(c.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Customer {c.Id} is not exsist!");
+            DataSource.Customers[ix] = c;
+        }
+
+        public void UpdateDrone(Drone d)
+        {
+            int ix = GetDroneIndex(d.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Drone {d.Id} is not exsist!");
+            DataSource.Drones[ix] = d;
         }
     }
 }

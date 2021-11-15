@@ -105,11 +105,13 @@ namespace IBL
 
         public void UpdateDroneName(int id, string newModel)
         {
+            Idal.
             throw new NotImplementedException();
         }
 
         public void UpdateStation(int id, string newName = "", int newChargeSlots = -1)
         {
+            Idal.
             throw new NotImplementedException();
         }
 
