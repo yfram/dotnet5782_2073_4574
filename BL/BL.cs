@@ -15,6 +15,7 @@ namespace IBL
         private double[] elecRate;
         public BL()
         {
+            BLdrones = new();
             Idal = new DalObject.DalObject();
             elecRate = Idal.GetElectricity();
 
@@ -27,7 +28,7 @@ namespace IBL
 
                 //TODO: BLdrone.Package
 
-                IEnumerable<IDAL.DO.Package> AccosiatedButNotDelivered = Idal.GetAllPackages().Where(p => p.DroneId.HasValue && p.DroneId == DALdrone.Id&&(p.Delivered == DateTime.MinValue)).();
+                IEnumerable<IDAL.DO.Package> AccosiatedButNotDelivered = Idal.GetAllPackages().Where(p => p.DroneId.HasValue && p.DroneId == DALdrone.Id&&(p.Delivered == DateTime.MinValue));
                 
                 // fill state, location and battery
 
@@ -120,7 +121,7 @@ namespace IBL
                         
                     }
                 }
-
+                BLdrones.Add(BLdrone);
             }
 
         }
@@ -434,24 +435,140 @@ namespace IBL
             }
         }
 
-        public IEnumerable<StationForList> DisplayStation(int StationId)
+        private IDAL.DO.Station GetDALStation(int StationId)
         {
-            throw new NotImplementedException();
+            return Idal.GetStation(StationId);
         }
 
-        public IEnumerable<DroneForList> DisplayDrone(int DroneId)
+
+        public Station DisplayStation(int StationId)
         {
-            throw new NotImplementedException();
+            var DALstation = GetDALStation(StationId);
+            List<DroneInCharging> charged = new();
+
+            foreach(DroneForList BLDrone in BLdrones)
+            {
+                
+                if(BLDrone.State == DroneState.Maitenance && BLDrone.CurrentLocation.Latitude == DALstation.Lattitude && BLDrone.CurrentLocation.Longitude == DALstation.Longitude)
+                {
+                    charged.Add(new DroneInCharging(BLDrone.Id,BLDrone.Battery));
+                }
+            }
+
+            return new Station(DALstation.Id, DALstation.Name, new Location(DALstation.Longitude, DALstation.Lattitude), DALstation.ChargeSlots,charged);
         }
 
-        public IEnumerable<CustomerForList> DisplayCustomer(int CustomerId)
+        private IDAL.DO.Drone GetDALDrone(int DroneId)
         {
-            throw new NotImplementedException();
+            return Idal.GetDrone(DroneId); // Do exceptions and things
         }
 
-        public IEnumerable<PackageForList> DisplayPackage(int PackageId)
+        private IDAL.DO.Package GetDALPackage(int PackageId)
         {
-            throw new NotImplementedException();
+            return Idal.GetPackage(PackageId); // Do exceptions and things
+        }
+
+        private IDAL.DO.Customer GetDALCustomer(int CustomerId)
+        {
+            return Idal.GetCustomer(CustomerId); // Do exceptions and things
+        }
+
+        public Drone DisplayDrone(int DroneId)
+        {
+            var DALdrone = GetDALDrone(DroneId);
+            DroneForList droneForList = BLdrones.Find(d=> d.Id == DroneId);
+
+            PackageInTransfer pckTransfer = null;
+
+            if(droneForList.State == DroneState.Bussy)
+            {
+                int pkgId = (int)droneForList.PassingPckageId;
+                var DALpkg = GetDALPackage(pkgId);
+
+                var DALsend = GetDALCustomer(DALpkg.SenderId);
+                var DALrecv = GetDALCustomer(DALpkg.RecevirId);
+
+                CustomerForPackage send = new CustomerForPackage(DALpkg.SenderId, DALsend.Name);
+                CustomerForPackage recv = new CustomerForPackage(DALpkg.RecevirId, DALrecv.Name);
+
+                Location locSend = new Location(DALsend.Longitude, DALsend.Lattitude), locRecv = new Location(DALrecv.Longitude, DALrecv.Lattitude);
+                pckTransfer = new PackageInTransfer(pkgId, DALpkg.Delivered != DateTime.MinValue, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, DistanceTo(locRecv, locSend));
+            }
+
+            return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State,pckTransfer, droneForList.CurrentLocation);
+        }
+
+        public Customer DisplayCustomer(int CustomerId)
+        {
+            
+            var DALcustomer = GetDALCustomer(CustomerId);
+
+            List<PackageForCustomer> pkgFrom = new();
+            List<PackageForCustomer> pkgTo = new();
+
+            IEnumerable<IDAL.DO.Package> DALpackages = Idal.GetAllPackages();
+
+            foreach(IDAL.DO.Package dp in DALpackages)
+            {
+                if(dp.Associated != DateTime.MinValue) // if the package is in the progress of delivering
+                {
+
+                    if(dp.SenderId == CustomerId || dp.RecevirId == CustomerId)
+                    {
+                        PackageStatus status = dp.Delivered != DateTime.MinValue ? PackageStatus.Accepted : (dp.PickUp != DateTime.MinValue ? PackageStatus.PickedUp : dp.Associated != DateTime.MinValue ? PackageStatus.Paired : PackageStatus.Initialized);
+
+                        PackageForCustomer pkgForCustomer = new(dp.Id, (WeightGroup)((int)dp.Weight) , (PriorityGroup)((int)dp.PackagePriority) , status, new CustomerForPackage(CustomerId, DALcustomer.Name));
+
+
+                        if (dp.SenderId == CustomerId)
+                            pkgFrom.Add(pkgForCustomer);
+                        else // the Customer is the reciver of this pakcage
+                            pkgTo.Add(pkgForCustomer);
+
+                    }
+                }
+            }
+
+            return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Name, new Location(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
+        }
+
+        public Package DisplayPackage(int PackageId)
+        {
+            var DALpkg = GetDALPackage(PackageId);
+
+            Package ans = new Package();
+
+
+            WeightGroup weight = (WeightGroup)((int)DALpkg.Weight);
+            PriorityGroup priority = (PriorityGroup)((int)DALpkg.PackagePriority);
+
+            ans.Id = PackageId;
+            ans.Weight = weight;
+            ans.Priority = priority;
+
+            var DALsender = GetDALCustomer(DALpkg.SenderId);
+            CustomerForPackage sender = new CustomerForPackage(DALsender.Id, DALsender.Name);
+
+            var DALrecv = GetDALCustomer(DALpkg.RecevirId);
+            CustomerForPackage recv = new CustomerForPackage(DALrecv.Id, DALrecv.Name);
+
+            ans.Sender = sender;
+            ans.Reciver = recv;
+
+            ans.TimeToPackage = DALpkg.Created;
+
+
+            if (DALpkg.DroneId.HasValue)
+            {
+                DroneForList BLdrone = BLdrones.Find(d => d.Id == DALpkg.DroneId);
+                DroneForPackage drone = new DroneForPackage(BLdrone.Id,BLdrone.Battery,BLdrone.CurrentLocation);
+                ans.Drone = drone;
+
+                ans.TimeToPair = DALpkg.Associated;
+                ans.TimeToPickup = DALpkg.PickUp;
+                ans.TimeToDeliver = DALpkg.Delivered;
+            }
+            return ans;
         }
 
         public IEnumerable<StationForList> DisplayStations()
@@ -526,7 +643,7 @@ namespace IBL
                 FreeStations= FreeStations.Where(s => s.ChargeSlots > 0);
             if (FreeStations.Count() > 0)
             {
-                IDAL.DO.Station closest = FreeStations.Aggregate((s1, s2) => DistanceTo(new Location(s1.Longitude, s1.Lattitude), drone.CurrentLocation)
+                IDAL.DO.Station closest = FreeStations.Aggregate((s1, s2) => DistanceTo(new Location(s1.Longitude, s1.Lattitude), loc)
                > DistanceTo(new Location(s2.Longitude, s2.Lattitude), loc)
                ? s2 : s1);
 

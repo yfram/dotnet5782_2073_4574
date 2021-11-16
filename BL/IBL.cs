@@ -43,11 +43,11 @@ namespace IBL
 
         #region Display Options
 
-        IEnumerable<StationForList> DisplayStation(int StationId);
-        IEnumerable<DroneForList> DisplayDrone(int DroneId);
-        IEnumerable<CustomerForList> DisplayCustomer(int CustomerId);
+        Station DisplayStation(int StationId);
+        Drone DisplayDrone(int DroneId);
+        Customer DisplayCustomer(int CustomerId);
 
-        IEnumerable<PackageForList> DisplayPackage(int PackageId);
+        Package DisplayPackage(int PackageId);
 
         #endregion
 

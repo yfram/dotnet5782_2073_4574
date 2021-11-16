@@ -8,6 +8,21 @@ namespace IBL.BO
 {
     public class Drone
     {
+        public Drone(int id, string model, WeightGroup weight, double battery, DroneState state, PackageInTransfer package, Location currentLocation)
+        {
+            Id = id;
+            Model = model;
+            Weight = weight;
+            Battery = battery;
+            State = state;
+            Package = package;
+            CurrentLocation = currentLocation;
+        }
+
+        public Drone()
+        {
+        }
+
         public int Id { get; set; }
         public string Model { get; set; }
         public WeightGroup Weight { get; set; }

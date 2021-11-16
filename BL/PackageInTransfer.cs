@@ -8,6 +8,23 @@ namespace IBL.BO
 {
     public class PackageInTransfer
     {
+        public PackageInTransfer(int id, bool inDelivery, WeightGroup weight, PriorityGroup priority, CustomerForPackage sender, CustomerForPackage reciver, Location pickUpLocation, Location dropOffLocation, double distance)
+        {
+            Id = id;
+            InDelivery = inDelivery;
+            Weight = weight;
+            Priority = priority;
+            Sender = sender;
+            Reciver = reciver;
+            PickUpLocation = pickUpLocation;
+            DropOffLocation = dropOffLocation;
+            this.distance = distance;
+        }
+
+        public PackageInTransfer()
+        {
+        }
+
         public int Id { get; set; }
         public bool InDelivery { get; set; }
         public WeightGroup Weight { get; set; }

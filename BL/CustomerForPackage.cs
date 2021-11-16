@@ -8,6 +8,16 @@ namespace IBL.BO
 {
     public class CustomerForPackage
     {
+        public CustomerForPackage(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public CustomerForPackage()
+        {
+        }
+
         public int Id {  get; set; }
         public string Name {  get; set; }
     }

@@ -68,30 +68,33 @@ namespace ConsoleUI
                 if (menue > 6 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
             } while (menue > 6 || menue < 1);
-            string str = "";
+            IEnumerable<object> list=null;
             switch (menue)
             {
                 case 1:
-                    str = d.GetAllStations();
+                    list = (IEnumerable<object>)d.GetAllStations();
                     break;
                 case 2:
-                    str = d.GetAllDrones();
+                    list = (IEnumerable<object>)d.GetAllDrones();
                     break;
                 case 3:
-                    str = d.GetAllCustomers();
+                    list = (IEnumerable<object>)d.GetAllCustomers();
                     break;
                 case 4:
-                    str = d.GetAllPackages();
+                    list = (IEnumerable<object>)d.GetAllPackages();
                     break;
                 case 5:
-                    str = d.GetAllUndronedPackages();
+                    list = (IEnumerable<object>)d.GetAllUndronedPackages();
                     break;
                 case 6:
-                    str = d.GetAllAvailableStations();
+                    list = (IEnumerable<object>)d.GetAllAvailableStations();
                     break;
             }
-
-            Console.WriteLine(str);
+            foreach(Object obj in list)
+            {
+                Console.WriteLine(obj.ToString());
+            }
+            
 
         }
 
@@ -116,16 +119,16 @@ namespace ConsoleUI
             switch (menue)
             {
                 case 1:
-                    str = d.GetStationString(id);
+                    str = d.GetStation(id).ToString();
                     break;
                 case 2:
-                    str = d.GetDroneString(id);
+                    str = d.GetDrone(id).ToString();
                     break;
                 case 3:
-                    str = d.GetCustomerString(id);
+                    str = d.GetCustomer(id).ToString();
                     break;
                 case 4:
-                    str = d.GetPackageString(id);
+                    str = d.GetPackage(id).ToString();
                     break;
             }
 
@@ -208,8 +211,8 @@ namespace ConsoleUI
                     break;
                 case 2:
                     d.AddDrone(GetIntInput("Enter ID:"), GetStringInput("Enter model:"),
-                        GetIntInput("Enter battery charge:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
-                        (DroneStates)GetEnumInput("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)", 1, 3));
+                        /*GetIntInput("Enter battery charge:"),*/ (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3)
+                        /*,(DroneStates)GetEnumInput("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)", 1, 3)*/);
                     break;
                 case 3:
                     d.AddCustomer(GetIntInput("Enter ID"), GetStringInput("Enter name:"), GetStringInput("Enter phone number"),
@@ -219,8 +222,8 @@ namespace ConsoleUI
                     d.AddPackage(GetIntInput("Enter ID:"), GetIntInput("Enter sender ID:"),
                         GetIntInput("Enter reciver ID:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
                         (Priority)GetEnumInput("Enter prioraty(1 for low, 2 for mid, 3 for high)", 1, 3),
-                        -1, GetIntInput("Enter time to package:"), GetIntInput("Enter time to get drone:"),
-                        GetIntInput("Enter time to get package:"), GetIntInput("Enter time to recive:"));
+                        -1, GetDateTimeInput("Enter time to package:"), GetDateTimeInput("Enter time to get drone:"),
+                        GetDateTimeInput("Enter time to get package:"), GetDateTimeInput("Enter time to recive:"));
                     break;
             }
         }
@@ -242,6 +245,32 @@ namespace ConsoleUI
             Console.WriteLine(print);
             int ret;
             return int.TryParse(Console.ReadLine(), out ret) ? ret : GetIntInput(print);
+        }
+
+        private static int GetIntInputInRange(string print, int min, int max)
+        {
+            int res;
+            do
+            {
+                res = GetIntInput(print);
+            } while (res < min || res >= max);
+
+            return res;
+            
+        }
+
+        private static DateTime GetDateTimeInput(string print)
+        {
+            Console.WriteLine(print);
+            int year = GetIntInput("enter a year");
+            int month = GetIntInputInRange("enter a month", 1, 13);
+            int day = GetIntInputInRange("enter a day", 1, 32);
+            int hour = GetIntInputInRange("enter a hour", 1, 25);
+            int minute = GetIntInputInRange("enter a minute", 1, 60);
+            int second = GetIntInputInRange("enter a second", 1, 60);
+
+            return new DateTime(year,month,day,hour,minute,second);
+
         }
 
         private static double GetDoubleInput(string print)
