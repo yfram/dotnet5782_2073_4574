@@ -17,7 +17,7 @@ namespace DalObject
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the customer {id} is not exsist!");
+                throw new ArgumentException($"the customer {id} is not exist!");
             return DataSource.Customers[id];
         }
 
