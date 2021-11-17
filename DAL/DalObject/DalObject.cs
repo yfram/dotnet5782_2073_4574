@@ -144,7 +144,7 @@ namespace DalObject
         {
             int ix = GetStationIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Station {id} is not exsist!");
+                throw new ArgumentException($"the Station {id} is not exist!");
             DataSource.Stations.RemoveAt(ix);
 
         }
@@ -153,7 +153,7 @@ namespace DalObject
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Package {id} is not exsist!");
+                throw new ArgumentException($"the Package {id} is not exist!");
             DataSource.Packages.RemoveAt(ix);
         }
 
@@ -161,7 +161,7 @@ namespace DalObject
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Customer {id} is not exsist!");
+                throw new ArgumentException($"the Customer {id} is not exist!");
             DataSource.Customers.RemoveAt(ix);
         }
 
@@ -169,7 +169,7 @@ namespace DalObject
         {
             int ix = GetDroneIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Drone {id} is not exsist!");
+                throw new ArgumentException($"the Drone {id} is not exist!");
             DataSource.Drones.RemoveAt(ix);
         }
 
@@ -177,7 +177,7 @@ namespace DalObject
         {
             int ix = GetStationIndex(s.Id);
             if (ix == -1)
-                throw new ArgumentException($"the Station {s.Id} is not exsist!");
+                throw new ArgumentException($"the Station {s.Id} is not exist!");
             DataSource.Stations[ix] = s;
         }
 
@@ -185,7 +185,7 @@ namespace DalObject
         {
             int ix = GetPackageIndex(p.Id);
             if (ix == -1)
-                throw new ArgumentException($"the Package {p.Id} is not exsist!");
+                throw new ArgumentException($"the Package {p.Id} is not exist!");
             DataSource.Packages[ix] = p;
         }
 
@@ -193,7 +193,7 @@ namespace DalObject
         {
             int ix = GetCustomerIndex(c.Id);
             if (ix == -1)
-                throw new ArgumentException($"the Customer {c.Id} is not exsist!");
+                throw new ArgumentException($"the Customer {c.Id} is not exist!");
             DataSource.Customers[ix] = c;
         }
 
@@ -201,7 +201,7 @@ namespace DalObject
         {
             int ix = GetDroneIndex(d.Id);
             if (ix == -1)
-                throw new ArgumentException($"the Drone {d.Id} is not exsist!");
+                throw new ArgumentException($"the Drone {d.Id} is not exist!");
             DataSource.Drones[ix] = d;
         }
     }

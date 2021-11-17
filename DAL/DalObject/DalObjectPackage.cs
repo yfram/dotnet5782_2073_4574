@@ -14,7 +14,7 @@ namespace DalObject
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime Created , DateTime Associated, DateTime PickUp, DateTime Delivered) =>
 
-            DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new Exception($"the Package {id} is already exsist!") : id, senderId, recevirId, weight, packagePriority, droneId,
+            DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new Exception($"the Package {id} is already exist!") : id, senderId, recevirId, weight, packagePriority, droneId,
                 Created,Associated,PickUp,Delivered));
 
         public void DeliverPackage(int packageId)
@@ -33,7 +33,7 @@ namespace DalObject
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Package {id} is not exsist!");
+                throw new ArgumentException($"the Package {id} is not exist!");
             return DataSource.Packages[ix];
 
         }
