@@ -20,6 +20,6 @@ namespace IBL.BO
     }
     public enum DroneState
     {
-        Empty=1, Maitenance, Bussy
+        Empty=1, Maitenance, Busy
     }
 }

@@ -51,7 +51,6 @@ namespace IBL
 
         #endregion
 
-
         #region Lists Display
 
         IEnumerable<StationForList> DisplayStations();
