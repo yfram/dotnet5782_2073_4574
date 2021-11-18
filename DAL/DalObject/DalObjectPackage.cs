@@ -33,7 +33,7 @@ namespace DalObject
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
-                throw new ArgumentException($"the Package {id} is not exist!");
+                throw new ArgumentException($"the Package {id} does not exist!");
             return DataSource.Packages[ix];
 
         }
