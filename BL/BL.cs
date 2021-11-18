@@ -13,6 +13,7 @@ namespace IBL
         private List<DroneForList> BLdrones = new();
         private IDal Idal = new DalObject.DalObject();
         private double[] elecRate;
+        private static Random rand = new();
         public BL()
         {
             elecRate = Idal.GetElectricity();
@@ -34,14 +35,8 @@ namespace IBL
                     BLdrone.State = DroneState.Busy;
                     BLdrone.PassingPckageId = AssociatedButNotDelivered.Id;
                     bool WasPickUp = (AssociatedButNotDelivered.PickUp != DateTime.MinValue);
-                    IDAL.DO.Customer customer = new();
-                    try
-                    {
-                        customer = Idal.GetCustomer(AssociatedButNotDelivered.SenderId);
-                    }catch (AlreadyExistsException ex)
-                    {
-                        //TODO: figure out what goes here
-                    }
+                    //no need here for a try block, as we know that the senderId exists
+                    IDAL.DO.Customer customer = Idal.GetCustomer(AssociatedButNotDelivered.SenderId);
                     Location customerLoc = new Location(customer.Longitude, customer.Lattitude);
                     if (WasPickUp)
                     {
@@ -63,28 +58,24 @@ namespace IBL
                     // add batery
                     double distance = DistanceToDoDeliver(AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
-                    if (minBattery > 1)
-                    {
-                        //throw
-                    }
-                    BLdrone.Battery = new Random().NextDouble() * (1 - minBattery) + minBattery;
+                    BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
 
 
                 } // and if AccosiatedButNotDelivered
 
                 else
                 {
-                    int state = new Random().Next(0, 2);
+                    int state = rand.Next(0, 2);
                     if (state == 0) // Maitenance
                     {
                         BLdrone.State = DroneState.Maitenance;
 
                         // batery between 0 to 20
-                        BLdrone.Battery = ((double)new Random().Next(0, 21)) / 100;
+                        BLdrone.Battery = ((double)rand.Next(0, 21)) / 100;
 
                         // location in one of the stations
                         var stations = Idal.GetAllStations();
-                        var station = stations.ElementAt(new Random().Next(0, stations.Count()));
+                        var station = stations.ElementAt(rand.Next(0, stations.Count()));
                         BLdrone.CurrentLocation = new Location(station.Longitude, station.Lattitude);
 
                     }
@@ -115,7 +106,7 @@ namespace IBL
                             {
                                 //throw
                             }
-                            BLdrone.Battery = new Random().NextDouble() * (1 - minBattery) + minBattery;
+                            BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
 
                         }
 
