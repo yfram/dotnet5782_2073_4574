@@ -236,7 +236,7 @@ namespace ConsoleUI
             {
                 Console.WriteLine(print);
                 cont = int.TryParse(Console.ReadLine(), out ret);
-            } while (ret > 3 || ret < 1 || !cont);
+            } while (ret > max || ret < min || !cont);
             return ret;
         }
 
