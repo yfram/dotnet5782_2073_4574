@@ -3,12 +3,41 @@ using IBL;
 
 namespace ConsoleUI_BL
 {
-    class Program
+    internal class Program
     {
         IBL.IBL @Bl = new BL();
+
+        private enum MainMenue
+        {
+            Add, Update, ViewById, ListView, Exit
+        }
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string openMsg = "Welcome to John&G Drones administiration system!\n" +
+                "for add menue, press 1\n" +
+                "for update menue, press 2\n" +
+                "for get by id menue, press 3\n" +
+                "for get lists menue, press 4\n" +
+                "to exit press 5";
+            while (true)
+            {
+                MainMenue menue = (MainMenue)(GetIntInputInRange(openMsg, 0, 5, "Error! unrecognized op-code") - 1);
+                switch (menue)
+                {
+                    case MainMenue.Add:
+                        break;
+                    case MainMenue.Update:
+                        break;
+                    case MainMenue.ViewById:
+                        break;
+                    case MainMenue.ListView:
+                        break;
+                    case MainMenue.Exit:
+                        Console.WriteLine("GoodBye!");
+                        return;
+                }
+            }
         }
 
         private static int GetIntInput(string print)
@@ -17,14 +46,16 @@ namespace ConsoleUI_BL
             int ret;
             return int.TryParse(Console.ReadLine(), out ret) ? ret : GetIntInput(print);
         }
-        private static int GetIntInputInRange(string print, int min, int max)
+
+        private static int GetIntInputInRange(string print, int min, int max, string? errorMsg)
         {
             int res;
             do
             {
                 res = GetIntInput(print);
-            } while (res < min || res >= max);
-
+                if (res < min || res > max)
+                    Console.Write(errorMsg is null ? "" : $"{errorMsg}\n");
+            } while (res < min || res > max);
             return res;
 
         }
