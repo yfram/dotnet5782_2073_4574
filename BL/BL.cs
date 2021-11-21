@@ -24,12 +24,10 @@ namespace IBL
                 BLdrone.Id = DALdrone.Id;
                 BLdrone.Model = DALdrone.Model;
                 BLdrone.Weight = (WeightGroup)((int)DALdrone.Weight);
-
                 IDAL.DO.Package AssociatedButNotDelivered = Idal.GetAllPackages().
-                    Where(p => p.DroneId.HasValue && p.DroneId == DALdrone.Id &&
+                    Where(p => p.DroneId.HasValue &&
                     (p.Delivered == DateTime.MinValue)).FirstOrDefault();
 
-                // fill state, location and battery
                 if (AssociatedButNotDelivered as object is not null)
                 {
                     BLdrone.State = DroneState.Busy;
@@ -58,10 +56,10 @@ namespace IBL
                     // add batery
                     double distance = DistanceToDoDeliver(AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
+                    if (minBattery > 1)
+                        throw new TooFarException("There is not enough battery to get there!");
                     BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
-
-
-                } // and if AccosiatedButNotDelivered
+                }
 
                 else
                 {
