@@ -211,8 +211,7 @@ namespace ConsoleUI
                     break;
                 case 2:
                     d.AddDrone(GetIntInput("Enter ID:"), GetStringInput("Enter model:"),
-                        /*GetIntInput("Enter battery charge:"),*/ (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3)
-                        /*,(DroneStates)GetEnumInput("Enter drone state(1 for free, 2 for Maintenance, 3 for Shipping)", 1, 3)*/);
+                        (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3));
                     break;
                 case 3:
                     d.AddCustomer(GetIntInput("Enter ID"), GetStringInput("Enter name:"), GetStringInput("Enter phone number"),

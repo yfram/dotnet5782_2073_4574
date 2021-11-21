@@ -18,7 +18,9 @@ namespace IBL.BO
         {
         }
 
-        public int Id {  get; set; }
-        public string Name {  get; set; }
+        public CustomerForPackage(Customer customer) : this(customer.Id, customer.Name) { }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
