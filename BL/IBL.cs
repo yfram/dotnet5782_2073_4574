@@ -35,9 +35,9 @@ namespace IBL
 
         void AssignPackage(int DroneId);
 
-        void PickPackage(int DroneId);
+        void PickUpPackage(int DroneId);
 
-        void GivePackage(int DroneId);
+        void DeliverPackage(int DroneId);
 
         #endregion
 

@@ -358,7 +358,7 @@ namespace IBL
             return distance <= maxDistance;
         }
 
-        public void PickPackage(int DroneId)
+        public void PickUpPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
 
@@ -390,7 +390,7 @@ namespace IBL
 
         }
 
-        public void GivePackage(int DroneId)
+        public void DeliverPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
 
