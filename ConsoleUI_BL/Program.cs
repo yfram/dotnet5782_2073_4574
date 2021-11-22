@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using IBL;
 
 namespace ConsoleUI_BL
@@ -19,6 +21,16 @@ namespace ConsoleUI_BL
         private enum UpdateMenue
         {
             DroneName, Customer, Station, ChargeDrone, ReleaseDrone, GivePackageToDrone, PickUpPackge, DeliverPackage,
+        }
+
+        private enum SingleViewMenue
+        {
+            Station, Drone, Customer, Package
+        }
+
+        private enum ListViewMenue
+        {
+            Stations, Drones, Customers, Packages, UnpairedPackages, OpenStations
         }
 
         static void Main(string[] args)
@@ -42,13 +54,71 @@ namespace ConsoleUI_BL
                         PrintUpdateMenue(Bl);
                         break;
                     case MainMenue.ViewById:
+                        PrintSingleViewMenue(Bl);
                         break;
                     case MainMenue.ListView:
+                        PrintListViewMenue(Bl);
                         break;
                     case MainMenue.Exit:
                         Console.WriteLine("GoodBye!");
                         return;
                 }
+            }
+        }
+
+        private static void PrintListViewMenue(IBL.IBL bl)
+        {
+            string msg = "to see a list of all stations, press 1\n" +
+                "to see a list of all drones, press 2\n" +
+                "to see a list of all customres, press 3\n" +
+                "to see a list of all packages, press 4\n" +
+                "to see a list of all unpaired packages, press 5\n" +
+                "to see a list of all stations with open slots, press 6\n";
+            ListViewMenue menue = (ListViewMenue)GetIntInputInRange(msg, 1, 8, "No such option!");
+            switch (menue)
+            {
+                case ListViewMenue.Stations:
+                    Console.WriteLine(string.Join('\n', bl.DisplayStations()));
+                    break;
+                case ListViewMenue.Drones:
+                    Console.WriteLine(string.Join('\n', bl.DisplayDrones()));
+                    break;
+                case ListViewMenue.Customers:
+                    Console.WriteLine(string.Join('\n', bl.DisplayCustomers()));
+                    break;
+                case ListViewMenue.Packages:
+                    Console.WriteLine(string.Join('\n', bl.DisplayPackages()));
+                    break;
+                case ListViewMenue.UnpairedPackages:
+                    Console.WriteLine(string.Join('\n', bl.DisplayPackagesWithoutDrone()));
+                    break;
+                case ListViewMenue.OpenStations:
+                    Console.WriteLine(string.Join('\n', bl.DisplayStationsWithCharges()));
+                    break;
+            }
+        }
+
+        private static void PrintSingleViewMenue(IBL.IBL bl)
+        {
+            string msg = "to view a station by ID, press 1\n" +
+                "to view a drone by ID, press 2\n" +
+                "to view a customer by ID, press 3\n" +
+                "to view  customer by ID, press 4\n";
+            SingleViewMenue menue = (SingleViewMenue)((GetIntInputInRange(msg, 1, 4, "No such option") - 1));
+            switch (menue)
+            {
+                case SingleViewMenue.Station:
+                    Console.WriteLine(bl.DisplayStation(GetIntInput("Enter station ID:")));
+                    break;
+                case SingleViewMenue.Drone:
+                    Console.WriteLine(bl.DisplayDrone(GetIntInput("Enter drone ID:")));
+                    break;
+                case SingleViewMenue.Customer:
+                    Console.WriteLine(bl.DisplayCustomer(GetIntInput("Enter customer ID:")));
+                    break;
+                case SingleViewMenue.Package:
+                    Console.WriteLine(bl.DisplayPackage(GetIntInput("Enter package ID:")));
+                    break;
             }
         }
 
@@ -62,7 +132,7 @@ namespace ConsoleUI_BL
                 "to pair a package to a drone, press 6\n" +
                 "to have a drone pick up a package, press 7\n" +
                 "to have a drone deliver a package, press 8\n";
-            UpdateMenue menue = (UpdateMenue)(GetIntInputInRange(msg, 0, 8, "No such option") - 1);
+            UpdateMenue menue = (UpdateMenue)(GetIntInputInRange(msg, 1, 8, "No such option") - 1);
             switch (menue)
             {
                 case UpdateMenue.DroneName:
@@ -101,7 +171,7 @@ namespace ConsoleUI_BL
                 "to add a drone, press 2\n" +
                 "to add a new customer, press 3\n" +
                 "to add a new packeage for delivering, press 4";
-            AddMenue menue = (AddMenue)(GetIntInputInRange(msg, 0, 4, "No such option") - 1);
+            AddMenue menue = (AddMenue)(GetIntInputInRange(msg, 1, 4, "No such option") - 1);
             switch (menue)
             {
                 case AddMenue.Station:
@@ -212,4 +282,5 @@ namespace ConsoleUI_BL
             return Console.ReadLine();
         }
     }
+}
 }
