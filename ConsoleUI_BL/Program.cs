@@ -16,7 +16,12 @@ namespace ConsoleUI_BL
             Station, Drone, Customer, Package
         }
 
-        internal static void Main(string[] args)
+        private enum UpdateMenue
+        {
+            DroneName, Customer, Station, ChargeDrone, ReleaseDrone, GivePackageToDrone, PickUpPackge, DeliverPackage,
+        }
+
+        static void Main(string[] args)
         {
             IBL.IBL Bl = new BL();
             string openMsg = "Welcome to John&G Drones administiration system!\n" +
@@ -34,6 +39,7 @@ namespace ConsoleUI_BL
                         PrintAddMenue(Bl);
                         break;
                     case MainMenue.Update:
+                        PrintUpdateMenue(Bl);
                         break;
                     case MainMenue.ViewById:
                         break;
@@ -43,6 +49,49 @@ namespace ConsoleUI_BL
                         Console.WriteLine("GoodBye!");
                         return;
                 }
+            }
+        }
+
+        private static void PrintUpdateMenue(IBL.IBL bl)
+        {
+            string msg = "to update a drone model, press 1\n" +
+                "to update a customers information, press 2\n" +
+                "to update a stations information, press 3\n" +
+                "to put a drone in charging, press 4\n" +
+                "to release a drone from charging, press 5\n" +
+                "to pair a package to a drone, press 6\n" +
+                "to have a drone pick up a package, press 7\n" +
+                "to have a drone deliver a package, press 8\n";
+            UpdateMenue menue = (UpdateMenue)(GetIntInputInRange(msg, 0, 8, "No such option") - 1);
+            switch (menue)
+            {
+                case UpdateMenue.DroneName:
+                    bl.UpdateDroneName(GetIntInput("Enter drone id:"), GetStringInput("Enter new name:"));
+                    break;
+                case UpdateMenue.Station:
+                    bl.UpdateStation(GetIntInput("Enter station ID:"), GetStringInput("Enter new name(enter if no update):"),
+                        GetIntInput("Enter new number of charging slots(enter if no update):", true));
+                    break;
+                case UpdateMenue.Customer:
+                    bl.UpdateCustomer(GetIntInput("Enter customer ID number:"),
+                        GetStringInput("Enter new name(enter if no update):"),
+                        GetStringInput("Enter new phone number(enter if no update):"));
+                    break;
+                case UpdateMenue.ChargeDrone:
+                    bl.SendDroneToCharge(GetIntInput("Enter drone ID:"));
+                    break;
+                case UpdateMenue.ReleaseDrone:
+                    bl.ReleaseDrone(GetIntInput("Enter drone ID:"), GetDoubleInput("Enter amount of time in charging:"));
+                    break;
+                case UpdateMenue.GivePackageToDrone:
+                    bl.AssignPackage(GetIntInput("Enter drone ID:"));
+                    break;
+                case UpdateMenue.PickUpPackge:
+                    bl.PickUpPackage(GetIntInput("Enter drone ID"));
+                    break;
+                case UpdateMenue.DeliverPackage:
+                    bl.DeliverPackage(GetIntInput("Enter drone ID:"));
+                    break;
             }
         }
 
@@ -106,11 +155,15 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static int GetIntInput(string print)
+        private static int GetIntInput(string print, bool allowEmpty = false)
         {
             Console.WriteLine(print);
             int ret;
-            return int.TryParse(Console.ReadLine(), out ret) ? ret : GetIntInput(print);
+            string inp = Console.ReadLine();
+            return
+                inp == "" && allowEmpty ?
+                -1 :
+                (int.TryParse(inp, out ret) ? ret : GetIntInput(print));
         }
 
         private static void GetIntInput(string print, out int ret)
