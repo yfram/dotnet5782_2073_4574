@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
+using IBL.Exceptions;
 using IDAL;
 
 namespace IBL
@@ -14,50 +15,46 @@ namespace IBL
         private IDal Idal = new DalObject.DalObject();
         private double[] elecRate;
         private static Random rand = new();
+
+
         public BL()
         {
             elecRate = Idal.GetElectricity();
-
             foreach (IDAL.DO.Drone DALdrone in Idal.GetAllDrones())
             {
                 DroneForList BLdrone = new();
                 BLdrone.Id = DALdrone.Id;
                 BLdrone.Model = DALdrone.Model;
                 BLdrone.Weight = (WeightGroup)((int)DALdrone.Weight);
+
                 IDAL.DO.Package AssociatedButNotDelivered = Idal.GetAllPackages().
-                    Where(p => p.DroneId.HasValue &&
+                    Where(p => p.DroneId == (int?)BLdrone.Id &&
                     (p.Delivered == DateTime.MinValue)).FirstOrDefault();
 
                 if (AssociatedButNotDelivered as object is not null)
                 {
                     BLdrone.State = DroneState.Busy;
                     BLdrone.PassingPckageId = AssociatedButNotDelivered.Id;
-                    bool WasPickUp = (AssociatedButNotDelivered.PickUp != DateTime.MinValue);
+
+                    bool WasPickedUp = AssociatedButNotDelivered.PickUp != DateTime.MinValue;
                     //no need here for a try block, as we know that the senderId exists
                     IDAL.DO.Customer customer = Idal.GetCustomer(AssociatedButNotDelivered.SenderId);
-                    Location customerLoc = new Location(customer.Longitude, customer.Lattitude);
-                    if (WasPickUp)
+                    Location customerLoc = new(customer.Longitude, customer.Lattitude);
+                    if (WasPickedUp)
                     {
                         BLdrone.CurrentLocation = customerLoc;
                     }
                     else // accosiatied but not picked. the closet station to the sender
                     {
-                        int? stationId = GetClosetStation(new Location(customer.Longitude, customer.Lattitude), false);
-                        if (stationId is not null)
-                        {
-                            IDAL.DO.Station s = Idal.GetStation((int)stationId);
-                            BLdrone.CurrentLocation = new Location(s.Longitude, s.Lattitude);
-                        }
-                        else
-                        {
-                            throw new NoFreeStationsAvailable(DALdrone.Id, new Location(customer.Longitude, customer.Lattitude));
-                        }
+                        int? stationId = GetClosetStation(new(customer.Longitude, customer.Lattitude), false);
+                        IDAL.DO.Station s = Idal.GetStation((int)stationId);
+                        BLdrone.CurrentLocation = new(s.Longitude, s.Lattitude);
                     }
                     // add batery
                     double distance = DistanceToDoDeliver(AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
-                    if (minBattery > 1)
-                        throw new TooFarException("There is not enough battery to get there!");
+                    if (minBattery > 1)//the minumun battery needed for the delivery is larger than 100% charge
+                        throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                     BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
                 }
 
@@ -68,46 +65,31 @@ namespace IBL
                     {
                         BLdrone.State = DroneState.Maitenance;
 
-                        // batery between 0 to 20
                         BLdrone.Battery = ((double)rand.Next(0, 21)) / 100;
 
-                        // location in one of the stations
                         var stations = Idal.GetAllStations();
                         var station = stations.ElementAt(rand.Next(0, stations.Count()));
-                        BLdrone.CurrentLocation = new Location(station.Longitude, station.Lattitude);
+                        BLdrone.CurrentLocation = new(station.Longitude, station.Lattitude);
 
                     }
                     else //empty
                     {
                         BLdrone.State = DroneState.Empty;
-                        // מיקומו יוגרל בין לקוחות שיש חבילות שסופקו להם
+                        var allPackages = Idal.GetAllPackages().Where(p => p.Delivered != DateTime.MinValue);
+                        var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
+                        BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
 
-                        var empyPackages = Idal.GetAllUndronedPackages();
-                        if (empyPackages.Count() == 0)
+                        int? id = GetClosetStation(BLdrone.CurrentLocation);
+                        if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone);
+
+                        var station = GetDALStation((int)id);
+                        Location stationLoc = new(station.Longitude, station.Lattitude);
+                        double minBattery = DistanceTo(stationLoc, BLdrone.CurrentLocation) / ElecOfDrone(BLdrone);
+                        if (minBattery > 1)
                         {
-                            // what should I do?
+                            throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                         }
-                        else
-                        {
-                            var sender = Idal.GetCustomer(empyPackages.First().SenderId);
-                            Location locPac = new Location(sender.Longitude, sender.Lattitude);
-                            BLdrone.CurrentLocation = locPac;
-                            int? stationId = GetClosetStation(locPac);
-                            if (stationId == null)
-                            {
-                                // throw
-                            }
-                            var station = Idal.GetStation((int)stationId);
-                            var stationLoc = new Location(station.Longitude, station.Lattitude);
-                            double minBattery = DistanceTo(stationLoc, locPac) / ElecOfDrone(BLdrone);
-                            if (minBattery > 1)
-                            {
-                                //throw
-                            }
-                            BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
-
-                        }
-
+                        BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
                     }
                 }
                 BLdrones.Add(BLdrone);
@@ -180,12 +162,12 @@ namespace IBL
                 if (ClosestId is not null)
                 {
                     IDAL.DO.Station closest = Idal.GetStation((int)ClosestId);
-                    double amoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new Location(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
+                    double amoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
                     if (amoutOfBattery >= 0)
                     {
                         // we can send the drone for charging!!
                         drone.Battery -= amoutOfBattery;
-                        drone.CurrentLocation = new Location(closest.Longitude, closest.Lattitude);
+                        drone.CurrentLocation = new(closest.Longitude, closest.Lattitude);
                         drone.State = DroneState.Maitenance;
 
                         Idal.SendDroneToCharge(drone.Id, closest.Id);
@@ -304,8 +286,8 @@ namespace IBL
             IDAL.DO.Customer p1Cust = Idal.GetCustomer(p1.SenderId);
             IDAL.DO.Customer p2Cust = Idal.GetCustomer(p2.SenderId);
 
-            Location LocP1 = new Location(p1Cust.Longitude, p1Cust.Lattitude);
-            Location LocP2 = new Location(p2Cust.Longitude, p2Cust.Lattitude);
+            Location LocP1 = new(p1Cust.Longitude, p1Cust.Lattitude);
+            Location LocP2 = new(p2Cust.Longitude, p2Cust.Lattitude);
 
             double p1Dist = DistanceTo(DroneLoc, LocP1);
             double p2Dist = DistanceTo(DroneLoc, LocP2);
@@ -326,10 +308,10 @@ namespace IBL
         private double DistanceToDoDeliver(IDAL.DO.Package p, DroneForList d)
         {
             var sender = Idal.GetCustomer(p.SenderId);
-            Location senderLoc = new Location(sender.Longitude, sender.Lattitude);
+            Location senderLoc = new(sender.Longitude, sender.Lattitude);
 
             var recv = Idal.GetCustomer(p.RecevirId);
-            Location recvLoc = new Location(recv.Longitude, recv.Lattitude);
+            Location recvLoc = new(recv.Longitude, recv.Lattitude);
 
             int? StationId = GetClosetStation(recvLoc);
             if (StationId == null)
@@ -340,7 +322,7 @@ namespace IBL
                 return double.PositiveInfinity;
             }
             IDAL.DO.Station closest = Idal.GetStation((int)StationId);
-            Location closestLoc = new Location(closest.Longitude, closest.Lattitude)
+            Location closestLoc = new(closest.Longitude, closest.Lattitude)
                 ;
             double distance = DistanceTo(d.CurrentLocation, senderLoc) + DistanceTo(recvLoc, senderLoc) + DistanceTo(closestLoc, recvLoc);
 
@@ -371,7 +353,7 @@ namespace IBL
                     // the battery was checked in associate
 
                     IDAL.DO.Customer Sender = Idal.GetCustomer(p.SenderId);
-                    Location SenderLoc = new Location(Sender.Longitude, Sender.Lattitude);
+                    Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
 
                     BLdrone.Battery -= ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                     BLdrone.CurrentLocation = SenderLoc;
@@ -403,7 +385,7 @@ namespace IBL
                     // the battery was checked in associate
 
                     IDAL.DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
-                    Location RecvLoc = new Location(Recv.Longitude, Recv.Lattitude);
+                    Location RecvLoc = new(Recv.Longitude, Recv.Lattitude);
 
                     BLdrone.Battery -= ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                     BLdrone.CurrentLocation = RecvLoc;
@@ -444,7 +426,7 @@ namespace IBL
                 }
             }
 
-            return new Station(DALstation.Id, DALstation.Name, new Location(DALstation.Longitude, DALstation.Lattitude), DALstation.ChargeSlots, charged);
+            return new Station(DALstation.Id, DALstation.Name, new(DALstation.Longitude, DALstation.Lattitude), DALstation.ChargeSlots, charged);
         }
 
         private IDAL.DO.Drone GetDALDrone(int DroneId)
@@ -480,7 +462,7 @@ namespace IBL
                 CustomerForPackage send = new CustomerForPackage(DALpkg.SenderId, DALsend.Name);
                 CustomerForPackage recv = new CustomerForPackage(DALpkg.RecevirId, DALrecv.Name);
 
-                Location locSend = new Location(DALsend.Longitude, DALsend.Lattitude), locRecv = new Location(DALrecv.Longitude, DALrecv.Lattitude);
+                Location locSend = new(DALsend.Longitude, DALsend.Lattitude), locRecv = new(DALrecv.Longitude, DALrecv.Lattitude);
                 pckTransfer = new PackageInTransfer(pkgId, DALpkg.Delivered != DateTime.MinValue, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, DistanceTo(locRecv, locSend));
             }
 
@@ -518,7 +500,7 @@ namespace IBL
                 }
             }
 
-            return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Name, new Location(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
+            return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Name, new(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
         }
 
         public Package DisplayPackage(int PackageId)
@@ -632,8 +614,8 @@ namespace IBL
                 FreeStations = FreeStations.Where(s => s.ChargeSlots > 0);
             if (FreeStations.Count() > 0)
             {
-                IDAL.DO.Station closest = FreeStations.Aggregate((s1, s2) => DistanceTo(new Location(s1.Longitude, s1.Lattitude), loc)
-               > DistanceTo(new Location(s2.Longitude, s2.Lattitude), loc)
+                IDAL.DO.Station closest = FreeStations.Aggregate((s1, s2) => DistanceTo(new(s1.Longitude, s1.Lattitude), loc)
+               > DistanceTo(new(s2.Longitude, s2.Lattitude), loc)
                ? s2 : s1);
 
                 return closest.Id;
