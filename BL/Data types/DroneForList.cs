@@ -30,7 +30,7 @@ namespace IBL.BO
         public Location CurrentLocation { get; set; }
         public int? PassingPckageId { get; set; } = null;
 
-        public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
+        public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: {CurrentLocation.ToString().Replace("\n", "\t")}\n" +
                 $"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {PassingPckageId}") }";
     }
 }

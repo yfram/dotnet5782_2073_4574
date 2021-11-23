@@ -301,7 +301,7 @@ namespace IBL
             }
             else
             {
-                new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
+                throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
             }
         }
 
@@ -556,7 +556,7 @@ namespace IBL
                 }
             }
 
-            return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Name, new(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
+            return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Phone, new(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
         }
 
         public Package DisplayPackage(int PackageId)
