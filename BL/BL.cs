@@ -166,9 +166,21 @@ namespace IBL
 
         public void UpdateStation(int id, string newName = "", int newChargeSlots = -1)
         {
-            IDAL.DO.Station station = GetClosetStation(id);
+            IDAL.DO.Station station = GetDALStation(id);
+            Station s = DisplayStation(id);
+            int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count;
+
+
             station.Name = newName != "" ? newName : station.Name;
-            station.ChargeSlots = newChargeSlots > 0 ? newChargeSlots : station.ChargeSlots;
+
+            if (newChargeSlots >= totalPorts)
+                newChargeSlots -= s.ChargingDrones.Count;
+            else if (newChargeSlots == -1)
+                newChargeSlots = station.ChargeSlots;
+            else
+                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones}).");
+
+            station.ChargeSlots = newChargeSlots;
             Idal.UpdateStation(station);
         }
 
@@ -213,8 +225,8 @@ namespace IBL
             }
             else
             {
-                if(drone is null)
-                    throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!")
+                if (drone is null)
+                    throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
                 throw new DroneStateException($"the drone {DroneId} can send to chage only if it empy!");
             }
 
