@@ -24,5 +24,10 @@ namespace IBL.BO
         public WeightGroup Weight { get; set; }
         public PriorityGroup Priority { get; set; }
         public PackageStatus Status { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}\nSent by: {NameOfSender}\nTo: {NameOfReciver}\nPriority: {Priority}\nStatus: {Status}";
+        }
     }
 }

@@ -29,5 +29,8 @@ namespace IBL.BO
         public DroneState State { get; set; }
         public Location CurrentLocation { get; set; }
         public int? PassingPckageId { get; set; } = null;
+
+        public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
+                $"State: {State}";
     }
 }

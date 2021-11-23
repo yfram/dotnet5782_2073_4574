@@ -27,5 +27,8 @@ namespace IBL.BO
         public int NumberPackagesAccepted { get; set; }
         public int NumberPackagesOnTheWay { get; set; }
 
+        public override string ToString() => $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nNumber of packages sent: " +
+            $"{NumberOfSentPackagesAccepted + NumberOfSentPackagesOnTheWay}\nNumber of recived packages: " +
+            $"{NumberPackagesAccepted}\nNumber of packages on the way: {NumberPackagesOnTheWay}";
     }
 }

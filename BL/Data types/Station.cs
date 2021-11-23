@@ -31,5 +31,7 @@ namespace IBL.BO
         public Location LocationOfStation { get; set; }
         public int AmountOfEmptyPorts { get; set; }
         public List<DroneInCharging> ChargingDrones { get; set; } = new();
+
+        public override string ToString() => $"Id: {Id}\nName: {Name}\nAt: \n{LocationOfStation}";
     }
 }

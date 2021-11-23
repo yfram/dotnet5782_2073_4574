@@ -16,5 +16,7 @@
         public int Id { get; set; }
         public double Battery { get; set; }
         public Location CurrentLocation { get; set; }
+
+        public override string ToString() => $"Id: {Id}\nCharge: {Battery}\nLocation: \n{CurrentLocation}";
     }
 }

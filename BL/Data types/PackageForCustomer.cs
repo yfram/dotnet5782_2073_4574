@@ -26,5 +26,8 @@ namespace IBL.BO
         public PriorityGroup Priority { get; set; }
         public PackageStatus Status { get; set; }
         public CustomerForPackage Customer { get; set; }
+
+        public override string ToString() => $"Id: {Id}\nPriority: {Priority}" +
+            $"\nSending to: {Customer.Name}";
     }
 }

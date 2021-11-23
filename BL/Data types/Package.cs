@@ -35,21 +35,14 @@ namespace IBL.BO
         public WeightGroup Weight { get; set; }
         public PriorityGroup Priority { get; set; }
         public DroneForPackage Drone { get; set; }
-        ///<summary>
-        ///Time to package in minutes
-        ///</summary>
         public DateTime TimeToPackage { get; set; }
-        ///<summary>
-        ///Time to pair in minutes
-        ///</summary>
         public DateTime TimeToPair { get; set; }
-        ///<summary>
-        ///Time to pick up the package in minutes
-        ///</summary>
         public DateTime TimeToPickup { get; set; }
-        ///<summary>
-        ///Time to Deliver in minutes
-        ///</summary>
         public DateTime TimeToDeliver { get; set; }
+
+#pragma warning disable CS8524 
+        public override string ToString() => $"Id: {Id}\n Sender ID: {Sender.Id}\n Reciver ID: {Reciver.Id}\nPriority: " +
+                $"{Priority}";
+#pragma warning restore CS8524
     }
 }

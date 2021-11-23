@@ -24,5 +24,7 @@ namespace IBL.BO
         public string Name { get; set; }
         public int AmountOfEmptyPorts { get; set; }
         public int AmountOfFullPorts { get; set; }
+
+        public override string ToString() => $"Id: {Id}\nName: {Name}";
     }
 }

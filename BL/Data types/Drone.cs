@@ -30,5 +30,12 @@ namespace IBL.BO
         public DroneState State { get; set; }
         public PackageInTransfer Package { get; set; }
         public Location CurrentLocation { get; set; }
+
+        public override string ToString() =>
+#pragma warning disable CS8524
+            $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
+                $"State: {State}";
+#pragma warning restore CS8524
+
     }
 }
