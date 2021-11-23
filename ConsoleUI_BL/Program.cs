@@ -42,9 +42,10 @@ namespace ConsoleUI_BL
                 "for get by id menue, press 3\n" +
                 "for get lists menue, press 4\n" +
                 "to exit press 5";
+            Console.WriteLine(openMsg);
             while (true)
             {
-                MainMenue menue = (MainMenue)(GetIntInputInRange(openMsg, 0, 5, "Error! unrecognized op-code") - 1);
+                MainMenue menue = (MainMenue)(GetIntInputInRange("", 0, 5, "Error! unrecognized op-code") - 1);
                 switch (menue)
                 {
                     case MainMenue.Add:

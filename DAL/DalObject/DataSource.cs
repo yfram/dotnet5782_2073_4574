@@ -46,7 +46,7 @@ namespace DalObject
             Configuration = new Config();  //Config is all 0's anyways
             Random random = new Random();
 
-            double elec = random.NextDouble() + 40 ;
+            double elec = random.NextDouble() + 40;
             Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble();
 
             for (int i = 0; i < 15; i++)
@@ -60,11 +60,11 @@ namespace DalObject
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
-            for(int i=0; i<Packages.Count; i++)
+            for (int i = 0; i < Packages.Count; i++)
             {
                 Package temp = Packages[i];
                 temp.Created = new DateTime(2020, 10, random.Next(1, 30), random.Next(1, 24), random.Next(1, 60), random.Next(1, 60));
-                
+
 
                 int state = random.Next(0, 3);
                 bool hasDrone = Drones.Exists(d => d.Weight >= temp.Weight);
@@ -87,16 +87,20 @@ namespace DalObject
                     }
                     temp.DroneId = d.Id;
                 }
-                
+
                 Packages[i] = temp;
             }
-            
+
         }
 
-        private static Package InitPackage(int i, Random random) => new(i, Customers[i].Id, Customers[random.Next() % 10].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
-           null);
+        private static Package InitPackage(int i, Random random)
+        {
+            int reciver = random.Next() % 10;
+            return new(i, Customers[i].Id, Customers[reciver == i ? i + 1 : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
+              null);
+        }
         private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Station.MaxChargingPorts);
-        private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count],  (WeightGroup)(random.Next(1,4)));
+        private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));
         private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), 33 + random.NextDouble(), 34 + random.NextDouble());
 
         private static string GeneratePhone()
