@@ -586,32 +586,91 @@ namespace IBL
 
         public IEnumerable<StationForList> DisplayStations()
         {
-            throw new NotImplementedException();
+            List<StationForList> ret = new();
+            foreach (var station in Idal.GetAllStations())
+            {
+                Station blStation = DisplayStation(station.Id);
+                ret.Add(new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count));
+            }
+            return ret;
         }
 
         public IEnumerable<DroneForList> DisplayDrones()
         {
-            throw new NotImplementedException();
+            List<DroneForList> ret = new();
+            foreach (var drone in Idal.GetAllDrones())
+            {
+                Drone blDrone = DisplayDrone(drone.Id);
+                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation));
+            }
+            return ret;
         }
 
         public IEnumerable<CustomerForList> DisplayCustomers()
         {
-            throw new NotImplementedException();
+            List<CustomerForList> ret = new();
+            foreach (var customer in Idal.GetAllCustomers())
+            {
+                Customer blCustomer = DisplayCustomer(customer.Id);
+                int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
+                p.Delivered == DateTime.MinValue).Count();
+                int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
+                p.Delivered != DateTime.MinValue).Count();
+                int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                p.Delivered == DateTime.MinValue).Count();
+                int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                p.Delivered != DateTime.MinValue).Count();
+                ret.Add(new CustomerForList(blCustomer.Id, blCustomer.Name, blCustomer.PhoneNumber, sentAccepted,
+                    sentOnTheWay, accepted, onTheWay));
+            }
+            return ret;
         }
 
         public IEnumerable<PackageForList> DisplayPackages()
         {
-            throw new NotImplementedException();
+            List<PackageForList> ret = new();
+            foreach (var package in Idal.GetAllPackages())
+            {
+                Package blPackage = DisplayPackage(package.Id);
+                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,
+                    package.Delivered != DateTime.MinValue ?
+                    PackageStatus.Accepted :
+                    (package.PickUp != DateTime.MinValue ?
+                    PackageStatus.PickedUp :
+                    (package.Associated != DateTime.MinValue ?
+                    PackageStatus.Paired :
+                    PackageStatus.Initialized))));
+            }
+            return ret;
         }
 
         public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
         {
-            throw new NotImplementedException();
+            List<PackageForList> ret = new();
+            foreach (var package in Idal.GetAllUndronedPackages())
+            {
+                Package blPackage = DisplayPackage(package.Id);
+                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,
+                    package.Delivered != DateTime.MinValue ?
+                    PackageStatus.Accepted :
+                    (package.PickUp != DateTime.MinValue ?
+                    PackageStatus.PickedUp :
+                    (package.Associated != DateTime.MinValue ?
+                    PackageStatus.Paired :
+                    PackageStatus.Initialized))));
+            }
+            return ret;
         }
 
         public IEnumerable<StationForList> DisplayStationsWithCharges()
         {
-            throw new NotImplementedException();
+            List<StationForList> ret = new();
+            foreach (var station in Idal.GetAllAvailableStations())
+            {
+                Station blStation = DisplayStation(station.Id);
+                ret.Add(new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count));
+            }
+            return ret;
         }
 
         private static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
