@@ -46,10 +46,10 @@ namespace DalObject
             Configuration = new Config();  //Config is all 0's anyways
             Random random = new Random();
 
-            double elec = random.NextDouble()+3;
-            Config.ElecEmpty = elec; Config.ElecLow = elec * 2; Config.ElecMid = elec * 4; Config.ElecHigh = elec * 8; Config.ElecRatePercent = random.NextDouble();
+            double elec = random.NextDouble() + 40 ;
+            Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble();
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 15; i++)
                 Stations.Add(InitStation(i, random));
             for (int i = 0; i < 5; i++)
                 Drones.Add(InitDrone(i, random));
@@ -95,9 +95,9 @@ namespace DalObject
 
         private static Package InitPackage(int i, Random random) => new(i, Customers[i].Id, Customers[random.Next() % 10].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
            null);
-        private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 0, 0, random.Next() % Station.MaxChargingPorts);
-        private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count],  (WeightGroup)(random.Next()));
-        private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), random.NextDouble(), random.NextDouble());
+        private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Station.MaxChargingPorts);
+        private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count],  (WeightGroup)(random.Next(1,4)));
+        private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), 33 + random.NextDouble(), 34 + random.NextDouble());
 
         private static string GeneratePhone()
         {
