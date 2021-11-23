@@ -151,7 +151,7 @@ namespace IBL
 
         public void UpdateDroneName(int id, string newModel)
         {
-            IDAL.DO.Drone DALdrone = Idal.GetDrone(id);
+            IDAL.DO.Drone DALdrone = GetDALDrone(id);
             DALdrone.Model = newModel;
 
             Idal.UpdateDrone(DALdrone);
@@ -166,15 +166,27 @@ namespace IBL
 
         public void UpdateStation(int id, string newName = "", int newChargeSlots = -1)
         {
-            IDAL.DO.Station station = Idal.GetStation(id);
+            IDAL.DO.Station station = GetDALStation(id);
+            Station s = DisplayStation(id);
+            int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count;
+
+
             station.Name = newName != "" ? newName : station.Name;
-            station.ChargeSlots = newChargeSlots > 0 ? newChargeSlots : station.ChargeSlots;
+
+            if (newChargeSlots >= totalPorts)
+                newChargeSlots -= s.ChargingDrones.Count;
+            else if (newChargeSlots == -1)
+                newChargeSlots = station.ChargeSlots;
+            else
+                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones}).");
+
+            station.ChargeSlots = newChargeSlots;
             Idal.UpdateStation(station);
         }
 
         public void UpdateCustomer(int id, string newName = "", string newPhone = "")
         {
-            IDAL.DO.Customer customer = Idal.GetCustomer(id);
+            IDAL.DO.Customer customer = GetDALCustomer(id);
             customer.Name = newName != "" ? newName : customer.Name;
             customer.Phone = newPhone != "" ? newPhone : customer.Phone;
             Idal.UpdateCustomer(customer);
@@ -202,18 +214,20 @@ namespace IBL
                     }
                     else
                     {
-                        //throw
+                        throw new BlException($"there are no emtpy stations that {DroneId} has enogth battery to fly them!");
                     }
                 }
 
                 else
                 {
-                    //throw
+                    throw new BlException($"there are no empty stations for {DroneId}!");
                 }
             }
             else
             {
-                //throw
+                if (drone is null)
+                    throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
+                throw new DroneStateException($"the drone {DroneId} can send to chage only if it empy!");
             }
 
 
@@ -237,12 +251,12 @@ namespace IBL
                 }
                 else
                 {
-                    //throw
+                    throw new DroneStateException($"the drone {DroneId} can be release only if it state is in Maitenance!");
                 }
             }
             else
             {
-                //throw
+                throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
             }
 
         }
@@ -274,7 +288,7 @@ namespace IBL
                     }
                     else
                     {
-                        //throw
+                        throw new BlException($"there are no free package for the ", DroneId , typeof(Drone));
                     }
 
 
@@ -282,12 +296,12 @@ namespace IBL
                 }
                 else
                 {
-                    // throw
+                    throw new DroneStateException($"the drone {DroneId} cannot be associated because it is not empty!");
                 }
             }
             else
             {
-                // throw.
+                new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
             }
         }
 
@@ -355,7 +369,7 @@ namespace IBL
 
         public void PickUpPackage(int DroneId)
         {
-            DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
+            DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); 
 
             if (BLdrone.State == DroneState.Busy)
             {
@@ -374,13 +388,13 @@ namespace IBL
                 }
                 else
                 {
-                    //throw
+                    throw new Exception("the package is not associated or picked up");
                 }
 
             }
             else
             {
-                //throw
+                throw new DroneStateException($"cannot pick up with drone that is not busy! the current state is {BLdrone.State}");
             }
 
         }
