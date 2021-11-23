@@ -31,6 +31,6 @@ namespace IBL.BO
         public int? PassingPckageId { get; set; } = null;
 
         public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
-                $"State: {State}";
+                $"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {PassingPckageId}") }";
     }
 }
