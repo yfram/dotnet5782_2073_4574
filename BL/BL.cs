@@ -43,7 +43,7 @@ namespace IBL
                     else // accosiatied but not picked. the closet station to the sender
                     {
                         int? stationId = GetClosetStation(new Location(customer.Longitude, customer.Lattitude), false);
-                        if (stationId != null)
+                        if (stationId is not null)
                         {
                             IDAL.DO.Station s = Idal.GetStation((int)stationId);
                             BLdrone.CurrentLocation = new Location(s.Longitude, s.Lattitude);
@@ -174,10 +174,10 @@ namespace IBL
         public void SendDroneToCharge(int DroneId)
         {
             DroneForList drone = BLdrones.Find(d => d.Id == DroneId);
-            if (drone != null && drone.State == DroneState.Empty)
+            if (drone is not null && drone.State == DroneState.Empty)
             {
                 int? ClosestId = GetClosetStation(drone.CurrentLocation);
-                if (ClosestId != null)
+                if (ClosestId is not null)
                 {
                     IDAL.DO.Station closest = Idal.GetStation((int)ClosestId);
                     double amoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new Location(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
@@ -216,7 +216,7 @@ namespace IBL
             IDAL.DO.Drone DALdrone = Idal.GetDrone(DroneId);
             DroneForList BLdrone = BLdrones.Find(d => d.Id == DroneId);
 
-            if (BLdrone != null)
+            if (BLdrone is not null)
             {
                 if (BLdrone.State == DroneState.Maitenance)
                 {
@@ -241,7 +241,7 @@ namespace IBL
         public void AssignPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.Find(d => d.Id == DroneId);
-            if (BLdrone != null)
+            if (BLdrone is not null)
             {
                 if (BLdrone.State == DroneState.Empty)
                 {
