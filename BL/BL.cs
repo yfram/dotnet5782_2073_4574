@@ -53,7 +53,7 @@ namespace IBL
                     // add batery
                     double distance = DistanceToDoDeliver(AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
-                    if (minBattery > 1)//the minumun battery needed for the delivery is larger than 100% charge
+                    if (minBattery > 100)//the minumun battery needed for the delivery is larger than 100% charge
                         throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                     BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
                 }
@@ -85,7 +85,7 @@ namespace IBL
                         var station = GetDALStation((int)id);
                         Location stationLoc = new(station.Longitude, station.Lattitude);
                         double minBattery = DistanceTo(stationLoc, BLdrone.CurrentLocation) / ElecOfDrone(BLdrone);
-                        if (minBattery > 1)
+                        if (minBattery > 100)
                         {
                             throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                         }
@@ -692,7 +692,7 @@ namespace IBL
                 }
             }
             else // if the drone in Maitenance it can't go anyway
-                return -1;
+                throw new Exception("no drone weight!");
             return elec[ix];
         }
     }
