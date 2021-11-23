@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace IBL.Exceptions
 {
-    public class ObjectDoesntExistException : Exception
+    public class ObjectAllreadyExistsException : Exception
     {
-        public ObjectDoesntExistException()
+        public ObjectAllreadyExistsException()
         {
         }
 
-        public ObjectDoesntExistException(string message) : base(message)
+        public ObjectAllreadyExistsException(string message) : base(message)
         {
         }
 
-        public ObjectDoesntExistException(string message, Exception innerException) : base(message, innerException)
+        public ObjectAllreadyExistsException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        protected ObjectDoesntExistException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ObjectAllreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

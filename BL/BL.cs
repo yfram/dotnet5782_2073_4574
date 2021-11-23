@@ -80,7 +80,7 @@ namespace IBL
                         BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
 
                         int? id = GetClosetStation(BLdrone.CurrentLocation);
-                        if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone);
+                        if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone));
 
                         var station = GetDALStation((int)id);
                         Location stationLoc = new(station.Longitude, station.Lattitude);
@@ -100,26 +100,53 @@ namespace IBL
 
         public void AddStation(Station s)
         {
-            Idal.AddStation(s.Id, s.Name, s.LocationOfStation.Longitude, s.LocationOfStation.Latitude, s.ChargingDrones.Count + s.AmountOfEmptyPorts); ;
+            try
+            {
+                Idal.AddStation(s.Id, s.Name, s.LocationOfStation.Longitude, s.LocationOfStation.Latitude, s.ChargingDrones.Count + s.AmountOfEmptyPorts); ;
+            }
+            catch (Exception e)
+            {
+                throw new ObjectAllreadyExistsException(e.Message);
+            }
         }
 
         public void AddDrone(Drone d)
         {
-            Idal.AddDrone(d.Id, d.Model, (IDAL.DO.WeightGroup)((int)d.Weight));
+            try
+            {
+                Idal.AddDrone(d.Id, d.Model, (IDAL.DO.WeightGroup)((int)d.Weight));
 
-            DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, d.State, d.CurrentLocation);
-            BLdrones.Add(df);
-
+                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, d.State, d.CurrentLocation);
+                BLdrones.Add(df);
+            }
+            catch (Exception e)
+            {
+                throw new ObjectAllreadyExistsException(e.Message);
+            }
         }
 
         public void AddCustomer(Customer c)
         {
-            Idal.AddCustomer(c.Id, c.Name, c.PhoneNumber, c.CustomerLocation.Latitude, c.CustomerLocation.Longitude);
+            try
+            {
+                Idal.AddCustomer(c.Id, c.Name, c.PhoneNumber, c.CustomerLocation.Latitude, c.CustomerLocation.Longitude);
+            }
+            catch (Exception e)
+            {
+                throw new ObjectAllreadyExistsException(e.Message);
+            }
         }
 
         public void AddPackage(Package p)
         {
-            Idal.AddPackage(p.Id, p.Sender.Id, p.Reciver.Id, (IDAL.DO.WeightGroup)((int)p.Weight), ((IDAL.DO.Priority)(int)p.Priority), null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+            try
+            {
+                Idal.AddPackage(p.Id, p.Sender.Id, p.Reciver.Id, (IDAL.DO.WeightGroup)((int)p.Weight), ((IDAL.DO.Priority)(int)p.Priority), null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+            }
+            catch (Exception e)
+            {
+                throw new ObjectAllreadyExistsException(e.Message);
+            }
         }
 
         public void UpdateDroneName(int id, string newModel)
@@ -264,11 +291,6 @@ namespace IBL
             }
         }
 
-        /**
-         * 0 if eq 
-         * -1 if want second
-         * 1 if want first
-        */
         private int PackagePriority(IDAL.DO.Package p1, IDAL.DO.Package p2, Location DroneLoc)
         {
             if ((int)p1.PackagePriority > (int)p2.PackagePriority)
@@ -300,11 +322,6 @@ namespace IBL
             return 0;
         }
 
-
-        /*
-         * 
-         * 
-         */
         private double DistanceToDoDeliver(IDAL.DO.Package p, DroneForList d)
         {
             var sender = Idal.GetCustomer(p.SenderId);
@@ -329,10 +346,6 @@ namespace IBL
             return distance;
         }
 
-
-        /*
-         * Enough battery to go the sender, then go from him to recivier and return back to the station
-         */
         private bool DroneHaveEnoughBattery(IDAL.DO.Package p, DroneForList d)
         {
             double maxDistance = DroneMaxDistance(d);
@@ -408,9 +421,15 @@ namespace IBL
 
         private IDAL.DO.Station GetDALStation(int StationId)
         {
-            return Idal.GetStation(StationId);
+            try
+            {
+                return Idal.GetStation(StationId);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
         }
-
 
         public Station DisplayStation(int StationId)
         {
@@ -431,17 +450,40 @@ namespace IBL
 
         private IDAL.DO.Drone GetDALDrone(int DroneId)
         {
-            return Idal.GetDrone(DroneId); // Do exceptions and things
+            try
+            {
+                return Idal.GetDrone(DroneId);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
         }
 
         private IDAL.DO.Package GetDALPackage(int PackageId)
         {
-            return Idal.GetPackage(PackageId); // Do exceptions and things
+            try
+            {
+                return Idal.GetPackage(PackageId);
+
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
         }
 
         private IDAL.DO.Customer GetDALCustomer(int CustomerId)
         {
-            return Idal.GetCustomer(CustomerId); // Do exceptions and things
+            try
+            {
+                return Idal.GetCustomer(CustomerId);
+
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
         }
 
         public Drone DisplayDrone(int DroneId)
@@ -626,7 +668,6 @@ namespace IBL
             }
         }
 
-
         private double DroneMaxDistance(DroneForList d) => ElecOfDrone(d) * d.Battery;
 
         private double ElecOfDrone(DroneForList d)
@@ -654,10 +695,5 @@ namespace IBL
                 return -1;
             return elec[ix];
         }
-        private bool DroneCanGO(DroneForList d, double distance)
-        {
-            return DroneMaxDistance(d) <= distance;
-        }
-
     }
 }

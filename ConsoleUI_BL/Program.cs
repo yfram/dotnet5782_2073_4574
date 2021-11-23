@@ -236,12 +236,6 @@ namespace ConsoleUI_BL
                 (int.TryParse(inp, out ret) ? ret : GetIntInput(print));
         }
 
-        private static void GetIntInput(string print, out int ret)
-        {
-            Console.WriteLine(print);
-            ret = int.TryParse(Console.ReadLine(), out ret) ? ret : GetIntInput(print);
-        }
-
         private static int GetIntInputInRange(string print, int min, int max, string? errorMsg = null)
         {
             int res;
@@ -252,20 +246,6 @@ namespace ConsoleUI_BL
                     Console.Write(errorMsg is null ? "" : $"{errorMsg}\n");
             } while (res < min || res > max);
             return res;
-
-        }
-
-        private static DateTime GetDateTimeInput(string print)
-        {
-            Console.WriteLine(print);
-            int year = GetIntInput("enter a year");
-            int month = GetIntInputInRange("enter a month", 1, 13);
-            int day = GetIntInputInRange("enter a day", 1, 32);
-            int hour = GetIntInputInRange("enter a hour", 1, 25);
-            int minute = GetIntInputInRange("enter a minute", 1, 60);
-            int second = GetIntInputInRange("enter a second", 1, 60);
-
-            return new DateTime(year, month, day, hour, minute, second);
 
         }
 
@@ -282,5 +262,4 @@ namespace ConsoleUI_BL
             return Console.ReadLine();
         }
     }
-}
 }
