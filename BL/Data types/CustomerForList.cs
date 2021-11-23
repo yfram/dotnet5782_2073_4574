@@ -8,6 +8,17 @@ namespace IBL.BO
 {
     public class CustomerForList
     {
+        public CustomerForList(int id, string name, string phoneNumber, int numberOfSentPackagesAccepted, int numberOfSentPackagesOnTheWay, int numberPackagesAccepted, int numberPackagesOnTheWay)
+        {
+            Id = id;
+            Name = name;
+            PhoneNumber = phoneNumber;
+            NumberOfSentPackagesAccepted = numberOfSentPackagesAccepted;
+            NumberOfSentPackagesOnTheWay = numberOfSentPackagesOnTheWay;
+            NumberPackagesAccepted = numberPackagesAccepted;
+            NumberPackagesOnTheWay = numberPackagesOnTheWay;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }

@@ -8,6 +8,16 @@ namespace IBL.BO
 {
     public class PackageForList
     {
+        public PackageForList(int id, string nameOfSender, string nameOfReciver, WeightGroup weight, PriorityGroup priority, PackageStatus status)
+        {
+            Id = id;
+            NameOfSender = nameOfSender;
+            NameOfReciver = nameOfReciver;
+            Weight = weight;
+            Priority = priority;
+            Status = status;
+        }
+
         public int Id { get; set; }
         public string NameOfSender { get; set; }
         public string NameOfReciver { get; set; }
