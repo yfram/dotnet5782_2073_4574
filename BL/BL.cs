@@ -627,7 +627,7 @@ namespace IBL
             foreach (var drone in Idal.GetAllDrones())
             {
                 Drone blDrone = DisplayDrone(drone.Id);
-                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, blDrone.Package.Id));
+                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1: blDrone.Package.Id)));
             }
             return ret;
         }
