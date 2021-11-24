@@ -43,7 +43,7 @@ namespace DalObject
 
         public static void Initialize()
         {
-            Configuration = new Config();  //Config is all 0's anyways
+            Configuration = new Config(); 
             Random random = new Random();
 
             double elec = random.NextDouble() + 40;
@@ -68,17 +68,12 @@ namespace DalObject
                 Package temp = Packages[i];
                 temp.Created = new DateTime(2020, 10, random.Next(1, 30), random.Next(1, 24), random.Next(1, 60), random.Next(1, 60));
 
-
                 int state = random.Next(0, 4);
                 if (state != 0)
                 {
                     bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
                     if (hasDrone)
                     {
-
-
-
-
                         if (state > 0) // Associated
                         {
                             temp.Associated = temp.Created.AddMinutes(random.Next(1, 3000));
@@ -93,7 +88,7 @@ namespace DalObject
                             temp.Delivered = temp.PickUp.AddMinutes(random.Next(1, 3000));
                         }
 
-                        Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight); ;
+                        Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);
 
                         if (state != 2)
                         {
