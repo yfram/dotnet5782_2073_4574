@@ -258,7 +258,7 @@ namespace ConsoleUI_BL
                 (int.TryParse(inp, out ret) ? ret : GetIntInput(print));
         }
 
-        private static int GetIntInputInRange(string print, int min, int max, string? errorMsg = null)
+        private static int GetIntInputInRange(string print, int min, int max, string errorMsg = null)
         {
             int res;
             do
