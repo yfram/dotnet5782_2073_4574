@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace IBL
 {
+    /// <summary>
+    /// Buisnes layer class, extends IBL
+    /// </summary>
     public partial class BL : IBL
     {
         private List<DroneForList> BLdrones = new();
@@ -14,7 +17,10 @@ namespace IBL
         private double[] elecRate;
         private static Random rand = new();
 
-
+        /// <summary>
+        /// Constructor for BL object
+        /// </summary>
+        /// <exception cref="BlException"></exception>
         public BL()
         {
             elecRate = Idal.GetElectricity();
@@ -95,6 +101,13 @@ namespace IBL
 
         }
 
+        /// <summary>
+        /// Adds s to the data layer
+        /// </summary>
+        /// <param name="s">
+        /// Station to add
+        /// </param>
+        /// <exception cref="ObjectAllreadyExistsException"></exception>
         public void AddStation(Station s)
         {
             try
@@ -107,6 +120,13 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Adds <paramref name="d"/> to the data layer
+        /// </summary>
+        /// <param name="d">
+        /// Drone to add
+        /// </param>
+        /// <exception cref="ObjectAllreadyExistsException"></exception>
         public void AddDrone(Drone d)
         {
             try
@@ -122,6 +142,13 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Adds <paramref name="c"/> to the data layer
+        /// </summary>
+        /// <param name="c">
+        /// Customer to add
+        /// </param>
+        /// <exception cref="ObjectAllreadyExistsException"></exception>
         public void AddCustomer(Customer c)
         {
             try
@@ -134,6 +161,13 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Adds <paramref name="p"/> to the data layer
+        /// </summary>
+        /// <param name="p">
+        /// Package to add
+        /// </param>
+        /// <exception cref="ObjectAllreadyExistsException"></exception>
         public void AddPackage(Package p)
         {
             try
@@ -146,6 +180,15 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Changes the drone with <paramref name="id"/>'s model name to <paramref name="newModel"/>
+        /// </summary>
+        /// <param name="id">
+        /// Id of the wanted drone to change
+        /// </param>
+        /// <param name="newModel">
+        /// New model name
+        /// </param>
         public void UpdateDroneName(int id, string newModel)
         {
             IDAL.DO.Drone DALdrone = GetDALDrone(id);
@@ -161,6 +204,13 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Update the data in the <c>Station</c> wehre ID equals <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newName"></param>
+        /// <param name="newChargeSlots"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void UpdateStation(int id, string newName = "", int newChargeSlots = -1)
         {
             IDAL.DO.Station station = GetDALStation(id);
@@ -181,6 +231,12 @@ namespace IBL
             Idal.UpdateStation(station);
         }
 
+        /// <summary>
+        /// Update the data in the <c>Customer</c> wehre ID equals <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newName"></param>
+        /// <param name="newPhone"></param>
         public void UpdateCustomer(int id, string newName = "", string newPhone = "")
         {
             IDAL.DO.Customer customer = GetDALCustomer(id);
@@ -189,6 +245,13 @@ namespace IBL
             Idal.UpdateCustomer(customer);
         }
 
+        /// <summary>
+        /// Sends the <c>Drone</c> with ID <paramref name="DroneId"/> to charge in the closest station with open ports.
+        /// </summary>
+        /// <param name="DroneId"></param>
+        /// <exception cref="BlException"></exception>
+        /// <exception cref="ObjectDoesntExistException"></exception>
+        /// <exception cref="DroneStateException"></exception>
         public void SendDroneToCharge(int DroneId)
         {
             DroneForList drone = BLdrones.Find(d => d.Id == DroneId);
@@ -231,6 +294,13 @@ namespace IBL
 
         }
 
+        /// <summary>
+        /// Releases the <c>Drone</c> with ID <paramref name="DroneId"/> from charging as if <paramref name="time"/> minutes have passed.
+        /// </summary>
+        /// <param name="DroneId"></param>
+        /// <param name="time"></param>
+        /// <exception cref="DroneStateException"></exception>
+        /// <exception cref="ObjectDoesntExistException"></exception>
         public void ReleaseDrone(int DroneId, double time)
         {
             IDAL.DO.Drone DALdrone = Idal.GetDrone(DroneId);
@@ -241,7 +311,7 @@ namespace IBL
                 if (BLdrone.State == DroneState.Maitenance)
                 {
                     BLdrone.Battery += elecRate[4] * time;
-                    BLdrone.Battery = BLdrone.Battery > 1 ? 1 : BLdrone.Battery;
+                    BLdrone.Battery = BLdrone.Battery > 100 ? 100 : BLdrone.Battery;
                     BLdrone.State = DroneState.Empty;
                     Idal.ReleaseDroneFromCharge(DroneId, -1); // find the station id by yourelf, via the DroneCharges object
 
@@ -258,6 +328,13 @@ namespace IBL
 
         }
 
+        /// <summary>
+        /// Assigns a package to the <c>Drone</c> with ID <paramref name="DroneId"/>.
+        /// </summary>
+        /// <param name="DroneId"></param>
+        /// <exception cref="BlException"></exception>
+        /// <exception cref="DroneStateException"></exception>
+        /// <exception cref="ObjectDoesntExistException"></exception>
         public void AssignPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.Find(d => d.Id == DroneId);
@@ -302,6 +379,12 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Gives the <c>Drone</c> with <paramref name="DroneId"/> the package it is assigned.
+        /// </summary>
+        /// <param name="DroneId"></param>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="DroneStateException"></exception>
         public void PickUpPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId);
@@ -334,6 +417,10 @@ namespace IBL
 
         }
 
+        /// <summary>
+        /// Releases the package from the <c>Drone</c> with the ID <paramref name="DroneId"/>
+        /// </summary>
+        /// <param name="DroneId"></param>
         public void DeliverPackage(int DroneId)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
@@ -368,6 +455,11 @@ namespace IBL
             }
         }
 
+        /// <summary>
+        /// Gets the <c>Station</c> that has the ID <paramref name="StationId"/>.
+        /// </summary>
+        /// <param name="StationId"></param>
+        /// <returns>IBL.BO.Sattion</returns>
         public Station DisplayStation(int StationId)
         {
             var DALstation = GetDALStation(StationId);
@@ -385,6 +477,11 @@ namespace IBL
             return new Station(DALstation.Id, DALstation.Name, new(DALstation.Longitude, DALstation.Lattitude), DALstation.ChargeSlots, charged);
         }
 
+        /// <summary>
+        /// Gets the <c>Drone</c> that has the ID <paramref name="DroneId"/>.
+        /// </summary>
+        /// <param name="DroneId"></param>
+        /// <returns>IBL.BO.Drone</returns>
         public Drone DisplayDrone(int DroneId)
         {
             var DALdrone = GetDALDrone(DroneId);
@@ -410,6 +507,11 @@ namespace IBL
             return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
         }
 
+        /// <summary>
+        /// Gets the <c>Customer</c> that has the ID <paramref name="CustomerId"/>.
+        /// </summary>
+        /// <param name="CustomerId"></param>
+        /// <returns>IBL.BO.Customer</returns>
         public Customer DisplayCustomer(int CustomerId)
         {
 
@@ -444,6 +546,11 @@ namespace IBL
             return new Customer(DALcustomer.Id, DALcustomer.Name, DALcustomer.Phone, new(DALcustomer.Longitude, DALcustomer.Lattitude), pkgFrom, pkgTo);
         }
 
+        /// <summary>
+        /// Gets the <c>Package</c> that has the ID <paramref name="PackageId"/>.
+        /// </summary>
+        /// <param name="PackageId"></param>
+        /// <returns>IBL.BO.Package</returns>
         public Package DisplayPackage(int PackageId)
         {
             var DALpkg = GetDALPackage(PackageId);
@@ -483,6 +590,10 @@ namespace IBL
             return ans;
         }
 
+        /// <summary>
+        /// Returns a list of all stations
+        /// </summary>
+        /// <returns>List of IBL.BO.StationForList</returns>
         public IEnumerable<StationForList> DisplayStations()
         {
             List<StationForList> ret = new();
@@ -494,6 +605,10 @@ namespace IBL
             return ret;
         }
 
+        /// <summary>
+        /// Returns a list of all drones
+        /// </summary>
+        /// <returns>List of IBL.BO.DroneForList</returns>
         public IEnumerable<DroneForList> DisplayDrones()
         {
             List<DroneForList> ret = new();
@@ -505,6 +620,10 @@ namespace IBL
             return ret;
         }
 
+        /// <summary>
+        /// Returns a list of all customers
+        /// </summary>
+        /// <returns>List of IBL.BO.CustomerForList</returns>
         public IEnumerable<CustomerForList> DisplayCustomers()
         {
             List<CustomerForList> ret = new();
@@ -525,6 +644,10 @@ namespace IBL
             return ret;
         }
 
+        /// <summary>
+        /// Returns a list of all Packages
+        /// </summary>
+        /// <returns>List of IBL.BO.PackageForList</returns>
         public IEnumerable<PackageForList> DisplayPackages()
         {
             List<PackageForList> ret = new();
@@ -543,6 +666,10 @@ namespace IBL
             return ret;
         }
 
+        /// <summary>
+        /// Returns a list of all unpaired packages
+        /// </summary>
+        /// <returns>List of IBL.BO.PackageForList</returns>
         public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
         {
             List<PackageForList> ret = new();
@@ -561,6 +688,10 @@ namespace IBL
             return ret;
         }
 
+        /// <summary>
+        /// Returns a list of all stations with open charging ports
+        /// </summary>
+        /// <returns>List of IBL.BO.StationForList</returns>
         public IEnumerable<StationForList> DisplayStationsWithCharges()
         {
             List<StationForList> ret = new();
@@ -572,7 +703,7 @@ namespace IBL
             return ret;
         }
 
-
+        #region Private dal acces
         private IDAL.DO.Station GetDALStation(int StationId)
         {
             try
@@ -622,6 +753,7 @@ namespace IBL
                 throw new ObjectDoesntExistException(e.Message);
             }
         }
+        #endregion
 
         #region Utility
         private int PackagePriority(IDAL.DO.Package p1, IDAL.DO.Package p2, Location DroneLoc)
