@@ -205,7 +205,7 @@ namespace ConsoleUI_BL
                 {
                     case AddMenue.Station:
                         Bl.AddStation(new(GetIntInput("Enter ID:"), GetStringInput("Enter name:"),
-                            new(GetDoubleInput("Enter drone position(longitude):"), GetDoubleInput("Enter drone position(lattitude):")),
+                            new(GetDoubleInput("Enter station position(longitude):"), GetDoubleInput("Enter station position(lattitude):")),
                             GetIntInput("Enter amount of charge slots:")));
                         break;
                     case AddMenue.Drone:
