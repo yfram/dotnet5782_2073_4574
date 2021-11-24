@@ -654,14 +654,7 @@ namespace IBL
             foreach (var package in Idal.GetAllPackages())
             {
                 Package blPackage = DisplayPackage(package.Id);
-                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,
-                    package.Delivered != DateTime.MinValue ?
-                    PackageStatus.Accepted :
-                    (package.PickUp != DateTime.MinValue ?
-                    PackageStatus.PickedUp :
-                    (package.Associated != DateTime.MinValue ?
-                    PackageStatus.Paired :
-                    PackageStatus.Initialized))));
+                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,GetPackageState(blPackage)));
             }
             return ret;
         }
@@ -675,9 +668,11 @@ namespace IBL
             List<PackageForList> ret = new();
             foreach (var package in Idal.GetAllUndronedPackages())
             {
+                
                 Package blPackage = DisplayPackage(package.Id);
-                if(GetPackageState(blPackage) == PackageStatus.Initialized)
-                    ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
+                if (GetPackageState(blPackage) != PackageStatus.Initialized)
+                    throw new Exception("delete me when submit.");
+                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, PackageStatus.Initialized));
             }
             return ret;
         }

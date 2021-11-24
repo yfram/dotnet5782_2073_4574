@@ -69,31 +69,41 @@ namespace DalObject
                 temp.Created = new DateTime(2020, 10, random.Next(1, 30), random.Next(1, 24), random.Next(1, 60), random.Next(1, 60));
 
 
-                int state = random.Next(0, 3);
-                bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
-                if (hasDrone)
+                int state = random.Next(0, 4);
+                if (state != 0)
                 {
-
-                    Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight); ;
-                    dronesWithoutPackages.Remove(d);
-
-
-                    if (state > 0) // Associated
+                    bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
+                    if (hasDrone)
                     {
-                        temp.Associated = temp.Created.AddMinutes(random.Next(1, 3000));
-                    }
-                    if (state > 1) // PickUp
-                    {
-                        temp.PickUp = temp.Associated.AddMinutes(random.Next(1, 3000));
-                    }
 
-                    if (state > 2) // Delivered
-                    {
-                        temp.Delivered = temp.PickUp.AddMinutes(random.Next(1, 3000));
+
+
+
+                        if (state > 0) // Associated
+                        {
+                            temp.Associated = temp.Created.AddMinutes(random.Next(1, 3000));
+                        }
+                        if (state > 1) // PickUp
+                        {
+                            temp.PickUp = temp.Associated.AddMinutes(random.Next(1, 3000));
+                        }
+
+                        if (state > 2) // Delivered
+                        {
+                            temp.Delivered = temp.PickUp.AddMinutes(random.Next(1, 3000));
+                        }
+
+                        Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight); ;
+
+                        if (state != 2)
+                        {
+                            dronesWithoutPackages.Remove(d); // if the state is "delivered" so the drone hasn't a package now.
+                        }
+
+                        temp.DroneId = d.Id;
+
                     }
-                    temp.DroneId = d.Id;
                 }
-
                 Packages[i] = temp;
             }
 
