@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using IBL;
+﻿using IBL;
+using System;
 
 namespace ConsoleUI_BL
 {
@@ -36,17 +34,17 @@ namespace ConsoleUI_BL
         static void Main(string[] args)
         {
             IBL.IBL Bl = new BL();
-            string openMsg = "Welcome to John&G Drones administiration system!\n";
+            string openMsg = "Welcome to John&G Drones administiration system!";
 
             string mainMsg = "\nfor add menue, press 1\n" +
                 "for update menue, press 2\n" +
                 "for get by id menue, press 3\n" +
                 "for get lists menue, press 4\n" +
                 "to exit press 5";
-            Console.WriteLine(openMsg);
+            Console.Write(openMsg);
             while (true)
             {
-                Console.WriteLine(mainMsg);
+                Console.Write(mainMsg);
                 MainMenue menue = (MainMenue)(GetIntInputInRange("", 0, 5, "Error! unrecognized op-code") - 1);
                 switch (menue)
                 {
@@ -260,7 +258,7 @@ namespace ConsoleUI_BL
                 (int.TryParse(inp, out ret) ? ret : GetIntInput(print));
         }
 
-        private static int GetIntInputInRange(string print, int min, int max, string? errorMsg = null)
+        private static int GetIntInputInRange(string print, int min, int max, string errorMsg = null)
         {
             int res;
             do
