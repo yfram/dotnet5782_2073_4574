@@ -192,6 +192,8 @@ namespace IBL
         public void UpdateDroneName(int id, string newModel)
         {
             IDAL.DO.Drone DALdrone = GetDALDrone(id);
+            newModel = newModel == ""? DALdrone.Model:newModel;
+
             DALdrone.Model = newModel;
 
             Idal.UpdateDrone(DALdrone);
