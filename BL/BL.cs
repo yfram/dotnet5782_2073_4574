@@ -429,7 +429,9 @@ namespace IBL
 
             if (BLdrone.State == DroneState.Busy)
             {
-                int PackageId = BLdrone.Id;
+                int PackageId = BLdrone.PassingPckageId is null ?
+                    throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
+                    (int)BLdrone.PassingPckageId;
                 IDAL.DO.Package p = GetDALPackage(PackageId);
                 if (p.PickUp != DateTime.MinValue && p.Delivered == DateTime.MinValue)
                 {
