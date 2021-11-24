@@ -676,22 +676,10 @@ namespace IBL
             foreach (var package in Idal.GetAllUndronedPackages())
             {
                 Package blPackage = DisplayPackage(package.Id);
-                if(GetPackageState(blPackage) == PackageStatus.Initialized)
+                if (GetPackageState(blPackage) == PackageStatus.Initialized)
                     ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
             }
             return ret;
-        }
-
-        private PackageStatus GetPackageState(Package p)
-        {
-
-            return p.TimeToDeliver != DateTime.MinValue ?
-                   PackageStatus.Accepted :
-                   (p.TimeToPickup != DateTime.MinValue ?
-                   PackageStatus.PickedUp :
-                   (p.TimeToPair != DateTime.MinValue ?
-                   PackageStatus.Paired :
-                   PackageStatus.Initialized));
         }
 
         /// <summary>
@@ -904,6 +892,18 @@ namespace IBL
             else // if the drone in Maitenance it can't go anyway
                 throw new Exception("no drone weight!");
             return elec[ix];
+        }
+
+        private PackageStatus GetPackageState(Package p)
+        {
+
+            return p.TimeToDeliver != DateTime.MinValue ?
+                   PackageStatus.Accepted :
+                   (p.TimeToPickup != DateTime.MinValue ?
+                   PackageStatus.PickedUp :
+                   (p.TimeToPair != DateTime.MinValue ?
+                   PackageStatus.Paired :
+                   PackageStatus.Initialized));
         }
         #endregion
     }
