@@ -34,7 +34,7 @@ namespace IBL.BO
         public override string ToString() =>
 #pragma warning disable CS8524
             $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
-                $"State: {State}";
+                $"State: {State}\n" + (Package is not null? $"Package Id: {Package.Id}":"");
 #pragma warning restore CS8524
 
     }
