@@ -93,7 +93,7 @@ namespace DalObject
             {
                 stationId = DataSource.DroneCharges.Find(dc => dc.DroneId == droneId).StationId;
             }
-
+            
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
 

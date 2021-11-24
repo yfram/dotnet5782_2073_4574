@@ -261,11 +261,11 @@ namespace IBL
                 if (ClosestId is not null)
                 {
                     IDAL.DO.Station closest = Idal.GetStation((int)ClosestId);
-                    double amoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
-                    if (amoutOfBattery >= 0)
+                    double newAmoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
+                    if (newAmoutOfBattery < 0)
                     {
                         // we can send the drone for charging!!
-                        drone.Battery -= amoutOfBattery;
+                        drone.Battery = newAmoutOfBattery;
                         drone.CurrentLocation = new(closest.Longitude, closest.Lattitude);
                         drone.State = DroneState.Maitenance;
 
@@ -303,7 +303,7 @@ namespace IBL
         /// <exception cref="ObjectDoesntExistException"></exception>
         public void ReleaseDrone(int DroneId, double time)
         {
-            IDAL.DO.Drone DALdrone = Idal.GetDrone(DroneId);
+            IDAL.DO.Drone DALdrone = GetDALDrone(DroneId);
             DroneForList BLdrone = BLdrones.Find(d => d.Id == DroneId);
 
             if (BLdrone is not null)
