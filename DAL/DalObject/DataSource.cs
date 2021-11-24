@@ -47,7 +47,7 @@ namespace DalObject
             Random random = new Random();
 
             double elec = random.NextDouble() + 40;
-            Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble() * 10 + 50;
+            Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble() * 10 + 5;
 
             for (int i = 0; i < 15; i++)
                 Stations.Add(InitStation(i, random));
