@@ -60,6 +60,9 @@ namespace DalObject
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
+
+            List<Drone> dronesWithoutPackages = Drones.Where(i=>true).ToList();
+
             for (int i = 0; i < Packages.Count; i++)
             {
                 Package temp = Packages[i];
@@ -67,10 +70,13 @@ namespace DalObject
 
 
                 int state = random.Next(0, 3);
-                bool hasDrone = Drones.Exists(d => d.Weight >= temp.Weight);
+                bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
                 if (hasDrone)
                 {
-                    Drone d = Drones.Find(d => d.Weight >= temp.Weight); ;
+
+                    Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight); ;
+                    dronesWithoutPackages.Remove(d);
+
 
                     if (state > 0) // Associated
                     {
