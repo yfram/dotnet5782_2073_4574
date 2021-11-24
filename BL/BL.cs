@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IBL.BO;
+﻿using IBL.BO;
 using IBL.Exceptions;
 using IDAL;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IBL
 {
@@ -96,7 +94,6 @@ namespace IBL
             }
 
         }
-
 
         public void AddStation(Station s)
         {
@@ -288,7 +285,7 @@ namespace IBL
                     }
                     else
                     {
-                        throw new BlException($"there are no free package for the ", DroneId , typeof(Drone));
+                        throw new BlException($"there are no free package for the ", DroneId, typeof(Drone));
                     }
 
 
@@ -305,71 +302,9 @@ namespace IBL
             }
         }
 
-        private int PackagePriority(IDAL.DO.Package p1, IDAL.DO.Package p2, Location DroneLoc)
-        {
-            if ((int)p1.PackagePriority > (int)p2.PackagePriority)
-                return 1;
-
-            if ((int)p1.PackagePriority < (int)p2.PackagePriority)
-                return -1;
-
-            if ((int)p1.Weight > (int)p2.Weight)
-                return 1;
-
-            if ((int)p1.Weight < (int)p2.Weight)
-                return -1;
-
-            IDAL.DO.Customer p1Cust = Idal.GetCustomer(p1.SenderId);
-            IDAL.DO.Customer p2Cust = Idal.GetCustomer(p2.SenderId);
-
-            Location LocP1 = new(p1Cust.Longitude, p1Cust.Lattitude);
-            Location LocP2 = new(p2Cust.Longitude, p2Cust.Lattitude);
-
-            double p1Dist = DistanceTo(DroneLoc, LocP1);
-            double p2Dist = DistanceTo(DroneLoc, LocP2);
-
-            if (p1Dist > p2Dist)
-                return -1;
-            if (p1Dist < p2Dist)
-                return 1;
-
-            return 0;
-        }
-
-        private double DistanceToDoDeliver(IDAL.DO.Package p, DroneForList d)
-        {
-            var sender = Idal.GetCustomer(p.SenderId);
-            Location senderLoc = new(sender.Longitude, sender.Lattitude);
-
-            var recv = Idal.GetCustomer(p.RecevirId);
-            Location recvLoc = new(recv.Longitude, recv.Lattitude);
-
-            int? StationId = GetClosetStation(recvLoc);
-            if (StationId == null)
-            {
-                /**
-             * ATTENTION: now,if all the stations have no charging slot, the associationg cannot be!!! 
-             */
-                return double.PositiveInfinity;
-            }
-            IDAL.DO.Station closest = Idal.GetStation((int)StationId);
-            Location closestLoc = new(closest.Longitude, closest.Lattitude)
-                ;
-            double distance = DistanceTo(d.CurrentLocation, senderLoc) + DistanceTo(recvLoc, senderLoc) + DistanceTo(closestLoc, recvLoc);
-
-            return distance;
-        }
-
-        private bool DroneHaveEnoughBattery(IDAL.DO.Package p, DroneForList d)
-        {
-            double maxDistance = DroneMaxDistance(d);
-            double distance = DistanceToDoDeliver(p, d);
-            return distance <= maxDistance;
-        }
-
         public void PickUpPackage(int DroneId)
         {
-            DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); 
+            DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId);
 
             if (BLdrone.State == DroneState.Busy)
             {
@@ -433,18 +368,6 @@ namespace IBL
             }
         }
 
-        private IDAL.DO.Station GetDALStation(int StationId)
-        {
-            try
-            {
-                return Idal.GetStation(StationId);
-            }
-            catch (ArgumentException e)
-            {
-                throw new ObjectDoesntExistException(e.Message);
-            }
-        }
-
         public Station DisplayStation(int StationId)
         {
             var DALstation = GetDALStation(StationId);
@@ -460,44 +383,6 @@ namespace IBL
             }
 
             return new Station(DALstation.Id, DALstation.Name, new(DALstation.Longitude, DALstation.Lattitude), DALstation.ChargeSlots, charged);
-        }
-
-        private IDAL.DO.Drone GetDALDrone(int DroneId)
-        {
-            try
-            {
-                return Idal.GetDrone(DroneId);
-            }
-            catch (ArgumentException e)
-            {
-                throw new ObjectDoesntExistException(e.Message);
-            }
-        }
-
-        private IDAL.DO.Package GetDALPackage(int PackageId)
-        {
-            try
-            {
-                return Idal.GetPackage(PackageId);
-
-            }
-            catch (ArgumentException e)
-            {
-                throw new ObjectDoesntExistException(e.Message);
-            }
-        }
-
-        private IDAL.DO.Customer GetDALCustomer(int CustomerId)
-        {
-            try
-            {
-                return Idal.GetCustomer(CustomerId);
-
-            }
-            catch (ArgumentException e)
-            {
-                throw new ObjectDoesntExistException(e.Message);
-            }
         }
 
         public Drone DisplayDrone(int DroneId)
@@ -687,6 +572,120 @@ namespace IBL
             return ret;
         }
 
+
+        private IDAL.DO.Station GetDALStation(int StationId)
+        {
+            try
+            {
+                return Idal.GetStation(StationId);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
+        }
+
+        private IDAL.DO.Drone GetDALDrone(int DroneId)
+        {
+            try
+            {
+                return Idal.GetDrone(DroneId);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
+        }
+
+        private IDAL.DO.Package GetDALPackage(int PackageId)
+        {
+            try
+            {
+                return Idal.GetPackage(PackageId);
+
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
+        }
+
+        private IDAL.DO.Customer GetDALCustomer(int CustomerId)
+        {
+            try
+            {
+                return Idal.GetCustomer(CustomerId);
+
+            }
+            catch (ArgumentException e)
+            {
+                throw new ObjectDoesntExistException(e.Message);
+            }
+        }
+
+        #region Utility
+        private int PackagePriority(IDAL.DO.Package p1, IDAL.DO.Package p2, Location DroneLoc)
+        {
+            if ((int)p1.PackagePriority > (int)p2.PackagePriority)
+                return 1;
+
+            if ((int)p1.PackagePriority < (int)p2.PackagePriority)
+                return -1;
+
+            if ((int)p1.Weight > (int)p2.Weight)
+                return 1;
+
+            if ((int)p1.Weight < (int)p2.Weight)
+                return -1;
+
+            IDAL.DO.Customer p1Cust = Idal.GetCustomer(p1.SenderId);
+            IDAL.DO.Customer p2Cust = Idal.GetCustomer(p2.SenderId);
+
+            Location LocP1 = new(p1Cust.Longitude, p1Cust.Lattitude);
+            Location LocP2 = new(p2Cust.Longitude, p2Cust.Lattitude);
+
+            double p1Dist = DistanceTo(DroneLoc, LocP1);
+            double p2Dist = DistanceTo(DroneLoc, LocP2);
+
+            if (p1Dist > p2Dist)
+                return -1;
+            if (p1Dist < p2Dist)
+                return 1;
+
+            return 0;
+        }
+
+        private double DistanceToDoDeliver(IDAL.DO.Package p, DroneForList d)
+        {
+            var sender = Idal.GetCustomer(p.SenderId);
+            Location senderLoc = new(sender.Longitude, sender.Lattitude);
+
+            var recv = Idal.GetCustomer(p.RecevirId);
+            Location recvLoc = new(recv.Longitude, recv.Lattitude);
+
+            int? StationId = GetClosetStation(recvLoc);
+            if (StationId == null)
+            {
+                /**
+             * ATTENTION: now,if all the stations have no charging slot, the associationg cannot be!!! 
+             */
+                return double.PositiveInfinity;
+            }
+            IDAL.DO.Station closest = Idal.GetStation((int)StationId);
+            Location closestLoc = new(closest.Longitude, closest.Lattitude)
+                ;
+            double distance = DistanceTo(d.CurrentLocation, senderLoc) + DistanceTo(recvLoc, senderLoc) + DistanceTo(closestLoc, recvLoc);
+
+            return distance;
+        }
+
+        private bool DroneHaveEnoughBattery(IDAL.DO.Package p, DroneForList d)
+        {
+            double maxDistance = DroneMaxDistance(d);
+            double distance = DistanceToDoDeliver(p, d);
+            return distance <= maxDistance;
+        }
+
         private static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
         {
             double lat1 = Loc1.Latitude; double lon1 = Loc1.Longitude;
@@ -768,5 +767,6 @@ namespace IBL
                 throw new Exception("no drone weight!");
             return elec[ix];
         }
+        #endregion
     }
 }
