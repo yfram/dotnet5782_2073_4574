@@ -677,18 +677,6 @@ namespace IBL
             return ret;
         }
 
-        private PackageStatus GetPackageState(Package p)
-        {
-
-            return p.TimeToDeliver != DateTime.MinValue ?
-                   PackageStatus.Accepted :
-                   (p.TimeToPickup != DateTime.MinValue ?
-                   PackageStatus.PickedUp :
-                   (p.TimeToPair != DateTime.MinValue ?
-                   PackageStatus.Paired :
-                   PackageStatus.Initialized));
-        }
-
         /// <summary>
         /// Returns a list of all stations with open charging ports
         /// </summary>
@@ -899,6 +887,18 @@ namespace IBL
             else // if the drone in Maitenance it can't go anyway
                 throw new Exception("no drone weight!");
             return elec[ix];
+        }
+
+        private PackageStatus GetPackageState(Package p)
+        {
+
+            return p.TimeToDeliver != DateTime.MinValue ?
+                   PackageStatus.Accepted :
+                   (p.TimeToPickup != DateTime.MinValue ?
+                   PackageStatus.PickedUp :
+                   (p.TimeToPair != DateTime.MinValue ?
+                   PackageStatus.Paired :
+                   PackageStatus.Initialized));
         }
         #endregion
     }
