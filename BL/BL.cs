@@ -86,9 +86,16 @@ namespace IBL
                     {
                         BLdrone.State = DroneState.Empty;
                         var allPackages = Idal.GetAllPackages().Where(p => p.Delivered != DateTime.MinValue);
-                        var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
-                        BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
-
+                        if (allPackages.Count() != 0)
+                        {
+                            var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
+                            BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
+                        }
+                        else
+                        {
+                            var customer = Idal.GetAllCustomers().ToList()[0];
+                            BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
+                        }
                         int? id = GetClosetStation(BLdrone.CurrentLocation);
                         if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone));
 
@@ -99,7 +106,7 @@ namespace IBL
                         {
                             throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                         }
-                        BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
+                        BLdrone.Battery = rand.NextDouble() * (100 - minBattery) + minBattery;
                     }
                 }
                 BLdrones.Add(BLdrone);
@@ -271,7 +278,7 @@ namespace IBL
                     IDAL.DO.Station closest = GetDALStation((int)ClosestId);
                     double distance = DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation);
                     double batteryNeed = distance / ElecOfDrone(drone);
-                    if (batteryNeed > drone.Battery)
+                    if (batteryNeed <= drone.Battery)
                     {
                         // we can send the drone for charging!!
                         drone.Battery -= batteryNeed;
