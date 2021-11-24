@@ -30,19 +30,25 @@ namespace IBL
                 BLdrone.Id = DALdrone.Id;
                 BLdrone.Model = DALdrone.Model;
                 BLdrone.Weight = (WeightGroup)((int)DALdrone.Weight);
-
-                IDAL.DO.Package AssociatedButNotDelivered = Idal.GetAllPackages().
-                    Where(p => p.DroneId == (int?)BLdrone.Id &&
-                    (p.Delivered == DateTime.MinValue)).FirstOrDefault();
-
-                if (AssociatedButNotDelivered as object is not null)
+                IDAL.DO.Package? AssociatedButNotDelivered;
+                try
+                {
+                    AssociatedButNotDelivered = (Idal.GetAllPackages().
+                        Where(p => (p.DroneId == (int?)BLdrone.Id &&
+                        (p.Delivered == DateTime.MinValue)))).First();
+                }
+                catch (InvalidOperationException)
+                {
+                    AssociatedButNotDelivered = null;
+                }
+                if (AssociatedButNotDelivered is not null)
                 {
                     BLdrone.State = DroneState.Busy;
-                    BLdrone.PassingPckageId = AssociatedButNotDelivered.Id;
+                    BLdrone.PassingPckageId = AssociatedButNotDelivered?.Id;
 
-                    bool WasPickedUp = AssociatedButNotDelivered.PickUp != DateTime.MinValue;
+                    bool WasPickedUp = AssociatedButNotDelivered?.PickUp != DateTime.MinValue;
                     //no need here for a try block, as we know that the senderId exists
-                    IDAL.DO.Customer customer = Idal.GetCustomer(AssociatedButNotDelivered.SenderId);
+                    IDAL.DO.Customer customer = Idal.GetCustomer((int)AssociatedButNotDelivered?.SenderId);
                     Location customerLoc = new(customer.Longitude, customer.Lattitude);
                     if (WasPickedUp)
                     {
@@ -55,7 +61,7 @@ namespace IBL
                         BLdrone.CurrentLocation = new(s.Longitude, s.Lattitude);
                     }
                     // add batery
-                    double distance = DistanceToDoDeliver(AssociatedButNotDelivered, BLdrone);
+                    double distance = DistanceToDoDeliver((IDAL.DO.Package)AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
                     if (minBattery > 100)//the minumun battery needed for the delivery is larger than 100% charge
                         throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
