@@ -404,7 +404,7 @@ namespace IBL
                     IDAL.DO.Customer Sender = Idal.GetCustomer(p.SenderId);
                     Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
 
-                    BLdrone.Battery -= ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                    BLdrone.Battery -= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                     BLdrone.CurrentLocation = SenderLoc;
                     Idal.PickUpPackage(PackageId, BLdrone.Id); // update time
                 }
@@ -442,7 +442,7 @@ namespace IBL
                     IDAL.DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
                     Location RecvLoc = new(Recv.Longitude, Recv.Lattitude);
 
-                    BLdrone.Battery -= ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                    BLdrone.Battery -= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                     BLdrone.CurrentLocation = RecvLoc;
                     BLdrone.State = DroneState.Empty;
 
