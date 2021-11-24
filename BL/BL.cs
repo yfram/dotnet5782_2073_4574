@@ -549,16 +549,22 @@ namespace IBL
             foreach (var package in Idal.GetAllUndronedPackages())
             {
                 Package blPackage = DisplayPackage(package.Id);
-                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,
-                    package.Delivered != DateTime.MinValue ?
-                    PackageStatus.Accepted :
-                    (package.PickUp != DateTime.MinValue ?
-                    PackageStatus.PickedUp :
-                    (package.Associated != DateTime.MinValue ?
-                    PackageStatus.Paired :
-                    PackageStatus.Initialized))));
+                if(GetPackageState(blPackage) == PackageStatus.Initialized)
+                    ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
             }
             return ret;
+        }
+
+        private PackageStatus GetPackageState(Package p)
+        {
+
+            return p.TimeToDeliver != DateTime.MinValue ?
+                   PackageStatus.Accepted :
+                   (p.TimeToPickup != DateTime.MinValue ?
+                   PackageStatus.PickedUp :
+                   (p.TimeToPair != DateTime.MinValue ?
+                   PackageStatus.Paired :
+                   PackageStatus.Initialized);
         }
 
         public IEnumerable<StationForList> DisplayStationsWithCharges()
