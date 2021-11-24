@@ -564,7 +564,7 @@ namespace IBL
                    PackageStatus.PickedUp :
                    (p.TimeToPair != DateTime.MinValue ?
                    PackageStatus.Paired :
-                   PackageStatus.Initialized);
+                   PackageStatus.Initialized));
         }
 
         public IEnumerable<StationForList> DisplayStationsWithCharges()
