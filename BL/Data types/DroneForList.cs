@@ -8,7 +8,7 @@ namespace IBL.BO
 {
     public class DroneForList
     {
-        public DroneForList(int id, string model, WeightGroup weight, double battery, DroneState state, Location currentLocation)
+        public DroneForList(int id, string model, WeightGroup weight, double battery, DroneState state, Location currentLocation, int passingPackage)
         {
             Id = id;
             Model = model;
@@ -16,6 +16,7 @@ namespace IBL.BO
             Battery = battery;
             State = state;
             CurrentLocation = currentLocation;
+            PassingPckageId = passingPackage;
         }
 
         public DroneForList()

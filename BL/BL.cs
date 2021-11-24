@@ -133,7 +133,7 @@ namespace IBL
             {
                 Idal.AddDrone(d.Id, d.Model, (IDAL.DO.WeightGroup)((int)d.Weight));
 
-                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, d.State, d.CurrentLocation);
+                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, d.State, d.CurrentLocation, d.Package.Id);
                 BLdrones.Add(df);
             }
             catch (Exception e)
@@ -192,7 +192,7 @@ namespace IBL
         public void UpdateDroneName(int id, string newModel)
         {
             IDAL.DO.Drone DALdrone = GetDALDrone(id);
-            newModel = newModel == ""? DALdrone.Model:newModel;
+            newModel = newModel == "" ? DALdrone.Model : newModel;
 
             DALdrone.Model = newModel;
 
@@ -404,7 +404,7 @@ namespace IBL
                     IDAL.DO.Customer Sender = Idal.GetCustomer(p.SenderId);
                     Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
 
-                    BLdrone.Battery -= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                    BLdrone.Battery -= (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                     BLdrone.CurrentLocation = SenderLoc;
                     Idal.PickUpPackage(PackageId, BLdrone.Id); // update time
                 }
@@ -442,7 +442,7 @@ namespace IBL
                     IDAL.DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
                     Location RecvLoc = new(Recv.Longitude, Recv.Lattitude);
 
-                    BLdrone.Battery -= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                    BLdrone.Battery -= (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                     BLdrone.CurrentLocation = RecvLoc;
                     BLdrone.State = DroneState.Empty;
 
@@ -621,7 +621,7 @@ namespace IBL
             foreach (var drone in Idal.GetAllDrones())
             {
                 Drone blDrone = DisplayDrone(drone.Id);
-                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation));
+                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, blDrone.Package.Id));
             }
             return ret;
         }
