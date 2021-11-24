@@ -68,7 +68,7 @@ namespace DalObject
                 Package temp = Packages[i];
                 temp.Created = new DateTime(2020, 10, random.Next(1, 30), random.Next(1, 24), random.Next(1, 60), random.Next(1, 60));
 
-                int state = random.Next(0, 4);
+                int state = random.Next(0, 5);
                 if (state != 0)
                 {
                     bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
@@ -90,7 +90,7 @@ namespace DalObject
 
                         Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);
 
-                        if (state != 2)
+                        if (state != 4)
                         {
                             dronesWithoutPackages.Remove(d); // if the state is "delivered" so the drone hasn't a package now.
                         }

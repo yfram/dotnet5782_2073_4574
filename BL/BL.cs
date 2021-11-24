@@ -57,7 +57,7 @@ namespace IBL
                     else // accosiatied but not picked. the closet station to the sender
                     {
                         int? stationId = GetClosetStation(new(customer.Longitude, customer.Lattitude), false);
-                        IDAL.DO.Station s = Idal.GetStation((int)stationId);
+                        IDAL.DO.Station s = GetDALStation((int)stationId);
                         BLdrone.CurrentLocation = new(s.Longitude, s.Lattitude);
                     }
                     // add batery
@@ -65,7 +65,7 @@ namespace IBL
                     double minBattery = distance / ElecOfDrone(BLdrone);
                     if (minBattery > 100)//the minumun battery needed for the delivery is larger than 100% charge
                         throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
-                    BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
+                    BLdrone.Battery = rand.NextDouble() * (100 - minBattery) + minBattery;
                 }
 
                 else
@@ -86,9 +86,16 @@ namespace IBL
                     {
                         BLdrone.State = DroneState.Empty;
                         var allPackages = Idal.GetAllPackages().Where(p => p.Delivered != DateTime.MinValue);
-                        var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
-                        BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
-
+                        if (allPackages.Count() != 0)
+                        {
+                            var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
+                            BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
+                        }
+                        else
+                        {
+                            var customer = Idal.GetAllCustomers().ToList()[0];
+                            BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
+                        }
                         int? id = GetClosetStation(BLdrone.CurrentLocation);
                         if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone));
 
@@ -99,7 +106,7 @@ namespace IBL
                         {
                             throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
                         }
-                        BLdrone.Battery = rand.NextDouble() * (1 - minBattery) + minBattery;
+                        BLdrone.Battery = rand.NextDouble() * (100 - minBattery) + minBattery;
                     }
                 }
                 BLdrones.Add(BLdrone);
@@ -268,12 +275,13 @@ namespace IBL
                 int? ClosestId = GetClosetStation(drone.CurrentLocation);
                 if (ClosestId is not null)
                 {
-                    IDAL.DO.Station closest = Idal.GetStation((int)ClosestId);
-                    double newAmoutOfBattery = DroneGoNewBattery(drone, DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation));
-                    if (newAmoutOfBattery < 0)
+                    IDAL.DO.Station closest = GetDALStation((int)ClosestId);
+                    double distance = DistanceTo(new(closest.Longitude, closest.Lattitude), drone.CurrentLocation);
+                    double batteryNeed = distance / ElecOfDrone(drone);
+                    if (batteryNeed <= drone.Battery)
                     {
                         // we can send the drone for charging!!
-                        drone.Battery = newAmoutOfBattery;
+                        drone.Battery -= batteryNeed;
                         drone.CurrentLocation = new(closest.Longitude, closest.Lattitude);
                         drone.State = DroneState.Maitenance;
 
@@ -282,7 +290,7 @@ namespace IBL
                     }
                     else
                     {
-                        throw new BlException($"there are no emtpy stations that {DroneId} has enogth battery to fly them!");
+                        throw new BlException($"there are no emtpy stations that {DroneId} has enogth battery to fly them! need {batteryNeed} has {drone.Battery}");
                     }
                 }
 
@@ -402,15 +410,19 @@ namespace IBL
                 int PackageId = BLdrone.PassingPckageId is null ?
                     throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
                     (int)BLdrone.PassingPckageId;
-                IDAL.DO.Package p = Idal.GetPackage(PackageId);
+                IDAL.DO.Package p = GetDALPackage(PackageId);
                 if (p.Associated != DateTime.MinValue && p.PickUp == DateTime.MinValue)
                 {
                     // the battery was checked in associate
 
-                    IDAL.DO.Customer Sender = Idal.GetCustomer(p.SenderId);
+                    IDAL.DO.Customer Sender = GetDALCustomer(p.SenderId);
                     Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
 
-                    BLdrone.Battery -= (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                    double batteryNeed= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                    if (batteryNeed > BLdrone.Battery)
+                        throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
+                    BLdrone.Battery -= batteryNeed;
+
                     BLdrone.CurrentLocation = SenderLoc;
                     Idal.PickUpPackage(PackageId, BLdrone.Id); // update time
                 }
@@ -448,7 +460,12 @@ namespace IBL
                     IDAL.DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
                     Location RecvLoc = new(Recv.Longitude, Recv.Lattitude);
 
-                    BLdrone.Battery -= (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                    double batteryNeed = (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                    if (batteryNeed > BLdrone.Battery)
+                        throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
+
+                    BLdrone.Battery -= batteryNeed;
+
                     BLdrone.CurrentLocation = RecvLoc;
                     BLdrone.State = DroneState.Empty;
 
@@ -790,10 +807,10 @@ namespace IBL
 
         private double DistanceToDoDeliver(IDAL.DO.Package p, DroneForList d)
         {
-            var sender = Idal.GetCustomer(p.SenderId);
+            var sender = GetDALCustomer(p.SenderId);
             Location senderLoc = new(sender.Longitude, sender.Lattitude);
 
-            var recv = Idal.GetCustomer(p.RecevirId);
+            var recv = GetDALCustomer(p.RecevirId);
             Location recvLoc = new(recv.Longitude, recv.Lattitude);
 
             int? StationId = GetClosetStation(recvLoc);
@@ -804,9 +821,9 @@ namespace IBL
              */
                 return double.PositiveInfinity;
             }
-            IDAL.DO.Station closest = Idal.GetStation((int)StationId);
-            Location closestLoc = new(closest.Longitude, closest.Lattitude)
-                ;
+            IDAL.DO.Station closest = GetDALStation((int)StationId);
+            Location closestLoc = new(closest.Longitude, closest.Lattitude);
+
             double distance = DistanceTo(d.CurrentLocation, senderLoc) + DistanceTo(recvLoc, senderLoc) + DistanceTo(closestLoc, recvLoc);
 
             return distance;
