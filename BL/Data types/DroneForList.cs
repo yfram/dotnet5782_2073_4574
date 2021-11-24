@@ -32,6 +32,6 @@ namespace IBL.BO
         public int? PassingPckageId { get; set; } = null;
 
         public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: {CurrentLocation.ToString().Replace("\n", "\t")}\n" +
-                $"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {PassingPckageId}") }";
+                $"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {(PassingPckageId == -1 ? "None" : PassingPckageId)}") }";
     }
 }
