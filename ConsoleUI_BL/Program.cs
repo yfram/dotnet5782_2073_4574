@@ -76,7 +76,7 @@ namespace ConsoleUI_BL
                 "to see a list of all customres, press 3\n" +
                 "to see a list of all packages, press 4\n" +
                 "to see a list of all unpaired packages, press 5\n" +
-                "to see a list of all stations with open slots, press 6\n";
+                "to see a list of all stations with open slots, press 6";
             try
             {
                 ListViewMenue menue = (ListViewMenue)(GetIntInputInRange(msg, 1, 8, "No such option!")-1);
@@ -114,7 +114,7 @@ namespace ConsoleUI_BL
             string msg = "to view a station by ID, press 1\n" +
                 "to view a drone by ID, press 2\n" +
                 "to view a customer by ID, press 3\n" +
-                "to view  Package by ID, press 4\n";
+                "to view  Package by ID, press 4";
             try
             {
                 SingleViewMenue menue = (SingleViewMenue)((GetIntInputInRange(msg, 1, 4, "No such option") - 1));
@@ -150,7 +150,7 @@ namespace ConsoleUI_BL
                 "to release a drone from charging, press 5\n" +
                 "to pair a package to a drone, press 6\n" +
                 "to have a drone pick up a package, press 7\n" +
-                "to have a drone deliver a package, press 8\n";
+                "to have a drone deliver a package, press 8";
             try
             {
                 UpdateMenue menue = (UpdateMenue)(GetIntInputInRange(msg, 1, 8, "No such option") - 1);
