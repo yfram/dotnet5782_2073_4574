@@ -225,7 +225,7 @@ namespace IBL
             else if (newChargeSlots == -1)
                 newChargeSlots = station.ChargeSlots;
             else
-                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones}).");
+                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones.Count}).");
 
             station.ChargeSlots = newChargeSlots;
             Idal.UpdateStation(station);
@@ -287,7 +287,7 @@ namespace IBL
             {
                 if (drone is null)
                     throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
-                throw new DroneStateException($"the drone {DroneId} can send to chage only if it empy!");
+                throw new DroneStateException($"the drone {DroneId} can send to charge only if it empty! currently {drone.State}");
             }
 
 
@@ -318,7 +318,7 @@ namespace IBL
                 }
                 else
                 {
-                    throw new DroneStateException($"the drone {DroneId} can be release only if it state is in Maitenance!");
+                    throw new DroneStateException($"the drone {DroneId} can be release only if it state is in Maitenance! currently {BLdrone.State}");
                 }
             }
             else
@@ -370,7 +370,7 @@ namespace IBL
                 }
                 else
                 {
-                    throw new DroneStateException($"the drone {DroneId} cannot be associated because it is not empty!");
+                    throw new DroneStateException($"the drone {DroneId} cannot be associated because it is not empty! currently {BLdrone.State}");
                 }
             }
             else
@@ -428,8 +428,8 @@ namespace IBL
             if (BLdrone.State == DroneState.Busy)
             {
                 int PackageId = BLdrone.Id;
-                IDAL.DO.Package p = Idal.GetPackage(PackageId);
-                if (p.Delivered != DateTime.MinValue && p.Delivered == DateTime.MinValue)
+                IDAL.DO.Package p = GetDALPackage(PackageId);
+                if (p.PickUp != DateTime.MinValue && p.Delivered == DateTime.MinValue)
                 {
                     // the battery was checked in associate
 
@@ -445,13 +445,13 @@ namespace IBL
                 }
                 else
                 {
-                    //throw
+                    throw new BlException($"the package {PackageId} state is not \" pick up\"!");
                 }
 
             }
             else
             {
-                //throw
+                throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
             }
         }
 
@@ -676,16 +676,22 @@ namespace IBL
             foreach (var package in Idal.GetAllUndronedPackages())
             {
                 Package blPackage = DisplayPackage(package.Id);
-                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,
-                    package.Delivered != DateTime.MinValue ?
-                    PackageStatus.Accepted :
-                    (package.PickUp != DateTime.MinValue ?
-                    PackageStatus.PickedUp :
-                    (package.Associated != DateTime.MinValue ?
-                    PackageStatus.Paired :
-                    PackageStatus.Initialized))));
+                if(GetPackageState(blPackage) == PackageStatus.Initialized)
+                    ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
             }
             return ret;
+        }
+
+        private PackageStatus GetPackageState(Package p)
+        {
+
+            return p.TimeToDeliver != DateTime.MinValue ?
+                   PackageStatus.Accepted :
+                   (p.TimeToPickup != DateTime.MinValue ?
+                   PackageStatus.PickedUp :
+                   (p.TimeToPair != DateTime.MinValue ?
+                   PackageStatus.Paired :
+                   PackageStatus.Initialized));
         }
 
         /// <summary>

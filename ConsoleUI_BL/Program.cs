@@ -36,8 +36,9 @@ namespace ConsoleUI_BL
         static void Main(string[] args)
         {
             IBL.IBL Bl = new BL();
-            string openMsg = "Welcome to John&G Drones administiration system!\n" +
-                "for add menue, press 1\n" +
+            string openMsg = "Welcome to John&G Drones administiration system!\n";
+
+            string mainMsg = "\nfor add menue, press 1\n" +
                 "for update menue, press 2\n" +
                 "for get by id menue, press 3\n" +
                 "for get lists menue, press 4\n" +
@@ -45,6 +46,7 @@ namespace ConsoleUI_BL
             Console.WriteLine(openMsg);
             while (true)
             {
+                Console.WriteLine(mainMsg);
                 MainMenue menue = (MainMenue)(GetIntInputInRange("", 0, 5, "Error! unrecognized op-code") - 1);
                 switch (menue)
                 {
@@ -112,7 +114,7 @@ namespace ConsoleUI_BL
             string msg = "to view a station by ID, press 1\n" +
                 "to view a drone by ID, press 2\n" +
                 "to view a customer by ID, press 3\n" +
-                "to view  customer by ID, press 4\n";
+                "to view  Package by ID, press 4\n";
             try
             {
                 SingleViewMenue menue = (SingleViewMenue)((GetIntInputInRange(msg, 1, 4, "No such option") - 1));
