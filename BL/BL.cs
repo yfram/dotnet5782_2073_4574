@@ -391,7 +391,9 @@ namespace IBL
 
             if (BLdrone.State == DroneState.Busy)
             {
-                int PackageId = BLdrone.Id;
+                int PackageId = BLdrone.PassingPckageId is null ?
+                    throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
+                    (int)BLdrone.PassingPckageId;
                 IDAL.DO.Package p = Idal.GetPackage(PackageId);
                 if (p.Associated != DateTime.MinValue && p.PickUp == DateTime.MinValue)
                 {
@@ -654,7 +656,7 @@ namespace IBL
             foreach (var package in Idal.GetAllPackages())
             {
                 Package blPackage = DisplayPackage(package.Id);
-                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority,GetPackageState(blPackage)));
+                ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
             }
             return ret;
         }
@@ -668,7 +670,7 @@ namespace IBL
             List<PackageForList> ret = new();
             foreach (var package in Idal.GetAllUndronedPackages())
             {
-                
+
                 Package blPackage = DisplayPackage(package.Id);
                 if (GetPackageState(blPackage) != PackageStatus.Initialized)
                     throw new Exception("delete me when submit.");

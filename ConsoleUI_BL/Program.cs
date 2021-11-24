@@ -79,7 +79,7 @@ namespace ConsoleUI_BL
                 "to see a list of all stations with open slots, press 6";
             try
             {
-                ListViewMenue menue = (ListViewMenue)(GetIntInputInRange(msg, 1, 8, "No such option!")-1);
+                ListViewMenue menue = (ListViewMenue)(GetIntInputInRange(msg, 1, 8, "No such option!") - 1);
                 switch (menue)
                 {
                     case ListViewMenue.Stations:
@@ -233,7 +233,7 @@ namespace ConsoleUI_BL
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
-        private static IBL.BO.Location? GetStationLocation(int id, IBL.IBL bL)
+        private static IBL.BO.Location GetStationLocation(int id, IBL.IBL bL)
         {
             if (bL is not BL Bl)
                 throw new("Unreachable!");

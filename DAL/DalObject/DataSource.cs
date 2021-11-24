@@ -47,7 +47,7 @@ namespace DalObject
             Random random = new Random();
 
             double elec = random.NextDouble() + 40;
-            Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble();
+            Config.ElecEmpty = elec; Config.ElecLow = elec / 2; Config.ElecMid = elec / 4; Config.ElecHigh = elec / 8; Config.ElecRatePercent = random.NextDouble() * 10 + 50;
 
             for (int i = 0; i < 15; i++)
                 Stations.Add(InitStation(i, random));
@@ -61,7 +61,7 @@ namespace DalObject
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
 
-            List<Drone> dronesWithoutPackages = Drones.Where(i=>true).ToList();
+            List<Drone> dronesWithoutPackages = Drones.Where(i => true).ToList();
 
             for (int i = 0; i < Packages.Count; i++)
             {
