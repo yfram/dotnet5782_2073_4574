@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using IDAL.DO;
+﻿using IDAL.DO;
+using System;
 
 namespace DalObject
 {
@@ -70,11 +67,11 @@ namespace DalObject
 
             //tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
 
-            if(stationId < 0)
+            if (stationId < 0)
             {
                 stationId = DataSource.DroneCharges.Find(dc => dc.DroneId == droneId).StationId;
             }
-            
+
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
 
@@ -91,7 +88,7 @@ namespace DalObject
 
         public double[] GetElectricity()
         {
-             double[] ans =new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
+            double[] ans = new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
             return ans;
         }
 

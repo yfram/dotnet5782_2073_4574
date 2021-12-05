@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IBL.BO
+﻿namespace IBL.BO
 {
     public class Drone
     {
@@ -34,7 +28,7 @@ namespace IBL.BO
         public override string ToString() =>
 #pragma warning disable CS8524
             $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: \n{CurrentLocation}\n" +
-                $"State: {State}\n" + (Package is not null? $"Package Id: {Package.Id}":"");
+                $"State: {State}\n" + (Package is not null ? $"Package Id: {Package.Id}" : "");
 #pragma warning restore CS8524
 
     }

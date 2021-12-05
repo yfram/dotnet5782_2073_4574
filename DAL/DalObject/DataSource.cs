@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalObject
 {
@@ -43,7 +41,7 @@ namespace DalObject
 
         public static void Initialize()
         {
-            Configuration = new Config(); 
+            Configuration = new Config();
             Random random = new Random();
 
             double elec = random.NextDouble() + 40;
@@ -107,7 +105,7 @@ namespace DalObject
         private static Package InitPackage(int i, Random random)
         {
             int reciver = random.Next() % 10;
-            return new(i, Customers[i].Id, Customers[reciver == i ? ((i + 1)%Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
+            return new(i, Customers[i].Id, Customers[reciver == i ? ((i + 1) % Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
               null);
         }
         private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Station.MaxChargingPorts);

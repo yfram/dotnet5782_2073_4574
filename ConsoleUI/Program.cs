@@ -1,7 +1,6 @@
-﻿using System;
-using IDAL;
+﻿using IDAL;
 using IDAL.DO;
-using DalObject;
+using System;
 using System.Collections.Generic;
 
 
@@ -68,7 +67,7 @@ namespace ConsoleUI
                 if (menue > 6 || menue < 1)
                     Console.WriteLine("Error! unrecognized op-code");
             } while (menue > 6 || menue < 1);
-            IEnumerable<object> list=null;
+            IEnumerable<object> list = null;
             switch (menue)
             {
                 case 1:
@@ -90,11 +89,11 @@ namespace ConsoleUI
                     list = (IEnumerable<object>)d.GetAllAvailableStations();
                     break;
             }
-            foreach(Object obj in list)
+            foreach (Object obj in list)
             {
                 Console.WriteLine(obj.ToString());
             }
-            
+
 
         }
 
@@ -255,7 +254,7 @@ namespace ConsoleUI
             } while (res < min || res >= max);
 
             return res;
-            
+
         }
 
         private static DateTime GetDateTimeInput(string print)
@@ -268,7 +267,7 @@ namespace ConsoleUI
             int minute = GetIntInputInRange("enter a minute", 1, 60);
             int second = GetIntInputInRange("enter a second", 1, 60);
 
-            return new DateTime(year,month,day,hour,minute,second);
+            return new DateTime(year, month, day, hour, minute, second);
 
         }
 

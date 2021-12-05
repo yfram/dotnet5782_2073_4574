@@ -1,9 +1,6 @@
 ﻿using IDAL.DO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalObject
 {
@@ -11,7 +8,7 @@ namespace DalObject
     {
 
         public void AddCustomer(int id, string name, string phone, double lattitude, double longitude) =>
-            DataSource.Customers.Add(new(GetCustomerIndex(id)!=-1? throw new ArgumentException($"cannot create the customer {id} .it is already exist!") : id, name, phone, lattitude, longitude));
+            DataSource.Customers.Add(new(GetCustomerIndex(id) != -1 ? throw new ArgumentException($"cannot create the customer {id} .it is already exist!") : id, name, phone, lattitude, longitude));
 
         public Customer GetCustomer(int id)
         {
@@ -25,6 +22,6 @@ namespace DalObject
 
         public IEnumerable<Customer> GetAllCustomers() => new List<Customer>(DataSource.Customers);
 
-        
+
     }
 }

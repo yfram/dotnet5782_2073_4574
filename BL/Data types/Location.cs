@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IBL.BO
+﻿namespace IBL.BO
 {
     public class Location
     {

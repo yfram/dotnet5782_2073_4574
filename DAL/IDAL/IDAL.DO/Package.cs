@@ -42,7 +42,7 @@ namespace IDAL.DO
         public override string ToString()
         {
             return $"Package {Id} to: {RecevirId} from:{SenderId}\nArriving in aprox.." +
-                $"{(DroneId is not null ?  $"\nDroneId: {DroneId}" : "")}";
+                $"{(DroneId is not null ? $"\nDroneId: {DroneId}" : "")}";
         }
     }
 }
