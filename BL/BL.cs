@@ -358,7 +358,7 @@ namespace IBL
             {
                 if (BLdrone.State == DroneState.Empty)
                 {
-                    IEnumerable<IDAL.DO.Package> allPackages = Idal.GetAllUndronedPackages();
+                    IEnumerable<IDAL.DO.Package> allPackages = Idal.GetAllPackagesWhere(p => p.DroneId is null);
 
                     IEnumerable<IDAL.DO.Package> allCanWeight = allPackages.Where(p => (int)p.Weight <= (int)BLdrone.Weight);
 
@@ -695,9 +695,8 @@ namespace IBL
         public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
         {
             List<PackageForList> ret = new();
-            foreach (var package in Idal.GetAllUndronedPackages())
+            foreach (var package in Idal.GetAllPackagesWhere(p => p.DroneId is null))
             {
-
                 Package blPackage = DisplayPackage(package.Id);
                 if (GetPackageState(blPackage) != PackageStatus.Initialized)
                     throw new Exception("delete me when submit.");
@@ -713,7 +712,7 @@ namespace IBL
         public IEnumerable<StationForList> DisplayStationsWithCharges()
         {
             List<StationForList> ret = new();
-            foreach (var station in Idal.GetAllAvailableStations())
+            foreach (var station in Idal.GetAllStationsWhere(s => s.ChargeSlots > 0))
             {
                 Station blStation = DisplayStation(station.Id);
                 ret.Add(new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count));
