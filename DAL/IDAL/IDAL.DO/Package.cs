@@ -14,7 +14,7 @@ namespace IDAL.DO
             DroneId = droneId;
         }
 
-        public Package(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId, DateTime created, DateTime associated, DateTime pickUp, DateTime delivered)
+        public Package(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId, DateTime? created, DateTime? associated, DateTime? pickUp, DateTime? delivered)
         {
             Id = id;
             SenderId = senderId;
@@ -34,10 +34,10 @@ namespace IDAL.DO
         public WeightGroup Weight { get; set; }
         public Priority PackagePriority { get; set; }
         public int? DroneId { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Associated { get; set; }
-        public DateTime PickUp { get; set; }
-        public DateTime Delivered { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? Associated { get; set; }
+        public DateTime? PickUp { get; set; }
+        public DateTime? Delivered { get; set; }
 
         public override string ToString()
         {

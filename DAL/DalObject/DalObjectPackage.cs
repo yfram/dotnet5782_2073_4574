@@ -12,7 +12,7 @@ namespace DalObject
     public partial class DalObject
     {
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
-            DateTime Created , DateTime Associated, DateTime PickUp, DateTime Delivered) =>
+            DateTime? Created , DateTime? Associated, DateTime? PickUp, DateTime? Delivered) =>
 
             DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new Exception($"the Package {id} is already exist!") : id, senderId, recevirId, weight, packagePriority, droneId,
                 Created,Associated,PickUp,Delivered));

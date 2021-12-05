@@ -76,16 +76,16 @@ namespace DalObject
                     {
                         if (state > 0) // Associated
                         {
-                            temp.Associated = temp.Created.AddMinutes(random.Next(1, 3000));
+                            temp.Associated = ((DateTime)temp.Created).AddMinutes(random.Next(1, 3000));
                         }
                         if (state > 1) // PickUp
                         {
-                            temp.PickUp = temp.Associated.AddMinutes(random.Next(1, 3000));
+                            temp.PickUp = ((DateTime)temp.Associated).AddMinutes(random.Next(1, 3000));
                         }
 
                         if (state > 2) // Delivered
                         {
-                            temp.Delivered = temp.PickUp.AddMinutes(random.Next(1, 3000));
+                            temp.Delivered = ((DateTime)temp.PickUp).AddMinutes(random.Next(1, 3000));
                         }
 
                         Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);

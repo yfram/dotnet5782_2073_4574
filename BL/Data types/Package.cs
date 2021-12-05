@@ -10,7 +10,7 @@ namespace IBL.BO
     {
 
 
-        public Package(int id, CustomerForPackage sender, CustomerForPackage reciver, WeightGroup weight, PriorityGroup priority, DroneForPackage drone, DateTime timeToPackage, DateTime timeToPair, DateTime timeToPickup, DateTime timeToDeliver)
+        public Package(int id, CustomerForPackage sender, CustomerForPackage reciver, WeightGroup weight, PriorityGroup priority, DroneForPackage drone, DateTime? timeToPackage, DateTime? timeToPair, DateTime? timeToPickup, DateTime? timeToDeliver)
         {
             Id = id;
             Sender = sender;
@@ -35,10 +35,10 @@ namespace IBL.BO
         public WeightGroup Weight { get; set; }
         public PriorityGroup Priority { get; set; }
         public DroneForPackage Drone { get; set; }
-        public DateTime TimeToPackage { get; set; }
-        public DateTime TimeToPair { get; set; }
-        public DateTime TimeToPickup { get; set; }
-        public DateTime TimeToDeliver { get; set; }
+        public DateTime? TimeToPackage { get; set; }
+        public DateTime? TimeToPair { get; set; }
+        public DateTime? TimeToPickup { get; set; }
+        public DateTime? TimeToDeliver { get; set; }
 
 #pragma warning disable CS8524 
         public override string ToString() => $"Id: {Id}\n Sender ID: {Sender.Id}\n Reciver ID: {Reciver.Id}\nPriority: " +

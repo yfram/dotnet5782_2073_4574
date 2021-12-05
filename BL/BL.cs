@@ -35,7 +35,7 @@ namespace IBL
                 {
                     AssociatedButNotDelivered = (Idal.GetAllPackages().
                         Where(p => (p.DroneId == (int?)BLdrone.Id &&
-                        (p.Delivered == DateTime.MinValue)))).First();
+                        (p.Delivered is null)))).First();
                 }
                 catch (InvalidOperationException)
                 {
@@ -46,7 +46,7 @@ namespace IBL
                     BLdrone.State = DroneState.Busy;
                     BLdrone.PassingPckageId = AssociatedButNotDelivered?.Id;
 
-                    bool WasPickedUp = AssociatedButNotDelivered?.PickUp != DateTime.MinValue;
+                    bool WasPickedUp = AssociatedButNotDelivered?.PickUp is not null;
                     //no need here for a try block, as we know that the senderId exists
                     IDAL.DO.Customer customer = Idal.GetCustomer((int)AssociatedButNotDelivered?.SenderId);
                     Location customerLoc = new(customer.Longitude, customer.Lattitude);
@@ -85,7 +85,7 @@ namespace IBL
                     else //empty
                     {
                         BLdrone.State = DroneState.Empty;
-                        var allPackages = Idal.GetAllPackages().Where(p => p.Delivered != DateTime.MinValue);
+                        var allPackages = Idal.GetAllPackages().Where(p => p.Delivered is not null);
                         if (allPackages.Count() != 0)
                         {
                             var customer = GetDALCustomer(allPackages.ToList()[rand.Next(0, allPackages.Count())].RecevirId);
@@ -185,7 +185,7 @@ namespace IBL
         {
             try
             {
-                Idal.AddPackage(p.Id, p.Sender.Id, p.Reciver.Id, (IDAL.DO.WeightGroup)((int)p.Weight), ((IDAL.DO.Priority)(int)p.Priority), null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+                Idal.AddPackage(p.Id, p.Sender.Id, p.Reciver.Id, (IDAL.DO.WeightGroup)((int)p.Weight), ((IDAL.DO.Priority)(int)p.Priority), null, null, null, null, null);
             }
             catch (Exception e)
             {
@@ -411,14 +411,14 @@ namespace IBL
                     throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
                     (int)BLdrone.PassingPckageId;
                 IDAL.DO.Package p = GetDALPackage(PackageId);
-                if (p.Associated != DateTime.MinValue && p.PickUp == DateTime.MinValue)
+                if (p.Associated is not null && p.PickUp is null)
                 {
                     // the battery was checked in associate
 
                     IDAL.DO.Customer Sender = GetDALCustomer(p.SenderId);
                     Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
 
-                    double batteryNeed= (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                    double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                     if (batteryNeed > BLdrone.Battery)
                         throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
                     BLdrone.Battery -= batteryNeed;
@@ -453,14 +453,14 @@ namespace IBL
                     throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
                     (int)BLdrone.PassingPckageId;
                 IDAL.DO.Package p = GetDALPackage(PackageId);
-                if (p.PickUp != DateTime.MinValue && p.Delivered == DateTime.MinValue)
+                if (p.PickUp is not null && p.Delivered is null)
                 {
                     // the battery was checked in associate
 
                     IDAL.DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
                     Location RecvLoc = new(Recv.Longitude, Recv.Lattitude);
 
-                    double batteryNeed = (1/ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                    double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                     if (batteryNeed > BLdrone.Battery)
                         throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
 
@@ -530,7 +530,7 @@ namespace IBL
                 CustomerForPackage recv = new CustomerForPackage(DALpkg.RecevirId, DALrecv.Name);
 
                 Location locSend = new(DALsend.Longitude, DALsend.Lattitude), locRecv = new(DALrecv.Longitude, DALrecv.Lattitude);
-                pckTransfer = new PackageInTransfer(pkgId, DALpkg.Delivered != DateTime.MinValue, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, DistanceTo(locRecv, locSend));
+                pckTransfer = new PackageInTransfer(pkgId, DALpkg.Delivered is not null, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, DistanceTo(locRecv, locSend));
             }
 
             return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
@@ -553,12 +553,12 @@ namespace IBL
 
             foreach (IDAL.DO.Package dp in DALpackages)
             {
-                if (dp.Associated != DateTime.MinValue) // if the package is in the progress of delivering
+                if (dp.Associated is not null) // if the package is in the progress of delivering
                 {
 
                     if (dp.SenderId == CustomerId || dp.RecevirId == CustomerId)
                     {
-                        PackageStatus status = dp.Delivered != DateTime.MinValue ? PackageStatus.Accepted : (dp.PickUp != DateTime.MinValue ? PackageStatus.PickedUp : dp.Associated != DateTime.MinValue ? PackageStatus.Paired : PackageStatus.Initialized);
+                        PackageStatus status = dp.Delivered is not null ? PackageStatus.Accepted : (dp.PickUp is not null ? PackageStatus.PickedUp : dp.Associated is not null ? PackageStatus.Paired : PackageStatus.Initialized);
 
                         PackageForCustomer pkgForCustomer = new(dp.Id, (WeightGroup)((int)dp.Weight), (PriorityGroup)((int)dp.PackagePriority), status, new CustomerForPackage(CustomerId, DALcustomer.Name));
 
@@ -644,7 +644,7 @@ namespace IBL
             foreach (var drone in Idal.GetAllDrones())
             {
                 Drone blDrone = DisplayDrone(drone.Id);
-                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1: blDrone.Package.Id)));
+                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1 : blDrone.Package.Id)));
             }
             return ret;
         }
@@ -660,13 +660,13 @@ namespace IBL
             {
                 Customer blCustomer = DisplayCustomer(customer.Id);
                 int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                p.Delivered == DateTime.MinValue).Count();
+                p.Delivered is null).Count();
                 int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                p.Delivered != DateTime.MinValue).Count();
+                p.Delivered is not null).Count();
                 int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
-                p.Delivered == DateTime.MinValue).Count();
+                p.Delivered is null).Count();
                 int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
-                p.Delivered != DateTime.MinValue).Count();
+                p.Delivered is not null).Count();
                 ret.Add(new CustomerForList(blCustomer.Id, blCustomer.Name, blCustomer.PhoneNumber, sentAccepted,
                     sentOnTheWay, accepted, onTheWay));
             }
@@ -814,7 +814,7 @@ namespace IBL
             Location recvLoc = new(recv.Longitude, recv.Lattitude);
 
             int? StationId = GetClosetStation(recvLoc);
-            if (StationId == null)
+            if (StationId is null)
             {
                 /**
              * ATTENTION: now,if all the stations have no charging slot, the associationg cannot be!!! 
@@ -921,11 +921,11 @@ namespace IBL
         private PackageStatus GetPackageState(Package p)
         {
 
-            return p.TimeToDeliver != DateTime.MinValue ?
+            return p.TimeToDeliver is not null ?
                    PackageStatus.Accepted :
-                   (p.TimeToPickup != DateTime.MinValue ?
+                   (p.TimeToPickup is not null ?
                    PackageStatus.PickedUp :
-                   (p.TimeToPair != DateTime.MinValue ?
+                   (p.TimeToPair is not null ?
                    PackageStatus.Paired :
                    PackageStatus.Initialized));
         }
