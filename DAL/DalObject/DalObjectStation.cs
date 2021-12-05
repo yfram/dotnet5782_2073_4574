@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalObject
 {
@@ -22,7 +20,7 @@ namespace DalObject
 
         public IEnumerable<Station> GetAllStations() => new List<Station>(DataSource.Stations);
 
-        public IEnumerable<Station> GetAllAvailableStations() => DataSource.Stations.Where(p => p.ChargeSlots > 0);
+        public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate) => DataSource.Stations.Where(predicate);
 
     }
 }

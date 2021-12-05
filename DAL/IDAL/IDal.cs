@@ -41,8 +41,8 @@ namespace IDAL
         IEnumerable<Drone> GetAllDrones();
         IEnumerable<Customer> GetAllCustomers();
         IEnumerable<Package> GetAllPackages();
-        IEnumerable<Package> GetAllUndronedPackages();
-        IEnumerable<Station> GetAllAvailableStations();
+        IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> func);
+        IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate);
 
         double[] GetElectricity();
     }

@@ -12,10 +12,10 @@ namespace DalObject
     public partial class DalObject
     {
         public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
-            DateTime? Created , DateTime? Associated, DateTime? PickUp, DateTime? Delivered) =>
+            DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered) =>
 
             DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new Exception($"the Package {id} is already exist!") : id, senderId, recevirId, weight, packagePriority, droneId,
-                Created,Associated,PickUp,Delivered));
+                Created, Associated, PickUp, Delivered));
 
         public void DeliverPackage(int packageId)
         {
@@ -39,7 +39,7 @@ namespace DalObject
         }
 
         public IEnumerable<Package> GetAllPackages() => new List<Package>(DataSource.Packages);
-        public IEnumerable<Package> GetAllUndronedPackages() => DataSource.Packages.Where(p => p.DroneId == null);
+        public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> predicate) => DataSource.Packages.Where(predicate);
 
         private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
 
