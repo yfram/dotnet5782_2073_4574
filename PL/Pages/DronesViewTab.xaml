@@ -18,7 +18,7 @@
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
         <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserFilterColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
+                  CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header=" Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="Auto" Header="From" Binding="{Binding Package.Sender.Name}"/>
