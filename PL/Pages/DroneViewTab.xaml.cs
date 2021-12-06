@@ -26,7 +26,7 @@ namespace PL.Pages
 
         }
 
-        private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             MainWindow.BL.UpdateDroneName(BLdrone.Id,DroneName.Text);
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
@@ -100,5 +100,7 @@ namespace PL.Pages
         {
 
         }
+
+
     }
 }
