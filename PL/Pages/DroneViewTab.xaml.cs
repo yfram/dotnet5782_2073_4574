@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using IBL.BO;
 
@@ -28,30 +29,40 @@ namespace PL.Pages
 
         private void UpdateButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            MainWindow.BL.UpdateDroneName(BLdrone.Id,DroneName.Text);
-            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            try
+            {
+                MainWindow.BL.UpdateDroneName(BLdrone.Id, DroneName.Text);
+                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
 
-            DroneName.Text = BLdrone.Model.ToString();
-            UpdateState.Visibility = System.Windows.Visibility.Visible;
+                DroneName.Text = BLdrone.Model.ToString();
+                UpdateState.Visibility = System.Windows.Visibility.Visible;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             
         }
 
         private void Charge_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if(Charge.Content.ToString() == "send to charge")
+            try
             {
-                MainWindow.BL.SendDroneToCharge(BLdrone.Id);
-                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
-                UpdateChargeButton();
-
-            }
-            else if(Charge.Content.ToString() == "release from charge")
+                if (Charge.Content.ToString() == "send to charge")
+                {
+                    MainWindow.BL.SendDroneToCharge(BLdrone.Id);
+                }
+                else if (Charge.Content.ToString() == "release from charge")
+                {
+                    MainWindow.BL.ReleaseDrone(BLdrone.Id, double.Parse(ChargeTime.Text));
+                }
+            }catch(Exception ex)
             {
-                MainWindow.BL.ReleaseDrone(BLdrone.Id, double.Parse(ChargeTime.Text));
-                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
-                UpdateChargeButton();
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
+            UpdateChargeButton();
         }
 
         private void UpdateChargeButton()
@@ -101,24 +112,32 @@ namespace PL.Pages
 
         private void DroneNextOp_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (BLdrone.State == IBL.BO.DroneState.Empty)
-            {
-                MainWindow.BL.AssignPackage(BLdrone.Id);
-            }
-            else 
-            {
-                Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
-                if(p.TimeToPickup.HasValue)
-                {
-                    MainWindow.BL.DeliverPackage(BLdrone.Id);
-                }
-                else if(p.TimeToPair.HasValue)
-                {
-                    MainWindow.BL.PickUpPackage(BLdrone.Id);
-                }
-            }
 
+            try
+            {
 
+                if (BLdrone.State == IBL.BO.DroneState.Empty)
+                {
+                    MainWindow.BL.AssignPackage(BLdrone.Id);
+                }
+                else
+                {
+                    Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+                    if (p.TimeToPickup.HasValue)
+                    {
+                        MainWindow.BL.DeliverPackage(BLdrone.Id);
+                    }
+                    else if (p.TimeToPair.HasValue)
+                    {
+                        MainWindow.BL.PickUpPackage(BLdrone.Id);
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
