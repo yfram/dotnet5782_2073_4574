@@ -83,10 +83,10 @@ namespace ConsoleUI
                     list = (IEnumerable<object>)d.GetAllPackages();
                     break;
                 case 5:
-                    list = (IEnumerable<object>)d.GetAllPackagesWhere(p=> p.Associated == null);
+                    list = (IEnumerable<object>)d.GetAllPackagesWhere(p => p.Associated == null);
                     break;
                 case 6:
-                    list = (IEnumerable<object>)d.GetAllStationsWhere(s=>s.ChargeSlots > 0);
+                    list = (IEnumerable<object>)d.GetAllStationsWhere(s => s.ChargeSlots > 0);
                     break;
             }
             foreach (Object obj in list)
