@@ -14,12 +14,12 @@ namespace PL.Pages
         {
             BLdrone = d;
             InitializeComponent();
-            DroneId.Text = d.Id.ToString();
+            DroneId.Text += d.Id.ToString();
             DroneName.Text = d.Model;
-            DroneLocation.Text = d.CurrentLocation.ToString();
-            DroneBattery.Text = System.Math.Round(d.Battery,2).ToString();
-            DroneState.Text = d.State.ToString();
-            DroneWeight.Text = d.Weight.ToString();
+            DroneLocation.Text += d.CurrentLocation.ToString();
+            DroneBattery.Text += System.Math.Round(d.Battery,2).ToString();
+            DroneState.Text += d.State.ToString();
+            DroneWeight.Text += d.Weight.ToString();
 
             UpdateChargeButton();
             UpdateDroneNextOp();
@@ -77,6 +77,7 @@ namespace PL.Pages
             if(BLdrone.State == IBL.BO.DroneState.Maitenance)
             {
                 DroneNextOp.Visibility = System.Windows.Visibility.Hidden;
+                return;
             }
             if(BLdrone.State == IBL.BO.DroneState.Empty)
             {
