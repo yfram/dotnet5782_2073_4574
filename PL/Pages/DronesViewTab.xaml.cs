@@ -97,6 +97,7 @@ namespace PL.Pages
             DroneGrid.ItemsSource = Drones;
             DroneGrid.Items.Refresh();
         }
+
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).Visibility = Visibility.Collapsed;
@@ -116,9 +117,20 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 0;
+            myDoubleAnimation.To = 150;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(myDoubleAnimation);
+            BeginStoryboard(storyboard);
+
+            UpdateMenue.Children.Clear();
             Drone drone = Drones[((DataGridRow)sender).GetIndex()];
-            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Clear();
-            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Add(new DroneViewTab(drone));
+            UpdateMenue.Children.Add(new DroneViewTab(drone));
         }
     }
 }
