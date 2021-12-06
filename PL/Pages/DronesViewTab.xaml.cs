@@ -82,7 +82,7 @@ namespace PL.Pages
         {
             Drone drone = Drones[((DataGridRow)sender).GetIndex()];
             ((MainWindow)Application.Current.MainWindow).GridMain.Children.Clear();
-            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Add(new DroneViewTab());
+            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Add(new DroneViewTab(drone));
         }
     }
 }
