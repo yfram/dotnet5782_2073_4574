@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Animation;
+using System.Windows;
 
 namespace PL.Pages
 {
@@ -53,6 +55,34 @@ namespace PL.Pages
                 Drones.AddRange(drones.Where(func).Except(Drones));
             DroneGrid.ItemsSource = Drones;
             DroneGrid.Items.Refresh();
+        }
+
+        private void AddDrone(object sender, RoutedEventArgs e)
+        {
+            /*MainWindow.BL.AddDrone(, GetStringInput("Enter model:"),
+                            (IBL.BO.WeightGroup)GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
+                            new Random().Next(20, 40) / 100, IBL.BO.DroneState.Maitenance, new(),
+                            GetStationLocation(GetIntInput("Enter starting station id:"), Bl)));*/
+        }
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ((Button)sender).Visibility = System.Windows.Visibility.Collapsed;
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 0;
+            myDoubleAnimation.To = 150;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+            Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Grid.HeightProperty));
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(myDoubleAnimation);
+            this.BeginStoryboard(storyboard);
+        }
+
+        private void Row_DoubleClick(object sender, RoutedEventArgs e)
+        {
+            Drone drone = Drones[((DataGridRow)sender).GetIndex()];
+            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Clear();
+            ((MainWindow)Application.Current.MainWindow).GridMain.Children.Add(new DroneViewTab(drone));
         }
     }
 }

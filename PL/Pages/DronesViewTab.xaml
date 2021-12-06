@@ -17,8 +17,11 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
+                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header=" Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="Auto" Header="From" Binding="{Binding Package.Sender.Name}"/>
@@ -29,6 +32,11 @@
                 <DataGridTextColumn Width="Auto" Header="State" Binding="{Binding State}"/>
                 <DataGridTextColumn Width="Auto" Header="Weight group" Binding="{Binding Weight}"/>
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid">
             <Grid.Resources>
@@ -57,6 +65,22 @@
             <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+        </Grid>
+        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Grid Name="AddMenue" Background="#3d5a80" Height="150" Margin="0,0,0,0" VerticalAlignment="Bottom">
+            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" Click="AddDrone" HorizontalAlignment="Right" Width="58"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Drone ID:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Drone Model:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Weight group:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="400,10,0,0" TextWrapping="Wrap" Text="Starting Station ID:" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="ID" VerticalAlignment="Top" Width="76"/>
+            <TextBox HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" Text="Model" VerticalAlignment="Top" Width="76"/>
+            <ComboBox HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">
+                <ComboBoxItem Content="Light"></ComboBoxItem>
+                <ComboBoxItem Content="Mid"></ComboBoxItem>
+                <ComboBoxItem Content="Heavy"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="Stations" HorizontalAlignment="Left" Margin="400,31,0,0" VerticalAlignment="Top" Width="120"/>
         </Grid>
     </Grid>
 
