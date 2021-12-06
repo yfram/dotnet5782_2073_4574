@@ -17,8 +17,8 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
-        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Drones}" Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,69,0,0">
+        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#352F44" Foreground="#CAF0F8" 
+                  CanUserFilterColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header=" Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="Auto" Header="From" Binding="{Binding Package.Sender.Name}"/>
@@ -31,15 +31,33 @@
                 <DataGridTextColumn Width="Auto" Header="Weight group" Binding="{Binding Weight}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid>
-            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top">State:</TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="16">Sort By:</TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top">Maximum weight:</TextBlock>
-            <CheckBox Content="CheckBox" FontSize="12" HorizontalAlignment="Left" Margin="150,24,0,0" VerticalAlignment="Top" Height="27" Width="81">
-                <CheckBox.LayoutTransform>
-                    <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                </CheckBox.LayoutTransform>
-            </CheckBox>
+        <Grid x:Name="FilterGrid">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#000000"/>
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="Height" Value="27"/>
+                    <Setter Property="Width" Value="81"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </Grid.Resources>
+            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
+            <CheckBox Content="Empty" Margin="150,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Maitenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Busy" Margin="150,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
         </Grid>
     </Grid>
 
