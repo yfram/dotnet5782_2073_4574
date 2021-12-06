@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PL.Pages;
 
 namespace PL
 {
@@ -23,6 +24,7 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
+            GridMain.Children.Add(new HomeViewTab());
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -40,14 +42,22 @@ namespace PL
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GridMain.Children.Clear();
-
+            UserControl page;
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
+                case "HomeView":
+                    page = new HomeViewTab();
+                    break;
+                case "DroneView":
+                    page = new DroneViewTab();
+                    break;
+                case "DronesView":
+                    page = new DronesViewTab();
+                    break;
+                default:
+                    throw new InvalidOperationException("Unreachable!");
             }
-        }
-        private void DroneViewSelected(object sender, RoutedEventArgs e)
-        {
-
+            GridMain.Children.Add(page);
         }
     }
 }

@@ -32,10 +32,6 @@
     </Window.Triggers>
     <Grid Background="#FFDEDEDE">
         <Grid x:Name="GridMain" HorizontalAlignment="Right" Width="1010" Margin="0,44,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="41*"/>
-                <RowDefinition Height="499*"/>
-            </Grid.RowDefinitions>
         </Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="#5C5470">
             <Grid.Effect>
@@ -78,24 +74,24 @@
                     <Image Height="80" VerticalAlignment="Bottom"/>
                 </Grid>
                 <ListView x:Name="ListViewMenu" Foreground="#FF5C99D6" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged">
-                    <ListViewItem x:Name="ItemHome" Height="60">
+                    <ListViewItem x:Name="HomeView" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/home.png"/>
+                            <Image Source="Assets/home.png"/>
                             <TextBlock Text="Home" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem x:Name="ItemCreate" Height="60" Selected="DroneViewSelected">
+                    <ListViewItem x:Name="DroneView" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/drone.png"/>
+                            <Image Source="Assets/drone.png"/>
                             <TextBlock Text="Drone view" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Height="60">
+                    </ListViewItem >
+                    <ListViewItem x:Name="DronesView" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/drones.png" Height="41" Width="53"/>
-                            <TextBlock Text="Drones view" VerticalAlignment="Center"  Margin="20 10"/>
+                            <Image Source="Assets/drones.png" Height="39" Width="54"/>
+                            <TextBlock Text="Drones view" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
-                    </ListViewItem>
+                    </ListViewItem >
                 </ListView>
             </StackPanel>
         </Grid>
