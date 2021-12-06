@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using IBL.BO;
 
 namespace PL.Pages
@@ -21,10 +22,11 @@ namespace PL.Pages
             DroneWeight.Text = d.Weight.ToString();
 
             UpdateChargeButton();
+            UpdateDroneNextOp();
 
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             MainWindow.BL.UpdateDroneName(BLdrone.Id,DroneName.Text);
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
@@ -69,6 +71,34 @@ namespace PL.Pages
                 Charge.IsEnabled = false;
                 Charge.Content = "cannot charge now";
             }
+        }
+        private void UpdateDroneNextOp()
+        {
+            if(BLdrone.State == IBL.BO.DroneState.Maitenance)
+            {
+                DroneNextOp.Visibility = System.Windows.Visibility.Hidden;
+            }
+            if(BLdrone.State == IBL.BO.DroneState.Empty)
+            {
+                DroneNextOp.Content = "pair a package";
+                return;
+            }
+            Package p= MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+            if (p.TimeToDeliver.HasValue)
+                throw new Exception("cannot deliver package that delivered");
+            if(p.TimeToPickup.HasValue)
+            {
+                DroneNextOp.Content = "deliver the package";
+            }
+            else if(p.TimeToPair.HasValue)
+            {
+                DroneNextOp.Content = "Pick up the package";
+            }
+        }
+
+        private void DroneNextOp_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
         }
     }
 }
