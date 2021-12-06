@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Animation;
 using System.Windows;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace PL.Pages
 {
@@ -59,23 +61,57 @@ namespace PL.Pages
 
         private void AddDrone(object sender, RoutedEventArgs e)
         {
-            /*MainWindow.BL.AddDrone(, GetStringInput("Enter model:"),
-                            (IBL.BO.WeightGroup)GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
-                            new Random().Next(20, 40) / 100, IBL.BO.DroneState.Maitenance, new(),
-                            GetStationLocation(GetIntInput("Enter starting station id:"), Bl)));*/
+            try
+            {
+                MainWindow.BL.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
+                                NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new Exception() },
+                                new Random().NextDouble() * 100, DroneState.Maitenance, new(),
+                                MainWindow.BL.DisplayStation(int.Parse(Stations.Text)).LocationOfStation));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            Drones.Clear();
+            drones.Clear();
+            MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
+            drones = Drones.Where(d => true).ToList();
+
+            ButtonOpenMenu.Visibility = Visibility.Visible;
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 150;
+            myDoubleAnimation.To = 0;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+            Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(myDoubleAnimation);
+            BeginStoryboard(storyboard);
+
+            NewId.Text = "";
+            NewModel.Text = "";
+            NewWeight.SelectedIndex = -1;
+            Stations.SelectedIndex = -1;
+
+            DroneGrid.ItemsSource = Drones;
+            DroneGrid.Items.Refresh();
         }
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)sender).Visibility = System.Windows.Visibility.Collapsed;
+            ((Button)sender).Visibility = Visibility.Collapsed;
             DoubleAnimation myDoubleAnimation = new DoubleAnimation();
             myDoubleAnimation.From = 0;
             myDoubleAnimation.To = 150;
             myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
             Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Grid.HeightProperty));
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
             Storyboard storyboard = new Storyboard();
+
             storyboard.Children.Add(myDoubleAnimation);
-            this.BeginStoryboard(storyboard);
+            BeginStoryboard(storyboard);
+
+            MainWindow.BL.DisplayStations().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)

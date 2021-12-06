@@ -34,6 +34,7 @@
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="#352F44"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
             </DataGrid.Resources>
@@ -67,15 +68,15 @@
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
         </Grid>
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
-        <Grid Name="AddMenue" Background="#3d5a80" Height="150" Margin="0,0,0,0" VerticalAlignment="Bottom">
+        <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
             <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" Click="AddDrone" HorizontalAlignment="Right" Width="58"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Drone ID:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Drone Model:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Weight group:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="400,10,0,0" TextWrapping="Wrap" Text="Starting Station ID:" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="ID" VerticalAlignment="Top" Width="76"/>
-            <TextBox HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" Text="Model" VerticalAlignment="Top" Width="76"/>
-            <ComboBox HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">
+            <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewModel" materialDesign:HintAssist.Hint="Model"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <ComboBox x:Name="NewWeight" HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">
                 <ComboBoxItem Content="Light"></ComboBoxItem>
                 <ComboBoxItem Content="Mid"></ComboBoxItem>
                 <ComboBoxItem Content="Heavy"></ComboBoxItem>
