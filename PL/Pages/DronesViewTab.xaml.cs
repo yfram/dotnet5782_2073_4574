@@ -19,7 +19,7 @@ namespace PL.Pages
     {
         public List<Drone> Drones { get; set; } = new();
 
-        List<Drone> drones;
+        public List<Drone> drones;
 
         public DronesViewTab()
         {
@@ -131,6 +131,20 @@ namespace PL.Pages
             UpdateMenue.Children.Clear();
             Drone drone = Drones[((DataGridRow)sender).GetIndex()];
             UpdateMenue.Children.Add(new DroneViewTab(drone));
+        }
+
+        private void UpdateMenue_LostFocus(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 150;
+            myDoubleAnimation.To = 0;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(myDoubleAnimation);
+            BeginStoryboard(storyboard);
         }
     }
 }

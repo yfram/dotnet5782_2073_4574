@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Controls;
 using IBL.BO;
 
@@ -17,41 +18,42 @@ namespace PL.Pages
             DroneId.Text += d.Id.ToString();
             DroneName.Text = d.Model;
             DroneLocation.Text += d.CurrentLocation.ToString();
-            DroneBattery.Text += System.Math.Round(d.Battery,2).ToString();
+            DroneBattery.Text += System.Math.Round(d.Battery, 2).ToString();
             DroneState.Text += d.State.ToString();
             DroneWeight.Text += d.Weight.ToString();
 
             UpdateChargeButton();
             UpdateDroneNextOp();
-
         }
 
         private void UpdateButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            MainWindow.BL.UpdateDroneName(BLdrone.Id,DroneName.Text);
+            MainWindow.BL.UpdateDroneName(BLdrone.Id, DroneName.Text);
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
 
             DroneName.Text = BLdrone.Model.ToString();
             UpdateState.Visibility = System.Windows.Visibility.Visible;
-            
+
+            UpdateParent();
         }
 
         private void Charge_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if(Charge.Content.ToString() == "send to charge")
+            if (Charge.Content.ToString() == "send to charge")
             {
                 MainWindow.BL.SendDroneToCharge(BLdrone.Id);
                 BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
                 UpdateChargeButton();
 
             }
-            else if(Charge.Content.ToString() == "release from charge")
+            else if (Charge.Content.ToString() == "release from charge")
             {
                 MainWindow.BL.ReleaseDrone(BLdrone.Id, double.Parse(ChargeTime.Text));
                 BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
                 UpdateChargeButton();
             }
             UpdateDroneNextOp();
+            UpdateParent();
         }
 
         private void UpdateChargeButton()
@@ -60,7 +62,7 @@ namespace PL.Pages
             {
                 Charge.IsEnabled = true;
                 Charge.Content = "send to charge";
-                
+
             }
             else if (BLdrone.State == IBL.BO.DroneState.Maitenance)
             {
@@ -73,9 +75,10 @@ namespace PL.Pages
                 Charge.Content = "cannot charge now";
             }
         }
+
         private void UpdateDroneNextOp()
         {
-            if(BLdrone.State == IBL.BO.DroneState.Maitenance)
+            if (BLdrone.State == IBL.BO.DroneState.Maitenance)
             {
                 DroneNextOp.Visibility = System.Windows.Visibility.Hidden;
                 return;
@@ -86,14 +89,14 @@ namespace PL.Pages
                 DroneNextOp.Content = "pair a package";
                 return;
             }
-            Package p= MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+            Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
             if (p.TimeToDeliver.HasValue)
                 throw new Exception("cannot deliver package that delivered");
-            if(p.TimeToPickup.HasValue)
+            if (p.TimeToPickup.HasValue)
             {
                 DroneNextOp.Content = "deliver the package";
             }
-            else if(p.TimeToPair.HasValue)
+            else if (p.TimeToPair.HasValue)
             {
                 DroneNextOp.Content = "Pick up the package";
             }
@@ -105,24 +108,32 @@ namespace PL.Pages
             {
                 MainWindow.BL.AssignPackage(BLdrone.Id);
             }
-            else 
+            else
             {
                 Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
-                if(p.TimeToPickup.HasValue)
+                if (p.TimeToPickup.HasValue)
                 {
                     MainWindow.BL.DeliverPackage(BLdrone.Id);
                 }
-                else if(p.TimeToPair.HasValue)
+                else if (p.TimeToPair.HasValue)
                 {
                     MainWindow.BL.PickUpPackage(BLdrone.Id);
                 }
             }
 
-
-
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
+
+            UpdateParent();
+        }
+
+        private void UpdateParent()
+        {
+            System.Collections.Generic.List<Drone> tmp = ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Drones;
+            tmp.Clear();
+            MainWindow.BL.DisplayDrones().ToList().ForEach(d => tmp.Add(MainWindow.BL.DisplayDrone(d.Id)));
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).drones = tmp.Where(d => true).ToList();
         }
     }
 }
