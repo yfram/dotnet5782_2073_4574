@@ -13,7 +13,7 @@
         <TextBlock Name="DroneBattery" HorizontalAlignment="Left" Margin="496,381,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock Name ="DroneState" HorizontalAlignment="Left" Margin="691,88,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock Name ="DroneWeight" HorizontalAlignment="Left" Margin="496,142,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Name="Update" Content="Update!" HorizontalAlignment="Left" Margin="27,150,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Name="Update" Content="Update!" HorizontalAlignment="Left" Margin="27,150,0,0" VerticalAlignment="Top"/>
         <TextBlock Name ="UpdateState" Visibility ="Hidden" HorizontalAlignment="Center" Margin="0,40,0,0" Text="update successfuly!" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Button Name="Charge" Content="" HorizontalAlignment="Left" Margin="468,276,0,0" VerticalAlignment="Top" Click="Charge_Click"/>
         <TextBox Name="ChargeTime" HorizontalAlignment="Left" Margin="545,292,0,0" Text="time" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
