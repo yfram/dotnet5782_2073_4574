@@ -24,5 +24,30 @@ namespace PL
         {
             InitializeComponent();
         }
+
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Visible;
+            ButtonOpenMenu.Visibility = Visibility.Collapsed;
+        }
+
+        private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Collapsed;
+            ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GridMain.Children.Clear();
+
+            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+            {
+            }
+        }
+        private void DroneViewSelected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
