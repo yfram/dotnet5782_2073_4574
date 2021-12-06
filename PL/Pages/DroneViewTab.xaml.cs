@@ -143,7 +143,5 @@ namespace PL.Pages
             UpdateDroneNextOp();
             UpdateChargeButton();
         }
-
-
     }
 }

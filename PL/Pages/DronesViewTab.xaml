@@ -83,6 +83,8 @@
             </ComboBox>
             <ComboBox x:Name="Stations" HorizontalAlignment="Left" Margin="400,31,0,0" VerticalAlignment="Top" Width="120"/>
         </Grid>
+        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
+        </Grid>
     </Grid>
 
 </UserControl>
