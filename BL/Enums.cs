@@ -14,6 +14,6 @@
     }
     public enum DroneState
     {
-        Empty = 1, Maitenance, Busy
+        Empty = 1, Maitenance, Bussy
     }
 }

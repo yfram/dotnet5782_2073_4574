@@ -43,7 +43,7 @@ namespace IBL
                 }
                 if (AssociatedButNotDelivered is not null)
                 {
-                    BLdrone.State = DroneState.Busy;
+                    BLdrone.State = DroneState.Bussy;
                     BLdrone.PassingPckageId = AssociatedButNotDelivered?.Id;
 
                     bool WasPickedUp = AssociatedButNotDelivered?.PickUp is not null;
@@ -371,7 +371,7 @@ namespace IBL
 
                         int PackageId = allNearList[0].Id;
 
-                        BLdrone.State = DroneState.Busy;
+                        BLdrone.State = DroneState.Bussy;
                         BLdrone.PassingPckageId = PackageId;
 
                         Idal.GivePackageDrone(PackageId, BLdrone.Id); // change drone id in package, change time assosiating
@@ -405,7 +405,7 @@ namespace IBL
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId);
 
-            if (BLdrone.State == DroneState.Busy)
+            if (BLdrone.State == DroneState.Bussy)
             {
                 int PackageId = BLdrone.PassingPckageId is null ?
                     throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
@@ -434,7 +434,7 @@ namespace IBL
             }
             else
             {
-                throw new DroneStateException($"cannot pick up with drone that is not busy! the current state is {BLdrone.State}");
+                throw new DroneStateException($"cannot pick up with drone that is not Bussy! the current state is {BLdrone.State}");
             }
 
         }
@@ -447,7 +447,7 @@ namespace IBL
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
 
-            if (BLdrone.State == DroneState.Busy)
+            if (BLdrone.State == DroneState.Bussy)
             {
                 int PackageId = BLdrone.PassingPckageId is null ?
                     throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
@@ -518,7 +518,7 @@ namespace IBL
 
             PackageInTransfer pckTransfer = null;
 
-            if (droneForList.State == DroneState.Busy)
+            if (droneForList.State == DroneState.Bussy)
             {
                 int pkgId = (int)droneForList.PassingPckageId;
                 var DALpkg = GetDALPackage(pkgId);
@@ -897,7 +897,7 @@ namespace IBL
             int ix = -1;
             if (d.State == DroneState.Empty)
                 ix = 0;
-            else if (d.State == DroneState.Busy)
+            else if (d.State == DroneState.Bussy)
             {
                 switch (Idal.GetPackage((int)d.PassingPckageId).Weight)
                 {
