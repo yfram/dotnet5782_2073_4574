@@ -79,12 +79,6 @@
                             <TextBlock Text="Home" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem x:Name="DroneView" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Assets/drone.png"/>
-                            <TextBlock Text="Drone view" VerticalAlignment="Center" Margin="29 10"/>
-                        </StackPanel>
-                    </ListViewItem >
                     <ListViewItem x:Name="DronesView" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Assets/drones.png" Height="39" Width="54"/>

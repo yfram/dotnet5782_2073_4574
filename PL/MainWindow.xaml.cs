@@ -39,9 +39,6 @@ namespace PL
                 case "HomeView":
                     page = new HomeViewTab();
                     break;
-                case "DroneView":
-                    page = new DroneViewTab();
-                    break;
                 case "DronesView":
                     page = new DronesViewTab();
                     break;
