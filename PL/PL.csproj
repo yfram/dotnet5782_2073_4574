@@ -8,7 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="drone.png" />
+    <None Remove="drones.png" />
+    <None Remove="home.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\drone.png" />
+    <Resource Include="Assets\drones.png" />
+    <Resource Include="Assets\home.png" />
   </ItemGroup>
 
 </Project>
