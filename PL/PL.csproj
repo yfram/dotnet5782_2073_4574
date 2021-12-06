@@ -10,7 +10,6 @@
   <ItemGroup>
     <None Remove="drone.png" />
     <None Remove="drones.png" />
-    <None Remove="home.png" />
   </ItemGroup>
 
   <ItemGroup>
