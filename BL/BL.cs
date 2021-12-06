@@ -75,7 +75,7 @@ namespace IBL
                     {
                         BLdrone.State = DroneState.Maitenance;
 
-                        BLdrone.Battery = ((double)rand.Next(0, 21)) / 100;
+                        BLdrone.Battery = ((double)rand.Next(1, 21));
 
                         var stations = Idal.GetAllStations();
                         var station = stations.ElementAt(rand.Next(0, stations.Count()));
