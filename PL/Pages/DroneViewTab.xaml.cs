@@ -51,6 +51,7 @@ namespace PL.Pages
                 BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
                 UpdateChargeButton();
             }
+            UpdateDroneNextOp();
         }
 
         private void UpdateChargeButton()
@@ -79,7 +80,8 @@ namespace PL.Pages
                 DroneNextOp.Visibility = System.Windows.Visibility.Hidden;
                 return;
             }
-            if(BLdrone.State == IBL.BO.DroneState.Empty)
+            DroneNextOp.Visibility = System.Windows.Visibility.Visible;
+            if (BLdrone.State == IBL.BO.DroneState.Empty)
             {
                 DroneNextOp.Content = "pair a package";
                 return;
@@ -99,7 +101,28 @@ namespace PL.Pages
 
         private void DroneNextOp_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            if (BLdrone.State == IBL.BO.DroneState.Empty)
+            {
+                MainWindow.BL.AssignPackage(BLdrone.Id);
+            }
+            else 
+            {
+                Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+                if(p.TimeToPickup.HasValue)
+                {
+                    MainWindow.BL.DeliverPackage(BLdrone.Id);
+                }
+                else if(p.TimeToPair.HasValue)
+                {
+                    MainWindow.BL.PickUpPackage(BLdrone.Id);
+                }
+            }
 
+
+
+            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            UpdateDroneNextOp();
+            UpdateChargeButton();
         }
 
 
