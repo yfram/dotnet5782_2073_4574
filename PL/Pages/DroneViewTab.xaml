@@ -6,7 +6,17 @@
              xmlns:local="clr-namespace:PL.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Red">
-            
+    <Grid Background="#DBD8E3">
+        <TextBlock Name="DroneId" HorizontalAlignment="Center" Margin="0,71,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Height="94" Width="136"/>
+        <TextBox Name ="DroneName" HorizontalAlignment="Left" Margin="169,311,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Name="DroneLocation" HorizontalAlignment="Left" Margin="666,311,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock Name="DroneBattery" HorizontalAlignment="Left" Margin="496,381,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock Name ="DroneState" HorizontalAlignment="Left" Margin="691,88,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock Name ="DroneWeight" HorizontalAlignment="Left" Margin="496,142,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button Content="Update!" HorizontalAlignment="Left" Margin="27,150,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBlock Name ="UpdateState" Visibility ="Hidden" HorizontalAlignment="Center" Margin="0,40,0,0" Text="update successfuly!" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button Name="Charge" Content="" HorizontalAlignment="Left" Margin="468,276,0,0" VerticalAlignment="Top" Click="Charge_Click"/>
+        <TextBox Name="ChargeTime" HorizontalAlignment="Left" Margin="545,292,0,0" Text="time" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
     </Grid>
 </UserControl>
