@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\drone.png" />
     <Resource Include="Assets\drones.png" />
     <Resource Include="Assets\home.png" />

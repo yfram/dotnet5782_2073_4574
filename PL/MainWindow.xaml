@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" Height="600" Width="1080" Foreground="#DBD8E3" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        mc:Ignorable="d" Height="600" Width="1080" Foreground="#DBD8E3" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Storyboard x:Key="OpenMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
@@ -31,8 +31,7 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid Background="#FFDEDEDE">
-        <Grid x:Name="GridMain" HorizontalAlignment="Right" Width="1010" Margin="0,44,0,0">
-        </Grid>
+        <Grid x:Name="GridMain" Margin="70,60,0,0"/>
         <Grid Height="60" VerticalAlignment="Top" Background="#5C5470">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
