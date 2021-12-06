@@ -23,9 +23,8 @@
                 <DataGridTextColumn Width="Auto" Header=" Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="Auto" Header="From" Binding="{Binding Package.Sender.Name}"/>
                 <DataGridTextColumn Width="Auto" Header="To" Binding="{Binding Package.Reciver.Name}"/>
-                <DataGridTextColumn Width="Auto" Header="Current location(lat.)" Binding="{Binding CurrentLocation.Latitude}"/>
-                <DataGridTextColumn Width="Auto" Header="Current location(long.)" Binding="{Binding CurrentLocation.Longitude}"/>
-                <DataGridTextColumn Width="Auto" Header="Battery" Binding="{Binding Battery, StringFormat=\{0\}%}"/>
+                <DataGridTextColumn Width="Auto" Header="Current location" Binding="{Binding CurrentLocation}"/>
+                <DataGridTextColumn Width="Auto" Header="Battery" Binding="{Binding Battery, StringFormat={}{0:0.00}%}"/>
                 <DataGridTextColumn Width="Auto" Header="Model" Binding="{Binding Model}"/>
                 <DataGridTextColumn Width="Auto" Header="State" Binding="{Binding State}"/>
                 <DataGridTextColumn Width="Auto" Header="Weight group" Binding="{Binding Weight}"/>
