@@ -5,20 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:PL.Pages"
+             xmlns:src="clr-namespace:IBL.BO;assembly=BL"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="1000">
-    <Grid Background="#3e5c76">
-        <TextBlock Name="DroneId" HorizontalAlignment="Left" Margin="236,0,0,2" Text="Drone ID:" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
-        <TextBox Name ="DroneName" materialDesign:HintAssist.Hint="Model"  HorizontalAlignment="Left" Margin="48,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="98" />
-        <TextBlock Name="DroneLocation" HorizontalAlignment="Left" Margin="30,14,0,0" Text="location: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
-        <TextBlock Name="DroneBattery" HorizontalAlignment="Left" Margin="573,22,0,0" Text="battery: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
-        <TextBlock Name ="DroneState" HorizontalAlignment="Left" Margin="236,44,0,0" Text="state: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
-        <TextBlock Name ="DroneWeight" HorizontalAlignment="Left" Margin="327,44,0,0" Text="weight: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
-        <Button Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top" Click="UpdateButton_Click"/>
-        <TextBlock Name ="UpdateState" Visibility ="Hidden" HorizontalAlignment="Center" Margin="0,40,0,0" Text="update successfuly!" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Name="Charge" Content="" HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top" Click="Charge_Click"/>
+             d:DesignHeight="150" d:DesignWidth="1000"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <src:Drone x:Key="drone" x:Name="BLdrone"/>
+    </UserControl.Resources>
+    <Grid Background="#3e5c76" DataContext="{DynamicResource drone}">
+        <TextBlock FontSize="15" Name="DroneId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Path=Id, StringFormat=Drone id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
+        <TextBox Name ="DroneName" materialDesign:HintAssist.Hint="Model"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=Model,Mode=OneTime}"/>
+        <TextBlock FontSize="13" Name="DroneLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding Path=CurrentLocation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name="DroneBattery" HorizontalAlignment="Left" Margin="540,24,0,0" Text="{Binding Path=Battery, StringFormat=Battery: {0:f2}%}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name ="DroneState" HorizontalAlignment="Left" Margin="236,54,0,0" Text="{Binding Path=State, StringFormat=Currently {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name ="DroneWeight" HorizontalAlignment="Left" Margin="236,100,0,0" Text="{Binding Path=Weight, StringFormat=Weight group: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top"/>
+        <Button Name="Charge" Content="" HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
         <TextBox materialDesign:HintAssist.Hint="Time to charge"  Name="ChargeTime" HorizontalAlignment="Left" Margin="540,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Name="DroneNextOp" HorizontalAlignment="Left" Margin="770,92,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004" Click="DroneNextOp_Click"/>
+        <Button Name="DroneNextOp" HorizontalAlignment="Left" Margin="790,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,348,0,0" Text="model: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
+        <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
+            <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Button>
     </Grid>
 </UserControl>

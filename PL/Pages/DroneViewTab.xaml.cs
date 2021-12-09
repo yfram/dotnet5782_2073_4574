@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using IBL.BO;
 
@@ -10,40 +11,40 @@ namespace PL.Pages
     /// </summary>
     public partial class DroneViewTab : UserControl
     {
-        private Drone BLdrone;
+        private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
         public DroneViewTab(Drone d)
         {
-            BLdrone = d;
             InitializeComponent();
-            DroneId.Text += d.Id.ToString();
-            DroneName.Text = d.Model;
-            DroneLocation.Text += d.CurrentLocation.ToString();
-            DroneBattery.Text += System.Math.Round(d.Battery, 2).ToString();
-            DroneState.Text += d.State.ToString();
-            DroneWeight.Text += d.Weight.ToString();
+            BLdrone = d;
 
             UpdateChargeButton();
             UpdateDroneNextOp();
+
+            UpdateButton.GotFocus += UpdateButton_Click;
+            DroneNextOp.GotFocus += DroneNextOp_Click;
+            Charge.GotFocus += Charge_Click;
         }
 
-        private void UpdateButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 MainWindow.BL.UpdateDroneName(BLdrone.Id, DroneName.Text);
                 BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
-
-                DroneName.Text = BLdrone.Model.ToString();
-                UpdateState.Visibility = System.Windows.Visibility.Visible;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
         }
 
-        private void Charge_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Exit(object sender = null, RoutedEventArgs e = null)
+        {
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+        }
+
+        private void Charge_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -55,13 +56,16 @@ namespace PL.Pages
                 {
                     MainWindow.BL.ReleaseDrone(BLdrone.Id, double.Parse(ChargeTime.Text));
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
+
+            Exit();
         }
 
         private void UpdateChargeButton()
@@ -88,10 +92,10 @@ namespace PL.Pages
         {
             if (BLdrone.State == IBL.BO.DroneState.Maitenance)
             {
-                DroneNextOp.Visibility = System.Windows.Visibility.Hidden;
+                DroneNextOp.Visibility = Visibility.Hidden;
                 return;
             }
-            DroneNextOp.Visibility = System.Windows.Visibility.Visible;
+            DroneNextOp.Visibility = Visibility.Visible;
             if (BLdrone.State == IBL.BO.DroneState.Empty)
             {
                 DroneNextOp.Content = "pair a package";
@@ -110,12 +114,11 @@ namespace PL.Pages
             }
         }
 
-        private void DroneNextOp_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void DroneNextOp_Click(object sender, RoutedEventArgs e)
         {
-
+            ((Button)sender).Focusable = false;
             try
             {
-
                 if (BLdrone.State == IBL.BO.DroneState.Empty)
                 {
                     MainWindow.BL.AssignPackage(BLdrone.Id);
@@ -132,9 +135,10 @@ namespace PL.Pages
                         MainWindow.BL.PickUpPackage(BLdrone.Id);
                     }
                 }
+                UpdateView();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -142,16 +146,13 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
-
-            UpdateParent();
+            ((Button)sender).Focusable = true;
+            Exit();
         }
 
-        private void UpdateParent()
+        private void UpdateView()
         {
-            System.Collections.Generic.List<Drone> tmp = ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Drones;
-            tmp.Clear();
-            MainWindow.BL.DisplayDrones().ToList().ForEach(d => tmp.Add(MainWindow.BL.DisplayDrone(d.Id)));
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).drones = tmp.Where(d => true).ToList();
+            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
         }
     }
 }
