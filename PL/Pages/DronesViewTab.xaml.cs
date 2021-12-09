@@ -21,11 +21,59 @@ namespace PL.Pages
 
         public List<Drone> drones;
 
+        private bool gridOpen = false;
+
         public DronesViewTab()
         {
             MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
             drones = Drones.Where(d => true).ToList();
             InitializeComponent();
+            GotFocus += DronesViewTab_GotFocus;
+        }
+
+        private void DronesViewTab_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (!gridOpen || e.OriginalSource is not Button button) return;
+            Drones.Clear();
+            drones.Clear();
+            MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
+            drones = Drones.Where(d => true).ToList();
+
+            //this way only the exit button acctualy closes the update view
+            if (button.Name == "ExitButton" && UpdateMenue.Height != 0)
+            {
+                DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+                myDoubleAnimation.From = 150;
+                myDoubleAnimation.To = 0;
+                myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+                Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+                Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+                Storyboard storyboard = new Storyboard();
+
+                storyboard.Children.Add(myDoubleAnimation);
+                BeginStoryboard(storyboard);
+
+                UpdateMenue.Children.Clear();
+
+                gridOpen = false;
+            }
+            if (AddMenue.Height != 0)
+            {
+                ButtonOpenMenu.Visibility = Visibility.Visible;
+                DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+                myDoubleAnimation.From = 150;
+                myDoubleAnimation.To = 0;
+                myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+                Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
+                Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+                Storyboard storyboard = new Storyboard();
+
+                storyboard.Children.Add(myDoubleAnimation);
+                BeginStoryboard(storyboard);
+                gridOpen = false;
+            }
+            DroneGrid.ItemsSource = Drones;
+            DroneGrid.Items.Refresh();
         }
 
         private void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
@@ -72,30 +120,12 @@ namespace PL.Pages
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            Drones.Clear();
-            drones.Clear();
-            MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
-            drones = Drones.Where(d => true).ToList();
-
-            ButtonOpenMenu.Visibility = Visibility.Visible;
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 150;
-            myDoubleAnimation.To = 0;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
-
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
 
             NewId.Text = "";
             NewModel.Text = "";
             NewWeight.SelectedIndex = -1;
             Stations.SelectedIndex = -1;
-
-            DroneGrid.ItemsSource = Drones;
-            DroneGrid.Items.Refresh();
+            Focus();
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -112,11 +142,14 @@ namespace PL.Pages
             storyboard.Children.Add(myDoubleAnimation);
             BeginStoryboard(storyboard);
 
+            gridOpen = true;
+
             MainWindow.BL.DisplayStations().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
+            gridOpen = true;
             DoubleAnimation myDoubleAnimation = new DoubleAnimation();
             myDoubleAnimation.From = 0;
             myDoubleAnimation.To = 150;
@@ -131,20 +164,6 @@ namespace PL.Pages
             UpdateMenue.Children.Clear();
             Drone drone = Drones[((DataGridRow)sender).GetIndex()];
             UpdateMenue.Children.Add(new DroneViewTab(drone));
-        }
-
-        private void UpdateMenue_LostFocus(object sender, RoutedEventArgs e)
-        {
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 150;
-            myDoubleAnimation.To = 0;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
-
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
         }
     }
 }

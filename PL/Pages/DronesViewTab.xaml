@@ -17,29 +17,36 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0">
+                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
+                  HorizontalAlignment="Stretch">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header=" Id" Binding="{Binding Id}"/>
-                <DataGridTextColumn Width="Auto" Header="From" Binding="{Binding Package.Sender.Name}"/>
-                <DataGridTextColumn Width="Auto" Header="To" Binding="{Binding Package.Reciver.Name}"/>
+                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Id}"/>
+                <DataGridTextColumn Width="Auto" Header="From     " Binding="{Binding Package.Sender.Name}"/>
+                <DataGridTextColumn Width="Auto" Header="To           " Binding="{Binding Package.Reciver.Name}"/>
                 <DataGridTextColumn Width="Auto" Header="Current location" Binding="{Binding CurrentLocation}"/>
-                <DataGridTextColumn Width="Auto" Header="Battery" Binding="{Binding Battery, StringFormat={}{0:0.00}%}"/>
-                <DataGridTextColumn Width="Auto" Header="Model" Binding="{Binding Model}"/>
-                <DataGridTextColumn Width="Auto" Header="State" Binding="{Binding State}"/>
-                <DataGridTextColumn Width="Auto" Header="Weight group" Binding="{Binding Weight}"/>
+                <DataGridTextColumn Width="Auto" Header="Battery        " Binding="{Binding Battery, StringFormat={}{0:0.00}%}"/>
+                <DataGridTextColumn Width="Auto" Header="  Model  " Binding="{Binding Model}"/>
+                <DataGridTextColumn Width="Auto" Header="  State  " Binding="{Binding State}"/>
+                <DataGridTextColumn Width="Auto" Header="  Weight group  " Binding="{Binding Weight}"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
                 <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#352F44" />
+                        </Trigger>
+                    </Style.Triggers>
                     <Setter Property="Background" Value="#352F44"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-        <Grid x:Name="FilterGrid">
+        <Grid x:Name="FilterGrid" Margin="0,0,0,381">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="#000000"/>
@@ -83,7 +90,7 @@
             </ComboBox>
             <ComboBox x:Name="Stations" HorizontalAlignment="Left" Margin="400,31,0,0" VerticalAlignment="Top" Width="120"/>
         </Grid>
-        <Grid LostFocus="UpdateMenue_LostFocus" Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
+        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
         </Grid>
     </Grid>
 
