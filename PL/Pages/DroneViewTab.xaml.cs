@@ -11,7 +11,7 @@ namespace PL.Pages
     /// </summary>
     public partial class DroneViewTab : UserControl
     {
-        private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
+        private Drone BLdrone { get => (Drone)Resources["drone"]; set => Resources["drone"] = value; }
         public DroneViewTab(Drone d)
         {
             InitializeComponent();
@@ -38,12 +38,6 @@ namespace PL.Pages
             }
         }
 
-        private void Exit(object sender = null, RoutedEventArgs e = null)
-        {
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
-        }
-
         private void Charge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -68,55 +62,8 @@ namespace PL.Pages
             Exit();
         }
 
-        private void UpdateChargeButton()
-        {
-            if (BLdrone.State == IBL.BO.DroneState.Empty)
-            {
-                Charge.IsEnabled = true;
-                Charge.Content = "send to charge";
-
-            }
-            else if (BLdrone.State == IBL.BO.DroneState.Maitenance)
-            {
-                Charge.IsEnabled = true;
-                Charge.Content = "release from charge";
-            }
-            else
-            {
-                Charge.IsEnabled = false;
-                Charge.Content = "cannot charge now";
-            }
-        }
-
-        private void UpdateDroneNextOp()
-        {
-            if (BLdrone.State == IBL.BO.DroneState.Maitenance)
-            {
-                DroneNextOp.Visibility = Visibility.Hidden;
-                return;
-            }
-            DroneNextOp.Visibility = Visibility.Visible;
-            if (BLdrone.State == IBL.BO.DroneState.Empty)
-            {
-                DroneNextOp.Content = "pair a package";
-                return;
-            }
-            Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
-            if (p.TimeToDeliver.HasValue)
-                throw new Exception("cannot deliver package that delivered");
-            if (p.TimeToPickup.HasValue)
-            {
-                DroneNextOp.Content = "deliver the package";
-            }
-            else if (p.TimeToPair.HasValue)
-            {
-                DroneNextOp.Content = "Pick up the package";
-            }
-        }
-
         private void DroneNextOp_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)sender).Focusable = false;
             try
             {
                 if (BLdrone.State == IBL.BO.DroneState.Empty)
@@ -135,7 +82,6 @@ namespace PL.Pages
                         MainWindow.BL.PickUpPackage(BLdrone.Id);
                     }
                 }
-                UpdateView();
 
             }
             catch (Exception ex)
@@ -146,13 +92,48 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
-            ((Button)sender).Focusable = true;
             Exit();
         }
 
-        private void UpdateView()
+        private void UpdateChargeButton()
         {
-            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            Charge.IsEnabled = BLdrone.State switch
+            {
+                IBL.BO.DroneState.Empty => (Charge.Content = "send to charge").Equals("send to charge"),
+                IBL.BO.DroneState.Maitenance => (Charge.Content = "release from charge").Equals("release from charge"),
+                IBL.BO.DroneState.Busy => (Charge.Content = "cannot charge now").Equals(""),
+            };
+        }
+
+        private void UpdateDroneNextOp()
+        {
+            if (BLdrone.State == IBL.BO.DroneState.Maitenance)
+            {
+                DroneNextOp.Visibility = Visibility.Hidden;
+                return;
+            }
+            if (BLdrone.State == IBL.BO.DroneState.Empty)
+            {
+                DroneNextOp.Content = "pair a package";
+                return;
+            }
+            Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+            if (p.TimeToDeliver.HasValue)
+                throw new Exception("cannot deliver package that delivered");
+            if (p.TimeToPickup.HasValue)
+            {
+                DroneNextOp.Content = "deliver the package";
+            }
+            else if (p.TimeToPair.HasValue)
+            {
+                DroneNextOp.Content = "Pick up the package";
+            }
+        }
+
+        private void Exit(object? sender = null, RoutedEventArgs? e = null)
+        {
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
         }
     }
 }
