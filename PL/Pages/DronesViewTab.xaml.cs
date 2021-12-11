@@ -76,7 +76,7 @@ namespace PL.Pages
             DroneGrid.Items.Refresh();
         }
 
-        private void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox senderAsCheckBox) return;
             List<Func<Drone, bool>> funcs = new();

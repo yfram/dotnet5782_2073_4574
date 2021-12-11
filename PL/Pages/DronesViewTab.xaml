@@ -17,18 +17,18 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
-        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#352F44" Foreground="#CAF0F8" 
+        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones}" Background="#352F44" Foreground="#CAF0F8" 
                   CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
                   HorizontalAlignment="Stretch">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Id}"/>
-                <DataGridTextColumn Width="Auto" Header="From     " Binding="{Binding Package.Sender.Name}"/>
-                <DataGridTextColumn Width="Auto" Header="To           " Binding="{Binding Package.Reciver.Name}"/>
-                <DataGridTextColumn Width="Auto" Header="Current location" Binding="{Binding CurrentLocation}"/>
-                <DataGridTextColumn Width="Auto" Header="Battery        " Binding="{Binding Battery, StringFormat={}{0:0.00}%}"/>
-                <DataGridTextColumn Width="Auto" Header="  Model  " Binding="{Binding Model}"/>
-                <DataGridTextColumn Width="Auto" Header="  State  " Binding="{Binding State}"/>
-                <DataGridTextColumn Width="Auto" Header="  Weight group  " Binding="{Binding Weight}"/>
+                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn Width="Auto" Header="From     " Binding="{Binding Path=Package.Sender.Name}"/>
+                <DataGridTextColumn Width="Auto" Header="To           " Binding="{Binding Path=Package.Reciver.Name}"/>
+                <DataGridTextColumn Width="Auto" Header="Current location" Binding="{Binding Path=CurrentLocation}"/>
+                <DataGridTextColumn Width="Auto" Header="Battery        " Binding="{Binding Path=Battery, StringFormat={}{0:0.00}%}"/>
+                <DataGridTextColumn Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>
+                <DataGridTextColumn Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
+                <DataGridTextColumn Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
@@ -76,7 +76,7 @@
         </Grid>
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" Click="AddDrone" HorizontalAlignment="Right" Width="58"/>
+            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddDrone" HorizontalAlignment="Right" Width="58"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Drone ID:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Drone Model:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Weight group:" VerticalAlignment="Top"/>
