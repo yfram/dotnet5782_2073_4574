@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace BlApi
 {
-    public class BlFactory
+    public static class BlFactory
     {
-        internal IBL Instance = null;
+        internal static IBL Instance = null;
 
-        public IBL GetBl()
-        {
-            return Instance;
-        }
-
-        public BlFactory()
+        public static IBL GetBl()
         {
             if (Instance == null)
                 Instance = new BL();
+            return Instance;
         }
+
     }
 }
