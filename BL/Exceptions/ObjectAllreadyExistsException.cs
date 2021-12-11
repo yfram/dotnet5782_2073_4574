@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL.Exceptions
+namespace BlApi.Exceptions
 {
     public class ObjectAllreadyExistsException : Exception
     {

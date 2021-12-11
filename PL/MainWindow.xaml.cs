@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using IBL;
+using BlApi;
 
 namespace PL
 {
@@ -11,7 +11,7 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static IBL.IBL BL = new BL();
+        public static IBL BL = new BlFactory().GetBl();
         public MainWindow()
         {
             InitializeComponent();

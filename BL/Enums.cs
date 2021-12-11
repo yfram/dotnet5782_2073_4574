@@ -1,4 +1,4 @@
-﻿namespace IBL.BO
+﻿namespace BO
 {
     public enum WeightGroup
     {
