@@ -1,4 +1,4 @@
-﻿namespace IDAL.DO
+﻿namespace DO
 {
     public struct DroneCharge
     {

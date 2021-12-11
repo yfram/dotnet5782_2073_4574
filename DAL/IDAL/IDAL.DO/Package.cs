@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IDAL.DO
+namespace DO
 {
     public struct Package
     {
