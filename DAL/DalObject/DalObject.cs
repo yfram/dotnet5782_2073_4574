@@ -3,7 +3,7 @@ using System;
 
 namespace DalObject
 {
-    public partial class DalObject : IDAL.DalApi
+    public partial class DalObject : DalApi.IDAL
     {
         public DalObject()
         {

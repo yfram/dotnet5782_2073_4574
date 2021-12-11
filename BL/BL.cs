@@ -1,6 +1,6 @@
 ﻿using IBL.BO;
 using IBL.Exceptions;
-using IDAL;
+using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace IBL
     public partial class BL : IBL
     {
         private List<DroneForList> BLdrones = new();
-        private DalApi Idal = new DalObject.DalObject();
+        private DalApi.IDAL Idal = new DalObject.DalObject();
         private double[] elecRate;
         private static Random rand = new();
 
