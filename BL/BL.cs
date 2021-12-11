@@ -1,5 +1,5 @@
-﻿using IBL.BO;
-using IBL.Exceptions;
+﻿using BO;
+using BlApi.Exceptions;
 using DalApi;
 using System;
 using System.Collections.Generic;
