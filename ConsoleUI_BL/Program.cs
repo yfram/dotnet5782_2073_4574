@@ -1,4 +1,4 @@
-﻿using IBL;
+﻿using BlApi;
 using System;
 
 namespace ConsoleUI_BL
@@ -33,7 +33,7 @@ namespace ConsoleUI_BL
 
         static void Main(string[] args)
         {
-            IBL.IBL Bl = new BL();
+            BlApi.IBL Bl = new BL();
             string openMsg = "Welcome to John&G Drones administiration system!";
 
             string mainMsg = "\nfor add menue, press 1\n" +
@@ -67,7 +67,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static void PrintListViewMenue(IBL.IBL bl)
+        private static void PrintListViewMenue(IBL bl)
         {
             string msg = "to see a list of all stations, press 1\n" +
                 "to see a list of all drones, press 2\n" +
@@ -107,7 +107,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static void PrintSingleViewMenue(IBL.IBL bl)
+        private static void PrintSingleViewMenue(IBL bl)
         {
             string msg = "to view a station by ID, press 1\n" +
                 "to view a drone by ID, press 2\n" +
@@ -139,7 +139,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static void PrintUpdateMenue(IBL.IBL bl)
+        private static void PrintUpdateMenue(IBL bl)
         {
             string msg = "to update a drone model, press 1\n" +
                 "to update a customers information, press 2\n" +
@@ -190,7 +190,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        private static void PrintAddMenue(IBL.IBL Bl)
+        private static void PrintAddMenue(IBL Bl)
         {
             string msg = "to add a base station, press 1\n" +
                 "to add a drone, press 2\n" +
@@ -208,8 +208,8 @@ namespace ConsoleUI_BL
                         break;
                     case AddMenue.Drone:
                         Bl.AddDrone(new(GetIntInput("Enter ID:"), GetStringInput("Enter model:"),
-                            (IBL.BO.WeightGroup)GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
-                            new Random().Next(20, 40) / 100, IBL.BO.DroneState.Maitenance, new(),
+                            (BO.WeightGroup)GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
+                            new Random().Next(20, 40) / 100, BO.DroneState.Maitenance, new(),
                             GetStationLocation(GetIntInput("Enter starting station id:"), Bl)));
 
                         break;
@@ -222,8 +222,8 @@ namespace ConsoleUI_BL
                     case AddMenue.Package:
                         Bl.AddPackage(new(new Random().Next(), new(Bl.DisplayCustomer(GetIntInput("Enter sender ID:"))),
                             new(Bl.DisplayCustomer(GetIntInput("Enter reciver ID:"))),
-                            (IBL.BO.WeightGroup)(GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy):", 1, 3) + 1),
-                            (IBL.BO.PriorityGroup)(GetIntInputInRange("Enter prioriyt group(1 for low, 2 for mid, 3 for high):", 1, 3) + 1),
+                            (BO.WeightGroup)(GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy):", 1, 3) + 1),
+                            (BO.PriorityGroup)(GetIntInputInRange("Enter prioriyt group(1 for low, 2 for mid, 3 for high):", 1, 3) + 1),
                             null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue));
                         break;
                 }
@@ -231,7 +231,7 @@ namespace ConsoleUI_BL
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
-        private static IBL.BO.Location GetStationLocation(int id, IBL.IBL bL)
+        private static BO.Location GetStationLocation(int id, IBL bL)
         {
             if (bL is not BL Bl)
                 throw new("Unreachable!");

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using IBL.BO;
+using BO;
 
 namespace PL.Pages
 {
@@ -70,13 +70,13 @@ namespace PL.Pages
 
         private void UpdateChargeButton()
         {
-            if (BLdrone.State == IBL.BO.DroneState.Empty)
+            if (BLdrone.State == BO.DroneState.Empty)
             {
                 Charge.IsEnabled = true;
                 Charge.Content = "send to charge";
 
             }
-            else if (BLdrone.State == IBL.BO.DroneState.Maitenance)
+            else if (BLdrone.State == BO.DroneState.Maitenance)
             {
                 Charge.IsEnabled = true;
                 Charge.Content = "release from charge";
@@ -90,13 +90,13 @@ namespace PL.Pages
 
         private void UpdateDroneNextOp()
         {
-            if (BLdrone.State == IBL.BO.DroneState.Maitenance)
+            if (BLdrone.State == BO.DroneState.Maitenance)
             {
                 DroneNextOp.Visibility = Visibility.Hidden;
                 return;
             }
             DroneNextOp.Visibility = Visibility.Visible;
-            if (BLdrone.State == IBL.BO.DroneState.Empty)
+            if (BLdrone.State == BO.DroneState.Empty)
             {
                 DroneNextOp.Content = "pair a package";
                 return;
@@ -119,7 +119,7 @@ namespace PL.Pages
             ((Button)sender).Focusable = false;
             try
             {
-                if (BLdrone.State == IBL.BO.DroneState.Empty)
+                if (BLdrone.State == BO.DroneState.Empty)
                 {
                     MainWindow.BL.AssignPackage(BLdrone.Id);
                 }

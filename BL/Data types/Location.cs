@@ -1,6 +1,6 @@
 ﻿using CoordinateSharp;
 
-namespace IBL.BO
+namespace BO
 {
     public class Location
     {

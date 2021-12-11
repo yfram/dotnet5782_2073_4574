@@ -1,11 +1,11 @@
-﻿using IBL.BO;
-using IBL.Exceptions;
+﻿using BO;
+using BlApi.Exceptions;
 using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IBL
+namespace BlApi
 {
     /// <summary>
     /// Buisnes layer class, extends IBL
@@ -488,7 +488,7 @@ namespace IBL
         /// Gets the <c>Station</c> that has the ID <paramref name="StationId"/>.
         /// </summary>
         /// <param name="StationId"></param>
-        /// <returns>IBL.BO.Sattion</returns>
+        /// <returns>BO.Sattion</returns>
         public Station DisplayStation(int StationId)
         {
             var DALstation = GetDALStation(StationId);
@@ -510,7 +510,7 @@ namespace IBL
         /// Gets the <c>Drone</c> that has the ID <paramref name="DroneId"/>.
         /// </summary>
         /// <param name="DroneId"></param>
-        /// <returns>IBL.BO.Drone</returns>
+        /// <returns>BO.Drone</returns>
         public Drone DisplayDrone(int DroneId)
         {
             var DALdrone = GetDALDrone(DroneId);
@@ -540,7 +540,7 @@ namespace IBL
         /// Gets the <c>Customer</c> that has the ID <paramref name="CustomerId"/>.
         /// </summary>
         /// <param name="CustomerId"></param>
-        /// <returns>IBL.BO.Customer</returns>
+        /// <returns>BO.Customer</returns>
         public Customer DisplayCustomer(int CustomerId)
         {
 
@@ -579,7 +579,7 @@ namespace IBL
         /// Gets the <c>Package</c> that has the ID <paramref name="PackageId"/>.
         /// </summary>
         /// <param name="PackageId"></param>
-        /// <returns>IBL.BO.Package</returns>
+        /// <returns>BO.Package</returns>
         public Package DisplayPackage(int PackageId)
         {
             var DALpkg = GetDALPackage(PackageId);
@@ -622,7 +622,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all stations
         /// </summary>
-        /// <returns>List of IBL.BO.StationForList</returns>
+        /// <returns>List of BO.StationForList</returns>
         public IEnumerable<StationForList> DisplayStations()
         {
             List<StationForList> ret = new();
@@ -637,7 +637,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all drones
         /// </summary>
-        /// <returns>List of IBL.BO.DroneForList</returns>
+        /// <returns>List of BO.DroneForList</returns>
         public IEnumerable<DroneForList> DisplayDrones()
         {
             List<DroneForList> ret = new();
@@ -652,7 +652,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all customers
         /// </summary>
-        /// <returns>List of IBL.BO.CustomerForList</returns>
+        /// <returns>List of BO.CustomerForList</returns>
         public IEnumerable<CustomerForList> DisplayCustomers()
         {
             List<CustomerForList> ret = new();
@@ -676,7 +676,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all Packages
         /// </summary>
-        /// <returns>List of IBL.BO.PackageForList</returns>
+        /// <returns>List of BO.PackageForList</returns>
         public IEnumerable<PackageForList> DisplayPackages()
         {
             List<PackageForList> ret = new();
@@ -691,7 +691,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all unpaired packages
         /// </summary>
-        /// <returns>List of IBL.BO.PackageForList</returns>
+        /// <returns>List of BO.PackageForList</returns>
         public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
         {
             List<PackageForList> ret = new();
@@ -706,7 +706,7 @@ namespace IBL
         /// <summary>
         /// Returns a list of all stations with open charging ports
         /// </summary>
-        /// <returns>List of IBL.BO.StationForList</returns>
+        /// <returns>List of BO.StationForList</returns>
         public IEnumerable<StationForList> DisplayStationsWithCharges()
         {
             List<StationForList> ret = new();
