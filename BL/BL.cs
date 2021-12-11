@@ -428,7 +428,7 @@ namespace BlApi
                 }
                 else
                 {
-                    throw new Exception("the package is not associated or picked up");
+                    throw new BlException("the package is not associated or picked up", PackageId, p.GetType());
                 }
 
             }
@@ -698,8 +698,6 @@ namespace BlApi
             foreach (var package in Idal.GetAllPackagesWhere(p => p.DroneId is null))
             {
                 Package blPackage = DisplayPackage(package.Id);
-                if (GetPackageState(blPackage) != PackageStatus.Initialized)
-                    throw new Exception("delete me when submit.");
                 ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, PackageStatus.Initialized));
             }
             return ret;
@@ -912,8 +910,8 @@ namespace BlApi
                         break;
                 }
             }
-            else // if the drone in Maitenance it can't go anyway
-                throw new Exception("no drone weight!");
+            else
+                throw new InvalidOperationException($"The dorne {d.Id} is in maitenance");
             return elec[ix];
         }
 

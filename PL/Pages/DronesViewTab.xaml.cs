@@ -113,7 +113,7 @@ namespace PL.Pages
             try
             {
                 MainWindow.BL.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
-                                NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new Exception() },
+                                NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new InvalidOperationException() },
                                 new Random().NextDouble() * 100, DroneState.Maitenance, new(),
                                 MainWindow.BL.DisplayStation(int.Parse(Stations.Text)).LocationOfStation));
             }
