@@ -7,17 +7,18 @@
              xmlns:local="clr-namespace:PL.Pages"
              xmlns:src="clr-namespace:IBL.BO;assembly=BL"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="1000">
+             d:DesignHeight="150" d:DesignWidth="1000"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <src:Drone x:Key="drone" x:Name="BLdrone"/>
     </UserControl.Resources>
     <Grid Background="#3e5c76" DataContext="{DynamicResource drone}">
         <TextBlock FontSize="15" Name="DroneId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Path=Id, StringFormat=Drone id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
         <TextBox Name ="DroneName" materialDesign:HintAssist.Hint="Model"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=Model,Mode=OneTime}"/>
-        <TextBlock FontSize="13" Name="DroneLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding Path=CurrentLocation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="#7494ea"/>
-        <TextBlock FontSize="13" Name="DroneBattery" HorizontalAlignment="Left" Margin="540,24,0,0" Text="{Binding Path=Battery, StringFormat=Battery: {0:f2}%}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="#7494ea"/>
-        <TextBlock FontSize="13" Name ="DroneState" HorizontalAlignment="Left" Margin="236,54,0,0" Text="{Binding Path=State, StringFormat=Currently {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="#7494ea"/>
-        <TextBlock FontSize="13" Name ="DroneWeight" HorizontalAlignment="Left" Margin="236,100,0,0" Text="{Binding Path=Weight, StringFormat=Weight group: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="#7494ea"/>
+        <TextBlock FontSize="13" Name="DroneLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding Path=CurrentLocation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name="DroneBattery" HorizontalAlignment="Left" Margin="540,24,0,0" Text="{Binding Path=Battery, StringFormat=Battery: {0:f2}%}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name ="DroneState" HorizontalAlignment="Left" Margin="236,54,0,0" Text="{Binding Path=State, StringFormat=Currently {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
+        <TextBlock FontSize="13" Name ="DroneWeight" HorizontalAlignment="Left" Margin="236,100,0,0" Text="{Binding Path=Weight, StringFormat=Weight group: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top"/>
         <Button Name="Charge" Content="" HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
         <TextBox materialDesign:HintAssist.Hint="Time to charge"  Name="ChargeTime" HorizontalAlignment="Left" Margin="540,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
