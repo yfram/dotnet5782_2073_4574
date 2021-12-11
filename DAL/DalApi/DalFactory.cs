@@ -13,7 +13,7 @@ namespace DalApi
             return param switch
             {
                 "DalObject" => new DalObject.DalObject(),
-                "DalXml" => new DalXml(),
+                "DalXml" => throw new NotImplementedException(),//new DalXml(),
                 _ => throw new ArgumentException($"{param} is not a recognized class or interface")
             };
         }
