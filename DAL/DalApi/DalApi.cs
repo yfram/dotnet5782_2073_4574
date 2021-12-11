@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IDAL
 {
-    public interface IDal
+    public interface DalApi
     {
         void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
         void AddDrone(int id, string model, WeightGroup weight);

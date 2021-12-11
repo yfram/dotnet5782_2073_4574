@@ -13,7 +13,7 @@ namespace IBL
     public partial class BL : IBL
     {
         private List<DroneForList> BLdrones = new();
-        private IDal Idal = new DalObject.DalObject();
+        private DalApi Idal = new DalObject.DalObject();
         private double[] elecRate;
         private static Random rand = new();
 
