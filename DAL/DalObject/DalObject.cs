@@ -1,11 +1,14 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 
 namespace DalObject
 {
-    public partial class DalObject : IDAL.IDal
+    partial class DalObject : DalApi.IDAL
     {
-        public DalObject()
+        private static readonly DalObject _Instance;
+        public static DalObject Instance { get => _Instance; }
+
+        static DalObject()
         {
             DataSource.Initialize();
         }
@@ -13,7 +16,6 @@ namespace DalObject
         #region Update functions
         public void GivePackageDrone(int packageId, int droneId)
         {
-            //this function could be one line, but Package is a struct, so that would not work. I hate structs.
             int index = GetPackageIndex(packageId);
             Package tmp = DataSource.Packages[index];
             tmp.DroneId = droneId;
@@ -27,32 +29,12 @@ namespace DalObject
             Package tmp = DataSource.Packages[index];
             tmp.PickUp = DateTime.Now;
             DataSource.Packages[index] = tmp;
-            /*
-            int index = GetDroneIndex(droneID);
-            Drone tmp = DataSource.Drones[index];
-            //tmp.State = DroneStates.Shipping;
-            DataSource.Drones[index] = tmp;
-            */
         }
 
-        /*
-        public void DeliverPackage(int packageId)
-        {
-            int packageIndex = GetPackageIndex(packageId);
-            int droneIndex = GetDroneIndex(DataSource.Packages[packageIndex].DroneId.Value);
-            Drone tmp = DataSource.Drones[droneIndex];
-            //tmp.State = DroneStates.Empty;
-            DataSource.Drones[droneIndex] = tmp;
-            DataSource.Packages.RemoveAt(packageIndex);
-
-            //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers
-        }
-        */
         public void SendDroneToCharge(int droneId, int stationId)
         {
             int droneIndex = GetDroneIndex(droneId);
             Drone tmp = DataSource.Drones[droneIndex];
-            //tmp.State = DroneStates.Maintenance;//I think its Maintenance, should be at least
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
             tmp1.ChargeSlots--;
@@ -62,10 +44,6 @@ namespace DalObject
         }
         public void ReleaseDroneFromCharge(int droneId, int stationId = -1)
         {
-            //int droneIndex = GetDroneIndex(droneId);
-            //Drone tmp = DataSource.Drones[droneIndex];
-
-            //tmp.State = DroneStates.Empty;//I think its Maintenance, should be at least
 
             if (stationId < 0)
             {
@@ -77,7 +55,6 @@ namespace DalObject
 
             tmp1.ChargeSlots++;
 
-            //DataSource.Drones[droneIndex] = tmp;
             DataSource.Stations[stationIndex] = tmp1;
 
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);

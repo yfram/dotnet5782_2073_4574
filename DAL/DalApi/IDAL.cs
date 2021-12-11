@@ -1,10 +1,10 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 using System.Collections.Generic;
 
-namespace IDAL
+namespace DalApi
 {
-    public interface IDal
+    public interface IDAL
     {
         void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
         void AddDrone(int id, string model, WeightGroup weight);
