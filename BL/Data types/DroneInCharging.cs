@@ -1,4 +1,6 @@
-﻿namespace BO
+﻿using System;
+
+namespace BO
 {
     public class DroneInCharging
     {
@@ -14,6 +16,7 @@
 
         public int Id { get; set; }
         public double Battery { get; set; }
+        public DateTime TimeEnterd { get; set; }
 
         public override string ToString() => $"Id: {Id}\nCharge: {Battery}";
     }
