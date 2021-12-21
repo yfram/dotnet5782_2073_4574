@@ -124,7 +124,7 @@ namespace BlApi
         {
             try
             {
-                Idal.AddStation(s.Id, s.Name, s.LocationOfStation.Longitude, s.LocationOfStation.Latitude, s.ChargingDrones.Count + s.AmountOfEmptyPorts); ;
+                Idal.AddStation(s.Id, s.Name, s.LocationOfStation.Longitude, s.LocationOfStation.Latitude, s.ChargingDrones.Count() + s.AmountOfEmptyPorts); ;
             }
             catch (Exception e)
             {
@@ -229,17 +229,17 @@ namespace BlApi
         {
             DO.Station station = GetDALStation(id);
             Station s = DisplayStation(id);
-            int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count;
+            int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count();
 
 
             station.Name = newName != "" ? newName : station.Name;
 
             if (newChargeSlots >= totalPorts)
-                newChargeSlots -= s.ChargingDrones.Count;
+                newChargeSlots -= s.ChargingDrones.Count();
             else if (newChargeSlots == -1)
                 newChargeSlots = station.ChargeSlots;
             else
-                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones.Count}).");
+                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones.Count()}).");
 
             station.ChargeSlots = newChargeSlots;
             Idal.UpdateStation(station);
@@ -628,7 +628,7 @@ namespace BlApi
             foreach (var station in Idal.GetAllStations())
             {
                 Station blStation = DisplayStation(station.Id);
-                ret.Add(new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count));
+                ret.Add(new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count()));
             }
             return ret;
         }
@@ -712,7 +712,7 @@ namespace BlApi
             foreach (var station in Idal.GetAllStationsWhere(s => s.ChargeSlots > 0))
             {
                 Station blStation = DisplayStation(station.Id);
-                ret.Add(new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count));
+                ret.Add(new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count()));
             }
             return ret;
         }
