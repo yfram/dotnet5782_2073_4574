@@ -9,7 +9,7 @@ namespace BlApi
     /// <summary>
     /// Buisnes layer class, extends IBL
     /// </summary>
-    public partial class BL : IBL
+    internal partial class BL : IBL
     {
         private List<DroneForList> BLdrones = new();
         private DalApi.IDAL Idal = new DalObject.DalObject();

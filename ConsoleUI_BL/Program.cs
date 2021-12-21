@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI_BL
 {
@@ -33,7 +34,7 @@ namespace ConsoleUI_BL
 
         static void Main(string[] args)
         {
-            BlApi.IBL Bl = new BL();
+            BlApi.IBL Bl =BlFactory.GetBl();
             string openMsg = "Welcome to John&G Drones administiration system!";
 
             string mainMsg = "\nfor add menue, press 1\n" +
@@ -217,7 +218,7 @@ namespace ConsoleUI_BL
                         Bl.AddCustomer(new(GetIntInput("Enter ID number:"), GetStringInput("Enter name:"),
                             GetStringInput("Enter phone number:"),
                             new(GetDoubleInput("Enter custumer position(longitude):"), GetDoubleInput("Enter customer position(lattitude):")),
-                            new(), new()));
+                            new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
                         break;
                     case AddMenue.Package:
                         Bl.AddPackage(new(new Random().Next(), new(Bl.DisplayCustomer(GetIntInput("Enter sender ID:"))),
@@ -233,12 +234,13 @@ namespace ConsoleUI_BL
 
         private static BO.Location GetStationLocation(int id, IBL bL)
         {
-            if (bL is not BL Bl)
-                throw new("Unreachable!");
+            
+            /*if (bL is not BL Bl)
+                throw new("Unreachable!");*/
             try
             {
 
-                return Bl.DisplayStation(id).LocationOfStation;
+                return bL.DisplayStation(id).LocationOfStation;
             }
             catch (ArgumentException e)
             {
