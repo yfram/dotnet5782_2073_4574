@@ -116,7 +116,6 @@ namespace PL.Pages
 
         private void DroneNextOp_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)sender).Focusable = false;
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
@@ -146,7 +145,6 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
-            ((Button)sender).Focusable = true;
             Exit();
         }
 
