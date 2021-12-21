@@ -1,15 +1,11 @@
-﻿using BlApi;
+﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Media.Animation;
 using System.Windows;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using BO;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace PL.Pages
 {
@@ -18,16 +14,16 @@ namespace PL.Pages
     /// </summary>
     public partial class DronesViewTab : UserControl
     {
-        public List<Drone> Drones { get; set; } = new();
+        public ObservableCollection<Drone> Drones { get; set; } = new();
 
-        public List<Drone> drones;
+        public ObservableCollection<Drone> drones;
 
         private bool gridOpen = false;
 
         public DronesViewTab()
         {
             MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
-            drones = Drones.Where(d => true).ToList();
+            drones = new(Drones.Where(d => true).ToArray());
             InitializeComponent();
             GotFocus += DronesViewTab_GotFocus;
         }
@@ -38,7 +34,7 @@ namespace PL.Pages
             Drones.Clear();
             drones.Clear();
             MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
-            drones = Drones.Where(d => true).ToList();
+            drones = new(Drones.Where(d => true).ToArray());
 
             //this way only the exit button acctualy closes the update view
             if (button.Name == "ExitButton" && UpdateMenue.Height != 0)
@@ -73,8 +69,6 @@ namespace PL.Pages
                 BeginStoryboard(storyboard);
                 gridOpen = false;
             }
-            DroneGrid.ItemsSource = Drones;
-            DroneGrid.Items.Refresh();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -101,11 +95,9 @@ namespace PL.Pages
                 }
             Drones.Clear();
             if (funcs.Count == 0)
-                Drones = drones.Where(d => true).ToList();
+                Drones = new(drones.Where(d => true).ToArray());
             foreach (Func<Drone, bool> func in funcs)
-                Drones.AddRange(drones.Where(func).Except(Drones));
-            DroneGrid.ItemsSource = Drones;
-            DroneGrid.Items.Refresh();
+                Drones.Concat(drones.Where(func).Except(Drones));
         }
 
         private void AddDrone(object sender, RoutedEventArgs e)
