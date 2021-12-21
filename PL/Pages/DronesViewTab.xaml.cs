@@ -17,7 +17,7 @@ namespace PL.Pages
     {
         public ObservableCollection<Drone> Drones { get; set; } = new();
 
-        public ObservableCollection<Drone> drones;
+        public List<Drone> drones;
 
         private bool gridOpen = false;
         private bool packageView = false;
@@ -97,9 +97,10 @@ namespace PL.Pages
                 }
             Drones.Clear();
             if (funcs.Count == 0)
-                Drones = new(drones.Where(d => true).ToArray());
+                drones.ForEach(d => Drones.Add(d));
             foreach (Func<Drone, bool> func in funcs)
-                Drones.Concat(drones.Where(func).Except(Drones));
+                foreach (Drone d in drones.Where(func).Except(Drones))
+                    Drones.Add(d);
         }
 
         private void ShowMenue(int? id, string typeOfMenue)
