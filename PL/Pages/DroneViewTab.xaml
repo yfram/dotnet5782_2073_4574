@@ -27,5 +27,6 @@
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Button>
+        <TextBlock FontSize="13" Name ="PackageId" HorizontalAlignment="Left" Margin="773,24,0,0" Text="{Binding Path=Package.Id, StringFormat=Package Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
     </Grid>
 </UserControl>
