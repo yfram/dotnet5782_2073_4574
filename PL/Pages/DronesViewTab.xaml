@@ -80,7 +80,7 @@
             <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-            <CheckBox Content="Collected View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Un_Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+            <CheckBox Content="Collected View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
