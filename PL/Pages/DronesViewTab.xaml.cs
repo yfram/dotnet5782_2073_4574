@@ -103,6 +103,11 @@ namespace PL.Pages
                     Drones.Add(d);
         }
 
+        private void Collected_view(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         private void ShowMenue(int? id, string typeOfMenue)
         {
             gridOpen = true;
