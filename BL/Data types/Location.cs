@@ -8,7 +8,7 @@ namespace BO
         {
             Longitude = longitude;
             Latitude = latitude;
-            
+
         }
 
         public double Longitude { get; set; }
@@ -16,7 +16,7 @@ namespace BO
 
         public override string ToString()
         {
-            Coordinate c = new Coordinate(Latitude,Longitude);// $"Longitude: {Longitude}\nLatitude: {Latitude}";
+            Coordinate c = new Coordinate(Latitude, Longitude);// $"Longitude: {Longitude}\nLatitude: {Latitude}";
             c.FormatOptions.Format = CoordinateFormatType.Degree_Minutes_Seconds;
             return c.ToString();
         }

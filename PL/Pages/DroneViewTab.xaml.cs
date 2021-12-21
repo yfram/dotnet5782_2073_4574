@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using BO;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using BO;
 
 namespace PL.Pages
 {

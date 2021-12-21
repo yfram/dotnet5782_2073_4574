@@ -1,6 +1,5 @@
-﻿using BO;
-using BlApi.Exceptions;
-using DalApi;
+﻿using BlApi.Exceptions;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
