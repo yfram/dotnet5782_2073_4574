@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="PL.Pages.PackageViewTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:PL.Pages"
+             xmlns:src="clr-namespace:BO;assembly=BL"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="1000"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <src:Package x:Key="package"/>
+    </UserControl.Resources>
+    <Grid Background="#c9aa0c" DataContext="{DynamicResource package}">
+        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Id, StringFormat=Package id: {0}}" Margin="10,10,929,100"/>
+    </Grid>
+</UserControl>

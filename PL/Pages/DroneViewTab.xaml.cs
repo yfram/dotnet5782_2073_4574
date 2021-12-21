@@ -11,10 +11,10 @@ namespace PL.Pages
     public partial class DroneViewTab : UserControl
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
-        public DroneViewTab(Drone d)
+        public DroneViewTab(int id)
         {
             InitializeComponent();
-            BLdrone = d;
+            BLdrone = MainWindow.BL.DisplayDrone(id);
 
             UpdateChargeButton();
             UpdateDroneNextOp();

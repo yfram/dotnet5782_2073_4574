@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace PL.Pages
@@ -19,6 +20,7 @@ namespace PL.Pages
         public ObservableCollection<Drone> drones;
 
         private bool gridOpen = false;
+        private bool packageView = false;
 
         public DronesViewTab()
         {
@@ -100,6 +102,38 @@ namespace PL.Pages
                 Drones.Concat(drones.Where(func).Except(Drones));
         }
 
+        private void ShowMenue(int? id, string typeOfMenue)
+        {
+            gridOpen = true;
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 0;
+            myDoubleAnimation.To = 150;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
+            Storyboard storyboard = new Storyboard();
+
+            UpdateMenue.Children.Clear();
+            UIElement menue = new();
+            switch (typeOfMenue)
+            {
+                case "drone add":
+                    break;
+                case "drone view":
+                    menue = new DroneViewTab(id ?? -1);
+                    break;
+                case "package view":
+                    menue = new PackageViewTab(id ?? -1);
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+            storyboard.Children.Add(myDoubleAnimation);
+            BeginStoryboard(storyboard);
+
+            UpdateMenue.Children.Add(menue);
+        }
+
         private void AddDrone(object sender, RoutedEventArgs e)
         {
             try
@@ -142,21 +176,14 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            gridOpen = true;
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 0;
-            myDoubleAnimation.To = 150;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
+            if (packageView) return;
+            ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
+        }
 
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
-
-            UpdateMenue.Children.Clear();
-            Drone drone = Drones[((DataGridRow)sender).GetIndex()];
-            UpdateMenue.Children.Add(new DroneViewTab(drone));
+        private void PackageId_DoubleClicked(object sender, MouseButtonEventArgs e)
+        {
+            packageView = true;
+            ShowMenue(Convert.ToInt32(((TextBlock)((DataGridCell)sender).Content).Text), "package view");
         }
     }
 }

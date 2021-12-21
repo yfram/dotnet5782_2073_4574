@@ -27,4 +27,17 @@
     <Resource Include="Assets\home.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Pages\PackageViewTab.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Pages\PackageViewTab.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
