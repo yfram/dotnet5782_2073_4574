@@ -10,7 +10,7 @@ namespace BO
             Name = name;
             LocationOfStation = locationOfStation;
             AmountOfEmptyPorts = amountOfEmptyPorts;
-            ChargingDrones = new();
+            ChargingDrones = new List<DroneInCharging>();
         }
 
         public Station(int id, string name, Location locationOfStation, int amountOfEmptyPorts, List<DroneInCharging> chargingDrones)
@@ -26,7 +26,7 @@ namespace BO
         public string Name { get; set; }
         public Location LocationOfStation { get; set; }
         public int AmountOfEmptyPorts { get; set; }
-        public List<DroneInCharging> ChargingDrones { get; set; } = new();
+        public IEnumerable<DroneInCharging> ChargingDrones { get; set; } = new List<DroneInCharging>();
 
         public override string ToString() => $"Id: {Id}\nName: {Name}\nAt: \n{LocationOfStation}";
     }
