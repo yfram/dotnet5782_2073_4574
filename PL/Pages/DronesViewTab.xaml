@@ -15,9 +15,13 @@
             <Setter Property="TextElement.FontWeight" Value="Bold"/>
             <Setter Property="Height" Value="25"/>
         </Style>
+
+        <local:DronesConvertor x:Key="DronesConvertor"/>
+        
     </UserControl.Resources>
+    
     <Grid Background="#DBD8E3">
-        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones}" Background="#352F44" Foreground="#CAF0F8" 
+        <DataGrid x:Name="DroneGrid" ItemsSource="{Binding Path=Drones, Converter={StaticResource DronesConvertor}}}" Background="#352F44" Foreground="#CAF0F8" 
                   CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
                   HorizontalAlignment="Stretch">
             <DataGrid.Columns>
