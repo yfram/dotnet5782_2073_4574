@@ -29,7 +29,13 @@
                 <DataGridTextColumn Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>
                 <DataGridTextColumn Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
                 <DataGridTextColumn Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
-                <DataGridTextColumn Width="Auto" Header="  Package Id  " Binding="{Binding Path=Package.Id}"/>
+                <DataGridTextColumn Width="Auto" Header="  Package Id  " Binding="{Binding Path=Package.Id}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="MouseDoubleClick" Handler="PackageId_DoubleClicked"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
