@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -26,7 +27,12 @@ namespace PL.Pages
         {
             MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
             drones = new(Drones.Where(d => true).ToArray());
+
             InitializeComponent();
+
+            var droneView = (CollectionViewSource)Resources["DronesGroup"];
+            droneView.GroupDescriptions.Clear();
+
             GotFocus += DronesViewTab_GotFocus;
         }
 
@@ -106,6 +112,12 @@ namespace PL.Pages
 
         private void Collected_view(object sender, RoutedEventArgs e)
         {
+            var droneView = (CollectionViewSource)Resources["DronesGroup"];
+            droneView.GroupDescriptions.Clear();
+            if (((CheckBox)sender).IsChecked.HasValue && ((CheckBox)sender).IsChecked.Value)
+            {
+                droneView.GroupDescriptions.Add(new PropertyGroupDescription("State"));
+            }
             
         }
 
