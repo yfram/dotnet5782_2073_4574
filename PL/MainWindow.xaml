@@ -88,7 +88,7 @@
 
                     <ListViewItem x:Name="StationsView" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="Assets/stations.png" Height="66" Width="61"/>
+                            <Image Source="/stations.png" Height="36" Width="41" RenderTransformOrigin="0.659,0.529"/>
                             <TextBlock Text="Stations view" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
                     </ListViewItem >
