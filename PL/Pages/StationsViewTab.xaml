@@ -1,0 +1,142 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PL.Pages"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="PL.Pages.StationsViewTab"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" 
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Foreground" Value="#3E065F"/>
+            <Setter Property="Background" Value="#D669"/>
+            <Setter Property="TextElement.FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+
+        <local:DronesConvertor x:Key="DronesConvertor"/>
+
+        <CollectionViewSource x:Key="StationsGroup"                               
+                      Source="{Binding Path=StationsView}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="AmountOfEmptyPorts" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+    </UserControl.Resources>
+
+
+
+    <Grid Background="#DBD8E3">
+        <!-- , Converter={StaticResource DronesConvertor}, ConverterParameter=1-->
+        <DataGrid x:Name="DroneGrid" DataContext="{StaticResource StationsGroup}" ItemsSource="{Binding IsAsync=True}"  Background="#352F44" Foreground="#CAF0F8" 
+                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
+                  HorizontalAlignment="Stretch">
+
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock FontWeight="Bold"
+                                 Text="{Binding Path=Name}"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Width="Auto" Header="  Empty  " Binding="{Binding Path=AmountOfEmptyPorts}"/>
+                <DataGridTextColumn Width="Auto" Header="  Full  " Binding="{Binding Path=AmountOfFullPorts}">
+                    <!--
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="MouseDoubleClick" Handler="PackageId_DoubleClicked"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    -->
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#352F44" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Background" Value="#352F44"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+        <Grid x:Name="FilterGrid" Margin="0,0,0,381">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#000000"/>
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="Height" Value="27"/>
+                    <Setter Property="Width" Value="81"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </Grid.Resources>
+            <!--
+            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
+            <CheckBox Content="Empty" Margin="150,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Maitenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Busy" Margin="150,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            -->
+            <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+        </Grid>
+        
+        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
+            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddStation" HorizontalAlignment="Right" Width="58"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Station ID:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Station Name:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Slots amount:" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewSlots" materialDesign:HintAssist.Hint="Slots"  HorizontalAlignment="Left" Margin="50,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+        </Grid>
+        
+        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
+        </Grid>
+    </Grid>
+
+</UserControl>

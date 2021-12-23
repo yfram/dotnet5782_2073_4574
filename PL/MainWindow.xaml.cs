@@ -42,6 +42,9 @@ namespace PL
                 case "DronesView":
                     page = new DronesViewTab();
                     break;
+                case "StationsView":
+                    page = new StationsViewTab();
+                    break;
                 default:
                     throw new InvalidOperationException("Unreachable!");
             }

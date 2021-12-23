@@ -85,6 +85,13 @@
                             <TextBlock Text="Drones view" VerticalAlignment="Center" Margin="29 10"/>
                         </StackPanel>
                     </ListViewItem >
+
+                    <ListViewItem x:Name="StationsView" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Assets/stations.png" Height="66" Width="61"/>
+                            <TextBlock Text="Stations view" VerticalAlignment="Center" Margin="29 10"/>
+                        </StackPanel>
+                    </ListViewItem >
                 </ListView>
             </StackPanel>
         </Grid>
