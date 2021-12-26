@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace PL.Pages
@@ -18,7 +16,7 @@ namespace PL.Pages
     public partial class StationsViewTab : UserControl
     {
 
-        enum SelectdStates {No, Number , Has};
+        enum SelectdStates { No, Number, Has };
 
         public ObservableCollection<StationForList> StationsView { get; set; } = new();
 

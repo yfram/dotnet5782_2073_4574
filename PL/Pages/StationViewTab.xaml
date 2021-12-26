@@ -12,12 +12,12 @@
     <UserControl.Resources>
         <src:Station x:Key="station"/>
     </UserControl.Resources>
+    
     <Grid x:Name="GridMain" Background="#3e5c76" DataContext="{DynamicResource station}">
         <TextBlock FontSize="15" Name="StationId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Path=Id, StringFormat=Station id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
         <TextBox Name ="StationName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=Name,Mode=OneTime}"/>
         <TextBlock FontSize="13" Name="StationLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding Path=LocationOfStation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <TextBox Name ="EmptySlots" materialDesign:HintAssist.Hint="Empty Slots"  HorizontalAlignment="Left" Margin="236,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=AmountOfEmptyPorts,Mode=OneTime}"/>
-
 
         <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update" Margin="15,92,822,0" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,348,0,0" Text="Name: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>

@@ -34,7 +34,7 @@ namespace ConsoleUI_BL
 
         static void Main(string[] args)
         {
-            BlApi.IBL Bl =BlFactory.GetBl();
+            BlApi.IBL Bl = BlFactory.GetBl();
             string openMsg = "Welcome to John&G Drones administiration system!";
 
             string mainMsg = "\nfor add menue, press 1\n" +
@@ -234,7 +234,7 @@ namespace ConsoleUI_BL
 
         private static BO.Location GetStationLocation(int id, IBL bL)
         {
-            
+
             /*if (bL is not BL Bl)
                 throw new("Unreachable!");*/
             try

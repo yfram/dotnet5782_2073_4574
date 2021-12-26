@@ -1,6 +1,4 @@
 ﻿using BO;
-using System;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace PL.Pages
