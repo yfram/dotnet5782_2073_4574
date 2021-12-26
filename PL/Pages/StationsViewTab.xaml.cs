@@ -31,7 +31,7 @@ namespace PL.Pages
         {
             MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
 
-            stations = new (StationsView);
+            stations = new(StationsView);
 
             InitializeComponent();
 
@@ -84,46 +84,7 @@ namespace PL.Pages
             }
         }
 
-        /*
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            
-            if (sender is not CheckBox senderAsCheckBox) return;
-            
-            List<Func<Drone, bool>> weightFuncs = new();
-            List<Func<Drone, bool>> statusFuncs = new();
-            
-            foreach (CheckBox checkBox in FilterGrid.Children.OfType<CheckBox>())
-                switch (checkBox.Content)
-                {
-                    
-                    case "Empty":
-                    case "Maitenance":
-                    case "Busy":
-                        if ((checkBox.IsChecked ?? false))//false is unreacable
-                            statusFuncs.Add((Drone d) => d.State.ToString() == (string)checkBox.Content);
-                        break;
-                    case "Light":
-                    case "Mid":
-                    case "Heavy":
-                        if ((checkBox.IsChecked ?? false))//false is unreacable
-                            weightFuncs.Add((Drone d) => d.Weight.ToString() == (string)checkBox.Content);
-                        break;
-                    
-                    case "Collected_View":
-                        break;
-                    default:
-                        throw new AccessViolationException();
-                }
-            
-            Drones.Clear();
-
-            drones.Where(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
-            
-        }
-        */
-
-        private void Collected_View_SelectionChanged(object sender, RoutedEventArgs e)
+        private void Collected_view(object sender, RoutedEventArgs e)
         {
             var StationsGroup = (CollectionViewSource)Resources["StationsGroup"];
             StationsGroup.GroupDescriptions.Clear();
@@ -153,21 +114,12 @@ namespace PL.Pages
             Storyboard storyboard = new Storyboard();
 
             UpdateMenue.Children.Clear();
-            UIElement menue = new();
+            UserControl menue = new();
             switch (typeOfMenue)
             {
-                /*
-                case "drone add":
-                    break;
-                */
                 case "station view":
                     menue = new StationViewTab(id ?? -1);
                     break;
-                    /*
-                case "package view":
-                    menue = new PackageViewTab(id ?? -1);
-                    break;
-                    */
                 default:
                     throw new InvalidOperationException();
             }
@@ -177,15 +129,14 @@ namespace PL.Pages
             UpdateMenue.Children.Add(menue);
         }
 
-        
         private void AddStation(object sender, RoutedEventArgs e)
         {
             try
             {
                 Station s;
 
-                MainWindow.BL.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0,0), int.Parse(NewSlots.Text)));
-                
+                MainWindow.BL.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0, 0), int.Parse(NewSlots.Text)));
+
             }
             catch (Exception ex)
             {
@@ -197,7 +148,6 @@ namespace PL.Pages
             NewSlots.Text = "-1";
             Focus();
         }
-        
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -217,18 +167,11 @@ namespace PL.Pages
 
             //MainWindow.BL.DisplayStations().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
-        
+
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView) return;
             ShowMenue(StationsView[((DataGridRow)sender).GetIndex()].Id, "station view");
         }
-        /*
-        private void PackageId_DoubleClicked(object sender, MouseButtonEventArgs e)
-        {
-            packageView = true;
-            ShowMenue(Convert.ToInt32(((TextBlock)((DataGridCell)sender).Content).Text), "package view");
-        }
-        */
-            }
+    }
 }

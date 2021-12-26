@@ -21,7 +21,7 @@ namespace PL.Pages
         public List<Drone> drones;
 
         private bool gridOpen = false;
-        private bool packageView = false;
+        private bool packageViewInTheMiddle = false;
 
         public DronesViewTab()
         {
@@ -106,7 +106,7 @@ namespace PL.Pages
                 }
             Drones.Clear();
 
-            drones.Where(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count==0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count==0)).ToList().ForEach(elem=>Drones.Add(elem));
+            drones.Where(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
 
         }
 
@@ -118,7 +118,7 @@ namespace PL.Pages
             {
                 droneView.GroupDescriptions.Add(new PropertyGroupDescription("State"));
             }
-            
+
         }
 
         private void ShowMenue(int? id, string typeOfMenue)
@@ -195,15 +195,17 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            if (packageView) return;
+            if (packageViewInTheMiddle)
+            {
+                packageViewInTheMiddle = false;
+                return;
+            }
             ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
         }
 
         private void PackageId_DoubleClicked(object sender, MouseButtonEventArgs e)
-        {   
-            if (((TextBlock)((DataGridCell)sender).Content).Text == "") // no package for this drone
-                return;
-            packageView = true;
+        {
+            packageViewInTheMiddle = true;
             ShowMenue(Convert.ToInt32(((TextBlock)((DataGridCell)sender).Content).Text), "package view");
         }
     }
