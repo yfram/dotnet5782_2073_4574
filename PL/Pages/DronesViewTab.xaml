@@ -63,8 +63,8 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn Width="Auto" Header="From     " Binding="{Binding Path=Package.Sender.Name}"/>
-                <DataGridTextColumn Width="Auto" Header="To           " Binding="{Binding Path=Package.Reciver.Name}"/>
+                <DataGridTextColumn Width="Auto" Header="From     " Binding="{Binding Path=Package.Sender.Id}" />
+                <DataGridTextColumn Width="Auto" Header="To           " Binding="{Binding Path=Package.Reciver.Id}"/>
                 <DataGridTextColumn Width="Auto" Header="Current location" Binding="{Binding Path=CurrentLocation}"/>
                 <DataGridTextColumn Width="Auto" Header="Battery        " Binding="{Binding Path=Battery, StringFormat={}{0:0.00}%}"/>
                 <DataGridTextColumn Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>

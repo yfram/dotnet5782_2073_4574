@@ -13,41 +13,37 @@ using System.Windows.Media.Animation;
 namespace PL.Pages
 {
     /// <summary>
-    /// Interaction logic for StationsViewTab.xaml
+    /// Interaction logic for DronesViewTab.xaml
     /// </summary>
-    public partial class StationsViewTab : UserControl
+    public partial class CustomersViewTab : UserControl
     {
 
-        enum SelectdStates {No, Number , Has};
 
-        public ObservableCollection<StationForList> StationsView { get; set; } = new();
+        public ObservableCollection<CustomerForList> CustomersView { get; set; } = new();
 
-        public List<StationForList> stations;
+        public List<CustomerForList> customers;
 
         private bool gridOpen = false;
         private bool packageView = false;
 
-        public StationsViewTab()
+        public CustomersViewTab()
         {
-            MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
+            MainWindow.BL.DisplayCustomers().ToList().ForEach(d => CustomersView.Add(d));
 
-            stations = new(StationsView);
+            customers = new(CustomersView);
 
             InitializeComponent();
 
-            var StationsGroup = (CollectionViewSource)Resources["StationsGroup"];
-            StationsGroup.GroupDescriptions.Clear();
-
-            GotFocus += StationsViewTab_GotFocus;
+            GotFocus += CustomersViewTab_GotFocus;
         }
 
-        private void StationsViewTab_GotFocus(object sender, RoutedEventArgs e)
+        private void CustomersViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
             if (!gridOpen || e.OriginalSource is not Button button) return;
-            StationsView.Clear();
-            stations.Clear();
-            MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
-            stations = new(StationsView.Where(d => true).ToArray());
+            CustomersView.Clear();
+            customers.Clear();
+            MainWindow.BL.DisplayCustomers().ToList().ForEach(d => CustomersView.Add(d));
+            customers = new(CustomersView);
 
             //this way only the exit button acctualy closes the update view
             if (button.Name == "ExitButton" && UpdateMenue.Height != 0)
@@ -84,21 +80,6 @@ namespace PL.Pages
             }
         }
 
-        private void Collected_View_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            var StationsGroup = (CollectionViewSource)Resources["StationsGroup"];
-            StationsGroup.GroupDescriptions.Clear();
-
-            if (Collected_View.SelectedIndex == (int)SelectdStates.No)
-                return;
-
-
-            String prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
-            StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
-
-
-        }
-
         private void ShowMenue(int? id, string typeOfMenue)
         {
             gridOpen = true;
@@ -114,8 +95,8 @@ namespace PL.Pages
             UserControl menue = new();
             switch (typeOfMenue)
             {
-                case "station view":
-                    menue = new StationViewTab(id ?? -1);
+                case "customer view":
+                    menue = new CustomerViewTab(id ?? -1);
                     break;
                 default:
                     throw new InvalidOperationException();
@@ -126,11 +107,11 @@ namespace PL.Pages
             UpdateMenue.Children.Add(menue);
         }
 
-        private void AddStation(object sender, RoutedEventArgs e)
+        private void AddCustomer(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.BL.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0, 0), int.Parse(NewSlots.Text)));
+                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,new(0, 0), new List<PackageForCustomer>(), new List<PackageForCustomer>()));
 
             }
             catch (Exception ex)
@@ -140,7 +121,7 @@ namespace PL.Pages
 
             NewId.Text = "";
             NewName.Text = "";
-            NewSlots.Text = "-1";
+            NewPhone.Text = "";
             Focus();
         }
 
@@ -166,7 +147,7 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView) return;
-            ShowMenue(StationsView[((DataGridRow)sender).GetIndex()].Id, "station view");
+            ShowMenue(CustomersView[((DataGridRow)sender).GetIndex()].Id, "customer view");
         }
     }
 }
