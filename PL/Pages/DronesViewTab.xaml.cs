@@ -200,7 +200,9 @@ namespace PL.Pages
         }
 
         private void PackageId_DoubleClicked(object sender, MouseButtonEventArgs e)
-        {
+        {   
+            if (((TextBlock)((DataGridCell)sender).Content).Text == "") // no package for this drone
+                return;
             packageView = true;
             ShowMenue(Convert.ToInt32(((TextBlock)((DataGridCell)sender).Content).Text), "package view");
         }
