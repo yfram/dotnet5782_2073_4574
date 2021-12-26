@@ -364,14 +364,21 @@ namespace BlApi
                         IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, BLdrone));
 
                         List<DO.Package> allNearList = allNear.ToList();
-                        allNearList.Sort((p1, p2) => PackagePriority(p1, p2, BLdrone.CurrentLocation));
+                        if (allNearList.Count() > 0)
+                        {
+                            allNearList.Sort((p1, p2) => PackagePriority(p1, p2, BLdrone.CurrentLocation));
 
-                        int PackageId = allNearList[0].Id;
+                            int PackageId = allNearList[0].Id;
 
-                        BLdrone.State = DroneState.Busy;
-                        BLdrone.PassingPckageId = PackageId;
+                            BLdrone.State = DroneState.Busy;
+                            BLdrone.PassingPckageId = PackageId;
 
-                        Idal.GivePackageDrone(PackageId, BLdrone.Id); // change drone id in package, change time assosiating
+                            Idal.GivePackageDrone(PackageId, BLdrone.Id); // change drone id in package, change time assosiating
+                        }
+                        else
+                        {
+                            throw new BlException($"there are no free package for the drone {DroneId}", DroneId, typeof(Drone));
+                        }
                     }
                     else
                     {
