@@ -21,6 +21,7 @@ namespace BO
             AmountOfEmptyPorts = amountOfEmptyPorts;
             ChargingDrones = chargingDrones;
         }
+        public Station() { }
 
         public int Id { get; set; }
         public string Name { get; set; }
