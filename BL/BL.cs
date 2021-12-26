@@ -225,23 +225,21 @@ namespace BlApi
         /// <param name="newName"></param>
         /// <param name="newChargeSlots"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void UpdateStation(int id, string newName = "", int newChargeSlots = -1)
+        public void UpdateStation(int id, string newName = "", int newEmptyChargeSlots = -1)
         {
             DO.Station station = GetDALStation(id);
             Station s = DisplayStation(id);
-            int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count();
+            //int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count();
 
 
             station.Name = newName != "" ? newName : station.Name;
 
-            if (newChargeSlots >= totalPorts)
-                newChargeSlots -= s.ChargingDrones.Count();
-            else if (newChargeSlots == -1)
-                newChargeSlots = station.ChargeSlots;
+            if (newEmptyChargeSlots < 0)
+                newEmptyChargeSlots = station.ChargeSlots;
             else
-                throw new ArgumentException($"the new Chrage slots({newChargeSlots}) must be big than the number of charging drones right now(${s.ChargingDrones.Count()}).");
 
-            station.ChargeSlots = newChargeSlots;
+
+            station.ChargeSlots = newEmptyChargeSlots;
             Idal.UpdateStation(station);
         }
 
