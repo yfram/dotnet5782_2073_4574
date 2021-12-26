@@ -14,7 +14,6 @@ namespace PL.Pages
         private Station BLstation { get => Resources["station"] as Station; set => Resources["station"] = value; }
         public StationViewTab(int id)
         {
-
             InitializeComponent();
             BLstation = MainWindow.BL.DisplayStation(id);
         }
@@ -23,7 +22,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.UpdateStation(BLstation.Id,StationName.Text, int.Parse(EmptySlots.Text));
+                MainWindow.BL.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
                 BLstation = MainWindow.BL.DisplayStation(BLstation.Id);
             }
             catch (Exception ex)
@@ -32,16 +31,10 @@ namespace PL.Pages
             }
         }
 
-        private void Exit(object sender = null, RoutedEventArgs e = null)
+        public void Exit(object sender, RoutedEventArgs e)
         {
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
-        }
-
-
-        private void UpdateView()
-        {
-            BLstation = MainWindow.BL.DisplayStation(BLstation.Id);
+            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
+            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
         }
 
         private void View_Drones(object sender, RoutedEventArgs e)
@@ -50,21 +43,6 @@ namespace PL.Pages
             UIElement menue = new DronesForStationView();
 
             GridMain.Children.Add(menue);
-            
-            /*
-            BLstation.ChargingDrones.GetEnumerator().Current.
-            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
-
-            UpdateMenue.Children.Clear();
-            UIElement menue = new();
-            menue = new StationViewTab(id ?? -1);
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
-
-            UpdateMenue.Children.Add(menue);
-            */
         }
     }
 }
