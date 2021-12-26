@@ -84,7 +84,7 @@ namespace PL.Pages
             }
         }
 
-        private void Collected_view(object sender, RoutedEventArgs e)
+        private void Collected_View_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var StationsGroup = (CollectionViewSource)Resources["StationsGroup"];
             StationsGroup.GroupDescriptions.Clear();
@@ -95,9 +95,6 @@ namespace PL.Pages
 
             String prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
             StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
-
-
-
 
 
         }
