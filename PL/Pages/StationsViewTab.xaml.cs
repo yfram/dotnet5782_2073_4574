@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,9 @@ namespace PL.Pages
     /// </summary>
     public partial class StationsViewTab : UserControl
     {
+
+        enum SelectdStates {No, Number , Has};
+
         public ObservableCollection<StationForList> StationsView { get; set; } = new();
 
         public List<StationForList> stations;
@@ -119,14 +123,21 @@ namespace PL.Pages
         }
         */
 
-        private void Collected_view(object sender, RoutedEventArgs e)
+        private void Collected_View_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var StationsGroup = (CollectionViewSource)Resources["StationsGroup"];
             StationsGroup.GroupDescriptions.Clear();
-            if (((CheckBox)sender).IsChecked.HasValue && ((CheckBox)sender).IsChecked.Value)
-            {
-                StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription("AmountOfEmptyPorts"));
-            }
+
+            if (Collected_View.SelectedIndex == (int)SelectdStates.No)
+                return;
+
+
+            String prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
+            StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
+
+
+
+
 
         }
 

@@ -41,12 +41,12 @@
                         <Style TargetType="{x:Type GroupItem}">
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                    <ControlTemplate  TargetType="{x:Type GroupItem}">
                                         <Expander IsExpanded="True">
                                             <Expander.Header>
                                                 <DockPanel>
                                                     <TextBlock FontWeight="Bold"
-                                 Text="{Binding Path=Name}"/>
+                                 Text="{Binding Path=Name, StringFormat= number of slots:\{0\}}"/>
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -120,10 +120,18 @@
             <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            
+            
+                        <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+
             -->
-            <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+            <ComboBox  Name="Collected_View" HorizontalAlignment="Left" Margin="510,15,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="Collected_View_SelectionChanged">
+                <ComboBoxItem IsSelected="True">No collection view</ComboBoxItem>
+                <ComboBoxItem>Group by number of slots</ComboBoxItem>
+                <ComboBoxItem>Group by has empty slots</ComboBoxItem>
+            </ComboBox>
         </Grid>
-        
+
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
             <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddStation" HorizontalAlignment="Right" Width="58"/>
@@ -134,7 +142,7 @@
             <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
             <TextBox x:Name="NewSlots" materialDesign:HintAssist.Hint="Slots"  HorizontalAlignment="Left" Margin="50,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         </Grid>
-        
+
         <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
         </Grid>
     </Grid>
