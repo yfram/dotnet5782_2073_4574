@@ -20,5 +20,11 @@
         public int AmountOfFullPorts { get; set; }
 
         public override string ToString() => $"Id: {Id}\nName: {Name}";
+
+        public bool HasEmptyPorts
+        {
+            get { return AmountOfEmptyPorts != 0; }
+            set { HasEmptyPorts = AmountOfEmptyPorts == 0; }
+        }
     }
 }
