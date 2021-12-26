@@ -145,10 +145,12 @@ namespace PL.Pages
             UIElement menue = new();
             switch (typeOfMenue)
             {
+                /*
                 case "drone add":
                     break;
+                */
                 case "station view":
-                    menue = null;//new StationViewTab(id ?? -1);
+                    menue = new StationViewTab(id ?? -1);
                     break;
                     /*
                 case "package view":
