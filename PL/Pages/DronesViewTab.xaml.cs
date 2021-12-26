@@ -142,7 +142,7 @@ namespace PL.Pages
                     menue = new DroneViewTab(id ?? -1);
                     break;
                 case "package view":
-                    menue = new PackageViewTab(id ?? -1);
+                    menue = new PackageForDroneViewTab(drones.Where(d=>d.Package?.Id==id).ElementAt(0).Package);
                     break;
                 default:
                     throw new InvalidOperationException();

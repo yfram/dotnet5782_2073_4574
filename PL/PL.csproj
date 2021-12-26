@@ -30,13 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\PackageViewTab.xaml.cs">
+    <Compile Update="Pages\PackageForDroneViewTab.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Pages\PackageViewTab.xaml">
+    <Page Update="Pages\PackageForDroneViewTab.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
