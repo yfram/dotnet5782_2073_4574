@@ -239,7 +239,7 @@ namespace BlApi
             else
 
 
-            station.ChargeSlots = newEmptyChargeSlots;
+                station.ChargeSlots = newEmptyChargeSlots;
             Idal.UpdateStation(station);
         }
 
