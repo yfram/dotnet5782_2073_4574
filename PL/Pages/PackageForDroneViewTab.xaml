@@ -10,9 +10,14 @@
              d:DesignHeight="150" d:DesignWidth="1000"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <src:PackageInTransfer x:Key="package"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<src:PackageInTransfer x:Key="package"/>
+		</ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="#c9aa0c" DataContext="{DynamicResource package}">
+    <Grid Background="{StaticResource PackageForDroneViewBack}" DataContext="{DynamicResource package}">
         <TextBlock TextWrapping="Wrap" Text="{Binding Path=Id, StringFormat=Package id: {0}}" Margin="10,10,929,100"/>
         <TextBlock HorizontalAlignment="Left" Margin="0,62,0,0" Text="{Binding Path=InDelivery, StringFormat=In transfer: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,99,0,0" Text="{Binding Path=Weight, StringFormat=weight: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>

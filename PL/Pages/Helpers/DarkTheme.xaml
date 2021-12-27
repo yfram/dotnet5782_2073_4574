@@ -6,4 +6,5 @@
     <SolidColorBrush x:Key="DronesHeaderBrushBack" Color="#D669"/>
     <SolidColorBrush x:Key="AddButtonBack" Color="#01497c"/>
     <SolidColorBrush x:Key="DronesExpanderBack" Color="#1F1F55"/>
+    <SolidColorBrush x:Key="PackageForDroneViewBack" Color="#3c096c"/>
 </ResourceDictionary>
