@@ -31,7 +31,7 @@
                 <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
                 <DataGridTextColumn Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
                 <DataGridTextColumn Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
-                <DataGridTextColumn Width="Auto" Header="  package accepted  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
+                <DataGridTextColumn Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
                 <DataGridTextColumn Width="Auto" Header="  Packae on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
                 <DataGridTextColumn Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
                 <DataGridTextColumn Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
