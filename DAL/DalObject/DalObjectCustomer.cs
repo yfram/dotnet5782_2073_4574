@@ -15,7 +15,7 @@ namespace DalObject
             int ix = GetCustomerIndex(id);
             if (ix == -1)
                 throw new ArgumentException($"the customer {id} does not exist!");
-            return DataSource.Customers[id];
+            return DataSource.Customers[ix];
         }
 
         private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
