@@ -3,10 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:PL.Pages"
+             xmlns:src="clr-namespace:BO;assembly=BL"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="150" d:DesignWidth="1000"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <src:Customer x:Key="customer" x:Name="customer"/>
+    </UserControl.Resources>
+    <Grid Background="#3e5c76" DataContext="{DynamicResource customer}">
+        <TextBlock FontSize="15" Name="CustomerId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Id, StringFormat=Customer id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
+        <TextBox Name ="CustomerPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=PhoneNumber,Mode=OneTime}"/>
+        <TextBlock FontSize="13" Name="CustomerLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding CustomerLocation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox Name ="CustomerName" HorizontalAlignment="Left" Margin="223,54,0,0" Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+       
+        <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update" Margin="15,92,822,0" VerticalAlignment="Top"/>
+
+        <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
+            <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Button>
+        <!--
+        <ListView  Grid.Row="1"  Margin="833,54,0,0" ItemsSource="{Binding Path=PackagesFrom}">
+-->
+        <ListBox  Margin="833,54,0,0" ItemsSource="{Binding PackagesTo}"/>
+        <ListBox  Margin="661,54,172,0" ItemsSource="{Binding PackagesFrom}"/>
+
+
     </Grid>
 </UserControl>

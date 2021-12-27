@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PL.Pages
 {
@@ -20,9 +10,34 @@ namespace PL.Pages
     /// </summary>
     public partial class CustomerViewTab : UserControl
     {
+        private Customer BLCustomer { get => Resources["customer"] as Customer; set => Resources["customer"] = value; }
         public CustomerViewTab(int id)
         {
             InitializeComponent();
+            BLCustomer = MainWindow.BL.DisplayCustomer(id);
+            
+            UpdateButton.GotFocus += UpdateButton_Click;
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text,CustomerPhone.Text);
+                BLCustomer = MainWindow.BL.DisplayCustomer(BLCustomer.Id);
+                
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Exit(object sender = null, RoutedEventArgs e = null)
+        {
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
+            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
         }
     }
 }
