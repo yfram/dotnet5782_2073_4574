@@ -45,20 +45,20 @@ namespace PL.Pages
             drones = new(Drones.Where(d => true).ToArray());
 
             //this way only the exit button acctualy closes the update view
-            if (button.Name == "ExitButton" && UpdateMenue.Height != 0)
+            if (button.Name == "ExitButton" && PullUpMenueContainer.Height != 0)
             {
                 DoubleAnimation myDoubleAnimation = new DoubleAnimation();
                 myDoubleAnimation.From = 150;
                 myDoubleAnimation.To = 0;
                 myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-                Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+                Storyboard.SetTargetName(myDoubleAnimation, "PullUpMenueContainer");
                 Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
                 Storyboard storyboard = new Storyboard();
 
                 storyboard.Children.Add(myDoubleAnimation);
                 BeginStoryboard(storyboard);
 
-                UpdateMenue.Children.Clear();
+                PullUpMenueContainer.Children.Clear();
 
                 gridOpen = false;
             }
@@ -128,11 +128,11 @@ namespace PL.Pages
             myDoubleAnimation.From = 0;
             myDoubleAnimation.To = 150;
             myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "UpdateMenue");
+            Storyboard.SetTargetName(myDoubleAnimation, "PullUpMenueContainer");
             Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
             Storyboard storyboard = new Storyboard();
 
-            UpdateMenue.Children.Clear();
+            PullUpMenueContainer.Children.Clear();
             UIElement menue = new();
             switch (typeOfMenue)
             {
@@ -150,7 +150,7 @@ namespace PL.Pages
             storyboard.Children.Add(myDoubleAnimation);
             BeginStoryboard(storyboard);
 
-            UpdateMenue.Children.Add(menue);
+            PullUpMenueContainer.Children.Add(menue);
         }
 
         private void AddDrone(object sender, RoutedEventArgs e)

@@ -9,36 +9,34 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Foreground" Value="#3E065F"/>
-            <Setter Property="Background" Value="#D669"/>
-            <Setter Property="TextElement.FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
-
-        <local:DronesConvertor x:Key="DronesConvertor"/>
-
-        <CollectionViewSource x:Key="DronesGroup"                               
-                      Source="{Binding Path=Drones}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="State" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-
-        <Style x:Key="Centering" TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="Foreground" Value="{DynamicResource DronesHeaderBrushFore}"/>
+                <Setter Property="Background" Value="{DynamicResource DronesHeaderBrushBack}"/>
+                <Setter Property="TextElement.FontWeight" Value="Bold"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+            <local:DronesConvertor x:Key="DronesConvertor"/>
+            <CollectionViewSource x:Key="DronesGroup"                               
+				Source="{Binding Drones}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="State" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+        </ResourceDictionary>
     </UserControl.Resources>
-
-
-
     <Grid Background="#DBD8E3">
-        <!-- , Converter={StaticResource DronesConvertor}, ConverterParameter=1-->
-        <DataGrid x:Name="DroneGrid" DataContext="{StaticResource DronesGroup}" ItemsSource="{Binding IsAsync=True}"  Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
+        <DataGrid x:Name="DroneGrid" DataContext="{StaticResource DronesGroup}" 
+                  ItemsSource="{Binding IsAsync=True}"
+                  Background="{DynamicResource DronesGridBrushBack}"
+                  Foreground="{DynamicResource DronesGridBrushFore}" 
+                  CanUserSortColumns="False" IsReadOnly="True" 
+                  CanUserResizeColumns="False" CanUserReorderColumns="False" 
+                  AutoGenerateColumns="False" Margin="0,69,0,0" 
                   HorizontalAlignment="Stretch">
-
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
@@ -46,15 +44,14 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="True">
+                                        <Expander IsExpanded="False">
                                             <Expander.Header>
                                                 <DockPanel>
-                                                    <TextBlock FontWeight="Bold"
-                                 Text="{Binding Path=Name}"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}"/>
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>
-                                                <ItemsPresenter />
+                                                <ItemsPresenter/>
                                             </Expander.Content>
                                         </Expander>
                                     </ControlTemplate>
@@ -64,7 +61,6 @@
                     </GroupStyle.ContainerStyle>
                 </GroupStyle>
             </DataGrid.GroupStyle>
-
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="From     " Binding="{Binding Path=Package.Sender.Id}" />
@@ -78,28 +74,34 @@
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="MouseDoubleClick" Handler="PackageId_DoubleClicked"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Trigger>
-                            </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
             </DataGrid.Columns>
-
             <DataGrid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#352F44" />
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="BorderThickness" Value="0"/>
                         </Trigger>
                     </Style.Triggers>
-                    <Setter Property="Background" Value="#352F44"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
             </DataGrid.Resources>
@@ -108,18 +110,6 @@
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="#000000"/>
-                </Style>
-                <Style TargetType="CheckBox">
-                    <Setter Property="LayoutTransform">
-                        <Setter.Value>
-                            <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                    <Setter Property="Height" Value="27"/>
-                    <Setter Property="Width" Value="81"/>
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
                 </Style>
             </Grid.Resources>
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
@@ -133,7 +123,12 @@
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Content="+" Foreground="Black" BorderThickness="0" 
+                x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" 
+                Background="{DynamicResource AddButtonBack}" Click="ButtonOpenMenu_Click" 
+                HorizontalAlignment="Right"/>
+        <Grid Name="PullUpMenueContainer" Background="{x:Null}" Height="0" 
+              Margin="0,0,0,0" VerticalAlignment="Bottom"/>
         <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
             <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddDrone" HorizontalAlignment="Right" Width="58"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Drone ID:" VerticalAlignment="Top"/>
@@ -149,8 +144,5 @@
             </ComboBox>
             <ComboBox x:Name="Stations" HorizontalAlignment="Left" Margin="400,31,0,0" VerticalAlignment="Top" Width="120"/>
         </Grid>
-        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-        </Grid>
     </Grid>
-
 </UserControl>
