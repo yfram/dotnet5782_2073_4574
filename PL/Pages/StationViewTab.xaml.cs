@@ -39,7 +39,7 @@ namespace PL.Pages
         private void View_Drones(object sender, RoutedEventArgs e)
         {
             GridMain.Children.Clear();
-            UIElement menue = new DronesForStationView();
+            UIElement menue = new DronesForStationView(BLstation.Id);
 
             GridMain.Children.Add(menue);
         }

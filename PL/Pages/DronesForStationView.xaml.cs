@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using BO;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PL.Pages
@@ -8,9 +10,12 @@ namespace PL.Pages
     /// </summary>
     public partial class DronesForStationView : UserControl
     {
-        public DronesForStationView()
+
+        public DronesForStationView(int stationId)
         {
             InitializeComponent();
+
+            ListOfDrones.ItemsSource = MainWindow.BL.DisplayStation(stationId).ChargingDrones;
         }
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {

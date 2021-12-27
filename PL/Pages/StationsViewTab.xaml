@@ -87,7 +87,6 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-
         <Grid x:Name="FilterGrid" Margin="0,0,0,381">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
@@ -116,9 +115,7 @@
                 <ComboBoxItem Content="Group by number of slots"/>
             </ComboBox>
         </Grid>
-
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
-
         <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
             <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddStation" HorizontalAlignment="Right" Width="58"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Station ID:" VerticalAlignment="Top"/>
@@ -128,7 +125,6 @@
             <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
             <TextBox x:Name="NewSlots" materialDesign:HintAssist.Hint="Slots"  HorizontalAlignment="Left" Margin="50,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         </Grid>
-
         <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 
