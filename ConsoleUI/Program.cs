@@ -216,7 +216,7 @@ namespace ConsoleUI
                         GetDoubleInput("Enter customer position(longitude):"), GetDoubleInput("Enter customer position(lattitude):"));
                     break;
                 case 4:
-                    d.AddPackage(GetIntInput("Enter ID:"), GetIntInput("Enter sender ID:"),
+                    d.AddPackage(GetIntInput("Enter sender ID:"),
                         GetIntInput("Enter reciver ID:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
                         (Priority)GetEnumInput("Enter prioraty(1 for low, 2 for mid, 3 for high)", 1, 3),
                         -1, GetDateTimeInput("Enter time to package:"), GetDateTimeInput("Enter time to get drone:"),

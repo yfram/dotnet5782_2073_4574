@@ -8,14 +8,15 @@ namespace DalObject
 {
     public partial class DalObject
     {
-        public void AddPackage(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
+        public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered) =>
 
-            DataSource.Packages.Add(new(GetPackageIndex(id) != -1 ? throw new ArgumentException($"the Package {id} already exists!") : id, senderId, recevirId, weight, packagePriority, droneId,
+            DataSource.Packages.Add(new(DataSource.Config.RunNumber++, senderId, recevirId, weight, packagePriority, droneId,
                 Created, Associated, PickUp, Delivered));
 
         public void DeliverPackage(int packageId)
         {
+            
             int packageIndex = GetPackageIndex(packageId);
             int droneIndex = GetDroneIndex(DataSource.Packages[packageIndex].DroneId.Value);
             Drone tmp = DataSource.Drones[droneIndex];

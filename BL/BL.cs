@@ -184,12 +184,28 @@ namespace BlApi
         {
             try
             {
-                Idal.AddPackage(p.Id, p.Sender.Id, p.Reciver.Id, (DO.WeightGroup)((int)p.Weight), ((DO.Priority)(int)p.Priority), null, null, null, null, null);
+                Idal.AddPackage(p.Sender.Id, p.Reciver.Id, (DO.WeightGroup)((int)p.Weight), ((DO.Priority)(int)p.Priority), null, null, null, null, null);
             }
             catch (Exception e)
             {
                 throw new ObjectAllreadyExistsException(e.Message);
             }
+        }
+
+        /// <summary>
+        /// Adds a new package to the data layer
+        /// </summary>
+        /// <param name="sid">
+        /// sender id to add
+        /// </param>
+        /// <param name="sid">
+        /// sender id to add
+        /// </param>
+        public void AddPackage(int sid, int rid, WeightGroup w, PriorityGroup p)
+        {
+
+        Idal.AddPackage(sid,rid, (DO.WeightGroup)((int)w), ((DO.Priority)(int)p), null, null, null, null, null);
+
         }
 
         /// <summary>

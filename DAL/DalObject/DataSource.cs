@@ -58,7 +58,7 @@ namespace DalObject
             for (int i = 0; i < 10; i++)
                 Customers.Add(InitCustumer(i, random));
             for (int i = 0; i < 10; i++)
-                Packages.Add(InitPackage(i, random));
+                Packages.Add(InitPackage(random));
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
@@ -106,11 +106,14 @@ namespace DalObject
 
         }
 
-        private static Package InitPackage(int i, Random random)
+        private static Package InitPackage(Random random)
         {
             int reciver = random.Next() % 10;
+            int i = Config.RunNumber;
+            Config.RunNumber++;
             return new(i, Customers[i].Id, Customers[reciver == i ? ((i + 1) % Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
               null);
+            
         }
         private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Station.MaxChargingPorts);
         private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));

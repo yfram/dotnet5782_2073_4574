@@ -15,6 +15,8 @@ namespace BlApi
 
         void AddPackage(Package p);
 
+        void AddPackage(int sid, int rid, BO.WeightGroup weight, BO.PriorityGroup packagePriority);
+
         #endregion
 
         #region Update Options
