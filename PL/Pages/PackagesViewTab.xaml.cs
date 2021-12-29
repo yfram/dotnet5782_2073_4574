@@ -96,7 +96,7 @@ namespace PL.Pages
             switch (typeOfMenue)
             {
                 case "package view":
-                    menue = new CustomerViewTab(id ?? -1);
+                    menue = new PackageViewTab(id ?? -1);
                     break;
                 default:
                     throw new InvalidOperationException();
