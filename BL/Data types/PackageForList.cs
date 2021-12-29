@@ -12,6 +12,8 @@
             Status = status;
         }
 
+        public PackageForList() { }
+
         public int Id { get; set; }
         public string NameOfSender { get; set; }
         public string NameOfReciver { get; set; }
