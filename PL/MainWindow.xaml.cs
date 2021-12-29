@@ -48,6 +48,9 @@ namespace PL
                 case "CustomersView":
                     page = new CustomersViewTab();
                     break;
+                case "PackagesView":
+                    page = new PackagesViewTab();
+                    break;
                 default:
                     throw new InvalidOperationException("Unreachable!");
             }
