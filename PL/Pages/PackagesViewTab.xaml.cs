@@ -111,7 +111,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text),BO.WeightGroup.Heavy,BO.PriorityGroup.Fast);
+                MainWindow.BL.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex+1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex+1);
 
             }
             catch (Exception ex)
