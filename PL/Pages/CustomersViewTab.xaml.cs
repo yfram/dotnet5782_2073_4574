@@ -111,7 +111,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,new(0, 0), new List<PackageForCustomer>(), new List<PackageForCustomer>()));
+                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,new(0, 0), new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
 
             }
             catch (Exception ex)
