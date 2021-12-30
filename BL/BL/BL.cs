@@ -1,5 +1,6 @@
 ﻿using BlApi.Exceptions;
 using BO;
+using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BlApi
     internal partial class BL : IBL
     {
         private List<DroneForList> BLdrones = new();
-        private DalApi.IDAL Idal = new DalObject.DalObject();
+        private DalApi.IDAL Idal = DalFactory.GetDal();
         private double[] elecRate;
         private static Random rand = new();
 

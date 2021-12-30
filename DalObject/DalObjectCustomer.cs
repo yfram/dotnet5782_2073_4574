@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DalObject
+namespace Dal
 {
     public partial class DalObject
     {

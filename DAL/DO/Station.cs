@@ -2,7 +2,6 @@
 {
     public struct Station
     {
-        internal static int MaxChargingPorts = 10;
         public Station(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
             Id = id;

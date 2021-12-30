@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DalObject
+namespace Dal
 {
     public class DataSource
     {
@@ -17,6 +17,7 @@ namespace DalObject
             internal static double ElecHigh = 0;
             internal static double ElecRatePercent = 0;
             internal static int RunNumber = 0;
+            internal static int MaxChargingPorts = 10;
         }
 
         private static readonly List<string> DroneModels = new List<string>()
@@ -115,7 +116,7 @@ namespace DalObject
               null);
             
         }
-        private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Station.MaxChargingPorts);
+        private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Config.MaxChargingPorts);
         private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));
         private static Customer InitCustumer(int i, Random random) => new(i, CustomerNames[random.Next() % CustomerNames.Count], GeneratePhone(), 33 + random.NextDouble(), 34 + random.NextDouble());
 

@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using DalApi;
+using DO;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
-            DalApi.IDAL d = new DalObject.DalObject();
+            IDAL d = DalFactory.GetDal();
 
             string openMsg = "Welcome to John&G Drones administiration system!\n" +
                 "for add menue, press 1\n" +

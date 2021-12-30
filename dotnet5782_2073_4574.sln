@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31612.314
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Targil0", "dotnet5782_2073_4574\Targil0.csproj", "{DA95FBFF-E4F3-429F-A339-36DDFC0362B9}"
 EndProject
@@ -14,13 +14,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{CBCC2ABE-89D9-4CB9-A758-12163B7C679D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{7E12328F-123F-492B-8022-391398FBCA03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalFacade", "DAL\DalFacade.csproj", "{7E12328F-123F-492B-8022-391398FBCA03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{8334E5E6-C194-479E-AA3B-7E2A4DE58B37}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI_BL", "ConsoleUI_BL\ConsoleUI_BL.csproj", "{6CE1B984-765E-4366-8725-DA9A69810089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalObject", "DalObject\DalObject.csproj", "{929DC050-3C09-43CE-80BA-F457A3DE712B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csproj", "{89E5924E-8820-4DA7-BE02-730208CE5CD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{AB145A45-1C02-44AF-BB08-9F52852E707D}"
+	ProjectSection(SolutionItems) = preProject
+		dal-config.xml = dal-config.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +61,14 @@ Global
 		{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{929DC050-3C09-43CE-80BA-F457A3DE712B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929DC050-3C09-43CE-80BA-F457A3DE712B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929DC050-3C09-43CE-80BA-F457A3DE712B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929DC050-3C09-43CE-80BA-F457A3DE712B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E5924E-8820-4DA7-BE02-730208CE5CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E5924E-8820-4DA7-BE02-730208CE5CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E5924E-8820-4DA7-BE02-730208CE5CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E5924E-8820-4DA7-BE02-730208CE5CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

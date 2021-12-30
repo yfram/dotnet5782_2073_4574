@@ -1,11 +1,11 @@
 ﻿using DO;
 using System;
 
-namespace DalObject
+namespace Dal
 {
     partial class DalObject : DalApi.IDAL
     {
-        private static readonly DalObject _Instance;
+        private static readonly DalObject _Instance = new();
         public static DalObject Instance { get => _Instance; }
 
         static DalObject()
