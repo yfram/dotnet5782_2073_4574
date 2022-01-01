@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<listOfObjects>
+  <Drone>
+    <Id>0</Id>
+    <Model>m</Model>
+    <Weight>Light</Weight>
+  </Drone>
+</listOfObjects>

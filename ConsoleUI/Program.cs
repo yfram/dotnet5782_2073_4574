@@ -2,7 +2,7 @@
 using DO;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace ConsoleUI
 {
@@ -71,22 +71,22 @@ namespace ConsoleUI
             switch (menue)
             {
                 case 1:
-                    list = (IEnumerable<object>)d.GetAllStations();
+                    list = d.GetAllStations().Cast<object>();
                     break;
                 case 2:
-                    list = (IEnumerable<object>)d.GetAllDrones();
+                    list = d.GetAllDrones().Cast<object>();
                     break;
                 case 3:
-                    list = (IEnumerable<object>)d.GetAllCustomers();
+                    list = d.GetAllCustomers().Cast<object>();
                     break;
                 case 4:
-                    list = (IEnumerable<object>)d.GetAllPackages();
+                    list = d.GetAllPackages().Cast<object>();
                     break;
                 case 5:
-                    list = (IEnumerable<object>)d.GetAllPackagesWhere(p => p.Associated == null);
+                    list = d.GetAllPackagesWhere(p => p.Associated == null).Cast<object>();
                     break;
                 case 6:
-                    list = (IEnumerable<object>)d.GetAllStationsWhere(s => s.ChargeSlots > 0);
+                    list = d.GetAllStationsWhere(s => s.ChargeSlots > 0).Cast<object>();
                     break;
             }
             foreach (Object obj in list)

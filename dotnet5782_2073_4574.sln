@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3C6564F-E55F-454A-B7AC-C805C2ACE5F5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		BL\Location.cs = BL\Location.cs
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -22,13 +21,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI_BL", "ConsoleUI_B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{6EFD2442-6C2B-428C-98A3-8B0D186DB8F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalObject", "DalObject\DalObject.csproj", "{929DC050-3C09-43CE-80BA-F457A3DE712B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalObject", "DalObject\DalObject.csproj", "{929DC050-3C09-43CE-80BA-F457A3DE712B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csproj", "{89E5924E-8820-4DA7-BE02-730208CE5CD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalXml", "DalXml\DalXml.csproj", "{89E5924E-8820-4DA7-BE02-730208CE5CD5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{AB145A45-1C02-44AF-BB08-9F52852E707D}"
 	ProjectSection(SolutionItems) = preProject
-		dal-config.xml = dal-config.xml
+		xml\dal-config.xml = xml\dal-config.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3C580110-FEE8-4757-ABED-DC91AC11F9B8}"
+	ProjectSection(SolutionItems) = preProject
+		Data\Customers.xml = Data\Customers.xml
+		Data\Drones.xml = Data\Drones.xml
+		Data\Dronessss.xml = Data\Dronessss.xml
+		Data\Packages.xml = Data\Packages.xml
+		Data\Stations.xml = Data\Stations.xml
 	EndProjectSection
 EndProject
 Global

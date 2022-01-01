@@ -5,10 +5,17 @@ namespace DalApi
 {
     public class DalFactory
     {
-        public static IDAL GetDal()
+        public static IDAL GetDal(bool force = false)
         {
+
             string dalType = DalConfig.DalName;
             string dalPkg = DalConfig.DalPackages[dalType];
+            if(force)
+            {
+                dalType = "list";
+                dalPkg = "DalObject";
+            }
+
             if (dalPkg == null) throw new DalConfigException($"Package {dalType} is not found in packages list in dal-config.xml");
 
             try { Assembly.Load(dalPkg); }

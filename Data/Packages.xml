@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<listOfObjects>
+  <Package>
+    <Id>0</Id>
+    <SenderId>0</SenderId>
+    <RecevirId>8</RecevirId>
+    <Weight>Heavy</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId>2</DroneId>
+    <Created>2020-10-25T11:34:33</Created>
+    <Associated>2020-10-27T03:06:33</Associated>
+    <PickUp>2020-10-28T15:08:33</PickUp>
+    <Delivered>2020-10-29T16:13:33</Delivered>
+  </Package>
+  <Package>
+    <Id>3</Id>
+    <SenderId>3</SenderId>
+    <RecevirId>0</RecevirId>
+    <Weight>Heavy</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId>2</DroneId>
+    <Created>2020-10-01T23:41:13</Created>
+    <Associated>2020-10-02T01:59:13</Associated>
+    <PickUp>2020-10-03T03:26:13</PickUp>
+    <Delivered>2020-10-05T04:54:13</Delivered>
+  </Package>
+  <Package>
+    <Id>6</Id>
+    <SenderId>6</SenderId>
+    <RecevirId>8</RecevirId>
+    <Weight>Heavy</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId>3</DroneId>
+    <Created>2020-10-13T02:19:35</Created>
+    <Associated>2020-10-15T02:57:35</Associated>
+    <PickUp>2020-10-15T03:53:35</PickUp>
+    <Delivered>2020-10-15T07:46:35</Delivered>
+  </Package>
+  <Package>
+    <Id>9</Id>
+    <SenderId>9</SenderId>
+    <RecevirId>7</RecevirId>
+    <Weight>Mid</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId>3</DroneId>
+    <Created>2020-10-24T13:44:49</Created>
+    <Associated>2020-10-26T07:48:49</Associated>
+    <PickUp />
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>1</Id>
+    <SenderId>1</SenderId>
+    <RecevirId>3</RecevirId>
+    <Weight>Light</Weight>
+    <PackagePriority>Medium</PackagePriority>
+    <DroneId>0</DroneId>
+    <Created>2020-10-12T07:40:22</Created>
+    <Associated>2020-10-12T20:20:22</Associated>
+    <PickUp>2020-10-13T08:31:22</PickUp>
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>4</Id>
+    <SenderId>4</SenderId>
+    <RecevirId>0</RecevirId>
+    <Weight>Light</Weight>
+    <PackagePriority>Medium</PackagePriority>
+    <DroneId>1</DroneId>
+    <Created>2020-10-03T14:53:03</Created>
+    <Associated>2020-10-05T10:37:03</Associated>
+    <PickUp>2020-10-06T16:22:03</PickUp>
+    <Delivered>2020-10-07T11:02:03</Delivered>
+  </Package>
+  <Package>
+    <Id>7</Id>
+    <SenderId>7</SenderId>
+    <RecevirId>2</RecevirId>
+    <Weight>Heavy</Weight>
+    <PackagePriority>Medium</PackagePriority>
+    <DroneId />
+    <Created>2020-10-10T02:18:32</Created>
+    <Associated />
+    <PickUp />
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>2</Id>
+    <SenderId>2</SenderId>
+    <RecevirId>0</RecevirId>
+    <Weight>Mid</Weight>
+    <PackagePriority>High</PackagePriority>
+    <DroneId />
+    <Created>2020-10-10T11:42:07</Created>
+    <Associated />
+    <PickUp />
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>5</Id>
+    <SenderId>5</SenderId>
+    <RecevirId>2</RecevirId>
+    <Weight>Mid</Weight>
+    <PackagePriority>High</PackagePriority>
+    <DroneId />
+    <Created>2020-10-26T11:30:45</Created>
+    <Associated />
+    <PickUp />
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>8</Id>
+    <SenderId>8</SenderId>
+    <RecevirId>6</RecevirId>
+    <Weight>Light</Weight>
+    <PackagePriority>High</PackagePriority>
+    <DroneId>4</DroneId>
+    <Created>2020-10-02T21:11:10</Created>
+    <Associated>2020-10-03T16:22:10</Associated>
+    <PickUp>2020-10-04T19:11:10</PickUp>
+    <Delivered />
+  </Package>
+</listOfObjects>
