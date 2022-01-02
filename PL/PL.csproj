@@ -1,47 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+		<PropertyGroup>
+				<OutputType>WinExe</OutputType>
+				<TargetFramework>net5.0-windows</TargetFramework>
+				<Nullable>enable</Nullable>
+				<UseWPF>true</UseWPF>
+		</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="customers.png" />
-    <None Remove="drone.png" />
-    <None Remove="drones.png" />
-    <None Remove="stations.png" />
-  </ItemGroup>
+		<ItemGroup>
+				<None Remove="drone.png" />
+				<None Remove="drones.png" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CoordinateSharp" Version="2.12.1.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
-  </ItemGroup>
+		<ItemGroup>
+				<PackageReference Include="CoordinateSharp" Version="2.12.1.1" />
+				<PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BL\BL.csproj" />
-  </ItemGroup>
+		<ItemGroup>
+				<ProjectReference Include="..\BL\BL.csproj" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\drone.png" />
-    <Resource Include="Assets\drones.png" />
-    <Resource Include="Assets\home.png" />
-    <Resource Include="customers.png" />
-    <Resource Include="stations.png" />
-  </ItemGroup>
+		<ItemGroup>
+				<Resource Include="Assets\drone.png" />
+				<Resource Include="Assets\drones.png" />
+				<Resource Include="Assets\home.png" />
+				<Resource Include="Assets\packages.png" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Pages\PackageForDroneViewTab.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
+		<ItemGroup>
+				<Compile Update="Pages\PackageForDroneViewTab.xaml.cs">
+						<SubType>Code</SubType>
+				</Compile>
+		</ItemGroup>
 
-  <ItemGroup>
-    <Page Update="Pages\PackageForDroneViewTab.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
+		<ItemGroup>
+				<Page Update="Pages\PackageForDroneViewTab.xaml">
+						<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+						<SubType>Designer</SubType>
+				</Page>
+		</ItemGroup>
 
 </Project>
