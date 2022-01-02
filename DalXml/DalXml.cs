@@ -216,15 +216,8 @@ namespace Dal
             DeleteObject<Station>(id);
         }
 
-        public void DeliverPackage(int packageId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public IEnumerable<Customer> GetAllCustomers()
-        {
-            return ReadAllObjects<Customer>();
-        }
+
 
         public IEnumerable<Drone> GetAllDrones()
         {
@@ -276,12 +269,24 @@ namespace Dal
 
         public void GivePackageDrone(int packageId, int droneId)
         {
-            throw new NotImplementedException();
+            var p = GetObject<Package>(packageId);
+            var d = GetObject<Drone>(droneId); // only check if exist
+
+            p.DroneId = droneId;
+            p.Associated = DateTime.Now;
         }
 
-        public void PickUpPackage(int packageId, int droneID)
+        public void PickUpPackage(int packageId)
         {
-            throw new NotImplementedException();
+            var p = GetObject<Package>(packageId);
+
+            p.PickUp = DateTime.Now;
+        }
+
+        public void DeliverPackage(int packageId)
+        {
+            var p = GetObject<Package>(packageId);
+            p.Delivered = DateTime.Now;
         }
 
         public void ReleaseDroneFromCharge(int droneId, int stationId)
