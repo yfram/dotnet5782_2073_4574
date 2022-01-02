@@ -28,6 +28,15 @@ namespace DO
             Delivered = delivered;
         }
 
+        public Package(int id, int senderId, int recevirId, WeightGroup weight, Priority packagePriority) : this()
+        {
+            Id = id;
+            SenderId = senderId;
+            RecevirId = recevirId;
+            Weight = weight;
+            PackagePriority = packagePriority;
+        }
+
         public int Id { get; set; }
         public int SenderId { get; set; }
         public int RecevirId { get; set; }

@@ -28,12 +28,8 @@ namespace Dal
 
         public Customer GetCustomer(int id)
         {
-            Customer? ans = GetAllCustomers().FirstOrDefault(c => c.Id == id);
-            if(!ans.HasValue) throw new ArgumentException($"the customer {id} does not exist!");
-            return (Customer)ans;
+            return GetObject<Customer>(id);
         }
-
-
 
     }
 }

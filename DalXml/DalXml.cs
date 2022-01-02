@@ -17,43 +17,27 @@ namespace Dal
 
         public IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
-            try
-            {
                 var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
                 List<T> ans = new List<T>();
-                foreach(var elem in ObjectsRoot.Elements())
+                foreach(XElement elem in ObjectsRoot.Elements())
                 {
-                    object current = new T();
-                    foreach (PropertyInfo FI in current.GetType().GetProperties())
-                    {
-                        if (FI.PropertyType == typeof(int))
-                        {
-                            FI.SetValue(current, int.Parse(elem.Element(FI.Name).Value), null);
-                        }
-                        else if (FI.PropertyType == typeof(double))
-                        {
-                            FI.SetValue(current, Double.Parse(elem.Element(FI.Name).Value), null);
-                        }
-                        else if (FI.PropertyType == typeof(String))
-                        {
-                            FI.SetValue(current, elem.Element(FI.Name).Value, null);
-                        }
-                        else if (FI.PropertyType.IsEnum)
-                        {
-                            FI.SetValue(current, int.Parse(elem.Element(FI.Name).Value, null));
-                        }
-                        else
-                            throw new ArgumentException($"the type {current.GetType().Name} has field that aren't implement yet:{FI.PropertyType.Name}  {FI.Name}");
-
-
-                    }
-                    ans.Add((T)current);
+                    ans.Add(ReadObject<T>(elem));
                 }
                 return ans;
                 
+        }
+
+        public IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
+        {
+            List<T> ans = new();
+            IEnumerable<T> all = ReadAllObjects<T>();
+            foreach(var elem in all)
+            {
+                if (func(elem))
+                    ans.Add(elem);
             }
-            catch { return null; }
+            return ans;
         }
 
         public void WriteAllObjects<T>(IEnumerable<T> write)
@@ -73,36 +57,163 @@ namespace Dal
             root.Save($"Data/{typeof(T).Name}s.xml");
         }
 
-        public void AddDrone(int id, string model, WeightGroup weight)
+        public T ReadObject<T>(XElement elem) where T : new()
         {
+            object current = new T();
+            foreach (PropertyInfo FI in current.GetType().GetProperties())
+            {
+                if (Nullable.GetUnderlyingType(FI.PropertyType) is not null)
+                {
+                    if (elem.Element(FI.Name).Value.Trim().Length == 0)
+                        FI.SetValue(current, null);
+                    else
+                        FI.SetValue(current, Convert.ChangeType(elem.Element(FI.Name).Value, Nullable.GetUnderlyingType(FI.PropertyType)));
+
+                }
+                else if (FI.PropertyType.IsEnum)
+                {
+                    FI.SetValue(current, Enum.Parse(FI.PropertyType,elem.Element(FI.Name).Value));
+                }
+                else
+                    FI.SetValue(current, Convert.ChangeType(elem.Element(FI.Name).Value, FI.PropertyType));
+                
+            }
+            return (T)current;
+        }
+
+        public T GetObject<T>(int id, string propName = "Id") where T : new()
+        {
+            var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
+           
+            var prop = typeof(T).GetProperty(propName);
+            if (prop is null || prop.PropertyType != typeof(int))
+                throw new ArgumentException($"the property {propName} is not exsist in {typeof(T).Name} or it type is not int so it cant use as an id!");
+
+
+            foreach (XElement elem in ObjectsRoot.Elements())
+            {
+                object obj = ReadObject<T>(elem);
+
+                if ((int)prop.GetValue(obj) == id)
+                    return (T)obj;
+            }
+
+            throw new ArgumentException($"the id {id} is not exsist!");
+        }
+
+        public void AddObject<T>(int id, T obj) where T: new()
+        {
+            try
+            {
+                GetObject<T>(id);
+                throw new ArgumentException($"cannot add the {typeof(T)} with id {id} because it is exist");
+            }
+            catch(ArgumentException e)
+            {
+                WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+            }
+
 
         }
 
+        public void DeleteObject<T>(int id, string propName = "Id") where T : new()
+        {
+            var all = ReadAllObjects<T>();
+            IEnumerable<T> ans = new List<T>();
+
+            var prop = typeof(T).GetProperty(propName);
+            if (prop is null || prop.PropertyType != typeof(int))
+                throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+
+            bool found = false;
+
+            foreach (var elem in ans)
+            {
+                if ((int)prop.GetValue(elem) != id)
+                    ans.Append(elem);
+                else
+                    found = true;
+            }
+
+            if (!found)
+                throw new ArgumentException($"cannot find {id} of {typeof(T).Name}");
+            
+            WriteAllObjects(ans);
+        }
+
+        public void UpdateObject<T>(int id, T obj , string propName = "Id") where T: new()
+        {
+            var all = ReadAllObjects<T>();
+            IEnumerable<T> ans = new List<T>();
+
+            var prop = typeof(T).GetProperty(propName);
+            if (prop is null || prop.PropertyType != typeof(int))
+                throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+
+            bool found = false;
+
+            foreach (var elem in ans)
+            {
+                if ((int)prop.GetValue(elem) != id)
+                    ans.Append(elem);
+                else
+                {
+                    ans.Append(obj);
+                    found = true;
+                }
+            }
+
+            if (!found)
+                throw new ArgumentException($"cannot find {id} of {typeof(T).Name}");
+
+            WriteAllObjects(ans);
+        }
+
+        public void AddDrone(int id, string model, WeightGroup weight)
+        {
+            AddObject(id , new Drone(id, model, weight));
+        }
+
         public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId, DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered)
+        {
+            int runNumber = GetRunNumber();
+            UpdateRunNumber();
+            Package p = new Package(runNumber, senderId, recevirId, weight, packagePriority);
+            p.Created = DateTime.Now;
+            AddObject(runNumber , p);
+        }
+
+        private void UpdateRunNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        private int GetRunNumber()
         {
             throw new NotImplementedException();
         }
 
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
-            throw new NotImplementedException();
+            AddObject(id, new Station(id, name,longitude , lattitude,chargeSlots));
+
         }
 
 
 
         public void DeleteDrone(int id)
         {
-            throw new NotImplementedException();
+            DeleteObject<Drone>(id);
         }
 
         public void DeletePackage(int id)
         {
-            throw new NotImplementedException();
+            DeleteObject<Package>(id);
         }
 
         public void DeleteStation(int id)
         {
-            throw new NotImplementedException();
+            DeleteObject<Station>(id);
         }
 
         public void DeliverPackage(int packageId)
@@ -127,7 +238,7 @@ namespace Dal
 
         public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> func)
         {
-            throw new NotImplementedException();
+            return ReadAllObjectsWhen(func);
         }
 
         public IEnumerable<Station> GetAllStations()
@@ -137,14 +248,14 @@ namespace Dal
 
         public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate)
         {
-            throw new NotImplementedException();
+            return ReadAllObjectsWhen(predicate);
         }
 
 
 
         public Drone GetDrone(int id)
         {
-            throw new NotImplementedException();
+            return GetObject<Drone>(id);
         }
 
         public double[] GetElectricity()
@@ -155,12 +266,12 @@ namespace Dal
 
         public Package GetPackage(int id)
         {
-            throw new NotImplementedException();
+            return GetObject<Package>(id);
         }
 
         public Station GetStation(int id)
         {
-            throw new NotImplementedException();
+            return GetObject<Station>(id);
         }
 
         public void GivePackageDrone(int packageId, int droneId)
@@ -187,17 +298,17 @@ namespace Dal
 
         public void UpdateDrone(Drone d)
         {
-            throw new NotImplementedException();
+            UpdateObject(d.Id,d);
         }
 
         public void UpdatePackage(Package p)
         {
-            throw new NotImplementedException();
+            UpdateObject(p.Id, p);
         }
 
         public void UpdateStation(Station s)
         {
-            throw new NotImplementedException();
+            UpdateObject(s.Id, s);
         }
     }
 }
