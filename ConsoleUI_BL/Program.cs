@@ -171,7 +171,7 @@ namespace ConsoleUI_BL
                         bl.SendDroneToCharge(GetIntInput("Enter drone ID:"));
                         break;
                     case UpdateMenue.ReleaseDrone:
-                        bl.ReleaseDrone(GetIntInput("Enter drone ID:"), GetDoubleInput("Enter amount of time in charging:"));
+                        bl.ReleaseDrone(GetIntInput("Enter drone ID:"), DateTime.Now);
                         break;
                     case UpdateMenue.GivePackageToDrone:
                         bl.AssignPackage(GetIntInput("Enter drone ID:"));

@@ -13,6 +13,11 @@ namespace Dal
             DataSource.Initialize();
         }
 
+        public bool isInCharge(int droneId)
+        {
+            return DataSource.DroneCharges.Exists(dc => dc.DroneId == droneId);
+        }
+
         #region Update functions
         public void GivePackageDrone(int packageId, int droneId)
         {
@@ -38,12 +43,13 @@ namespace Dal
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
             tmp1.ChargeSlots--;
-            DataSource.DroneCharges.Add(new(droneId, stationId));
+            DataSource.DroneCharges.Add(new(droneId, stationId,DateTime.Now));
             DataSource.Drones[droneIndex] = tmp;
             DataSource.Stations[stationIndex] = tmp1;
         }
-        public void ReleaseDroneFromCharge(int droneId, int stationId = -1)
+        public double ReleaseDroneFromCharge(int droneId, DateTime outTime, int stationId = -1)
         {
+            double ans = 0;
 
             if (stationId < 0)
             {
@@ -56,9 +62,15 @@ namespace Dal
             tmp1.ChargeSlots++;
 
             DataSource.Stations[stationIndex] = tmp1;
+            if (!DataSource.DroneCharges.Exists(d => d.DroneId == droneId && d.StationId == stationId))
+                throw new ArgumentException($"cannot find the droncharge with the drone id {droneId}");
 
+            ans = outTime.Subtract(DataSource.DroneCharges.Find(d => d.DroneId == droneId && d.StationId == stationId).Enter).TotalSeconds;
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);
+            return ans;
         }
+
+
 
 
         #endregion

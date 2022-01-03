@@ -143,7 +143,8 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView) return;
-            ShowMenue(PackagesView[((DataGridRow)sender).GetIndex()].Id, "package view");
+            var p = ((DataGridRow)sender).DataContext as PackageForList;
+            ShowMenue(p.Id, "package view");
         }
 
         private void Filter(object sender, RoutedEventArgs e)

@@ -53,7 +53,7 @@ namespace PL.Pages
                 }
                 else if (Charge.Content.ToString() == "release from charge")
                 {
-                    MainWindow.BL.ReleaseDrone(BLdrone.Id, double.Parse(ChargeTime.Text));
+                    MainWindow.BL.ReleaseDrone(BLdrone.Id, DateTime.Now);
                 }
             }
             catch (Exception ex)

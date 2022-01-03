@@ -23,9 +23,6 @@
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Button>
-        <!--
-        <ListView  Grid.Row="1"  Margin="833,54,0,0" ItemsSource="{Binding Path=PackagesFrom}">
--->
         <ListBox  Margin="833,54,0,0" ItemsSource="{Binding PackagesTo}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -35,7 +32,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox  Margin="661,54,172,0" ItemsSource="{Binding PackagesFrom}"/>
+
+        <ListBox  Margin="661,54,172,0" ItemsSource="{Binding PackagesFrom}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Button Content="{Binding Path=Id}" Click="OpenPackage"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
 
     </Grid>

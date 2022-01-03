@@ -27,7 +27,7 @@ namespace BlApi
         void UpdateCustomer(int id, string newName = "", string newPhone = "");
         void SendDroneToCharge(int DroneId);
 
-        void ReleaseDrone(int DroneId, double time);
+        void ReleaseDrone(int DroneId, System.DateTime time);
 
         void AssignPackage(int DroneId);
 

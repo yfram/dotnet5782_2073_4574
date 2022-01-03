@@ -2,9 +2,11 @@
 using DO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Dal
 {
@@ -12,6 +14,20 @@ namespace Dal
     {
         private static readonly DalXml _Instance = new();
         public static DalXml Instance { get => _Instance; }
+
+        public struct Config
+        {
+            public int runNumber;
+            public double ElecEmpty , ElecLow , ElecMid , ElecHigh , ElecRatePercent;
+        }
+
+        public bool isInCharge(int droneId)
+        {
+            var all = ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId);
+            if (all.Count() > 0)
+                return true;
+            return false;
+        }
 
         public IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
@@ -108,7 +124,13 @@ namespace Dal
             }
             catch (ArgumentException e)
             {
-                WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+                    WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+            }
+            catch (FileNotFoundException f)
+            {
+                var param = new List<T>() { obj };
+                WriteAllObjects<T>(param);
+
             }
 
 
@@ -125,7 +147,7 @@ namespace Dal
 
             bool found = false;
 
-            foreach (var elem in ans)
+            foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
                     ans.Append(elem);
@@ -150,13 +172,13 @@ namespace Dal
 
             bool found = false;
 
-            foreach (var elem in ans)
+            foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
-                    ans.Append(elem);
+                    ans = ans.Append(elem);
                 else
                 {
-                    ans.Append(obj);
+                    ans = ans.Append(obj);
                     found = true;
                 }
             }
@@ -183,14 +205,33 @@ namespace Dal
 
         private void UpdateRunNumber()
         {
-            throw new NotImplementedException();
+            var cfg = ReadConfigFile();
+            cfg.runNumber += 1;
+            WriteConfigFile(cfg);
         }
 
         private int GetRunNumber()
         {
-            throw new NotImplementedException();
+            return ReadConfigFile().runNumber;
         }
 
+        private Config ReadConfigFile()
+        {
+            var serializer = new XmlSerializer(typeof(Config));
+            using (var reader = XmlReader.Create("Data/config.xml"))
+            {
+                return (Config)serializer.Deserialize(reader);
+            }
+        }
+
+        private void WriteConfigFile(Config data)
+        {
+            var serializer = new XmlSerializer(typeof(Config));
+            using (var writer = XmlWriter.Create("Data/config.xml"))
+            {
+                serializer.Serialize(writer, data);
+            }
+        }
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
             AddObject(id, new Station(id, name, longitude, lattitude, chargeSlots));
@@ -256,7 +297,8 @@ namespace Dal
 
         public double[] GetElectricity()
         {
-            double[] ans = new double[] { 0, 0, 0, 0 };//DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
+            Config c = ReadConfigFile();
+            double[] ans = new double[] { c.ElecEmpty, c.ElecLow, c.ElecMid, c.ElecHigh, c.ElecRatePercent };
             return ans;
         }
 
@@ -277,6 +319,8 @@ namespace Dal
 
             p.DroneId = droneId;
             p.Associated = DateTime.Now;
+
+            UpdateObject<Package>(p.Id, p);
         }
 
         public void PickUpPackage(int packageId)
@@ -284,22 +328,43 @@ namespace Dal
             var p = GetObject<Package>(packageId);
 
             p.PickUp = DateTime.Now;
+            UpdateObject<Package>(p.Id, p);
         }
 
         public void DeliverPackage(int packageId)
         {
             var p = GetObject<Package>(packageId);
             p.Delivered = DateTime.Now;
+            UpdateObject<Package>(p.Id, p);
         }
 
-        public void ReleaseDroneFromCharge(int droneId, int stationId)
+        public double ReleaseDroneFromCharge(int droneId, DateTime outDate, int stationId)
         {
-            throw new NotImplementedException();
+
+            Station s;
+            if(stationId > -1)
+                s = GetObject<Station>(stationId);
+            else // if the id of the station is not valid, find the station via the drone
+            {
+                s= GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
+            }
+            s.ChargeSlots += 1;
+            stationId = s.Id;
+            UpdateObject(stationId, s);
+            double ans = outDate.Subtract(GetObject<DroneCharge>(droneId, "DroneId").Enter).TotalSeconds;
+            DeleteObject<DroneCharge>(droneId, "DroneId");
+            return ans;
         }
 
         public void SendDroneToCharge(int droneId, int stationId)
         {
-            throw new NotImplementedException();
+            Station s = GetObject<Station>(stationId);
+            if (s.ChargeSlots <= 0)
+                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
+            s.ChargeSlots -= 1;
+            UpdateObject(stationId, s);
+            DroneCharge d = new DroneCharge(droneId, stationId , DateTime.Now);
+            AddObject<DroneCharge>(droneId , d);
         }
 
 
