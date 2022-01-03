@@ -1,4 +1,5 @@
 ﻿using BO;
+using System;
 using System.Collections.Generic;
 
 namespace BlApi
@@ -58,6 +59,8 @@ namespace BlApi
         IEnumerable<PackageForList> DisplayPackagesWithoutDrone();
 
         IEnumerable<StationForList> DisplayStationsWithCharges();
+
+        IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func);
 
         #endregion
     }

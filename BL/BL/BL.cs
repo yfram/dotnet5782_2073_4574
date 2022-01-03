@@ -985,6 +985,34 @@ namespace BlApi
                    PackageStatus.Paired :
                    PackageStatus.Initialized));
         }
+
+        public IEnumerable<T> DisplayObjectssWhere<T>(Func<T, bool> func)
+        {
+            IEnumerable<dynamic> listRet = typeof(T).Name switch
+            {
+                "Drone" => DisplayDrones(),
+                "Station" => DisplayStations(),
+                "Customer" => DisplayCustomers(),
+                "Package" => DisplayPackages(),
+                _ => throw new InvalidOperationException()
+            };
+            foreach (var item in listRet)
+                if (func(DisplayObject(item.Id, item.GetType().Name)))
+                    yield return item;
+
+        }
+
+        private dynamic DisplayObject(int id, string typeOf)
+        {
+            return typeOf switch
+            {
+                "Drone" => DisplayDrone(id),
+                "Station" => DisplayStation(id),
+                "Customer" => DisplayCustomer(id),
+                "Package" => DisplayPackage(id),
+                _ => throw new InvalidOperationException()
+            };
+        }
         #endregion
     }
 }
