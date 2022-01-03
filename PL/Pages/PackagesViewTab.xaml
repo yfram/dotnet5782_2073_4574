@@ -39,6 +39,11 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,381" Background="LightGray">
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Sent Between:"/>

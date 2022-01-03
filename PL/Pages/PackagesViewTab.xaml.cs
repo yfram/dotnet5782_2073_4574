@@ -111,7 +111,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex+1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex+1);
+                MainWindow.BL.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex + 1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex + 1);
 
             }
             catch (Exception ex)
@@ -147,6 +147,15 @@ namespace PL.Pages
         {
             if (packageView) return;
             ShowMenue(PackagesView[((DataGridRow)sender).GetIndex()].Id, "package view");
+        }
+
+        private void Filter(object sender, RoutedEventArgs e) 
+        {
+
+        }
+
+        private void FilterByDate()
+        {
         }
     }
 }
