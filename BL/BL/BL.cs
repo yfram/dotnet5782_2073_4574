@@ -1004,7 +1004,7 @@ namespace BlApi
 
         private dynamic DisplayObject(int id, string typeOf)
         {
-            return typeOf switch
+            return typeOf.Replace("ForList", "") switch
             {
                 "Drone" => DisplayDrone(id),
                 "Station" => DisplayStation(id),
