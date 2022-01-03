@@ -66,7 +66,7 @@ namespace Dal
 
         public IEnumerable<Customer> GetAllCustomers()
         {
-            var ObjectsRoot = XElement.Load($"Data/Customer.xml");
+            var ObjectsRoot = XElement.Load($"Data/Customers.xml");
 
             return (from s in ObjectsRoot.Elements()
                     select new Customer()
