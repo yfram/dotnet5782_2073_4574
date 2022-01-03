@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PL.Pages"
+             xmlns:extended="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:c="clr-namespace:BO;assembly=BL" x:Class="PL.Pages.PackagesViewTab"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" 
+             d:DesignHeight="500" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -42,9 +43,9 @@
         <Grid x:Name="FilterGrid" Margin="0,0,0,381" Background="LightGray">
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Sent Between:"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
-            <DatePicker HorizontalAlignment="Left" Margin="143,30,0,0" VerticalAlignment="Top"/>
-
+            <extended:DateTimePicker ValueChanged="Filter" x:Name="StartDate" Height="20" Width="100" Background="{x:Null}" Margin="50,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></extended:DateTimePicker>
+            <TextBlock Text="-" Margin="158,37,635,12"/>
+            <extended:DateTimePicker ValueChanged="Filter" x:Name="EndDate" Height="20" Width="100" Background="{x:Null}" Margin="170,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
