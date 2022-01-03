@@ -1,6 +1,7 @@
 ﻿using DO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dal
 {
@@ -21,6 +22,8 @@ namespace Dal
         private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
 
         public IEnumerable<Customer> GetAllCustomers() => new List<Customer>(DataSource.Customers);
+        public IEnumerable<Customer> GetAllCustomersWhere(Func<Customer, bool> predicate) =>
+            new List<Customer>(DataSource.Customers.Where(predicate));
 
 
     }

@@ -40,6 +40,8 @@ namespace DalApi
         IEnumerable<Package> GetAllPackages();
         IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> func);
         IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate);
+        IEnumerable<Station> GetAllDronesWhere(Func<Drone, bool> predicate);
+        IEnumerable<Station> GetAllCustomerssWhere(Func<Customer, bool> predicate);
 
         double[] GetElectricity();
     }

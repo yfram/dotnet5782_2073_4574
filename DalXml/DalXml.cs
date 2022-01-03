@@ -222,6 +222,11 @@ namespace Dal
             return ReadAllObjects<Drone>();
         }
 
+        public IEnumerable<Drone> GetAllDronessWhere(Func<Drone, bool> func)
+        {
+            return ReadAllObjectsWhen(func);
+        }
+
         public IEnumerable<Package> GetAllPackages()
         {
             return ReadAllObjects<Package>();
