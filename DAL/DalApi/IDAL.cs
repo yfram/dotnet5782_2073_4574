@@ -12,7 +12,7 @@ namespace DalApi
         void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered);
         void GivePackageDrone(int packageId, int droneId);
-        void PickUpPackage(int packageId, int droneID);
+        void PickUpPackage(int packageId);
 
         void DeliverPackage(int packageId);
         void SendDroneToCharge(int droneId, int stationId);

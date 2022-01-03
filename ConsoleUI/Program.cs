@@ -171,7 +171,7 @@ namespace ConsoleUI
                     d.GivePackageDrone(packageId, droneId);
                     break;
                 case 2:
-                    d.PickUpPackage(packageId, droneId);
+                    d.PickUpPackage(packageId);
                     break;
                 case 3:
                     d.DeliverPackage(packageId);

@@ -23,7 +23,7 @@ namespace Dal
             DataSource.Packages[index] = tmp;
 
         }
-        public void PickUpPackage(int packageId, int droneID)
+        public void PickUpPackage(int packageId)
         {
             int index = GetPackageIndex(packageId);
             Package tmp = DataSource.Packages[index];

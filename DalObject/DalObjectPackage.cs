@@ -22,6 +22,7 @@ namespace Dal
             Drone tmp = DataSource.Drones[droneIndex];
             //tmp.State = DroneStates.Empty;
             DataSource.Drones[droneIndex] = tmp;
+
             DataSource.Packages.RemoveAt(packageIndex);
 
             //DataSource.Customers.RemoveAll(c => c.Id == package.RecevirId); was not sure this is needed, we might want to save a list of past customers

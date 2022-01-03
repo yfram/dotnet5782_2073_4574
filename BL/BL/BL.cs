@@ -445,7 +445,7 @@ namespace BlApi
                     BLdrone.Battery -= batteryNeed;
 
                     BLdrone.CurrentLocation = SenderLoc;
-                    Idal.PickUpPackage(PackageId, BLdrone.Id); // update time
+                    Idal.PickUpPackage(PackageId); // update time
                 }
                 else
                 {
