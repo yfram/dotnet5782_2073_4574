@@ -289,14 +289,25 @@ namespace Dal
             p.Delivered = DateTime.Now;
         }
 
-        public void ReleaseDroneFromCharge(int droneId, int stationId)
+        public double ReleaseDroneFromCharge(int droneId, DateTime outDate, int stationId)
         {
-            throw new NotImplementedException();
+            Station s = GetObject<Station>(stationId);
+            s.ChargeSlots += 1;
+            UpdateObject(stationId, s);
+            double ans = outDate.Subtract(GetObject<DroneCharge>(droneId, "DroneId").Enter).TotalSeconds;
+            DeleteObject<DroneCharge>(droneId, "DroneId");
+            return ans;
         }
 
         public void SendDroneToCharge(int droneId, int stationId)
         {
-            throw new NotImplementedException();
+            Station s = GetObject<Station>(stationId);
+            if (s.ChargeSlots <= 0)
+                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
+            s.ChargeSlots -= 1;
+            UpdateObject(stationId, s);
+            DroneCharge d = new DroneCharge(droneId, stationId , DateTime.Now);
+            AddObject<DroneCharge>(droneId , d);
         }
 
 

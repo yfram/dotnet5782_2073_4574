@@ -180,7 +180,7 @@ namespace ConsoleUI
                     d.SendDroneToCharge(droneId, stationId);
                     break;
                 case 5:
-                    d.ReleaseDroneFromCharge(droneId, stationId);
+                    d.ReleaseDroneFromCharge(droneId,DateTime.Now, stationId);
                     break;
                 default:
                     break; ;

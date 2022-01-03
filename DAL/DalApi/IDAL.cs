@@ -16,7 +16,7 @@ namespace DalApi
 
         void DeliverPackage(int packageId);
         void SendDroneToCharge(int droneId, int stationId);
-        void ReleaseDroneFromCharge(int droneId, int stationId);
+        double ReleaseDroneFromCharge(int droneId, DateTime outTime, int stationId);
 
         Station GetStation(int id);
         Drone GetDrone(int id);

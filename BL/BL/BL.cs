@@ -331,7 +331,7 @@ namespace BlApi
         /// <param name="time"></param>
         /// <exception cref="DroneStateException"></exception>
         /// <exception cref="ObjectDoesntExistException"></exception>
-        public void ReleaseDrone(int DroneId, double time)
+        public void ReleaseDrone(int DroneId, DateTime outTime)
         {
             DO.Drone DALdrone = GetDALDrone(DroneId);
             DroneForList BLdrone = BLdrones.Find(d => d.Id == DroneId);
@@ -340,11 +340,11 @@ namespace BlApi
             {
                 if (BLdrone.State == DroneState.Maitenance)
                 {
+                    
+                    double time = Idal.ReleaseDroneFromCharge(DroneId, outTime , -1); // find the station id by yourelf, via the DroneCharges object
                     BLdrone.Battery += elecRate[4] * time;
                     BLdrone.Battery = BLdrone.Battery > 100 ? 100 : BLdrone.Battery;
                     BLdrone.State = DroneState.Empty;
-                    Idal.ReleaseDroneFromCharge(DroneId, -1); // find the station id by yourelf, via the DroneCharges object
-
                 }
                 else
                 {
