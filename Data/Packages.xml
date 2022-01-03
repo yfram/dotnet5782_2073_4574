@@ -120,4 +120,28 @@
     <PickUp>2020-10-04T19:11:10</PickUp>
     <Delivered />
   </Package>
+  <Package>
+    <Id>0</Id>
+    <SenderId>3</SenderId>
+    <RecevirId>2</RecevirId>
+    <Weight>Light</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId />
+    <Created>2022-01-03T14:11:26.5735513+02:00</Created>
+    <Associated />
+    <PickUp />
+    <Delivered />
+  </Package>
+  <Package>
+    <Id>1</Id>
+    <SenderId>9</SenderId>
+    <RecevirId>2</RecevirId>
+    <Weight>Light</Weight>
+    <PackagePriority>Low</PackagePriority>
+    <DroneId />
+    <Created>2022-01-03T14:11:33.4034808+02:00</Created>
+    <Associated />
+    <PickUp />
+    <Delivered />
+  </Package>
 </listOfObjects>
