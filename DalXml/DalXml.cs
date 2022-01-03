@@ -6,7 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Dal
 {
@@ -14,6 +16,12 @@ namespace Dal
     {
         private static readonly DalXml _Instance = new();
         public static DalXml Instance { get => _Instance; }
+
+        public struct Config
+        {
+            public int runNumber;
+            public double ElecEmpty , ElecLow , ElecMid , ElecHigh , ElecRatePercent;
+        }
 
         public IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
@@ -185,14 +193,33 @@ namespace Dal
 
         private void UpdateRunNumber()
         {
-            throw new NotImplementedException();
+            var cfg = ReadConfigFile();
+            cfg.runNumber += 1;
+            WriteConfigFile(cfg);
         }
 
         private int GetRunNumber()
         {
-            throw new NotImplementedException();
+            return ReadConfigFile().runNumber;
         }
 
+        private Config ReadConfigFile()
+        {
+            var serializer = new XmlSerializer(typeof(Config));
+            using (var reader = XmlReader.Create("Data/config.xml"))
+            {
+                return (Config)serializer.Deserialize(reader);
+            }
+        }
+
+        private void WriteConfigFile(Config data)
+        {
+            var serializer = new XmlSerializer(typeof(Config));
+            using (var writer = XmlWriter.Create("Data/config.xml"))
+            {
+                serializer.Serialize(writer, data);
+            }
+        }
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
             AddObject(id, new Station(id, name, longitude, lattitude, chargeSlots));
@@ -253,7 +280,8 @@ namespace Dal
 
         public double[] GetElectricity()
         {
-            double[] ans = new double[] { 0, 0, 0, 0 };//DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
+            Config c = ReadConfigFile();
+            double[] ans = new double[] { c.ElecEmpty, c.ElecLow, c.ElecMid, c.ElecHigh, c.ElecRatePercent };
             return ans;
         }
 
