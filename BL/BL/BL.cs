@@ -986,7 +986,7 @@ namespace BlApi
                    PackageStatus.Initialized));
         }
 
-        public IEnumerable<T> DisplayObjectssWhere<T>(Func<T, bool> func)
+        public IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func)
         {
             IEnumerable<dynamic> listRet = typeof(T).Name switch
             {
