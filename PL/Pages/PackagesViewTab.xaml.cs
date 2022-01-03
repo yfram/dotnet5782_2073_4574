@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace PL.Pages
@@ -149,7 +146,7 @@ namespace PL.Pages
             ShowMenue(PackagesView[((DataGridRow)sender).GetIndex()].Id, "package view");
         }
 
-        private void Filter(object sender, RoutedEventArgs e) 
+        private void Filter(object sender, RoutedEventArgs e)
         {
 
         }
