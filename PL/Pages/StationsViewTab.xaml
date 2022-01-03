@@ -38,6 +38,21 @@
                   CanUserResizeColumns="False" CanUserReorderColumns="False" 
                   AutoGenerateColumns="False" Margin="0,47,0,0">
 
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="{DynamicResource StationsGridFore}"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
