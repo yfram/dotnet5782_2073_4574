@@ -19,7 +19,7 @@ namespace Dal
         public struct Config
         {
             public int runNumber;
-            public double ElecEmpty , ElecLow , ElecMid , ElecHigh , ElecRatePercent;
+            public double ElecEmpty, ElecLow, ElecMid, ElecHigh, ElecRatePercent;
         }
 
         public bool isInCharge(int droneId)
@@ -125,7 +125,7 @@ namespace Dal
             }
             catch (ArgumentException e)
             {
-                    WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+                WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
             }
             catch (FileNotFoundException f)
             {
@@ -256,9 +256,6 @@ namespace Dal
             DeleteObject<Station>(id);
         }
 
-
-
-
         public IEnumerable<Drone> GetAllDrones()
         {
             return ReadAllObjects<Drone>();
@@ -343,11 +340,11 @@ namespace Dal
         {
 
             Station s;
-            if(stationId > -1)
+            if (stationId > -1)
                 s = GetObject<Station>(stationId);
             else // if the id of the station is not valid, find the station via the drone
             {
-                s= GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
+                s = GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
             }
             s.ChargeSlots += 1;
             stationId = s.Id;
@@ -364,8 +361,8 @@ namespace Dal
                 throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
             s.ChargeSlots -= 1;
             UpdateObject(stationId, s);
-            DroneCharge d = new DroneCharge(droneId, stationId , DateTime.Now);
-            AddObject<DroneCharge>(droneId , d);
+            DroneCharge d = new DroneCharge(droneId, stationId, DateTime.Now);
+            AddObject<DroneCharge>(droneId, d);
         }
 
 
