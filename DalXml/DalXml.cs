@@ -123,7 +123,7 @@ namespace Dal
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
-                throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+                throw new ArgumentException($"the property {propName} does not exsist in {obj.GetType().Name} or its type is not int, so it can't be used as an id!");
 
             bool found = false;
 
