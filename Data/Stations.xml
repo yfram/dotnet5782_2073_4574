@@ -12,7 +12,7 @@
     <Name>Modi'in</Name>
     <Longitude>33.375441652897486</Longitude>
     <Lattitude>34.43940050920444</Lattitude>
-    <ChargeSlots>4</ChargeSlots>
+    <ChargeSlots>3</ChargeSlots>
   </Station>
   <Station>
     <Id>2</Id>
@@ -26,7 +26,7 @@
     <Name>Bear Sheava</Name>
     <Longitude>33.36111435730062</Longitude>
     <Lattitude>34.099599697673504</Lattitude>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
     <Id>4</Id>
@@ -40,7 +40,7 @@
     <Name>Heifa</Name>
     <Longitude>33.04592020299561</Longitude>
     <Lattitude>34.58188025214797</Lattitude>
-    <ChargeSlots>7</ChargeSlots>
+    <ChargeSlots>9</ChargeSlots>
   </Station>
   <Station>
     <Id>6</Id>
@@ -54,14 +54,14 @@
     <Name>Tel Aviv</Name>
     <Longitude>33.69382410342517</Longitude>
     <Lattitude>34.01556573855484</Lattitude>
-    <ChargeSlots>8</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </Station>
   <Station>
     <Id>8</Id>
     <Name>Jeruselam</Name>
     <Longitude>33.19353829240126</Longitude>
     <Lattitude>34.46959772169106</Lattitude>
-    <ChargeSlots>3</ChargeSlots>
+    <ChargeSlots>2</ChargeSlots>
   </Station>
   <Station>
     <Id>9</Id>
@@ -82,21 +82,21 @@
     <Name>Heifa</Name>
     <Longitude>33.79116793432793</Longitude>
     <Lattitude>34.529696238473846</Lattitude>
-    <ChargeSlots>2</ChargeSlots>
+    <ChargeSlots>1</ChargeSlots>
   </Station>
   <Station>
     <Id>12</Id>
     <Name>Heifa</Name>
     <Longitude>33.539746675426024</Longitude>
     <Lattitude>34.341336586671574</Lattitude>
-    <ChargeSlots>5</ChargeSlots>
+    <ChargeSlots>4</ChargeSlots>
   </Station>
   <Station>
     <Id>13</Id>
     <Name>Tel Aviv</Name>
     <Longitude>33.492155905110835</Longitude>
     <Lattitude>34.059004178298174</Lattitude>
-    <ChargeSlots>2</ChargeSlots>
+    <ChargeSlots>1</ChargeSlots>
   </Station>
   <Station>
     <Id>14</Id>

@@ -13,6 +13,11 @@ namespace Dal
             DataSource.Initialize();
         }
 
+        public bool isInCharge(int droneId)
+        {
+            return DataSource.DroneCharges.Exists(dc => dc.DroneId == droneId);
+        }
+
         #region Update functions
         public void GivePackageDrone(int packageId, int droneId)
         {

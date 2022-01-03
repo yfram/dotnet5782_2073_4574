@@ -80,9 +80,16 @@
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Customer ID:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Customer Name:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Customer Phone:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="350,10,0,0" TextWrapping="Wrap" Text="Customer Longtitude:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="480,10,0,0" TextWrapping="Wrap" Text="Customer Latitude:" VerticalAlignment="Top"/>
+
+
             <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
             <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="50,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewLong" materialDesign:HintAssist.Hint="Longtitude"  HorizontalAlignment="Left" Margin="350,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+            <TextBox x:Name="NewLat" materialDesign:HintAssist.Hint="Latitude"  HorizontalAlignment="Left" Margin="480,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+
         </Grid>
 
         <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">

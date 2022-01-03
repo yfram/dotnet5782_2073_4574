@@ -30,6 +30,9 @@ namespace BlApi
                 BLdrone.Id = DALdrone.Id;
                 BLdrone.Model = DALdrone.Model;
                 BLdrone.Weight = (WeightGroup)((int)DALdrone.Weight);
+
+                bool inCharge = Idal.isInCharge(BLdrone.Id); // check if the drone already in charge
+
                 DO.Package? AssociatedButNotDelivered;
                 try
                 {
@@ -41,7 +44,7 @@ namespace BlApi
                 {
                     AssociatedButNotDelivered = null;
                 }
-                if (AssociatedButNotDelivered is not null)
+                if (AssociatedButNotDelivered is not null && !inCharge)
                 {
                     BLdrone.State = DroneState.Busy;
                     BLdrone.PassingPckageId = AssociatedButNotDelivered?.Id;
@@ -71,15 +74,17 @@ namespace BlApi
                 else
                 {
                     int state = rand.Next(0, 2);
-                    if (state == 0) // Maitenance
+                    if (state == 0 || inCharge) // Maitenance
                     {
                         BLdrone.State = DroneState.Maitenance;
 
                         BLdrone.Battery = ((double)rand.Next(1, 21));
 
-                        var stations = Idal.GetAllStations();
+                        var stations = Idal.GetAllStationsWhere(s=>s.ChargeSlots>0);
                         var station = stations.ElementAt(rand.Next(0, stations.Count()));
                         BLdrone.CurrentLocation = new(station.Longitude, station.Lattitude);
+                        if(!inCharge)
+                            Idal.SendDroneToCharge(BLdrone.Id,station.Id);
 
                     }
                     else //empty

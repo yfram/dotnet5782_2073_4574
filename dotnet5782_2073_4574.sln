@@ -34,8 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3C580110-F
 	ProjectSection(SolutionItems) = preProject
 		Data\config.xml = Data\config.xml
 		Data\Customers.xml = Data\Customers.xml
+		Data\DroneCharges.xml = Data\DroneCharges.xml
 		Data\Drones.xml = Data\Drones.xml
-		Data\Dronessss.xml = Data\Dronessss.xml
 		Data\Packages.xml = Data\Packages.xml
 		Data\Stations.xml = Data\Stations.xml
 	EndProjectSection

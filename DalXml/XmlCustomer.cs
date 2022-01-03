@@ -24,7 +24,7 @@ namespace Dal
         {
             GetCustomer(id); // check if exist
 
-            var ObjectsRoot = XElement.Load($"Data/Customer.xml");
+            var ObjectsRoot = XElement.Load($"Data/Customers.xml");
 
             (from s in ObjectsRoot.Elements()
                        where Int32.Parse(s.Element("Id").Value) == id
@@ -36,7 +36,7 @@ namespace Dal
         public void UpdateCustomer(Customer c)
         {
 
-            var ObjectsRoot = XElement.Load($"Data/Customer.xml");
+            var ObjectsRoot = XElement.Load($"Data/Customers.xml");
 
             XElement e = (from s in ObjectsRoot.Elements()
                          where Int32.Parse(s.Element("Id").Value) == c.Id
@@ -91,7 +91,7 @@ namespace Dal
             new XElement("Longitude", p.Longitude)
             ));
 
-            root.Save($"Data/Drones.xml");
+            root.Save($"Data/Customers.xml");
 
         }
 

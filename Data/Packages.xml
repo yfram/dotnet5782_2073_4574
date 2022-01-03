@@ -78,10 +78,10 @@
     <RecevirId>2</RecevirId>
     <Weight>Heavy</Weight>
     <PackagePriority>Medium</PackagePriority>
-    <DroneId />
+    <DroneId>2</DroneId>
     <Created>2020-10-10T02:18:32</Created>
-    <Associated />
-    <PickUp />
+    <Associated>2022-01-03T21:25:09.9960682+02:00</Associated>
+    <PickUp>2022-01-03T21:25:12.0498473+02:00</PickUp>
     <Delivered />
   </Package>
   <Package>
@@ -118,30 +118,18 @@
     <Created>2020-10-02T21:11:10</Created>
     <Associated>2020-10-03T16:22:10</Associated>
     <PickUp>2020-10-04T19:11:10</PickUp>
-    <Delivered />
+    <Delivered>2022-01-03T21:08:11.1776389+02:00</Delivered>
   </Package>
   <Package>
-    <Id>0</Id>
-    <SenderId>3</SenderId>
-    <RecevirId>2</RecevirId>
+    <Id>13</Id>
+    <SenderId>2</SenderId>
+    <RecevirId>1</RecevirId>
     <Weight>Light</Weight>
-    <PackagePriority>Low</PackagePriority>
-    <DroneId />
-    <Created>2022-01-03T14:11:26.5735513+02:00</Created>
-    <Associated />
-    <PickUp />
-    <Delivered />
-  </Package>
-  <Package>
-    <Id>1</Id>
-    <SenderId>9</SenderId>
-    <RecevirId>2</RecevirId>
-    <Weight>Light</Weight>
-    <PackagePriority>Low</PackagePriority>
-    <DroneId />
-    <Created>2022-01-03T14:11:33.4034808+02:00</Created>
-    <Associated />
-    <PickUp />
-    <Delivered />
+    <PackagePriority>High</PackagePriority>
+    <DroneId>1</DroneId>
+    <Created>2022-01-03T21:25:47.4952814+02:00</Created>
+    <Associated>2022-01-03T21:25:51.6949692+02:00</Associated>
+    <PickUp>2022-01-03T21:25:54.397922+02:00</PickUp>
+    <Delivered>2022-01-03T21:25:55.5428802+02:00</Delivered>
   </Package>
 </listOfObjects>

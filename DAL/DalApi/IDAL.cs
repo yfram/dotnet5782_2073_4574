@@ -42,5 +42,7 @@ namespace DalApi
         IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate);
 
         double[] GetElectricity();
+
+        bool isInCharge(int droneId);
     }
 }

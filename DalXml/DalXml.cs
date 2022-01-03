@@ -2,6 +2,7 @@
 using DO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,6 +22,14 @@ namespace Dal
         {
             public int runNumber;
             public double ElecEmpty , ElecLow , ElecMid , ElecHigh , ElecRatePercent;
+        }
+
+        public bool isInCharge(int droneId)
+        {
+            var all = ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId);
+            if (all.Count() > 0)
+                return true;
+            return false;
         }
 
         public IEnumerable<T> ReadAllObjects<T>() where T : new()
@@ -118,7 +127,13 @@ namespace Dal
             }
             catch (ArgumentException e)
             {
-                WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+                    WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+            }
+            catch (FileNotFoundException f)
+            {
+                var param = new List<T>() { obj };
+                WriteAllObjects<T>(param);
+
             }
 
 
@@ -135,7 +150,7 @@ namespace Dal
 
             bool found = false;
 
-            foreach (var elem in ans)
+            foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
                     ans.Append(elem);
@@ -160,13 +175,13 @@ namespace Dal
 
             bool found = false;
 
-            foreach (var elem in ans)
+            foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
-                    ans.Append(elem);
+                    ans = ans.Append(elem);
                 else
                 {
-                    ans.Append(obj);
+                    ans = ans.Append(obj);
                     found = true;
                 }
             }
@@ -302,6 +317,8 @@ namespace Dal
 
             p.DroneId = droneId;
             p.Associated = DateTime.Now;
+
+            UpdateObject<Package>(p.Id, p);
         }
 
         public void PickUpPackage(int packageId)
@@ -309,18 +326,28 @@ namespace Dal
             var p = GetObject<Package>(packageId);
 
             p.PickUp = DateTime.Now;
+            UpdateObject<Package>(p.Id, p);
         }
 
         public void DeliverPackage(int packageId)
         {
             var p = GetObject<Package>(packageId);
             p.Delivered = DateTime.Now;
+            UpdateObject<Package>(p.Id, p);
         }
 
         public double ReleaseDroneFromCharge(int droneId, DateTime outDate, int stationId)
         {
-            Station s = GetObject<Station>(stationId);
+
+            Station s;
+            if(stationId > -1)
+                s = GetObject<Station>(stationId);
+            else // if the id of the station is not valid, find the station via the drone
+            {
+                s= GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
+            }
             s.ChargeSlots += 1;
+            stationId = s.Id;
             UpdateObject(stationId, s);
             double ans = outDate.Subtract(GetObject<DroneCharge>(droneId, "DroneId").Enter).TotalSeconds;
             DeleteObject<DroneCharge>(droneId, "DroneId");
