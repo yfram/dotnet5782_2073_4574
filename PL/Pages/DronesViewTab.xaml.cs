@@ -38,7 +38,11 @@ namespace PL.Pages
 
         private void DronesViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!gridOpen || e.OriginalSource is not Button button) return;
+            if (!gridOpen || e.OriginalSource is not Button button)
+            {
+                return;
+            }
+
             Drones.Clear();
             drones.Clear();
             MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
@@ -81,29 +85,42 @@ namespace PL.Pages
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is not CheckBox senderAsCheckBox) return;
+            if (sender is not CheckBox senderAsCheckBox)
+            {
+                return;
+            }
+
             List<Func<Drone, bool>> weightFuncs = new();
             List<Func<Drone, bool>> statusFuncs = new();
             foreach (CheckBox checkBox in FilterGrid.Children.OfType<CheckBox>())
+            {
                 switch (checkBox.Content)
                 {
                     case "Empty":
                     case "Maitenance":
                     case "Busy":
                         if ((checkBox.IsChecked ?? false))//false is unreacable
+                        {
                             statusFuncs.Add((Drone d) => d.State.ToString() == (string)checkBox.Content);
+                        }
+
                         break;
                     case "Light":
                     case "Mid":
                     case "Heavy":
                         if ((checkBox.IsChecked ?? false))//false is unreacable
+                        {
                             weightFuncs.Add((Drone d) => d.Weight.ToString() == (string)checkBox.Content);
+                        }
+
                         break;
                     case "Collected_View":
                         break;
                     default:
                         throw new AccessViolationException();
                 }
+            }
+
             Drones.Clear();
 
             drones.Where(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));

@@ -67,7 +67,10 @@ namespace BlApi
                     double distance = DistanceToDoDeliver((DO.Package)AssociatedButNotDelivered, BLdrone);
                     double minBattery = distance / ElecOfDrone(BLdrone);
                     if (minBattery > 100)//the minumun battery needed for the delivery is larger than 100% charge
+                    {
                         throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
+                    }
+
                     BLdrone.Battery = rand.NextDouble() * (100 - minBattery) + minBattery;
                 }
 
@@ -80,12 +83,13 @@ namespace BlApi
 
                         BLdrone.Battery = ((double)rand.Next(1, 21));
 
-                        var stations = Idal.GetAllStationsWhere(s=>s.ChargeSlots>0);
+                        var stations = Idal.GetAllStationsWhere(s => s.ChargeSlots > 0);
                         var station = stations.ElementAt(rand.Next(0, stations.Count()));
                         BLdrone.CurrentLocation = new(station.Longitude, station.Lattitude);
-                        if(!inCharge)
-                            Idal.SendDroneToCharge(BLdrone.Id,station.Id);
-
+                        if (!inCharge)
+                        {
+                            Idal.SendDroneToCharge(BLdrone.Id, station.Id);
+                        }
                     }
                     else //empty
                     {
@@ -102,7 +106,10 @@ namespace BlApi
                             BLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
                         }
                         int? id = GetClosetStation(BLdrone.CurrentLocation);
-                        if (id is null) throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone));
+                        if (id is null)
+                        {
+                            throw new BlException("No free charging stations", BLdrone.Id, typeof(Drone));
+                        }
 
                         var station = GetDALStation((int)id);
                         Location stationLoc = new(station.Longitude, station.Lattitude);
@@ -257,11 +264,14 @@ namespace BlApi
             station.Name = newName != "" ? newName : station.Name;
 
             if (newEmptyChargeSlots < 0)
+            {
                 newEmptyChargeSlots = station.ChargeSlots;
+            }
             else
-
-
+            {
                 station.ChargeSlots = newEmptyChargeSlots;
+            }
+
             Idal.UpdateStation(station);
         }
 
@@ -321,12 +331,12 @@ namespace BlApi
             else
             {
                 if (drone is null)
+                {
                     throw new ObjectDoesntExistException($"the drone {DroneId} is not exsist!");
+                }
+
                 throw new DroneStateException($"the drone {DroneId} can send to charge only if it empty! currently {drone.State}");
             }
-
-
-
         }
 
         /// <summary>
@@ -345,8 +355,8 @@ namespace BlApi
             {
                 if (BLdrone.State == DroneState.Maitenance)
                 {
-                    
-                    double time = Idal.ReleaseDroneFromCharge(DroneId, outTime , -1); // find the station id by yourelf, via the DroneCharges object
+
+                    double time = Idal.ReleaseDroneFromCharge(DroneId, outTime, -1); // find the station id by yourelf, via the DroneCharges object
                     BLdrone.Battery += elecRate[4] * time;
                     BLdrone.Battery = BLdrone.Battery > 100 ? 100 : BLdrone.Battery;
                     BLdrone.State = DroneState.Empty;
@@ -446,7 +456,10 @@ namespace BlApi
 
                     double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                     if (batteryNeed > BLdrone.Battery)
+                    {
                         throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
+                    }
+
                     BLdrone.Battery -= batteryNeed;
 
                     BLdrone.CurrentLocation = SenderLoc;
@@ -488,7 +501,9 @@ namespace BlApi
 
                     double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                     if (batteryNeed > BLdrone.Battery)
+                    {
                         throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
+                    }
 
                     BLdrone.Battery -= batteryNeed;
 
@@ -590,10 +605,13 @@ namespace BlApi
 
 
                         if (dp.SenderId == CustomerId)
+                        {
                             pkgFrom.Add(pkgForCustomer);
+                        }
                         else // the Customer is the reciver of this pakcage
+                        {
                             pkgTo.Add(pkgForCustomer);
-
+                        }
                     }
                 }
             }
@@ -800,16 +818,24 @@ namespace BlApi
         private int PackagePriority(DO.Package p1, DO.Package p2, Location DroneLoc)
         {
             if ((int)p1.PackagePriority > (int)p2.PackagePriority)
+            {
                 return 1;
+            }
 
             if ((int)p1.PackagePriority < (int)p2.PackagePriority)
+            {
                 return -1;
+            }
 
             if ((int)p1.Weight > (int)p2.Weight)
+            {
                 return 1;
+            }
 
             if ((int)p1.Weight < (int)p2.Weight)
+            {
                 return -1;
+            }
 
             DO.Customer p1Cust = Idal.GetCustomer(p1.SenderId);
             DO.Customer p2Cust = Idal.GetCustomer(p2.SenderId);
@@ -821,9 +847,14 @@ namespace BlApi
             double p2Dist = DistanceTo(DroneLoc, LocP2);
 
             if (p1Dist > p2Dist)
+            {
                 return -1;
+            }
+
             if (p1Dist < p2Dist)
+            {
                 return 1;
+            }
 
             return 0;
         }
@@ -898,7 +929,10 @@ namespace BlApi
         {
             IEnumerable<DO.Station> FreeStations = Idal.GetAllStations();
             if (toCharge)
+            {
                 FreeStations = FreeStations.Where(s => s.ChargeSlots > 0);
+            }
+
             if (FreeStations.Count() > 0)
             {
                 DO.Station closest = FreeStations.Aggregate((s1, s2) => DistanceTo(new(s1.Longitude, s1.Lattitude), loc)
@@ -920,7 +954,9 @@ namespace BlApi
             double[] elec = this.elecRate;
             int ix = -1;
             if (d.State == DroneState.Empty)
+            {
                 ix = 0;
+            }
             else if (d.State == DroneState.Busy)
             {
                 switch (Idal.GetPackage((int)d.PassingPckageId).Weight)
@@ -937,7 +973,10 @@ namespace BlApi
                 }
             }
             else
+            {
                 throw new InvalidOperationException($"The dorne {d.Id} is in maitenance");
+            }
+
             return elec[ix];
         }
 

@@ -44,9 +44,12 @@ namespace PL.Pages
         private void OpenPackage(object sender, RoutedEventArgs e)
         {
             int id = int.Parse(((Button)sender).Content.ToString());
-            var l = BLCustomer.PackagesFrom.Where(p=>p.Id == id);
-            if(l.Count() == 0)
+            var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
+            if (l.Count() == 0)
+            {
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);
+            }
+
             PackageForCustomer p = l.ElementAt(0);
             var w = new Window
             {

@@ -6,12 +6,11 @@ using System.Linq;
 
 namespace ConsoleUI
 {
-    class Program
+    internal class Program
     {
-        enum MenueOptions { Add = 1, Update, GetById, GetList, Exit }
+        private enum MenueOptions { Add = 1, Update, GetById, GetList, Exit }
 
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             IDAL d = DalFactory.GetDal();
 
@@ -28,7 +27,9 @@ namespace ConsoleUI
                 {
                     menue = GetIntInput(openMsg);
                     if (menue > 5 || menue < 1)
+                    {
                         Console.WriteLine("Error! unrecognized op-code");
+                    }
                 } while (menue > 5 || menue < 1);
 
                 switch ((MenueOptions)menue)
@@ -65,7 +66,9 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(getListsMenu);
                 if (menue > 6 || menue < 1)
+                {
                     Console.WriteLine("Error! unrecognized op-code");
+                }
             } while (menue > 6 || menue < 1);
             IEnumerable<object> list = null;
             switch (menue)
@@ -109,7 +112,9 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(getByIdMenu);
                 if (menue > 4 || menue < 1)
+                {
                     Console.WriteLine("Error! unrecognized op-code");
+                }
             } while (menue > 4 || menue < 1);
 
             int id = GetIntInput("Enter ID:");
@@ -146,7 +151,9 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(updateMenu);
                 if (menue > 5 || menue < 1)
+                {
                     Console.WriteLine("Error! unrecognized op-code");
+                }
             } while (menue > 5 || menue < 1);
             // all need a drone
             List<int> needPackage = new() { 1, 2, 3 };
@@ -180,7 +187,7 @@ namespace ConsoleUI
                     d.SendDroneToCharge(droneId, stationId);
                     break;
                 case 5:
-                    d.ReleaseDroneFromCharge(droneId,DateTime.Now, stationId);
+                    d.ReleaseDroneFromCharge(droneId, DateTime.Now, stationId);
                     break;
                 default:
                     break; ;
@@ -199,7 +206,9 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(addMenu);
                 if (menue > 4 || menue < 1)
+                {
                     Console.WriteLine("Error! unrecognized op-code");
+                }
             } while (menue > 4 || menue < 1);
             switch (menue)
             {

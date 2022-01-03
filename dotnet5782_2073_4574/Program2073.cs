@@ -2,7 +2,7 @@
 
 namespace Targil0
 {
-    partial class Program
+    internal partial class Program
     {
         static partial void Welcome2073()
         {

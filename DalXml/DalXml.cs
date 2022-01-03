@@ -26,7 +26,10 @@ namespace Dal
         {
             var all = ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId);
             if (all.Count() > 0)
+            {
                 return true;
+            }
+
             return false;
         }
 
@@ -50,7 +53,9 @@ namespace Dal
             foreach (var elem in all)
             {
                 if (func(elem))
+                {
                     ans.Add(elem);
+                }
             }
             return ans;
         }
@@ -80,18 +85,22 @@ namespace Dal
                 if (Nullable.GetUnderlyingType(FI.PropertyType) is not null)
                 {
                     if (elem.Element(FI.Name).Value.Trim().Length == 0)
+                    {
                         FI.SetValue(current, null);
+                    }
                     else
+                    {
                         FI.SetValue(current, Convert.ChangeType(elem.Element(FI.Name).Value, Nullable.GetUnderlyingType(FI.PropertyType)));
-
+                    }
                 }
                 else if (FI.PropertyType.IsEnum)
                 {
                     FI.SetValue(current, Enum.Parse(FI.PropertyType, elem.Element(FI.Name).Value));
                 }
                 else
+                {
                     FI.SetValue(current, Convert.ChangeType(elem.Element(FI.Name).Value, FI.PropertyType));
-
+                }
             }
             return (T)current;
         }
@@ -102,15 +111,18 @@ namespace Dal
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
+            {
                 throw new ArgumentException($"the property {propName} is not exsist in {typeof(T).Name} or it type is not int so it cant use as an id!");
-
+            }
 
             foreach (XElement elem in ObjectsRoot.Elements())
             {
                 object obj = ReadObject<T>(elem);
 
                 if ((int)prop.GetValue(obj) == id)
+                {
                     return (T)obj;
+                }
             }
 
             throw new ArgumentException($"the id {id} is not exsist!");
@@ -144,20 +156,28 @@ namespace Dal
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
+            {
                 throw new ArgumentException($"the property {propName} does not exsist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
+            }
 
             bool found = false;
 
             foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
+                {
                     ans.Append(elem);
+                }
                 else
+                {
                     found = true;
+                }
             }
 
             if (!found)
+            {
                 throw new ArgumentException($"cannot find {id} of {typeof(T).Name}");
+            }
 
             WriteAllObjects(ans);
         }
@@ -169,14 +189,18 @@ namespace Dal
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
+            {
                 throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+            }
 
             bool found = false;
 
             foreach (var elem in all)
             {
                 if ((int)prop.GetValue(elem) != id)
+                {
                     ans = ans.Append(elem);
+                }
                 else
                 {
                     ans = ans.Append(obj);
@@ -185,7 +209,9 @@ namespace Dal
             }
 
             if (!found)
+            {
                 throw new ArgumentException($"cannot find {id} of {typeof(T).Name}");
+            }
 
             WriteAllObjects(ans);
         }
@@ -341,7 +367,9 @@ namespace Dal
 
             Station s;
             if (stationId > -1)
+            {
                 s = GetObject<Station>(stationId);
+            }
             else // if the id of the station is not valid, find the station via the drone
             {
                 s = GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
@@ -358,7 +386,10 @@ namespace Dal
         {
             Station s = GetObject<Station>(stationId);
             if (s.ChargeSlots <= 0)
+            {
                 throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
+            }
+
             s.ChargeSlots -= 1;
             UpdateObject(stationId, s);
             DroneCharge d = new DroneCharge(droneId, stationId, DateTime.Now);

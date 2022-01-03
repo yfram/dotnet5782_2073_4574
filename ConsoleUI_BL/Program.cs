@@ -32,7 +32,7 @@ namespace ConsoleUI_BL
             Stations, Drones, Customers, Packages, UnpairedPackages, OpenStations
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             BlApi.IBL Bl = BlFactory.GetBl();
             string openMsg = "Welcome to John&G Drones administiration system!";
@@ -267,7 +267,9 @@ namespace ConsoleUI_BL
             {
                 res = GetIntInput(print);
                 if (res < min || res > max)
+                {
                     Console.Write(errorMsg is null ? "" : $"{errorMsg}\n");
+                }
             } while (res < min || res > max);
             return res;
 

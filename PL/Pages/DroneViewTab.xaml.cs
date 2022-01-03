@@ -102,7 +102,10 @@ namespace PL.Pages
             }
             Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
             if (p.TimeToDeliver.HasValue)
+            {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
+            }
+
             if (p.TimeToPickup.HasValue)
             {
                 DroneNextOp.Content = "deliver the package";

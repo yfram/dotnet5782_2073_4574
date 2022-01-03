@@ -36,7 +36,11 @@ namespace PL.Pages
 
         private void PackagesViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!gridOpen || e.OriginalSource is not Button button) return;
+            if (!gridOpen || e.OriginalSource is not Button button)
+            {
+                return;
+            }
+
             PackagesView.Clear();
             packages.Clear();
             MainWindow.BL.DisplayPackages().ToList().ForEach(d => PackagesView.Add(d));
@@ -142,7 +146,11 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            if (packageView) return;
+            if (packageView)
+            {
+                return;
+            }
+
             var p = ((DataGridRow)sender).DataContext as PackageForList;
             ShowMenue(p.Id, "package view");
         }

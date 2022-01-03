@@ -1,8 +1,8 @@
 ﻿namespace Dal
 {
-    class HelpXml
+    internal class HelpXml
     {
-        static T CastObject<T>(object input)
+        private static T CastObject<T>(object input)
         {
             return (T)input;
         }

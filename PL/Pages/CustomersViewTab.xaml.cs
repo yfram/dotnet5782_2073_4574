@@ -36,7 +36,11 @@ namespace PL.Pages
 
         private void CustomersViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!gridOpen || e.OriginalSource is not Button button) return;
+            if (!gridOpen || e.OriginalSource is not Button button)
+            {
+                return;
+            }
+
             CustomersView.Clear();
             customers.Clear();
             MainWindow.BL.DisplayCustomers().ToList().ForEach(d => CustomersView.Add(d));
@@ -108,7 +112,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,new(Double.Parse(NewLong.Text), Double.Parse(NewLat.Text)), new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
+                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text, new(Double.Parse(NewLong.Text), Double.Parse(NewLat.Text)), new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
 
             }
             catch (Exception ex)
@@ -143,7 +147,11 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            if (packageView) return;
+            if (packageView)
+            {
+                return;
+            }
+
             ShowMenue(CustomersView[((DataGridRow)sender).GetIndex()].Id, "customer view");
         }
     }

@@ -53,13 +53,24 @@ namespace Dal
             Config.ElecRatePercent = random.NextDouble() * 2 + 10;
 
             for (int i = 0; i < 15; i++)
+            {
                 Stations.Add(InitStation(i, random));
+            }
+
             for (int i = 0; i < 5; i++)
+            {
                 Drones.Add(InitDrone(i, random));
+            }
+
             for (int i = 0; i < 10; i++)
+            {
                 Customers.Add(InitCustumer(i, random));
+            }
+
             for (int i = 0; i < 10; i++)
+            {
                 Packages.Add(InitPackage(random));
+            }
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
