@@ -45,8 +45,8 @@
     <DroneId>3</DroneId>
     <Created>2020-10-24T13:44:49</Created>
     <Associated>2020-10-26T07:48:49</Associated>
-    <PickUp />
-    <Delivered />
+    <PickUp>2022-01-03T21:44:30.367475+02:00</PickUp>
+    <Delivered>2022-01-03T21:44:31.4150147+02:00</Delivered>
   </Package>
   <Package>
     <Id>1</Id>
@@ -58,7 +58,7 @@
     <Created>2020-10-12T07:40:22</Created>
     <Associated>2020-10-12T20:20:22</Associated>
     <PickUp>2020-10-13T08:31:22</PickUp>
-    <Delivered />
+    <Delivered>2022-01-03T21:44:22.2155199+02:00</Delivered>
   </Package>
   <Package>
     <Id>4</Id>
@@ -90,11 +90,11 @@
     <RecevirId>0</RecevirId>
     <Weight>Mid</Weight>
     <PackagePriority>High</PackagePriority>
-    <DroneId />
+    <DroneId>3</DroneId>
     <Created>2020-10-10T11:42:07</Created>
-    <Associated />
-    <PickUp />
-    <Delivered />
+    <Associated>2022-01-03T21:44:36.9234723+02:00</Associated>
+    <PickUp>2022-01-03T21:44:39.0853344+02:00</PickUp>
+    <Delivered>2022-01-03T21:44:40.165333+02:00</Delivered>
   </Package>
   <Package>
     <Id>5</Id>
@@ -102,11 +102,11 @@
     <RecevirId>2</RecevirId>
     <Weight>Mid</Weight>
     <PackagePriority>High</PackagePriority>
-    <DroneId />
+    <DroneId>3</DroneId>
     <Created>2020-10-26T11:30:45</Created>
-    <Associated />
-    <PickUp />
-    <Delivered />
+    <Associated>2022-01-03T21:44:33.0832605+02:00</Associated>
+    <PickUp>2022-01-03T21:44:34.1342624+02:00</PickUp>
+    <Delivered>2022-01-03T21:44:35.7367866+02:00</Delivered>
   </Package>
   <Package>
     <Id>8</Id>

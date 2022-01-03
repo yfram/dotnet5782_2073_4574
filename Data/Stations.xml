@@ -47,7 +47,7 @@
     <Name>Jeruselam</Name>
     <Longitude>33.33868651852882</Longitude>
     <Lattitude>34.56982753359239</Lattitude>
-    <ChargeSlots>8</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
     <Id>7</Id>

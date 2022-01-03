@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -263,9 +264,9 @@ namespace Dal
             return ReadAllObjects<Drone>();
         }
 
-        public IEnumerable<Drone> GetAllDronessWhere(Func<Drone, bool> func)
+        public IEnumerable<Drone> GetAllDronesWhere(Func<Drone, bool> predicate)
         {
-            return ReadAllObjectsWhen(func);
+            return ReadAllObjectsWhen(predicate);
         }
 
         public IEnumerable<Package> GetAllPackages()
@@ -382,6 +383,11 @@ namespace Dal
         public void UpdateStation(Station s)
         {
             UpdateObject(s.Id, s);
+        }
+
+        public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate)
+        {
+            return ReadAllObjectsWhen<Customer>(predicate);
         }
     }
 }
