@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -18,7 +19,7 @@ namespace Dal
         public struct Config
         {
             public int runNumber;
-            public double ElecEmpty , ElecLow , ElecMid , ElecHigh , ElecRatePercent;
+            public double ElecEmpty, ElecLow, ElecMid, ElecHigh, ElecRatePercent;
         }
 
         public bool isInCharge(int droneId)
@@ -124,7 +125,7 @@ namespace Dal
             }
             catch (ArgumentException e)
             {
-                    WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
+                WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
             }
             catch (FileNotFoundException f)
             {
@@ -255,17 +256,9 @@ namespace Dal
             DeleteObject<Station>(id);
         }
 
-
-
-
         public IEnumerable<Drone> GetAllDrones()
         {
             return ReadAllObjects<Drone>();
-        }
-
-        public IEnumerable<Drone> GetAllDronessWhere(Func<Drone, bool> func)
-        {
-            return ReadAllObjectsWhen(func);
         }
 
         public IEnumerable<Package> GetAllPackages()
@@ -342,11 +335,11 @@ namespace Dal
         {
 
             Station s;
-            if(stationId > -1)
+            if (stationId > -1)
                 s = GetObject<Station>(stationId);
             else // if the id of the station is not valid, find the station via the drone
             {
-                s= GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
+                s = GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
             }
             s.ChargeSlots += 1;
             stationId = s.Id;
@@ -363,8 +356,8 @@ namespace Dal
                 throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
             s.ChargeSlots -= 1;
             UpdateObject(stationId, s);
-            DroneCharge d = new DroneCharge(droneId, stationId , DateTime.Now);
-            AddObject<DroneCharge>(droneId , d);
+            DroneCharge d = new DroneCharge(droneId, stationId, DateTime.Now);
+            AddObject<DroneCharge>(droneId, d);
         }
 
 
@@ -382,6 +375,16 @@ namespace Dal
         public void UpdateStation(Station s)
         {
             UpdateObject(s.Id, s);
+        }
+
+        public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate)
+        {
+            return GetAllCustomers().Where(predicate);
+        }
+
+        public IEnumerable<Drone> GetAllDronesWhere(Func<Drone, bool> predicate)
+        {
+            return ReadAllObjectsWhen(predicate);
         }
     }
 }
