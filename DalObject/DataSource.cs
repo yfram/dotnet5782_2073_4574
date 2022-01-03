@@ -114,7 +114,7 @@ namespace Dal
             Config.RunNumber++;
             return new(i, Customers[i].Id, Customers[reciver == i ? ((i + 1) % Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
               null);
-            
+
         }
         private static Station InitStation(int i, Random random) => new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(), random.Next() % Config.MaxChargingPorts);
         private static Drone InitDrone(int i, Random random) => new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));

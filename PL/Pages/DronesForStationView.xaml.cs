@@ -1,6 +1,4 @@
-﻿using BO;
-using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace PL.Pages

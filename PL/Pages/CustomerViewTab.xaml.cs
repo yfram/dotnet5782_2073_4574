@@ -16,7 +16,7 @@ namespace PL.Pages
         {
             InitializeComponent();
             BLCustomer = MainWindow.BL.DisplayCustomer(id);
-            
+
             UpdateButton.GotFocus += UpdateButton_Click;
         }
 
@@ -24,10 +24,10 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text,CustomerPhone.Text);
+                MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
                 BLCustomer = MainWindow.BL.DisplayCustomer(BLCustomer.Id);
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace PL.Pages
 
             };
             w.Show();
-            
+
         }
     }
 }

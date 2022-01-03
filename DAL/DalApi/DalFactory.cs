@@ -10,7 +10,7 @@ namespace DalApi
 
             string dalType = DalConfig.DalName;
             string dalPkg = DalConfig.DalPackages[dalType];
-            if(force)
+            if (force)
             {
                 dalType = "list";
                 dalPkg = "DalObject";

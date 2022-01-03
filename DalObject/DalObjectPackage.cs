@@ -16,7 +16,7 @@ namespace Dal
 
         public void DeliverPackage(int packageId)
         {
-            
+
             int packageIndex = GetPackageIndex(packageId);
             int droneIndex = GetDroneIndex(DataSource.Packages[packageIndex].DroneId.Value);
             Drone tmp = DataSource.Drones[droneIndex];

@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace PL.Pages
@@ -111,7 +108,7 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,new(0, 0), new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
+                MainWindow.BL.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text, new(0, 0), new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
 
             }
             catch (Exception ex)

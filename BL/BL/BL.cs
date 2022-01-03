@@ -205,7 +205,7 @@ namespace BlApi
         public void AddPackage(int sid, int rid, WeightGroup w, PriorityGroup p)
         {
 
-        Idal.AddPackage(sid,rid, (DO.WeightGroup)((int)w), ((DO.Priority)(int)p), null, null, null, null, null);
+            Idal.AddPackage(sid, rid, (DO.WeightGroup)((int)w), ((DO.Priority)(int)p), null, null, null, null, null);
 
         }
 

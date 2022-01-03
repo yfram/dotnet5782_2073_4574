@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Dal
@@ -14,10 +12,10 @@ namespace Dal
         public void AddCustomer(int id, string name, string phone, double lattitude, double longitude)
         {
             var ans = GetAllCustomers();
-            if (ans.Where(c=>c.Id==id).Count() > 0)
+            if (ans.Where(c => c.Id == id).Count() > 0)
                 throw new ArgumentException($"the customer {id} already exist");
 
-            WriteAllCustomers(ans.Append(new Customer(id,name,phone,lattitude,longitude)));
+            WriteAllCustomers(ans.Append(new Customer(id, name, phone, lattitude, longitude)));
         }
 
         public void DeleteCustomer(int id)
@@ -27,8 +25,8 @@ namespace Dal
             var ObjectsRoot = XElement.Load($"Data/Customer.xml");
 
             (from s in ObjectsRoot.Elements()
-                       where Int32.Parse(s.Element("Id").Value) == id
-                       select s).FirstOrDefault().Remove();
+             where Int32.Parse(s.Element("Id").Value) == id
+             select s).FirstOrDefault().Remove();
 
             ObjectsRoot.Save($"Data/Customers.xml");
         }
@@ -39,10 +37,10 @@ namespace Dal
             var ObjectsRoot = XElement.Load($"Data/Customer.xml");
 
             XElement e = (from s in ObjectsRoot.Elements()
-                         where Int32.Parse(s.Element("Id").Value) == c.Id
-                         select s).First();
+                          where Int32.Parse(s.Element("Id").Value) == c.Id
+                          select s).First();
 
-            if(e is null)
+            if (e is null)
                 throw new ArgumentException($"the id {c.Id} is not exsist!");
 
             e.Element("Name").Value = c.Name;
@@ -56,7 +54,7 @@ namespace Dal
         public Customer GetCustomer(int id)
         {
             var all = GetAllCustomers();
-            foreach(var elem in all)
+            foreach (var elem in all)
             {
                 if (elem.Id == id)
                     return elem;
@@ -83,13 +81,13 @@ namespace Dal
         {
             XElement root = new XElement("listOfObjects",
                 from p in write
-            select new XElement("Customer",
-            new XElement("Id", p.Id),
-            new XElement("Name",p.Name),
-            new XElement("Phone",p.Phone),
-            new XElement("Lattitude", p.Lattitude),
-            new XElement("Longitude", p.Longitude)
-            ));
+                select new XElement("Customer",
+                new XElement("Id", p.Id),
+                new XElement("Name", p.Name),
+                new XElement("Phone", p.Phone),
+                new XElement("Lattitude", p.Lattitude),
+                new XElement("Longitude", p.Longitude)
+                ));
 
             root.Save($"Data/Drones.xml");
 
