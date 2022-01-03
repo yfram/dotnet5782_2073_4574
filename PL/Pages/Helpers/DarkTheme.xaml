@@ -10,4 +10,7 @@
     <SolidColorBrush x:Key="StationsGridBack" Color="#014C59"/>
     <SolidColorBrush x:Key="StationsGridFore" Color="#67A9B5"/>
     <SolidColorBrush x:Key="StationsExpnaderBack" Color="#0E2C32"/>
+    <SolidColorBrush x:Key="PackagesGridBack" Color="#560963"/>
+    <SolidColorBrush x:Key="PackagesGridFore" Color="#cf9cdb"/>
+    <SolidColorBrush x:Key="PackagesExpnaderBack" Color="#a72fc4"/>
 </ResourceDictionary>

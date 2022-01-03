@@ -9,47 +9,37 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <c:PackageForList x:Key="PackagesView"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<c:PackageForList x:Key="PackagesView"/>
 
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Foreground" Value="#3E065F"/>
-            <Setter Property="Background" Value="#D669"/>
-            <Setter Property="TextElement.FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
+			<Style TargetType="{x:Type DataGridColumnHeader}">
+				<Setter Property="Foreground" Value="{DynamicResource PackagesGridFore}"/>
+				<Setter Property="Background" Value="{DynamicResource PackagesGridBack}"/>
+				<Setter Property="TextElement.FontWeight" Value="Bold"/>
+				<Setter Property="Height" Value="25"/>
+			</Style>
+		</ResourceDictionary>
     </UserControl.Resources>
 
 
 
-    <Grid Background="#DBD8E3">
-        <DataGrid x:Name="PackageGrid" ItemsSource="{Binding Path=PackagesView}"   Background="#352F44" Foreground="#CAF0F8" 
+    <Grid Background="{x:Null}">
+        <DataGrid x:Name="PackageGrid" ItemsSource="{Binding Path=PackagesView}"   
+                  Background="{DynamicResource PackagesGridBack}" Foreground="{DynamicResource PackagesGridFore}" 
                   CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
                   HorizontalAlignment="Stretch">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn Width="Auto" Header="  NameOfReciver  " Binding="{Binding Path=NameOfReciver}"/>
-                <DataGridTextColumn Width="Auto" Header="  NameOfSender  " Binding="{Binding Path=NameOfSender}"/>
-                <DataGridTextColumn Width="Auto" Header="  Priority  " Binding="{Binding Path=Priority}"/>
-                <DataGridTextColumn Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
-                <DataGridTextColumn Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Reciver  " Binding="{Binding Path=NameOfReciver}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Sender  " Binding="{Binding Path=NameOfSender}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Priority  " Binding="{Binding Path=Priority}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
-
-            <DataGrid.Resources>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#352F44" />
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Background" Value="#352F44"/>
-                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
-                </Style>
-            </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,381">
             <Grid.Resources>
