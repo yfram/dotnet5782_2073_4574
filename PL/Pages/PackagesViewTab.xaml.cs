@@ -15,7 +15,6 @@ namespace PL.Pages
     public partial class PackagesViewTab : UserControl
     {
 
-
         public ObservableCollection<PackageForList> PackagesView { get; set; } = new();
 
         public List<PackageForList> packages;

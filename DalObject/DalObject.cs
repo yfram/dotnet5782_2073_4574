@@ -72,9 +72,6 @@ namespace Dal
             return ans;
         }
 
-
-
-
         #endregion
 
         public double[] GetElectricity()

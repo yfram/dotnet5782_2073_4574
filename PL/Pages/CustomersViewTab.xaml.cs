@@ -15,7 +15,6 @@ namespace PL.Pages
     public partial class CustomersViewTab : UserControl
     {
 
-
         public ObservableCollection<CustomerForList> CustomersView { get; set; } = new();
 
         public List<CustomerForList> customers;

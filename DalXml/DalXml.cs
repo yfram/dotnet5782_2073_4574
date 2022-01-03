@@ -146,7 +146,6 @@ namespace Dal
 
             }
 
-
         }
 
         public void DeleteObject<T>(int id, string propName = "Id") where T : new()
@@ -265,8 +264,6 @@ namespace Dal
 
         }
 
-
-
         public void DeleteDrone(int id)
         {
             DeleteObject<Drone>(id);
@@ -311,8 +308,6 @@ namespace Dal
         {
             return ReadAllObjectsWhen(predicate);
         }
-
-
 
         public Drone GetDrone(int id)
         {
@@ -395,8 +390,6 @@ namespace Dal
             DroneCharge d = new DroneCharge(droneId, stationId, DateTime.Now);
             AddObject<DroneCharge>(droneId, d);
         }
-
-
 
         public void UpdateDrone(Drone d)
         {

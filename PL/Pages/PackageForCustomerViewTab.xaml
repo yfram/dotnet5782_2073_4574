@@ -23,6 +23,5 @@
         <TextBlock HorizontalAlignment="Left" Margin="144,10,0,0" Text="{Binding Path=Priority, StringFormat=Priority: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="144,62,0,0" Text="{Binding Path=Status, StringFormat=status: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-
     </Grid>
 </UserControl>

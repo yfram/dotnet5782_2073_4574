@@ -28,6 +28,5 @@ namespace Dal
         public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate) =>
            new List<Customer>(DataSource.Customers.Where(predicate));
 
-
     }
 }

@@ -27,7 +27,6 @@ namespace PL.Pages
                 MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
                 BLCustomer = MainWindow.BL.DisplayCustomer(BLCustomer.Id);
 
-
             }
             catch (Exception ex)
             {

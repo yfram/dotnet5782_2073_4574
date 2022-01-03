@@ -74,7 +74,6 @@ namespace Dal
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
-
             List<Drone> dronesWithoutPackages = Drones.Where(i => true).ToList();
 
             for (int i = 0; i < Packages.Count; i++)

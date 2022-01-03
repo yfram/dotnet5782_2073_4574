@@ -98,7 +98,6 @@ namespace PL.Pages
             String prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
             StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
 
-
         }
 
         private void ShowMenue(int? id, string typeOfMenue)

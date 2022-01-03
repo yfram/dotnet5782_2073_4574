@@ -260,7 +260,6 @@ namespace BlApi
             Station s = DisplayStation(id);
             //int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count();
 
-
             station.Name = newName != "" ? newName : station.Name;
 
             if (newEmptyChargeSlots < 0)
@@ -416,8 +415,6 @@ namespace BlApi
                     {
                         throw new BlException($"there are no free package for the ", DroneId, typeof(Drone));
                     }
-
-
 
                 }
                 else
@@ -603,7 +600,6 @@ namespace BlApi
 
                         PackageForCustomer pkgForCustomer = new(dp.Id, (WeightGroup)((int)dp.Weight), (PriorityGroup)((int)dp.PackagePriority), status, new CustomerForPackage(CustomerId, DALcustomer.Name));
 
-
                         if (dp.SenderId == CustomerId)
                         {
                             pkgFrom.Add(pkgForCustomer);
@@ -630,7 +626,6 @@ namespace BlApi
 
             Package ans = new Package();
 
-
             WeightGroup weight = (WeightGroup)((int)DALpkg.Weight);
             PriorityGroup priority = (PriorityGroup)((int)DALpkg.PackagePriority);
 
@@ -648,7 +643,6 @@ namespace BlApi
             ans.Reciver = recv;
 
             ans.TimeToPackage = DALpkg.Created;
-
 
             if (DALpkg.DroneId.HasValue)
             {

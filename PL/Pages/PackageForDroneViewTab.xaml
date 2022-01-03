@@ -28,6 +28,5 @@
         <TextBlock HorizontalAlignment="Left" Margin="461,62,0,0" Text="{Binding Path=Sender.Id, StringFormat=Sender Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,118,0,0" Text="{Binding Path=Reciver.Id, StringFormat=Recivier Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-
     </Grid>
 </UserControl>

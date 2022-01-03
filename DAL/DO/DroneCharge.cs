@@ -21,6 +21,5 @@ namespace DO
             return $"Drone id: {DroneId}\n Station id: {StationId}\n";
         }
 
-
     }
 }

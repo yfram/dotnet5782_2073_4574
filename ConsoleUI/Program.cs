@@ -97,7 +97,6 @@ namespace ConsoleUI
                 Console.WriteLine(obj.ToString());
             }
 
-
         }
 
         private static void GetByIdMenu(DalApi.IDAL d)

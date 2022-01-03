@@ -11,7 +11,6 @@
         {
             var objectRoot = XElement.Load($"@/xml/{t.Name+'s'}");//new XElement($"{t.Name+'s'}");
 
-
             XmlSerializer reader =
                 new XmlSerializer(typeof(List<t>));
 

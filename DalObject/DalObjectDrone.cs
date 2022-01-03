@@ -26,6 +26,5 @@ namespace Dal
             return DataSource.Drones[ix];
         }
 
-
     }
 }

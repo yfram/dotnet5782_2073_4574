@@ -59,7 +59,6 @@ namespace BlApi
 
         IEnumerable<StationForList> DisplayStationsWithCharges();
 
-
         #endregion
     }
 }

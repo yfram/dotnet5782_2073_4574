@@ -5,7 +5,6 @@ namespace BO
     public class Package
     {
 
-
         public Package(int id, CustomerForPackage sender, CustomerForPackage reciver, WeightGroup weight, PriorityGroup priority, DroneForPackage drone, DateTime? timeToPackage, DateTime? timeToPair, DateTime? timeToPickup, DateTime? timeToDeliver)
         {
             Id = id;
@@ -23,7 +22,6 @@ namespace BO
         public Package()
         {
         }
-
 
         public int Id { get; set; }
         public CustomerForPackage Sender { get; set; }
