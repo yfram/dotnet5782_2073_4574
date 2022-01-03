@@ -9,22 +9,20 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-			<c:PackageForList x:Key="PackagesView"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <c:PackageForList x:Key="PackagesView"/>
 
-			<Style TargetType="{x:Type DataGridColumnHeader}">
-				<Setter Property="Foreground" Value="{DynamicResource PackagesGridFore}"/>
-				<Setter Property="Background" Value="{DynamicResource PackagesGridBack}"/>
-				<Setter Property="TextElement.FontWeight" Value="Bold"/>
-				<Setter Property="Height" Value="25"/>
-			</Style>
-		</ResourceDictionary>
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="Foreground" Value="{DynamicResource PackagesGridFore}"/>
+                <Setter Property="Background" Value="{DynamicResource PackagesGridBack}"/>
+                <Setter Property="TextElement.FontWeight" Value="Bold"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
-
-
 
     <Grid Background="{x:Null}">
         <DataGrid x:Name="PackageGrid" ItemsSource="{Binding Path=PackagesView}"   
@@ -41,24 +39,12 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid x:Name="FilterGrid" Margin="0,0,0,381">
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="#000000"/>
-                </Style>
-                <Style TargetType="CheckBox">
-                    <Setter Property="LayoutTransform">
-                        <Setter.Value>
-                            <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                    <Setter Property="Height" Value="27"/>
-                    <Setter Property="Width" Value="81"/>
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                </Style>
-            </Grid.Resources>
+        <Grid x:Name="FilterGrid" Margin="0,0,0,381" Background="LightGray">
+            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Sent Between:"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
+            <DatePicker HorizontalAlignment="Left" Margin="143,30,0,0" VerticalAlignment="Top"/>
+
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>

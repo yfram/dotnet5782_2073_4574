@@ -19,4 +19,7 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#000000"/>
+    </Style>
 </ResourceDictionary>

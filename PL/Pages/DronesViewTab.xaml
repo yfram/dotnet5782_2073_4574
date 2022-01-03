@@ -107,11 +107,6 @@
             </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,381">
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="#000000"/>
-                </Style>
-            </Grid.Resources>
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
