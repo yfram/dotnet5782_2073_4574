@@ -17,22 +17,22 @@ namespace Dal
 
         public IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
-                var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
+            var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
-                List<T> ans = new List<T>();
-                foreach(XElement elem in ObjectsRoot.Elements())
-                {
-                    ans.Add(ReadObject<T>(elem));
-                }
-                return ans;
-                
+            List<T> ans = new List<T>();
+            foreach (XElement elem in ObjectsRoot.Elements())
+            {
+                ans.Add(ReadObject<T>(elem));
+            }
+            return ans;
+
         }
 
         public IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
         {
             List<T> ans = new();
             IEnumerable<T> all = ReadAllObjects<T>();
-            foreach(var elem in all)
+            foreach (var elem in all)
             {
                 if (func(elem))
                     ans.Add(elem);
@@ -44,10 +44,10 @@ namespace Dal
         {
             XElement root = new XElement("listOfObjects");
 
-            foreach(T elem in write)
+            foreach (T elem in write)
             {
                 XElement current = new XElement(typeof(T).Name);
-                foreach(PropertyInfo FI in typeof(T).GetProperties())
+                foreach (PropertyInfo FI in typeof(T).GetProperties())
                 {
                     current.Add(new XElement(FI.Name, FI.GetValue(elem)));
                 }
@@ -72,11 +72,11 @@ namespace Dal
                 }
                 else if (FI.PropertyType.IsEnum)
                 {
-                    FI.SetValue(current, Enum.Parse(FI.PropertyType,elem.Element(FI.Name).Value));
+                    FI.SetValue(current, Enum.Parse(FI.PropertyType, elem.Element(FI.Name).Value));
                 }
                 else
                     FI.SetValue(current, Convert.ChangeType(elem.Element(FI.Name).Value, FI.PropertyType));
-                
+
             }
             return (T)current;
         }
@@ -84,7 +84,7 @@ namespace Dal
         public T GetObject<T>(int id, string propName = "Id") where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
-           
+
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
                 throw new ArgumentException($"the property {propName} is not exsist in {typeof(T).Name} or it type is not int so it cant use as an id!");
@@ -101,14 +101,14 @@ namespace Dal
             throw new ArgumentException($"the id {id} is not exsist!");
         }
 
-        public void AddObject<T>(int id, T obj) where T: new()
+        public void AddObject<T>(int id, T obj) where T : new()
         {
             try
             {
                 GetObject<T>(id);
                 throw new ArgumentException($"cannot add the {typeof(T)} with id {id} because it is exist");
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
                 WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
             }
@@ -123,7 +123,7 @@ namespace Dal
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
-                throw new ArgumentException($"the property {propName} does not exsist in {obj.GetType().Name} or its type is not int, so it can't be used as an id!");
+                throw new ArgumentException($"the property {propName} does not exsist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
 
             bool found = false;
 
@@ -137,11 +137,11 @@ namespace Dal
 
             if (!found)
                 throw new ArgumentException($"cannot find {id} of {typeof(T).Name}");
-            
+
             WriteAllObjects(ans);
         }
 
-        public void UpdateObject<T>(int id, T obj , string propName = "Id") where T: new()
+        public void UpdateObject<T>(int id, T obj, string propName = "Id") where T : new()
         {
             var all = ReadAllObjects<T>();
             IEnumerable<T> ans = new List<T>();
@@ -171,7 +171,7 @@ namespace Dal
 
         public void AddDrone(int id, string model, WeightGroup weight)
         {
-            AddObject(id , new Drone(id, model, weight));
+            AddObject(id, new Drone(id, model, weight));
         }
 
         public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId, DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered)
@@ -180,7 +180,7 @@ namespace Dal
             UpdateRunNumber();
             Package p = new Package(runNumber, senderId, recevirId, weight, packagePriority);
             p.Created = DateTime.Now;
-            AddObject(runNumber , p);
+            AddObject(runNumber, p);
         }
 
         private void UpdateRunNumber()
@@ -195,7 +195,7 @@ namespace Dal
 
         public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
         {
-            AddObject(id, new Station(id, name,longitude , lattitude,chargeSlots));
+            AddObject(id, new Station(id, name, longitude, lattitude, chargeSlots));
 
         }
 
@@ -303,7 +303,7 @@ namespace Dal
 
         public void UpdateDrone(Drone d)
         {
-            UpdateObject(d.Id,d);
+            UpdateObject(d.Id, d);
         }
 
         public void UpdatePackage(Package p)
