@@ -156,16 +156,34 @@ namespace PL.Pages
 
         private void Filter(object sender, RoutedEventArgs e)
         {
-            FilerDate();
+            PackagesView.Clear();
+            packages.Where(p =>
+            FilterDate().Any(pI => pI.Id == p.Id) &&
+            FilterState().Any(pI => pI.Id == p.Id)
+            ).ToList().ForEach(p => PackagesView.Add(p));
         }
 
-        private void FilerDate()
+        private IEnumerable<PackageForList> FilterState()
         {
-            if (StartDate.Value is null || EndDate.Value is null) return;
-            PackagesView.Clear();
+            if (!(FilterByState.IsChecked ?? false)) return packages;
+            string check = ((ComboBoxItem)StateFilter.SelectedItem).Content.ToString().Replace(" ", "");
+            return
+                MainWindow.BL.
+                DisplayObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
+                Cast<PackageForList>();
+        }
+
+        private IEnumerable<PackageForList> FilterDate()
+        {
+            if (StartDate.Value is null || EndDate.Value is null) return packages;
+            if (!(FilterByDate.IsChecked ?? false))
+            {
+                return packages;
+            }
             List<PackageForList> datePackages =
-                MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).Cast<PackageForList>().ToList();
-            datePackages.Where(p => packages.Any(pI => pI.Id == p.Id)).ToList().ForEach(p => PackagesView.Add(p));
+                MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
+                Cast<PackageForList>().ToList();
+            return datePackages;
         }
     }
 }

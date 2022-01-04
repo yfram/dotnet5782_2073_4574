@@ -57,12 +57,18 @@
             </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,431" Background="LightGray">
-            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Picked up between:"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
-            <extended:DateTimePicker DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="StartDate" Margin="53,36,647,13"/>
-            <TextBlock Text="-" Margin="158,37,635,12"/>
-            <extended:DateTimePicker DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="EndDate" Margin="167,36,533,13">
+            <CheckBox Checked="Filter" Unchecked="Filter" x:Name="FilterByDate" Margin="69,17,0,0" Content="Filter only packages picked up between:" Width="247"/>
+            <extended:DateTimePicker IsEnabled="{Binding IsChecked ,ElementName=FilterByDate}" DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="StartDate" Margin="53,36,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100"/>
+            <TextBlock Text="-" Margin="158,37,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="7"/>
+            <extended:DateTimePicker IsEnabled="{Binding IsChecked ,ElementName=FilterByDate}" DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="EndDate" Margin="167,36,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100">
             </extended:DateTimePicker>
+            <CheckBox x:Name="FilterByState" Checked="Filter" Unchecked="Filter" Content="Filter by state:" Margin="344,21,0,0" Width="101"/>
+            <ComboBox SelectedIndex="3" Foreground="Black" x:Name="StateFilter" SelectionChanged="Filter" IsEnabled="{Binding IsChecked, ElementName=FilterByState}" HorizontalAlignment="Left" Margin="328,34,0,0" VerticalAlignment="Top" Width="108" Height="23">
+                <ComboBoxItem Content="initialized"/>
+                <ComboBoxItem Content="paired"/>
+                <ComboBoxItem Content="picked up"/>
+                <ComboBoxItem Content="accepted"/>
+            </ComboBox>
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
