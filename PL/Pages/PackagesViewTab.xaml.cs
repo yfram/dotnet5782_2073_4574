@@ -156,11 +156,16 @@ namespace PL.Pages
 
         private void Filter(object sender, RoutedEventArgs e)
         {
-
+            FilerDate();
         }
 
-        private void FilterByDate()
+        private void FilerDate()
         {
+            if (StartDate.Value is null || EndDate.Value is null) return;
+            PackagesView.Clear();
+            List<PackageForList> datePackages =
+                MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).Cast<PackageForList>().ToList();
+            datePackages.Where(p => packages.Any(pI => pI.Id == p.Id)).ToList().ForEach(p => PackagesView.Add(p));
         }
     }
 }
