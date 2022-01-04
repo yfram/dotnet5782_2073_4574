@@ -988,7 +988,7 @@ namespace BlApi
 
         public IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func)
         {
-            IEnumerable<dynamic> listRet = typeof(T).Name switch
+            IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
             {
                 "Drone" => DisplayDrones(),
                 "Station" => DisplayStations(),
@@ -997,7 +997,7 @@ namespace BlApi
                 _ => throw new InvalidOperationException()
             };
             foreach (var item in listRet)
-                if (func(DisplayObject(item.Id, item.GetType().Name)))
+                if (func(typeof(T).Name.Contains("ForList") ? item : DisplayObject(item.Id, item.GetType().Name)))
                     yield return item;
 
         }
