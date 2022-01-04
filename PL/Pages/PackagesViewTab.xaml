@@ -57,11 +57,12 @@
             </DataGrid.Resources>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,431" Background="LightGray">
-            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Sent Between:"/>
+            <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="Picked up between:"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
-            <extended:DateTimePicker ValueChanged="Filter" x:Name="StartDate" Height="20" Width="100" Background="{x:Null}" Margin="50,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></extended:DateTimePicker>
+            <extended:DateTimePicker DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="StartDate" Margin="53,36,647,13"/>
             <TextBlock Text="-" Margin="158,37,635,12"/>
-            <extended:DateTimePicker ValueChanged="Filter" x:Name="EndDate" Height="20" Width="100" Background="{x:Null}" Margin="170,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <extended:DateTimePicker DropDownButtonContent="▾" ShowButtonSpinner="False" Foreground="Black" Background="{x:Null}" x:Name="EndDate" Margin="167,36,533,13">
+            </extended:DateTimePicker>
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
