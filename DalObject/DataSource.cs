@@ -65,6 +65,7 @@ namespace Dal
             for (int i = 0; i < 10; i++)
             {
                 Customers.Add(InitCustumer(i, random));
+            }
             for (int i = 0; i < 20; i++)
             {
                 Packages.Add(InitPackage(random));

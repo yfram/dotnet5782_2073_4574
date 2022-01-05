@@ -501,13 +501,14 @@ namespace BlApi
 
                     if (!simulatorMode)
                     {
-                        double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                        double batteryNeed = 1 / ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
                         if (batteryNeed > BLdrone.Battery)
                             throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
-                    }
 
                         BLdrone.Battery -= batteryNeed;
                     }
+
+                        
 
                     BLdrone.CurrentLocation = RecvLoc;
                     BLdrone.State = DroneState.Empty;
@@ -1007,5 +1008,33 @@ namespace BlApi
             new Simulator(this, DroneId, update, stop);
         }
 
+
+        public IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func)
+        {
+            IEnumerable<dynamic> listRet = typeof(T).Name switch
+            {
+                "Drone" => DisplayDrones(),
+                "Station" => DisplayStations(),
+                "Customer" => DisplayCustomers(),
+                "Package" => DisplayPackages(),
+                _ => throw new InvalidOperationException()
+            };
+            foreach (var item in listRet)
+                if (func(DisplayObject(item.Id, item.GetType().Name)))
+                    yield return item;
+
+        }
+
+        private dynamic DisplayObject(int id, string typeOf)
+        {
+            return typeOf switch
+            {
+                "Drone" => DisplayDrone(id),
+                "Station" => DisplayStation(id),
+                "Customer" => DisplayCustomer(id),
+                "Package" => DisplayPackage(id),
+                _ => throw new InvalidOperationException()
+            };
+        }
     }
 }
