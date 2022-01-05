@@ -1,5 +1,6 @@
 ﻿using BO;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -151,5 +152,40 @@ namespace PL.Pages
         {
             BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
         }
+
+
+        BackgroundWorker bw;
+        bool Stop = false;
+        private void start(object sender, RoutedEventArgs e)
+        {
+          bw  = new();
+
+            bw.WorkerSupportsCancellation = true;
+            bw.WorkerReportsProgress = true;
+            Stop = false;
+            //bw.RunWorkerCompleted = 
+            bw.DoWork += (object? sender, DoWorkEventArgs args) =>
+            {
+                MainWindow.BL.StartSimulator(
+                    BLdrone.Id,
+                     () => { ((BackgroundWorker)sender).ReportProgress(0); },
+
+                     () => { return Stop; }
+
+                     );
+            };
+            bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => { BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id); };
+            
+            bw.RunWorkerAsync();
+
+        }
+
+        private void pause(object sender, RoutedEventArgs e)
+        {
+            Stop = true;
+            //bw.CancelAsync();
+        }
+
+
     }
 }

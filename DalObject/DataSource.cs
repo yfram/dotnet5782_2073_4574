@@ -58,7 +58,7 @@ namespace Dal
                 Drones.Add(InitDrone(i, random));
             for (int i = 0; i < 10; i++)
                 Customers.Add(InitCustumer(i, random));
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
                 Packages.Add(InitPackage(random));
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
@@ -112,7 +112,7 @@ namespace Dal
             int reciver = random.Next() % 10;
             int i = Config.RunNumber;
             Config.RunNumber++;
-            return new(i, Customers[i].Id, Customers[reciver == i ? ((i + 1) % Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
+            return new(i, Customers[i % 10].Id, Customers[reciver == i % 10 ? ((i + 1) % Customers.Count) : reciver].Id, (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1),
               null);
 
         }

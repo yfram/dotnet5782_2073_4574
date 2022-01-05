@@ -1,10 +1,13 @@
 ﻿using BO;
+using System;
 using System.Collections.Generic;
 
 namespace BlApi
 {
     public interface IBL
     {
+
+        void StartSimulator(int DroneId, Action update, Func<bool> stop);
 
         #region Add Options
         void AddStation(Station s);
@@ -20,7 +23,7 @@ namespace BlApi
         #endregion
 
         #region Update Options
-        void UpdateDroneName(int id, string newModel);
+        void UpdateDroneName(int id, string newModel, double battery = -1);
 
         void UpdateStation(int id, string newName = "", int newChargeSlots = -1);
 
@@ -31,9 +34,9 @@ namespace BlApi
 
         void AssignPackage(int DroneId);
 
-        void PickUpPackage(int DroneId);
+        void PickUpPackage(int DroneId, bool mode = false);
 
-        void DeliverPackage(int DroneId);
+        void DeliverPackage(int DroneId , bool mode = false);
 
         #endregion
 

@@ -40,14 +40,14 @@
     <Name>Heifa</Name>
     <Longitude>33.04592020299561</Longitude>
     <Lattitude>34.58188025214797</Lattitude>
-    <ChargeSlots>9</ChargeSlots>
+    <ChargeSlots>8</ChargeSlots>
   </Station>
   <Station>
     <Id>6</Id>
     <Name>Jeruselam</Name>
     <Longitude>33.33868651852882</Longitude>
     <Lattitude>34.56982753359239</Lattitude>
-    <ChargeSlots>7</ChargeSlots>
+    <ChargeSlots>6</ChargeSlots>
   </Station>
   <Station>
     <Id>7</Id>
