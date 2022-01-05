@@ -19,8 +19,6 @@
         </Style>
     </UserControl.Resources>
 
-
-
     <Grid Background="#DBD8E3">
         <!-- , Converter={StaticResource DronesConvertor}, ConverterParameter=1-->
         <DataGrid x:Name="CustomerGrid" ItemsSource="{Binding Path=CustomersView}"   Background="#352F44" Foreground="#CAF0F8" 
@@ -63,7 +61,6 @@
             <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Customer Phone:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="350,10,0,0" TextWrapping="Wrap" Text="Customer Longtitude:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="480,10,0,0" TextWrapping="Wrap" Text="Customer Latitude:" VerticalAlignment="Top"/>
-
 
             <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
             <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>

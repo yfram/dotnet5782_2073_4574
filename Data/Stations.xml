@@ -26,7 +26,7 @@
     <Name>Bear Sheava</Name>
     <Longitude>33.36111435730062</Longitude>
     <Lattitude>34.099599697673504</Lattitude>
-    <ChargeSlots>5</ChargeSlots>
+    <ChargeSlots>4</ChargeSlots>
   </Station>
   <Station>
     <Id>4</Id>
@@ -75,7 +75,7 @@
     <Name>Heifa</Name>
     <Longitude>33.329577702251065</Longitude>
     <Lattitude>34.44774170287314</Lattitude>
-    <ChargeSlots>8</ChargeSlots>
+    <ChargeSlots>6</ChargeSlots>
   </Station>
   <Station>
     <Id>11</Id>

@@ -15,7 +15,6 @@ namespace PL.Pages
     public partial class PackagesViewTab : UserControl
     {
 
-
         public ObservableCollection<PackageForList> PackagesView { get; set; } = new();
 
         public List<PackageForList> packages;
@@ -36,7 +35,11 @@ namespace PL.Pages
 
         private void PackagesViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!gridOpen || e.OriginalSource is not Button button) return;
+            if (!gridOpen || e.OriginalSource is not Button button)
+            {
+                return;
+            }
+
             PackagesView.Clear();
             packages.Clear();
             MainWindow.BL.DisplayPackages().ToList().ForEach(d => PackagesView.Add(d));
@@ -142,18 +145,45 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            if (packageView) return;
+            if (packageView)
+            {
+                return;
+            }
+
             var p = ((DataGridRow)sender).DataContext as PackageForList;
             ShowMenue(p.Id, "package view");
         }
 
         private void Filter(object sender, RoutedEventArgs e)
         {
-
+            PackagesView.Clear();
+            packages.Where(p =>
+            FilterDate().Any(pI => pI.Id == p.Id) &&
+            FilterState().Any(pI => pI.Id == p.Id)
+            ).ToList().ForEach(p => PackagesView.Add(p));
         }
 
-        private void FilterByDate()
+        private IEnumerable<PackageForList> FilterState()
         {
+            if (!(FilterByState.IsChecked ?? false)) return packages;
+            string check = ((ComboBoxItem)StateFilter.SelectedItem).Content.ToString().Replace(" ", "");
+            return
+                MainWindow.BL.
+                DisplayObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
+                Cast<PackageForList>();
+        }
+
+        private IEnumerable<PackageForList> FilterDate()
+        {
+            if (StartDate.Value is null || EndDate.Value is null) return packages;
+            if (!(FilterByDate.IsChecked ?? false))
+            {
+                return packages;
+            }
+            List<PackageForList> datePackages =
+                MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
+                Cast<PackageForList>().ToList();
+            return datePackages;
         }
     }
 }

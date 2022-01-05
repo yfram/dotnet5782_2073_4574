@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace DalApi
 {
-    class DalConfig
+    internal class DalConfig
     {
         internal static string DalName;
         internal static Dictionary<string, string> DalPackages;

@@ -15,7 +15,10 @@ namespace Dal
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
+            {
                 throw new ArgumentException($"the customer {id} does not exist!");
+            }
+
             return DataSource.Customers[ix];
         }
 
@@ -24,7 +27,6 @@ namespace Dal
         public IEnumerable<Customer> GetAllCustomers() => new List<Customer>(DataSource.Customers);
         public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate) =>
            new List<Customer>(DataSource.Customers.Where(predicate));
-
 
     }
 }

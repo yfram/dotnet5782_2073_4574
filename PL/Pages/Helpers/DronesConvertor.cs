@@ -11,11 +11,14 @@ namespace PL.Pages
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not ObservableCollection<Drone> drones) return null;
+            if (value is not ObservableCollection<Drone> drones)
+            {
+                return null;
+            }
             /*
-            bool? boxChecked = ((CheckBox)parameter).IsChecked;
-            bool isCollected = boxChecked.HasValue ? boxChecked.Value : false;
-            */
+bool? boxChecked = ((CheckBox)parameter).IsChecked;
+bool isCollected = boxChecked.HasValue ? boxChecked.Value : false;
+*/
             bool isCollected = true;
             if (isCollected)
             {

@@ -62,6 +62,7 @@ namespace BlApi
 
         IEnumerable<StationForList> DisplayStationsWithCharges();
 
+        IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func);
 
         #endregion
     }

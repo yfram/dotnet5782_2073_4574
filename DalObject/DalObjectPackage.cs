@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Dal
 {
     public partial class DalObject
@@ -32,7 +31,10 @@ namespace Dal
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
+            {
                 throw new ArgumentException($"the Package {id} does not exist!");
+            }
+
             return DataSource.Packages[ix];
 
         }

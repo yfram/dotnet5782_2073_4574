@@ -13,7 +13,9 @@ namespace Dal
         {
             var ans = GetAllCustomers();
             if (ans.Where(c => c.Id == id).Count() > 0)
+            {
                 throw new ArgumentException($"the customer {id} already exist");
+            }
 
             WriteAllCustomers(ans.Append(new Customer(id, name, phone, lattitude, longitude)));
         }
@@ -41,7 +43,9 @@ namespace Dal
                           select s).First();
 
             if (e is null)
+            {
                 throw new ArgumentException($"the id {c.Id} is not exsist!");
+            }
 
             e.Element("Name").Value = c.Name;
             e.Element("Phone").Value = c.Phone;
@@ -57,7 +61,9 @@ namespace Dal
             foreach (var elem in all)
             {
                 if (elem.Id == id)
+                {
                     return elem;
+                }
             }
             throw new ArgumentException($"the id {id} is not exist!");
         }

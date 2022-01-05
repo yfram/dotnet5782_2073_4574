@@ -23,7 +23,6 @@ namespace DalApi
         Customer GetCustomer(int id);
         Package GetPackage(int id);
 
-
         void DeleteStation(int id);
         void DeletePackage(int id);
         void DeleteCustomer(int id);

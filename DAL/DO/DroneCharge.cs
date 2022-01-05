@@ -9,7 +9,7 @@ namespace DO
             DroneId = droneId;
             StationId = stationId;
             Enter = time;
-            
+
         }
 
         public int DroneId { get; set; }
@@ -20,7 +20,6 @@ namespace DO
         {
             return $"Drone id: {DroneId}\n Station id: {StationId}\n";
         }
-
 
     }
 }

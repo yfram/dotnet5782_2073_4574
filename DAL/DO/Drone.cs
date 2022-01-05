@@ -15,7 +15,6 @@
 
         public WeightGroup Weight { get; set; }
 
-
         public override string ToString()
         {
             return $"Drone {Id}(Model num:{Model})";

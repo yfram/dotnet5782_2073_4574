@@ -15,8 +15,7 @@ namespace PL.Pages
     /// </summary>
     public partial class StationsViewTab : UserControl
     {
-
-        enum SelectdStates { No, Number, Has };
+        private enum SelectdStates { No, Number, Has };
 
         public ObservableCollection<StationForList> StationsView { get; set; } = new();
 
@@ -41,7 +40,11 @@ namespace PL.Pages
 
         private void StationsViewTab_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!gridOpen || e.OriginalSource is not Button button) return;
+            if (!gridOpen || e.OriginalSource is not Button button)
+            {
+                return;
+            }
+
             StationsView.Clear();
             stations.Clear();
             MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
@@ -88,12 +91,12 @@ namespace PL.Pages
             StationsGroup.GroupDescriptions.Clear();
 
             if (Collected_View.SelectedIndex == (int)SelectdStates.No)
+            {
                 return;
-
+            }
 
             String prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
             StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
-
 
         }
 
@@ -163,7 +166,11 @@ namespace PL.Pages
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
-            if (packageView) return;
+            if (packageView)
+            {
+                return;
+            }
+
             ShowMenue(StationsView[((DataGridRow)sender).GetIndex()].Id, "station view");
         }
     }
