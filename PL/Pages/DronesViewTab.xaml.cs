@@ -207,7 +207,7 @@ namespace PL.Pages
 
             gridOpen = true;
 
-            MainWindow.BL.DisplayStations().ToList().ForEach(s => Stations.Items.Add(s.Id));
+            MainWindow.BL.DisplayStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)

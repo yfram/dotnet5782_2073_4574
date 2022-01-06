@@ -17,9 +17,11 @@ namespace BlApi
         Action update;
         Func<bool> stop;
 
-        double speed = 7;
-        int msTimer = 500;
+        double speed = 3;
+        int msTimer = 1000;
         double progress = 0;
+
+        bool wayToMaitenance = false;
 
         Drone d;
 
@@ -51,7 +53,7 @@ namespace BlApi
                 if (d.Battery < 0)
                     throw new Exception();
                 update.Invoke();
-                bl.UpdateDroneName(d.Id, d.Model, d.Battery);
+                bl.UpdateDroneName(d.Id, d.Model, d.Battery , d.CurrentLocation);
 
                 Thread.Sleep(msTimer);
             }
@@ -59,9 +61,32 @@ namespace BlApi
 
         private void DroneEmpty()
         {
-            if( !StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enouth battery - snd to charge
+            if (wayToMaitenance)
             {
-                bl.SendDroneToCharge(id);
+                int? closestId = bl.GetClosetStation(d.CurrentLocation);
+
+                if (closestId is not null)
+                {
+                    Station s = bl.DisplayStation((int)closestId);
+                    if (bl.ElecOfDrone(id) * d.Battery <= DistanceTo(d.CurrentLocation, s.LocationOfStation))
+                    {
+                        bool finish = makeProgress(d.CurrentLocation,s.LocationOfStation );
+                        if (finish)
+                        {
+                            wayToMaitenance = false;
+                            bl.SendDroneToCharge(id);
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                if (!StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enouth battery - snd to charge
+                {
+                    bl.SendDroneToCharge(id);
+                    wayToMaitenance = true;
+                }
             }
             
         }
@@ -70,33 +95,27 @@ namespace BlApi
         {
             Package p = bl.DisplayPackage(d.Package.Id);
 
-            d.Battery -= speed * (1/bl.ElecOfDrone(d.Id));
-
-            progress += speed;
-            double distance = -1;
             if (p.TimeToDeliver is not null)
             {
                 throw new Exception();
             }
             else if (p.TimeToPickup is not null)
             {
-                distance = BL.DistanceTo(d.Package.DropOffLocation, d.Package.PickUpLocation);
-                if (progress >= distance)
+                bool finish = makeProgress(d.Package.PickUpLocation , d.Package.DropOffLocation);
+                if (finish)
                 {
                     bl.DeliverPackage(d.Id, true);
-                    d.Battery += (progress - distance) * (1 / bl.ElecOfDrone(d.Id));
                     progress = 0;
                 }
             }
             else if(p.TimeToPair is not null) // need deliver.
             {
 
-                distance = BL.DistanceTo(d.CurrentLocation, d.Package.PickUpLocation);
-                if (progress >= distance)
+                bool finish = makeProgress(d.CurrentLocation, d.Package.PickUpLocation);
+                if (finish)
                 {
-                    bl.PickUpPackage(d.Id, true);
-                    d.Battery += (progress - distance) * (1 / bl.ElecOfDrone(d.Id));
                     progress = 0;
+                    bl.PickUpPackage(id, true);
                 }
             }
             else
@@ -133,6 +152,51 @@ namespace BlApi
             {
                 return false;
             }
+        }
+
+        //https://stackoverflow.com/questions/7356629/how-to-move-x-distance-in-any-direction-from-geo-coordinates
+        // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
+        private bool makeProgress(Location source , Location destination)
+        {
+
+            double x = Math.Cos(destination.Latitude * Math.PI / 180) * Math.Sin((destination.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180));
+            double y = Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin(destination.Latitude * Math.PI / 180) - Math.Sin(source.Latitude * Math.PI / 180) * Math.Cos(destination.Latitude * Math.PI / 180) * Math.Cos(source.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180);
+
+            double bearing = Math.Atan2(x, y);
+
+            double distance = BL.DistanceTo(source, destination);
+
+            double mySpeed = speed;
+
+            if (progress + speed >= distance)
+            {
+                mySpeed = distance - progress; // force progress == distance at end!
+            }
+
+            d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
+            progress += mySpeed;
+
+            double progressInPrecent = (progress / distance);
+
+            d.CurrentLocation.Longitude = source.Longitude + (progress/ 110.567) * Math.Cos(bearing);
+
+            d.CurrentLocation.Latitude = source.Latitude + (progress/ 110.567) * Math.Sin(bearing);
+
+            if (distance - progress > bl.ElecOfDrone(id) * d.Battery)
+                throw new Exception();
+            if (IsNear(d.CurrentLocation , destination))
+            {
+                progress = 0;
+                return true;
+            }
+
+
+            return false;
+        }
+
+        private bool IsNear(Location a, Location b)
+        {
+            return DistanceTo(a, b) < 1;
         }
     }
 }

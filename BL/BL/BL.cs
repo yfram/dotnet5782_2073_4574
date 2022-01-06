@@ -64,8 +64,7 @@ namespace BlApi
                         BLdrone.CurrentLocation = new(s.Longitude, s.Lattitude);
                     }
                     // add batery
-                    double distance = DistanceToDoDeliver((DO.Package)AssociatedButNotDelivered, BLdrone);
-                    double minBattery = distance / ElecOfDrone(BLdrone);
+                    double minBattery = BatteryToDeliver((DO.Package)AssociatedButNotDelivered, BLdrone);
                     if (minBattery > 100)//the minumun battery needed for the delivery is larger than 100% charge
                     {
                         throw new BlException("Not enough free stations!", BLdrone.Id, typeof(Drone));
@@ -158,8 +157,10 @@ namespace BlApi
             {
                 Idal.AddDrone(d.Id, d.Model, (DO.WeightGroup)((int)d.Weight));
 
-                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, d.State, d.CurrentLocation, d.Package.Id);
+                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight, d.Battery, DroneState.Empty, d.CurrentLocation, d.Package.Id);
                 BLdrones.Add(df);
+                if (d.State == DroneState.Maitenance)
+                    SendDroneToCharge(d.Id);
             }
             catch (Exception e)
             {
@@ -230,7 +231,7 @@ namespace BlApi
         /// <param name="newModel">
         /// New model name
         /// </param>
-        public void UpdateDroneName(int id, string newModel, double newBattery=-1)
+        public void UpdateDroneName(int id, string newModel, double newBattery=-1 , Location newLocation=null)
         {
             DO.Drone DALdrone = GetDALDrone(id);
             newModel = newModel == "" ? DALdrone.Model : newModel;
@@ -246,6 +247,8 @@ namespace BlApi
                 BLdrone.Model = DALdrone.Model;
                 if (newBattery >= 0)
                     BLdrone.Battery = newBattery;
+                if (newLocation is not null)
+                    BLdrone.CurrentLocation = newLocation;
             }
         }
 
@@ -455,7 +458,7 @@ namespace BlApi
                     Location SenderLoc = new(Sender.Longitude, Sender.Lattitude);
                     if (!simulatorMode)
                     {
-                        double batteryNeed = (1 / ElecOfDrone(BLdrone)) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
+                        double batteryNeed = (1/elecRate[0]) * DistanceTo(BLdrone.CurrentLocation, SenderLoc);
                         if (batteryNeed > BLdrone.Battery)
                             throw new BlException($"not enougth battery of {BLdrone.Id}, need {batteryNeed}, has {BLdrone.Battery}");
                         BLdrone.Battery -= batteryNeed;
@@ -577,7 +580,8 @@ namespace BlApi
 
                 Location locSend = new(DALsend.Longitude, DALsend.Lattitude), locRecv = new(DALrecv.Longitude, DALrecv.Lattitude);
 
-                pckTransfer = new PackageInTransfer(pkgId, DALpkg.Delivered is not null, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, DistanceTo(locRecv, locSend));
+                bool inDelivery = DALpkg.PickUp is not null;
+                pckTransfer = new PackageInTransfer(pkgId, inDelivery, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, inDelivery? DistanceTo(droneForList.CurrentLocation, locSend) : DistanceTo(droneForList.CurrentLocation, locRecv));
             }
 
             return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
@@ -888,15 +892,42 @@ namespace BlApi
 
         private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d)
         {
-            double maxDistance = DroneMaxDistance(d);
-            double distance = DistanceToDoDeliver(p, d);
-            return distance <= maxDistance;
+            
+            return BatteryToDeliver(p,d) <= d.Battery;
         }
+
+        private double BatteryToDeliver(DO.Package p , DroneForList d)
+        {
+            var sender = GetDALCustomer(p.SenderId);
+            Location senderLoc = new(sender.Longitude, sender.Lattitude);
+
+            var recv = GetDALCustomer(p.RecevirId);
+            Location recvLoc = new(recv.Longitude, recv.Lattitude);
+
+            int? StationId = GetClosetStation(recvLoc);
+            if (StationId is null)
+            {
+                /**
+             * ATTENTION: now,if all the stations have no charging slot, the associationg cannot be!!! 
+             */
+                return double.PositiveInfinity;
+            }
+            DO.Station closest = GetDALStation((int)StationId);
+            Location closestLoc = new(closest.Longitude, closest.Lattitude);
+
+            double battery = (1/elecRate[0]) * DistanceTo(d.CurrentLocation, senderLoc) + (1/elecRate[(int)p.Weight]) * DistanceTo(recvLoc, senderLoc) + (1/elecRate[0]) * DistanceTo(closestLoc, recvLoc);
+
+            return battery;
+        }
+
 
         internal static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
         {
             double lat1 = Loc1.Latitude; double lon1 = Loc1.Longitude;
             double lat2 = Loc2.Latitude; double lon2 = Loc2.Longitude;
+
+            if (lat1 == lat2 && lon1 == lon2)
+                return 0;
 
             double rlat1 = Math.PI * lat1 / 180;
             double rlat2 = Math.PI * lat2 / 180;
@@ -922,13 +953,8 @@ namespace BlApi
             return dist;
         }
 
-        private double DroneGoNewBattery(DroneForList d, double distance)
-        {
 
-            return d.Battery - ElecOfDrone(d) * distance;
-        }
-
-        private int? GetClosetStation(Location loc, bool toCharge = true)
+        internal int? GetClosetStation(Location loc, bool toCharge = true)
         {
             IEnumerable<DO.Station> FreeStations = Idal.GetAllStations();
             if (toCharge)
@@ -950,7 +976,6 @@ namespace BlApi
             }
         }
 
-        private double DroneMaxDistance(DroneForList d) => ElecOfDrone(d) * d.Battery;
 
         internal double ElecOfDrone(int Id)
         {

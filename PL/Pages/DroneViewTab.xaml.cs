@@ -12,6 +12,7 @@ namespace PL.Pages
     public partial class DroneViewTab : UserControl
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
+        private Window PackageView = null;
         public DroneViewTab(int id)
         {
             InitializeComponent();
@@ -119,6 +120,7 @@ namespace PL.Pages
 
         private void DroneNextOp_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
@@ -177,7 +179,12 @@ namespace PL.Pages
 
                      );
             };
-            bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => { BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id); };
+            bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => {
+                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+                UpdateDroneNextOp();
+                UpdateChargeButton();
+                UpdatePackage();
+            };
             
             bw.RunWorkerAsync();
 
@@ -189,6 +196,26 @@ namespace PL.Pages
             //bw.CancelAsync();
         }
 
+        private void OpenPackage(object sender, RoutedEventArgs e)
+        {
+            if (PackageView is null)
+            {
+                PackageView = new Window
+                {
+                    Content = new PackageForDroneViewTab(BLdrone.Package),
+                    Title = $"package {BLdrone.Package.Id}",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    ResizeMode = ResizeMode.CanResize
+                };
+                PackageView.Closed += (sender, args) => this.PackageView = null;
+                PackageView.Show();
+            }
+        }
 
+        private void UpdatePackage()
+        {
+            if (PackageView is not null)
+                ((PackageForDroneViewTab)PackageView.Content).update(MainWindow.BL.DisplayDrone(BLdrone.Id).Package);
+        }
     }
 }

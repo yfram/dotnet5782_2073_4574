@@ -23,7 +23,7 @@ namespace BlApi
         #endregion
 
         #region Update Options
-        void UpdateDroneName(int id, string newModel, double battery = -1);
+        void UpdateDroneName(int id, string newModel, double battery = -1 , Location newLocation = null);
 
         void UpdateStation(int id, string newName = "", int newChargeSlots = -1);
 

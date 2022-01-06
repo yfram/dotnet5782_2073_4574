@@ -15,5 +15,10 @@ namespace PL.Pages
             InitializeComponent();
             BLpackage = p;
         }
+
+        public void update(PackageInTransfer newPkg)
+        {
+            BLpackage = newPkg;
+        }
     }
 }
