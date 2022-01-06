@@ -230,7 +230,7 @@ namespace BlApi
         /// <param name="newModel">
         /// New model name
         /// </param>
-        public void UpdateDroneName(int id, string newModel, double newBattery=-1)
+        public void UpdateDroneName(int id, string newModel, double newBattery = -1)
         {
             DO.Drone DALdrone = GetDALDrone(id);
             newModel = newModel == "" ? DALdrone.Model : newModel;
@@ -395,7 +395,7 @@ namespace BlApi
 
                     if (allCanWeight.Count() > 0)
                     {
-                         IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, BLdrone));
+                        IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, BLdrone));
 
                         List<DO.Package> allNearList = allNear.ToList();
                         if (allNearList.Count() > 0)
@@ -437,7 +437,7 @@ namespace BlApi
         /// <param name="DroneId"></param>
         /// <exception cref="Exception"></exception>
         /// <exception cref="DroneStateException"></exception>
-        public void PickUpPackage(int DroneId , bool simulatorMode = false)
+        public void PickUpPackage(int DroneId, bool simulatorMode = false)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId);
 
@@ -482,10 +482,10 @@ namespace BlApi
         /// Releases the package from the <c>Drone</c> with the ID <paramref name="DroneId"/>
         /// </summary>
         /// <param name="DroneId"></param>
-        public void DeliverPackage(int DroneId , bool simulatorMode = false)
+        public void DeliverPackage(int DroneId, bool simulatorMode = false)
         {
             DroneForList BLdrone = BLdrones.First(d => d.Id == DroneId); // replace it with get by id
-            
+
             if (BLdrone.State == DroneState.Busy)
             {
                 int PackageId = BLdrone.PassingPckageId is null ?
@@ -508,7 +508,7 @@ namespace BlApi
                         BLdrone.Battery -= batteryNeed;
                     }
 
-                        
+
 
                     BLdrone.CurrentLocation = RecvLoc;
                     BLdrone.State = DroneState.Empty;
@@ -1011,7 +1011,7 @@ namespace BlApi
 
         public IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func)
         {
-            IEnumerable<dynamic> listRet = typeof(T).Name switch
+            IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
             {
                 "Drone" => DisplayDrones(),
                 "Station" => DisplayStations(),
@@ -1020,7 +1020,7 @@ namespace BlApi
                 _ => throw new InvalidOperationException()
             };
             foreach (var item in listRet)
-                if (func(DisplayObject(item.Id, item.GetType().Name)))
+                if (func(typeof(T).Name.Contains("ForList") ? item : DisplayObject(item.Id, item.GetType().Name)))
                     yield return item;
 
         }
