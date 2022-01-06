@@ -15,7 +15,7 @@ namespace PL.Pages
         public CustomerViewTab(int id)
         {
             InitializeComponent();
-            BLCustomer = MainWindow.BL.DisplayCustomer(id);
+            BLCustomer = MainWindow.BL.GetCustomerById(id);
 
             UpdateButton.GotFocus += UpdateButton_Click;
         }
@@ -25,7 +25,7 @@ namespace PL.Pages
             try
             {
                 MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
-                BLCustomer = MainWindow.BL.DisplayCustomer(BLCustomer.Id);
+                BLCustomer = MainWindow.BL.GetCustomerById(BLCustomer.Id);
 
             }
             catch (Exception ex)

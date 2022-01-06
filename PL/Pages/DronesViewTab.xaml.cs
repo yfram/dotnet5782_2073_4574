@@ -25,7 +25,7 @@ namespace PL.Pages
 
         public DronesViewTab()
         {
-            MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
+            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.GetDroneById(d.Id)));
             drones = new(Drones.Where(d => true).ToArray());
 
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace PL.Pages
 
             Drones.Clear();
             drones.Clear();
-            MainWindow.BL.DisplayDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.DisplayDrone(d.Id)));
+            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.GetDroneById(d.Id)));
             drones = new(Drones.Where(d => true).ToArray());
 
             //this way only the exit button acctualy closes the update view
@@ -177,7 +177,7 @@ namespace PL.Pages
                 MainWindow.BL.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
                                 NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new InvalidOperationException() },
                                 new Random().NextDouble() * 100, DroneState.Maitenance, new(),
-                                MainWindow.BL.DisplayStation(int.Parse(Stations.Text)).LocationOfStation));
+                                MainWindow.BL.GetStationById(int.Parse(Stations.Text)).LocationOfStation));
             }
             catch (Exception ex)
             {
@@ -207,7 +207,7 @@ namespace PL.Pages
 
             gridOpen = true;
 
-            MainWindow.BL.DisplayStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
+            MainWindow.BL.GetStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)

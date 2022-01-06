@@ -14,7 +14,7 @@ namespace PL.Pages
         public PackageViewTab(int id)
         {
             InitializeComponent();
-            BLpackage = MainWindow.BL.DisplayPackage(id);
+            BLpackage = MainWindow.BL.GetPackageById(id);
 
         }
 

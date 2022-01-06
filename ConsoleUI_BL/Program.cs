@@ -82,22 +82,22 @@ namespace ConsoleUI_BL
                 switch (menue)
                 {
                     case ListViewMenue.Stations:
-                        Console.WriteLine(string.Join('\n', bl.DisplayStations()));
+                        Console.WriteLine(string.Join('\n', bl.GetAllStations()));
                         break;
                     case ListViewMenue.Drones:
-                        Console.WriteLine(string.Join('\n', bl.DisplayDrones()));
+                        Console.WriteLine(string.Join('\n', bl.GetAllDrones()));
                         break;
                     case ListViewMenue.Customers:
-                        Console.WriteLine(string.Join('\n', bl.DisplayCustomers()));
+                        Console.WriteLine(string.Join('\n', bl.GetAllCustomers()));
                         break;
                     case ListViewMenue.Packages:
-                        Console.WriteLine(string.Join('\n', bl.DisplayPackages()));
+                        Console.WriteLine(string.Join('\n', bl.GetAllPackages()));
                         break;
                     case ListViewMenue.UnpairedPackages:
-                        Console.WriteLine(string.Join('\n', bl.DisplayPackagesWithoutDrone()));
+                        Console.WriteLine(string.Join('\n', bl.GetPackagesWithoutDrone()));
                         break;
                     case ListViewMenue.OpenStations:
-                        Console.WriteLine(string.Join('\n', bl.DisplayStationsWithCharges()));
+                        Console.WriteLine(string.Join('\n', bl.GetStationsWithCharges()));
                         break;
                 }
             }
@@ -120,16 +120,16 @@ namespace ConsoleUI_BL
                 switch (menue)
                 {
                     case SingleViewMenue.Station:
-                        Console.WriteLine(bl.DisplayStation(GetIntInput("Enter station ID:")));
+                        Console.WriteLine(bl.GetStationById(GetIntInput("Enter station ID:")));
                         break;
                     case SingleViewMenue.Drone:
-                        Console.WriteLine(bl.DisplayDrone(GetIntInput("Enter drone ID:")));
+                        Console.WriteLine(bl.GetDroneById(GetIntInput("Enter drone ID:")));
                         break;
                     case SingleViewMenue.Customer:
-                        Console.WriteLine(bl.DisplayCustomer(GetIntInput("Enter customer ID:")));
+                        Console.WriteLine(bl.GetCustomerById(GetIntInput("Enter customer ID:")));
                         break;
                     case SingleViewMenue.Package:
-                        Console.WriteLine(bl.DisplayPackage(GetIntInput("Enter package ID:")));
+                        Console.WriteLine(bl.GetPackageById(GetIntInput("Enter package ID:")));
                         break;
                 }
             }
@@ -221,8 +221,8 @@ namespace ConsoleUI_BL
                             new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
                         break;
                     case AddMenue.Package:
-                        Bl.AddPackage(new(new Random().Next(), new(Bl.DisplayCustomer(GetIntInput("Enter sender ID:"))),
-                            new(Bl.DisplayCustomer(GetIntInput("Enter reciver ID:"))),
+                        Bl.AddPackage(new(new Random().Next(), new(Bl.GetCustomerById(GetIntInput("Enter sender ID:"))),
+                            new(Bl.GetCustomerById(GetIntInput("Enter reciver ID:"))),
                             (BO.WeightGroup)(GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy):", 1, 3) + 1),
                             (BO.PriorityGroup)(GetIntInputInRange("Enter prioriyt group(1 for low, 2 for mid, 3 for high):", 1, 3) + 1),
                             null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue));
@@ -240,7 +240,7 @@ namespace ConsoleUI_BL
             try
             {
 
-                return bL.DisplayStation(id).LocationOfStation;
+                return bL.GetStationById(id).LocationOfStation;
             }
             catch (ArgumentException e)
             {

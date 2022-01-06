@@ -14,7 +14,7 @@ namespace PL.Pages
         public StationViewTab(int id)
         {
             InitializeComponent();
-            BLstation = MainWindow.BL.DisplayStation(id);
+            BLstation = MainWindow.BL.GetStationById(id);
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
@@ -22,7 +22,7 @@ namespace PL.Pages
             try
             {
                 MainWindow.BL.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
-                BLstation = MainWindow.BL.DisplayStation(BLstation.Id);
+                BLstation = MainWindow.BL.GetStationById(BLstation.Id);
             }
             catch (Exception ex)
             {

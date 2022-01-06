@@ -36,7 +36,7 @@ namespace BlApi
 
             while(!stop())
             {
-                d = bl.DisplayDrone(id);
+                d = bl.GetDroneById(id);
 
                 switch (d.State)
                 {
@@ -67,7 +67,7 @@ namespace BlApi
 
                 if (closestId is not null)
                 {
-                    Station s = bl.DisplayStation((int)closestId);
+                    Station s = bl.GetStationById((int)closestId);
                     if (bl.ElecOfDrone(id) * d.Battery <= DistanceTo(d.CurrentLocation, s.LocationOfStation))
                     {
                         bool finish = makeProgress(d.CurrentLocation,s.LocationOfStation );
@@ -93,7 +93,7 @@ namespace BlApi
 
         private void DroneBusy()
         {
-            Package p = bl.DisplayPackage(d.Package.Id);
+            Package p = bl.GetPackageById(d.Package.Id);
 
             if (p.TimeToDeliver is not null)
             {

@@ -7,10 +7,7 @@
         public static IBL GetBl()
         {
             if (Instance == null)
-            {
                 Instance = new BL();
-            }
-
             return Instance;
         }
 

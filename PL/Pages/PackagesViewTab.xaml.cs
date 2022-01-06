@@ -25,7 +25,7 @@ namespace PL.Pages
 
         public PackagesViewTab()
         {
-            MainWindow.BL.DisplayPackages().ToList().ForEach(d => PackagesView.Add(d));
+            MainWindow.BL.GetAllPackages().ToList().ForEach(d => PackagesView.Add(d));
 
             packages = new(PackagesView);
 
@@ -43,7 +43,7 @@ namespace PL.Pages
 
             PackagesView.Clear();
             packages.Clear();
-            MainWindow.BL.DisplayPackages().ToList().ForEach(d => PackagesView.Add(d));
+            MainWindow.BL.GetAllPackages().ToList().ForEach(d => PackagesView.Add(d));
             packages = new(PackagesView);
 
             //this way only the exit button acctualy closes the update view
@@ -169,7 +169,7 @@ namespace PL.Pages
             string check = ((ComboBoxItem)StateFilter.SelectedItem).Content.ToString().Replace(" ", "");
             return
                 MainWindow.BL.
-                DisplayObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
+                GetObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
                 Cast<PackageForList>();
         }
 
@@ -181,7 +181,7 @@ namespace PL.Pages
                 return packages;
             }
             List<PackageForList> datePackages =
-                MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
+                MainWindow.BL.GetObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
                 Cast<PackageForList>().ToList();
             return datePackages;
         }
