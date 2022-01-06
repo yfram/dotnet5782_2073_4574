@@ -22,15 +22,41 @@
                 <Setter Property="TextElement.FontWeight" Value="Bold"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
+            <CollectionViewSource x:Key="PackagesGroup"                               
+				Source="{Binding PackagesView}">
+            </CollectionViewSource>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="{x:Null}">
-        <DataGrid x:Name="PackageGrid" ItemsSource="{Binding Path=PackagesView}"   
+        <DataGrid x:Name="PackageGrid" DataContext="{StaticResource PackagesGroup}" ItemsSource="{Binding IsAsync=True}"   
                   Background="{DynamicResource PackagesGridBack}" Foreground="{DynamicResource PackagesGridFore}" 
                   CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
                   HorizontalAlignment="Stretch">
-
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="False" Background="{x:Null}">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock FontSize="10" FontWeight="Bold" Text="{Binding Path=Name}"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter/>
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Reciver  " Binding="{Binding Path=NameOfReciver}"/>
@@ -69,6 +95,8 @@
                 <ComboBoxItem Content="picked up"/>
                 <ComboBoxItem Content="accepted"/>
             </ComboBox>
+            <CheckBox x:Name="CollectedSender" Tag="Sender" Content="Group by sender" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+            <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by reciver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
