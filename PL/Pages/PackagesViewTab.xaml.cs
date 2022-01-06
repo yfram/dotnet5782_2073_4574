@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Animation;
 
 namespace PL.Pages
@@ -149,7 +150,6 @@ namespace PL.Pages
             {
                 return;
             }
-
             var p = ((DataGridRow)sender).DataContext as PackageForList;
             ShowMenue(p.Id, "package view");
         }
@@ -184,6 +184,24 @@ namespace PL.Pages
                 MainWindow.BL.DisplayObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
                 Cast<PackageForList>().ToList();
             return datePackages;
+        }
+
+        private void Collected_view(object sender, RoutedEventArgs e)
+        {
+            if (sender is not CheckBox senderAsCheckBox) return;
+            //becuase of the order of the && operator this works
+            if ((string)(senderAsCheckBox.Tag) == "Sender" && CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
+                CollectedReciver.IsChecked = !senderAsCheckBox.IsChecked;
+            else if (CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
+                CollectedSender.IsChecked = !senderAsCheckBox.IsChecked;
+            var packageView = (CollectionViewSource)Resources["PackagesGroup"];
+            packageView.GroupDescriptions.Clear();
+            if (senderAsCheckBox.IsChecked.Value)
+            {
+                packageView.GroupDescriptions.Add(new PropertyGroupDescription(senderAsCheckBox.Tag == "Reciver" ?
+                    "NameOfReciver" : "NameOfSender"));
+            }
+
         }
     }
 }
