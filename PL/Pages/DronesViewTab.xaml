@@ -20,12 +20,7 @@
                 <Setter Property="Height" Value="25"/>
             </Style>
             <local:DronesConvertor x:Key="DronesConvertor"/>
-            <CollectionViewSource x:Key="DronesGroup"                               
-				Source="{Binding Drones}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="State" />
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
+            <CollectionViewSource x:Key="DronesGroup" Source="{Binding Drones}"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
