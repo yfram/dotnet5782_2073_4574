@@ -1033,7 +1033,6 @@ namespace BlApi
             new Simulator(this, DroneId, update, stop);
         }
 
-
         public IEnumerable<dynamic> GetObjectsWhere<T>(Func<T, bool> func)
         {
             IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
