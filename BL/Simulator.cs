@@ -19,7 +19,6 @@ namespace BlApi
 
         double speed = 3;
         int msTimer = 1000;
-        double progress = 0;
 
         bool wayToMaitenance = false;
 
@@ -70,7 +69,7 @@ namespace BlApi
                     Station s = bl.DisplayStation((int)closestId);
                     if (bl.ElecOfDrone(id) * d.Battery <= DistanceTo(d.CurrentLocation, s.LocationOfStation))
                     {
-                        bool finish = makeProgress(d.CurrentLocation,s.LocationOfStation );
+                        bool finish = makeProgress(s.LocationOfStation );
                         if (finish)
                         {
                             wayToMaitenance = false;
@@ -101,20 +100,18 @@ namespace BlApi
             }
             else if (p.TimeToPickup is not null)
             {
-                bool finish = makeProgress(d.Package.PickUpLocation , d.Package.DropOffLocation);
+                bool finish = makeProgress(d.Package.DropOffLocation);
                 if (finish)
                 {
                     bl.DeliverPackage(d.Id, true);
-                    progress = 0;
                 }
             }
             else if(p.TimeToPair is not null) // need deliver.
             {
 
-                bool finish = makeProgress(d.CurrentLocation, d.Package.PickUpLocation);
+                bool finish = makeProgress(d.Package.PickUpLocation);
                 if (finish)
                 {
-                    progress = 0;
                     bl.PickUpPackage(id, true);
                 }
             }
@@ -156,37 +153,52 @@ namespace BlApi
 
         //https://stackoverflow.com/questions/7356629/how-to-move-x-distance-in-any-direction-from-geo-coordinates
         // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
-        private bool makeProgress(Location source , Location destination)
+        private bool makeProgress(Location destination)
         {
+            Location source = new(0,0);
+            source.Latitude = d.CurrentLocation.Latitude;
+            source.Longitude = d.CurrentLocation.Longitude;
 
             double x = Math.Cos(destination.Latitude * Math.PI / 180) * Math.Sin((destination.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180));
-            double y = Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin(destination.Latitude * Math.PI / 180) - Math.Sin(source.Latitude * Math.PI / 180) * Math.Cos(destination.Latitude * Math.PI / 180) * Math.Cos(source.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180);
+            double y = Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin(destination.Latitude * Math.PI / 180)
+                - Math.Sin(source.Latitude * Math.PI / 180) *
+                Math.Cos(destination.Latitude * Math.PI / 180)
+                * Math.Cos(destination.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180);
 
             double bearing = Math.Atan2(x, y);
 
+            bearing = ((bearing * 180 / Math.PI + 360) % 360);
+            
             double distance = BL.DistanceTo(source, destination);
 
             double mySpeed = speed;
 
-            if (progress + speed >= distance)
+            if (speed >= distance)
             {
-                mySpeed = distance - progress; // force progress == distance at end!
+                mySpeed = speed - distance; // force progress == distance at end!
             }
 
             d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
-            progress += mySpeed;
 
-            double progressInPrecent = (progress / distance);
+            
 
-            d.CurrentLocation.Longitude = source.Longitude + (progress/ 110.567) * Math.Cos(bearing);
+            d.CurrentLocation.Latitude = Math.Asin(
+                Math.Sin(source.Latitude * Math.PI / 180) * Math.Cos((mySpeed / 6371))
+                +
+                Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin((mySpeed / 6371)) * Math.Cos(bearing * Math.PI / 180));
 
-            d.CurrentLocation.Latitude = source.Latitude + (progress/ 110.567) * Math.Sin(bearing);
+            d.CurrentLocation.Latitude = d.CurrentLocation.Latitude * 180 / Math.PI;
 
-            if (distance - progress > bl.ElecOfDrone(id) * d.Battery)
+            d.CurrentLocation.Longitude = source.Longitude + Math.Atan2(Math.Sin(bearing * Math.PI / 180) * Math.Sin((mySpeed / 6371)) * Math.Cos(source.Latitude * Math.PI / 180)
+                ,
+                Math.Cos((mySpeed / 6371)) - Math.Sin(source.Latitude * Math.PI / 180) * Math.Sin(d.CurrentLocation.Latitude * Math.PI / 180)) * 180 / Math.PI;
+
+            d.CurrentLocation.Longitude = (d.CurrentLocation.Longitude + 540) % 360 - 180;
+
+            if (distance  > bl.ElecOfDrone(id) * d.Battery)
                 throw new Exception();
             if (IsNear(d.CurrentLocation , destination))
             {
-                progress = 0;
                 return true;
             }
 
