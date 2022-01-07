@@ -262,7 +262,7 @@ namespace BlApi
         public void UpdateStation(int id, string newName = "", int newEmptyChargeSlots = -1)
         {
             DO.Station station = GetDALStation(id);
-            Station s = DisplayStation(id);
+            Station s = GetStationById(id);
             //int totalPorts = s.AmountOfEmptyPorts + s.ChargingDrones.Count();
 
             station.Name = newName != "" ? newName : station.Name;
@@ -538,7 +538,7 @@ namespace BlApi
         /// </summary>
         /// <param name="StationId"></param>
         /// <returns>BO.Sattion</returns>
-        public Station DisplayStation(int StationId)
+        public Station GetStationById(int StationId)
         {
             var DALstation = GetDALStation(StationId);
             List<DroneInCharging> charged = new();
@@ -560,7 +560,7 @@ namespace BlApi
         /// </summary>
         /// <param name="DroneId"></param>
         /// <returns>BO.Drone</returns>
-        public Drone DisplayDrone(int DroneId)
+        public Drone GetDroneById(int DroneId)
         {
             var DALdrone = GetDALDrone(DroneId);
             DroneForList droneForList = BLdrones.Find(d => d.Id == DroneId);
@@ -592,7 +592,7 @@ namespace BlApi
         /// </summary>
         /// <param name="CustomerId"></param>
         /// <returns>BO.Customer</returns>
-        public Customer DisplayCustomer(int CustomerId)
+        public Customer GetCustomerById(int CustomerId)
         {
 
             var DALcustomer = GetDALCustomer(CustomerId);
@@ -633,7 +633,7 @@ namespace BlApi
         /// </summary>
         /// <param name="PackageId"></param>
         /// <returns>BO.Package</returns>
-        public Package DisplayPackage(int PackageId)
+        public Package GetPackageById(int PackageId)
         {
             var DALpkg = GetDALPackage(PackageId);
 
@@ -674,12 +674,12 @@ namespace BlApi
         /// Returns a list of all stations
         /// </summary>
         /// <returns>List of BO.StationForList</returns>
-        public IEnumerable<StationForList> DisplayStations()
+        public IEnumerable<StationForList> GetAllStations()
         {
             List<StationForList> ret = new();
             foreach (var station in Idal.GetAllStations())
             {
-                Station blStation = DisplayStation(station.Id);
+                Station blStation = GetStationById(station.Id);
                 ret.Add(new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count()));
             }
             return ret;
@@ -689,12 +689,12 @@ namespace BlApi
         /// Returns a list of all drones
         /// </summary>
         /// <returns>List of BO.DroneForList</returns>
-        public IEnumerable<DroneForList> DisplayDrones()
+        public IEnumerable<DroneForList> GetAllDrones()
         {
             List<DroneForList> ret = new();
             foreach (var drone in Idal.GetAllDrones())
             {
-                Drone blDrone = DisplayDrone(drone.Id);
+                Drone blDrone = GetDroneById(drone.Id);
                 ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1 : blDrone.Package.Id)));
             }
             return ret;
@@ -704,12 +704,12 @@ namespace BlApi
         /// Returns a list of all customers
         /// </summary>
         /// <returns>List of BO.CustomerForList</returns>
-        public IEnumerable<CustomerForList> DisplayCustomers()
+        public IEnumerable<CustomerForList> GetAllCustomers()
         {
             List<CustomerForList> ret = new();
             foreach (var customer in Idal.GetAllCustomers())
             {
-                Customer blCustomer = DisplayCustomer(customer.Id);
+                Customer blCustomer = GetCustomerById(customer.Id);
                 int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
                 p.Delivered is null).Count();
                 int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
@@ -728,12 +728,12 @@ namespace BlApi
         /// Returns a list of all Packages
         /// </summary>
         /// <returns>List of BO.PackageForList</returns>
-        public IEnumerable<PackageForList> DisplayPackages()
+        public IEnumerable<PackageForList> GetAllPackages()
         {
             List<PackageForList> ret = new();
             foreach (var package in Idal.GetAllPackages())
             {
-                Package blPackage = DisplayPackage(package.Id);
+                Package blPackage = GetPackageById(package.Id);
                 ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage)));
             }
             return ret;
@@ -743,12 +743,12 @@ namespace BlApi
         /// Returns a list of all unpaired packages
         /// </summary>
         /// <returns>List of BO.PackageForList</returns>
-        public IEnumerable<PackageForList> DisplayPackagesWithoutDrone()
+        public IEnumerable<PackageForList> GetPackagesWithoutDrone()
         {
             List<PackageForList> ret = new();
             foreach (var package in Idal.GetAllPackagesWhere(p => p.DroneId is null))
             {
-                Package blPackage = DisplayPackage(package.Id);
+                Package blPackage = GetPackageById(package.Id);
                 ret.Add(new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, PackageStatus.Initialized));
             }
             return ret;
@@ -758,12 +758,12 @@ namespace BlApi
         /// Returns a list of all stations with open charging ports
         /// </summary>
         /// <returns>List of BO.StationForList</returns>
-        public IEnumerable<StationForList> DisplayStationsWithCharges()
+        public IEnumerable<StationForList> GetStationsWithCharges()
         {
             List<StationForList> ret = new();
             foreach (var station in Idal.GetAllStationsWhere(s => s.ChargeSlots > 0))
             {
-                Station blStation = DisplayStation(station.Id);
+                Station blStation = GetStationById(station.Id);
                 ret.Add(new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count()));
             }
             return ret;
@@ -979,7 +979,7 @@ namespace BlApi
 
         internal double ElecOfDrone(int Id)
         {
-            return ElecOfDrone(DisplayDrones().Where(d => d.Id == Id).First());
+            return ElecOfDrone(GetAllDrones().Where(d => d.Id == Id).First());
         }
 
         private double ElecOfDrone(DroneForList d)
@@ -1033,31 +1033,30 @@ namespace BlApi
             new Simulator(this, DroneId, update, stop);
         }
 
-
-        public IEnumerable<dynamic> DisplayObjectsWhere<T>(Func<T, bool> func)
+        public IEnumerable<dynamic> GetObjectsWhere<T>(Func<T, bool> func)
         {
             IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
             {
-                "Drone" => DisplayDrones(),
-                "Station" => DisplayStations(),
-                "Customer" => DisplayCustomers(),
-                "Package" => DisplayPackages(),
+                "Drone" => GetAllDrones(),
+                "Station" => GetAllStations(),
+                "Customer" => GetAllCustomers(),
+                "Package" => GetAllPackages(),
                 _ => throw new InvalidOperationException()
             };
             foreach (var item in listRet)
-                if (func(typeof(T).Name.Contains("ForList") ? item : DisplayObject(item.Id, item.GetType().Name)))
+                if (func(typeof(T).Name.Contains("ForList") ? item : GetObject(item.Id, item.GetType().Name)))
                     yield return item;
 
         }
 
-        private dynamic DisplayObject(int id, string typeOf)
+        private dynamic GetObject(int id, string typeOf)
         {
             return typeOf switch
             {
-                "Drone" => DisplayDrone(id),
-                "Station" => DisplayStation(id),
-                "Customer" => DisplayCustomer(id),
-                "Package" => DisplayPackage(id),
+                "Drone" => GetDroneById(id),
+                "Station" => GetStationById(id),
+                "Customer" => GetCustomerById(id),
+                "Package" => GetPackageById(id),
                 _ => throw new InvalidOperationException()
             };
         }

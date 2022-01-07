@@ -26,7 +26,7 @@ namespace PL.Pages
 
         public StationsViewTab()
         {
-            MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
+            MainWindow.BL.GetAllStations().ToList().ForEach(d => StationsView.Add(d));
 
             stations = new(StationsView);
 
@@ -47,7 +47,7 @@ namespace PL.Pages
 
             StationsView.Clear();
             stations.Clear();
-            MainWindow.BL.DisplayStations().ToList().ForEach(d => StationsView.Add(d));
+            MainWindow.BL.GetAllStations().ToList().ForEach(d => StationsView.Add(d));
             stations = new(StationsView.Where(d => true).ToArray());
 
             //this way only the exit button acctualy closes the update view

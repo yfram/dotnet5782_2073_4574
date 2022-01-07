@@ -18,7 +18,47 @@ namespace Dal
             return DataSource.DroneCharges.Exists(dc => dc.DroneId == droneId);
         }
 
+        public double[] GetElectricity()
+        {
+            double[] ans = new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
+            return ans;
+        }
+
         #region Update functions
+        public void UpdateStation(Station s)
+        {
+            int ix = GetStationIndex(s.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Station {s.Id} does not exist!");
+            DataSource.Stations[ix] = s;
+        }
+
+        public void UpdatePackage(Package p)
+        {
+            int ix = GetPackageIndex(p.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Package {p.Id} does not exist!");
+            DataSource.Packages[ix] = p;
+        }
+
+        public void UpdateCustomer(Customer c)
+        {
+            int ix = GetCustomerIndex(c.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Customer {c.Id} does not exist!");
+            DataSource.Customers[ix] = c;
+        }
+
+        public void UpdateDrone(Drone d)
+        {
+            int ix = GetDroneIndex(d.Id);
+            if (ix == -1)
+                throw new ArgumentException($"the Drone {d.Id} does not exist!");
+            DataSource.Drones[ix] = d;
+        }
+        #endregion
+
+        #region Complex update functions
         public void GivePackageDrone(int packageId, int droneId)
         {
             int index = GetPackageIndex(packageId);
@@ -28,6 +68,7 @@ namespace Dal
             DataSource.Packages[index] = tmp;
 
         }
+
         public void PickUpPackage(int packageId)
         {
             int index = GetPackageIndex(packageId);
@@ -47,47 +88,31 @@ namespace Dal
             DataSource.Drones[droneIndex] = tmp;
             DataSource.Stations[stationIndex] = tmp1;
         }
+
         public double ReleaseDroneFromCharge(int droneId, DateTime outTime, int stationId = -1)
         {
             double ans = 0;
-
             if (stationId < 0)
-            {
                 stationId = DataSource.DroneCharges.Find(dc => dc.DroneId == droneId).StationId;
-            }
-
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
-
             tmp1.ChargeSlots++;
 
             DataSource.Stations[stationIndex] = tmp1;
             if (!DataSource.DroneCharges.Exists(d => d.DroneId == droneId && d.StationId == stationId))
-            {
                 throw new ArgumentException($"cannot find the droncharge with the drone id {droneId}");
-            }
-
             ans = outTime.Subtract(DataSource.DroneCharges.Find(d => d.DroneId == droneId && d.StationId == stationId).Enter).TotalSeconds;
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);
             return ans;
         }
-
         #endregion
 
-        public double[] GetElectricity()
-        {
-            double[] ans = new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent };
-            return ans;
-        }
-
+        #region Delte functions
         public void DeleteStation(int id)
         {
             int ix = GetStationIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Station {id} does not exist!");
-            }
-
             DataSource.Stations.RemoveAt(ix);
 
         }
@@ -96,10 +121,7 @@ namespace Dal
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Package {id} does not exist!");
-            }
-
             DataSource.Packages.RemoveAt(ix);
         }
 
@@ -107,10 +129,7 @@ namespace Dal
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Customer {id} does not exist!");
-            }
-
             DataSource.Customers.RemoveAt(ix);
         }
 
@@ -118,55 +137,9 @@ namespace Dal
         {
             int ix = GetDroneIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Drone {id} does not exist!");
-            }
-
             DataSource.Drones.RemoveAt(ix);
         }
-
-        public void UpdateStation(Station s)
-        {
-            int ix = GetStationIndex(s.Id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the Station {s.Id} does not exist!");
-            }
-
-            DataSource.Stations[ix] = s;
-        }
-
-        public void UpdatePackage(Package p)
-        {
-            int ix = GetPackageIndex(p.Id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the Package {p.Id} does not exist!");
-            }
-
-            DataSource.Packages[ix] = p;
-        }
-
-        public void UpdateCustomer(Customer c)
-        {
-            int ix = GetCustomerIndex(c.Id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the Customer {c.Id} does not exist!");
-            }
-
-            DataSource.Customers[ix] = c;
-        }
-
-        public void UpdateDrone(Drone d)
-        {
-            int ix = GetDroneIndex(d.Id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the Drone {d.Id} does not exist!");
-            }
-
-            DataSource.Drones[ix] = d;
-        }
+        #endregion
     }
 }

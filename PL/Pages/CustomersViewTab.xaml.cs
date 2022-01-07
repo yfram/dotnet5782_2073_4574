@@ -24,7 +24,7 @@ namespace PL.Pages
 
         public CustomersViewTab()
         {
-            MainWindow.BL.DisplayCustomers().ToList().ForEach(d => CustomersView.Add(d));
+            MainWindow.BL.GetAllCustomers().ToList().ForEach(d => CustomersView.Add(d));
 
             customers = new(CustomersView);
 
@@ -42,7 +42,7 @@ namespace PL.Pages
 
             CustomersView.Clear();
             customers.Clear();
-            MainWindow.BL.DisplayCustomers().ToList().ForEach(d => CustomersView.Add(d));
+            MainWindow.BL.GetAllCustomers().ToList().ForEach(d => CustomersView.Add(d));
             customers = new(CustomersView);
 
             //this way only the exit button acctualy closes the update view

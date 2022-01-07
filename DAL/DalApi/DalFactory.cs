@@ -18,11 +18,11 @@ namespace DalApi
 
             if (dalPkg == null)
             {
-                throw new DalConfigException($"Package {dalType} is not found in packages list in dal-config.xml");
+                throw new DalConfigException($"Package {dalType} is not found in the package list in dal-config.xml");
             }
 
             try { Assembly.Load(dalPkg); }
-            catch (Exception) { throw new DalConfigException("Failed to load the dal-config.xml file"); }
+            catch (Exception) { throw new DalConfigException("Failed to load dal-config.xml"); }
 
             Type type = Type.GetType($"Dal.{dalPkg}, {dalPkg}");
             if (type == null)
@@ -34,7 +34,7 @@ namespace DalApi
                       BindingFlags.Public | BindingFlags.Static).GetValue(null);
             if (dal == null)
             {
-                throw new DalConfigException($"Class {dalPkg} is not a singleton or wrong propertry name for Instance");
+                throw new DalConfigException($"Class {dalPkg} is not a singleton or a wrong propertry name for Instance was given");
             }
 
             return dal;

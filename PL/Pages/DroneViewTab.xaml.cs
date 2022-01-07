@@ -16,7 +16,7 @@ namespace PL.Pages
         public DroneViewTab(int id)
         {
             InitializeComponent();
-            BLdrone = MainWindow.BL.DisplayDrone(id);
+            BLdrone = MainWindow.BL.GetDroneById(id);
 
             UpdateChargeButton();
             UpdateDroneNextOp();
@@ -31,7 +31,7 @@ namespace PL.Pages
             try
             {
                 MainWindow.BL.UpdateDroneName(BLdrone.Id, DroneName.Text);
-                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+                BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace PL.Pages
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
 
@@ -102,7 +102,7 @@ namespace PL.Pages
                 DroneNextOp.Content = "pair a package";
                 return;
             }
-            Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+            Package p = MainWindow.BL.GetPackageById(BLdrone.Package.Id);
             if (p.TimeToDeliver.HasValue)
             {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
@@ -129,7 +129,7 @@ namespace PL.Pages
                 }
                 else
                 {
-                    Package p = MainWindow.BL.DisplayPackage(BLdrone.Package.Id);
+                    Package p = MainWindow.BL.GetPackageById(BLdrone.Package.Id);
                     if (p.TimeToPickup.HasValue)
                     {
                         MainWindow.BL.DeliverPackage(BLdrone.Id);
@@ -147,7 +147,7 @@ namespace PL.Pages
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
             Exit();
@@ -155,7 +155,7 @@ namespace PL.Pages
 
         private void UpdateView()
         {
-            BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
         }
 
 
@@ -180,7 +180,7 @@ namespace PL.Pages
                      );
             };
             bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => {
-                BLdrone = MainWindow.BL.DisplayDrone(BLdrone.Id);
+                BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
                 UpdateDroneNextOp();
                 UpdateChargeButton();
                 UpdatePackage();
@@ -215,7 +215,7 @@ namespace PL.Pages
         private void UpdatePackage()
         {
             if (PackageView is not null)
-                ((PackageForDroneViewTab)PackageView.Content).update(MainWindow.BL.DisplayDrone(BLdrone.Id).Package);
+                ((PackageForDroneViewTab)PackageView.Content).update(MainWindow.BL.GetDroneById(BLdrone.Id).Package);
         }
     }
 }

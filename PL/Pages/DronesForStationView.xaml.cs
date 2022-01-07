@@ -13,7 +13,7 @@ namespace PL.Pages
         {
             InitializeComponent();
 
-            ListOfDrones.ItemsSource = MainWindow.BL.DisplayStation(stationId).ChargingDrones;
+            ListOfDrones.ItemsSource = MainWindow.BL.GetStationById(stationId).ChargingDrones;
         }
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
