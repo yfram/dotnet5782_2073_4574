@@ -208,7 +208,7 @@ namespace BlApi
 
         private bool IsNear(Location a, Location b)
         {
-            return DistanceTo(a, b) < 1;
+            return DistanceTo(a, b) < 2;
         }
     }
 }

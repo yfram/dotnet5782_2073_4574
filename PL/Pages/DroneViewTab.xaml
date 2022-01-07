@@ -13,20 +13,19 @@
         <src:Drone x:Key="drone" x:Name="BLdrone"/>
 
 
-        <Style x:Key = "TriggerStyle" TargetType = "Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Style x:Key = "simulatorVis" TargetType = "Button" BasedOn="{StaticResource {x:Type Button}}">
             <Style.Triggers>
-
                 <DataTrigger Binding="{Binding ElementName=isSimulator,Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="False"/>
                      <Setter Property = "Visibility" Value = "Hidden" />
+
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ElementName=isSimulator,Path=IsChecked}" Value="False">
-                    <Setter Property="IsEnabled" Value="True"/>
                     <Setter Property = "Visibility" Value = "Visible" />
                 </DataTrigger>
-                
             </Style.Triggers>
         </Style>
+
+        
     </UserControl.Resources>
     <Grid Background="#3e5c76" DataContext="{DynamicResource drone}">
         <TextBlock FontSize="15" Name="DroneId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Path=Id, StringFormat=Drone id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
@@ -35,16 +34,16 @@
         <TextBlock FontSize="13" Name="DroneBattery" HorizontalAlignment="Left" Margin="540,24,0,0" Text="{Binding Path=Battery, StringFormat=Battery: {0:f2}%}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <TextBlock FontSize="13" Name ="DroneState" HorizontalAlignment="Left" Margin="236,54,0,0" Text="{Binding Path=State, StringFormat=Currently {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <TextBlock FontSize="13" Name ="DroneWeight" HorizontalAlignment="Left" Margin="236,100,0,0" Text="{Binding Path=Weight, StringFormat=Weight group: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
-        <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top"/>
-        <Button Name="Charge" Style = "{StaticResource TriggerStyle}"  HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
+        <Button Click="UpdateButton_Click"  Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top"/>
+        <Button Name="Charge" Style = "{StaticResource simulatorVis}"  HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
 
         <TextBox materialDesign:HintAssist.Hint="Time to charge"  Name="ChargeTime" HorizontalAlignment="Left" Margin="540,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Name="DroneNextOp" HorizontalAlignment="Left" Margin="790,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004"/>
+        <Button Name="DroneNextOp" Style = "{StaticResource simulatorVis}" HorizontalAlignment="Left" Margin="790,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004" />
         <TextBlock HorizontalAlignment="Left" Margin="10,348,0,0" Text="model: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Button>
-        <Button FontSize="13" Name ="PackageId" HorizontalAlignment="Left" Margin="773,24,0,0" Content="{Binding Path=Package.Id, StringFormat=Package Id: {0}}" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue" Click="OpenPackage"/>
+        <Button FontSize="13" Name ="PackageId" HorizontalAlignment="Left" Margin="773,24,0,0" Content="{Binding Path=Package.Id, StringFormat=Package Id: {0}}" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue" Click="OpenPackage" Visibility="Visible"/>
         <CheckBox x:Name="isSimulator"  Content="simulator" HorizontalAlignment="Left" Margin="909,41,0,0" VerticalAlignment="Top" Checked="start" Unchecked="pause"/>
     </Grid>
 </UserControl>
