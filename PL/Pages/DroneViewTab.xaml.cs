@@ -181,8 +181,6 @@ namespace PL.Pages
             };
             bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => {
                 BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
-                UpdateDroneNextOp();
-                UpdateChargeButton();
                 UpdatePackage();
             };
             
@@ -193,6 +191,9 @@ namespace PL.Pages
         private void pause(object sender, RoutedEventArgs e)
         {
             Stop = true;
+            UpdateDroneNextOp();
+            UpdateChargeButton();
+
             //bw.CancelAsync();
         }
 
