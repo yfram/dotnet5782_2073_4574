@@ -87,8 +87,7 @@ namespace PL.Pages
 
         private void ShowMenue(int? id, string typeOfMenue)
         {
-            gridOpen = true;
-            PullUpMenueContainer.Expand(250, 150);
+            
             UIElement menue = new();
             switch (typeOfMenue)
             {
@@ -104,7 +103,10 @@ namespace PL.Pages
                 default:
                     throw new InvalidOperationException();
             }
+            
             PullUpMenueContainer.Children.Add(menue);
+            gridOpen = true;
+            PullUpMenueContainer.Expand(250, 150);
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e) => ShowMenue(null, "drone add");
