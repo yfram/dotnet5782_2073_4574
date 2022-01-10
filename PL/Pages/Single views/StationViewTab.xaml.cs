@@ -29,11 +29,9 @@ namespace PL.Pages
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        public void Exit(object sender, RoutedEventArgs e)
+        private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            ((StationsViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
 
         private void View_Drones(object sender, RoutedEventArgs e)

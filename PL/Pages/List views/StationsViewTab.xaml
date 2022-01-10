@@ -20,12 +20,8 @@
                 <Setter Property="Height" Value="25"/>
             </Style>
 
-
             <CollectionViewSource x:Key="StationsGroup"                               
 				Source="{Binding StationsView}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="AmountOfEmptyPorts" />
-                </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -130,16 +126,7 @@
             </ComboBox>
         </Grid>
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
-        <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddStation" HorizontalAlignment="Right" Width="58"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Station ID:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Station Name:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Slots amount:" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewSlots" materialDesign:HintAssist.Hint="Slots"  HorizontalAlignment="Left" Margin="50,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-        </Grid>
-        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
+        <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 
 </UserControl>
