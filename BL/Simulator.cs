@@ -17,12 +17,9 @@ namespace BlApi
         int id;
         Action update;
         Func<bool> stop;
-
         double speed = 3;
         int msTimer = 1000;
-
         bool wayToMaitenance = false;
-
         Drone d;
 
         public Simulator(BL _bl , int _DroneId, Action _update, Func<bool> _stop)
@@ -31,8 +28,6 @@ namespace BlApi
             id = _DroneId;
             update = _update;
             stop = _stop;
-
-           
 
             while(!stop())
             {
@@ -70,7 +65,7 @@ namespace BlApi
                     Station s = bl.GetStationById((int)closestId);
                     if (bl.ElecOfDrone(id) * d.Battery <= LocationUtil.DistanceTo(d.CurrentLocation, s.LocationOfStation))
                     {
-                        bool finish = makeProgress(s.LocationOfStation );
+                        bool finish = MakeProgress(s.LocationOfStation );
                         if (finish)
                         {
                             wayToMaitenance = false;
@@ -101,7 +96,7 @@ namespace BlApi
             }
             else if (p.TimeToPickup is not null)
             {
-                bool finish = makeProgress(d.Package.DropOffLocation);
+                bool finish = MakeProgress(d.Package.DropOffLocation);
                 if (finish)
                 {
                     bl.DeliverPackage(d.Id, true);
@@ -110,7 +105,7 @@ namespace BlApi
             else if(p.TimeToPair is not null) // need deliver.
             {
 
-                bool finish = makeProgress(d.Package.PickUpLocation);
+                bool finish = MakeProgress(d.Package.PickUpLocation);
                 if (finish)
                 {
                     bl.PickUpPackage(id, true);
@@ -152,20 +147,17 @@ namespace BlApi
             }
         }
 
-        // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
-        private bool makeProgress(Location destination)
+        
+        private bool MakeProgress(Location destination)
         {
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
             if (distance > bl.ElecOfDrone(id) * d.Battery)
                 throw new Exception();
 
-
             double mySpeed = speed;
 
             if (speed >= distance)
-            {
                 mySpeed = speed - distance; // force progress == distance at end!
-            }
 
             d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
 

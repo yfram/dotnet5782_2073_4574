@@ -177,7 +177,7 @@ namespace PL.Pages
             };
             bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) =>
             {
-                BLdrone = Bl.GetDroneById(BLdrone.Id);
+                UpdateView();
                 UpdatePackage();
             };
 
