@@ -11,21 +11,16 @@
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <src:Drone x:Key="drone" x:Name="BLdrone"/>
-
-
         <Style x:Key = "simulatorVis" TargetType = "Button" BasedOn="{StaticResource {x:Type Button}}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ElementName=isSimulator,Path=IsChecked}" Value="True">
-                     <Setter Property = "Visibility" Value = "Hidden" />
-
+                    <Setter Property = "Visibility" Value = "Hidden" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ElementName=isSimulator,Path=IsChecked}" Value="False">
                     <Setter Property = "Visibility" Value = "Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-
-        
     </UserControl.Resources>
     <Grid Background="#3e5c76" DataContext="{DynamicResource drone}">
         <TextBlock FontSize="15" Name="DroneId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Path=Id, StringFormat=Drone id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
