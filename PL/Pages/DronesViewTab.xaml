@@ -19,7 +19,6 @@
                 <Setter Property="TextElement.FontWeight" Value="Bold"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
-            <local:DronesConvertor x:Key="DronesConvertor"/>
             <CollectionViewSource x:Key="DronesGroup" Source="{Binding Drones}"/>
         </ResourceDictionary>
     </UserControl.Resources>

@@ -7,6 +7,7 @@ using BO;
 using System.Threading;
 using static BlApi.BL;
 using BlApi.Exceptions;
+using BLApi;
 
 namespace BlApi
 {
@@ -67,7 +68,7 @@ namespace BlApi
                 if (closestId is not null)
                 {
                     Station s = bl.GetStationById((int)closestId);
-                    if (bl.ElecOfDrone(id) * d.Battery <= DistanceTo(d.CurrentLocation, s.LocationOfStation))
+                    if (bl.ElecOfDrone(id) * d.Battery <= LocationUtil.DistanceTo(d.CurrentLocation, s.LocationOfStation))
                     {
                         bool finish = makeProgress(s.LocationOfStation );
                         if (finish)
@@ -154,21 +155,10 @@ namespace BlApi
         // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
         private bool makeProgress(Location destination)
         {
-            Location source = new(0,0);
-            source.Latitude = d.CurrentLocation.Latitude;
-            source.Longitude = d.CurrentLocation.Longitude;
+            double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
+            if (distance > bl.ElecOfDrone(id) * d.Battery)
+                throw new Exception();
 
-            double x = Math.Cos(destination.Latitude * Math.PI / 180) * Math.Sin((destination.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180));
-            double y = Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin(destination.Latitude * Math.PI / 180)
-                - Math.Sin(source.Latitude * Math.PI / 180) *
-                Math.Cos(destination.Latitude * Math.PI / 180)
-                * Math.Cos(destination.Longitude * Math.PI / 180 - source.Longitude * Math.PI / 180);
-
-            double bearing = Math.Atan2(x, y);
-
-            bearing = ((bearing * 180 / Math.PI + 360) % 360);
-            
-            double distance = BL.DistanceTo(source, destination);
 
             double mySpeed = speed;
 
@@ -179,28 +169,14 @@ namespace BlApi
 
             d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
 
-            
+            double bearing = LocationUtil.Bearing(d.CurrentLocation, destination);
 
-            d.CurrentLocation.Latitude = Math.Asin(
-                Math.Sin(source.Latitude * Math.PI / 180) * Math.Cos((mySpeed / 6371))
-                +
-                Math.Cos(source.Latitude * Math.PI / 180) * Math.Sin((mySpeed / 6371)) * Math.Cos(bearing * Math.PI / 180));
-
-            d.CurrentLocation.Latitude = d.CurrentLocation.Latitude * 180 / Math.PI;
-
-            d.CurrentLocation.Longitude = source.Longitude + Math.Atan2(Math.Sin(bearing * Math.PI / 180) * Math.Sin((mySpeed / 6371)) * Math.Cos(source.Latitude * Math.PI / 180)
-                ,
-                Math.Cos((mySpeed / 6371)) - Math.Sin(source.Latitude * Math.PI / 180) * Math.Sin(d.CurrentLocation.Latitude * Math.PI / 180)) * 180 / Math.PI;
-
-            d.CurrentLocation.Longitude = (d.CurrentLocation.Longitude + 540) % 360 - 180;
-
-            if (distance  > bl.ElecOfDrone(id) * d.Battery)
-                throw new Exception();
-            if (IsNear(d.CurrentLocation , destination))
+            Location newLoc = LocationUtil.UpdateLocation(new Location(d.CurrentLocation.Longitude , d.CurrentLocation.Latitude), mySpeed, bearing);
+            d.CurrentLocation = newLoc;
+            if (LocationUtil.IsNear(newLoc, destination))
             {
                 return true;
             }
-
 
             return false;
         }

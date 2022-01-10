@@ -20,7 +20,6 @@
                 <Setter Property="Height" Value="25"/>
             </Style>
 
-            <local:DronesConvertor x:Key="DronesConvertor"/>
 
             <CollectionViewSource x:Key="StationsGroup"                               
 				Source="{Binding StationsView}">
