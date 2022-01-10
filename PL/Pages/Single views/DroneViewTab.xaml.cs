@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -12,6 +13,7 @@ namespace PL.Pages
     public partial class DroneViewTab : UserControl
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
+        private IBL Bl { get => BlFactory.GetBl(); }
         private Window PackageView = null;
 
         BackgroundWorker bw;
@@ -20,7 +22,7 @@ namespace PL.Pages
         public DroneViewTab(int id)
         {
             InitializeComponent();
-            BLdrone = MainWindow.BL.GetDroneById(id);
+            BLdrone = Bl.GetDroneById(id);
             UpdateChargeButton();
             UpdateDroneNextOp();
         }
@@ -29,8 +31,8 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.UpdateDroneName(BLdrone.Id, DroneName.Text);
-                BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
+                Bl.UpdateDroneName(BLdrone.Id, DroneName.Text);
+                BLdrone = Bl.GetDroneById(BLdrone.Id);
             }
             catch (Exception ex)
             {
@@ -55,18 +57,18 @@ namespace PL.Pages
             {
                 if (Charge.Content.ToString() == "send to charge")
                 {
-                    MainWindow.BL.SendDroneToCharge(BLdrone.Id);
+                    Bl.SendDroneToCharge(BLdrone.Id);
                 }
                 else if (Charge.Content.ToString() == "release from charge")
                 {
-                    MainWindow.BL.ReleaseDrone(BLdrone.Id, DateTime.Now);
+                    Bl.ReleaseDrone(BLdrone.Id, DateTime.Now);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
+            BLdrone = Bl.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
 
@@ -106,7 +108,7 @@ namespace PL.Pages
                 DroneNextOp.Content = "pair a package";
                 return;
             }
-            Package p = MainWindow.BL.GetPackageById(BLdrone.Package.Id);
+            Package p = Bl.GetPackageById(BLdrone.Package.Id);
             if (p.TimeToDeliver.HasValue)
             {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
@@ -127,14 +129,14 @@ namespace PL.Pages
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
-                    MainWindow.BL.AssignPackage(BLdrone.Id);
+                    Bl.AssignPackage(BLdrone.Id);
                 else
                 {
-                    Package p = MainWindow.BL.GetPackageById(BLdrone.Package.Id);
+                    Package p = Bl.GetPackageById(BLdrone.Package.Id);
                     if (p.TimeToPickup.HasValue)
-                        MainWindow.BL.DeliverPackage(BLdrone.Id);
+                        Bl.DeliverPackage(BLdrone.Id);
                     else if (p.TimeToPair.HasValue)
-                        MainWindow.BL.PickUpPackage(BLdrone.Id);
+                        Bl.PickUpPackage(BLdrone.Id);
                 }
                 UpdateView();
 
@@ -144,7 +146,7 @@ namespace PL.Pages
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
+            BLdrone = Bl.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
             RefreshParentBl();
@@ -152,7 +154,7 @@ namespace PL.Pages
 
         private void UpdateView()
         {
-            BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
+            BLdrone = Bl.GetDroneById(BLdrone.Id);
         }
 
         private void Start(object sender, RoutedEventArgs e)
@@ -165,7 +167,7 @@ namespace PL.Pages
             //bw.RunWorkerCompleted = 
             bw.DoWork += (object? sender, DoWorkEventArgs args) =>
             {
-                MainWindow.BL.StartSimulator(
+                Bl.StartSimulator(
                     BLdrone.Id,
                      () => { ((BackgroundWorker)sender).ReportProgress(0); },
 
@@ -209,7 +211,7 @@ namespace PL.Pages
         private void UpdatePackage()
         {
             if (PackageView is not null)
-                ((PackageForDroneViewTab)PackageView.Content).update(MainWindow.BL.GetDroneById(BLdrone.Id).Package);
+                ((PackageForDroneViewTab)PackageView.Content).update(Bl.GetDroneById(BLdrone.Id).Package);
         }
     }
 }

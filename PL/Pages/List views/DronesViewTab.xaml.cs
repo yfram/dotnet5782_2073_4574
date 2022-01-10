@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,13 +18,15 @@ namespace PL.Pages
     public partial class DronesViewTab : UserControl
     {
 
-        public ObservableCollection<DroneForList> Drones { get; set; } = new(MainWindow.BL.GetAllDrones());
+        public ObservableCollection<DroneForList> Drones { get; set; }
+        private IBL Bl { get => BlFactory.GetBl(); }
 
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
 
         public DronesViewTab()
         {
+            Drones = new(Bl.GetAllDrones());
             InitializeComponent();
         }
 
@@ -38,7 +41,7 @@ namespace PL.Pages
         public void RefreshBl()
         {
             Drones.Clear();
-            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(d));
+            Bl.GetAllDrones().ToList().ForEach(d => Drones.Add(d));
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -71,7 +74,7 @@ namespace PL.Pages
             }
 
             Drones.Clear();
-            MainWindow.BL.GetAllDronesWhere(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
+            Bl.GetAllDronesWhere(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
         }
 
         private void Collected_view(object sender, RoutedEventArgs e)

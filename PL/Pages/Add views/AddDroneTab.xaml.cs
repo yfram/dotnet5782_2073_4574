@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,12 @@ namespace PL.Pages
     /// </summary>
     public partial class AddDroneTab : UserControl
     {
+        private IBL Bl { get => BlFactory.GetBl(); }
+
         public AddDroneTab()
         {
             InitializeComponent();
-            MainWindow.BL.GetStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
+            Bl.GetStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
@@ -36,10 +39,10 @@ namespace PL.Pages
         {
             try
             {
-                MainWindow.BL.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
+                Bl.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
                                 NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new InvalidOperationException() },
                                 new Random().NextDouble() * 100, DroneState.Maitenance, new(),
-                                MainWindow.BL.GetStationById(int.Parse(Stations.Text)).LocationOfStation));
+                                Bl.GetStationById(int.Parse(Stations.Text)).LocationOfStation));
             }
             catch (Exception ex)
             {
