@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PL.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{x:Null}" x:Name="MainGrid">
+    <Grid Background="{x:Null}" x:Name="MainGrid" VerticalAlignment="Bottom">
 
     </Grid>
 </UserControl>
