@@ -17,21 +17,14 @@ namespace PL.Pages
     public partial class DronesViewTab : UserControl
     {
 
-        public ObservableCollection<Drone> Drones { get; set; } = new();
-
-        public List<Drone> drones;
+        public ObservableCollection<DroneForList> Drones { get; set; } = new(MainWindow.BL.GetAllDrones());
 
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
 
         public DronesViewTab()
         {
-            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.GetDroneById(d.Id)));
-            drones = new(Drones.Where(d => true).ToArray());
-
             InitializeComponent();
-            var droneView = (CollectionViewSource)Resources["DronesGroup"];
-            droneView.GroupDescriptions.Clear();
         }
 
         public void CollapsePullUp()
@@ -45,20 +38,15 @@ namespace PL.Pages
         public void RefreshBl()
         {
             Drones.Clear();
-            drones.Clear();
-            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.GetDroneById(d.Id)));
-            drones = new(Drones.Where(d => true).ToArray());
+            MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(d));
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is not CheckBox senderAsCheckBox)
-            {
-                return;
-            }
+            if (sender is not CheckBox senderAsCheckBox) return;
 
-            List<Func<Drone, bool>> weightFuncs = new();
-            List<Func<Drone, bool>> statusFuncs = new();
+            List<Func<DroneForList, bool>> weightFuncs = new();
+            List<Func<DroneForList, bool>> statusFuncs = new();
             foreach (CheckBox checkBox in FilterGrid.Children.OfType<CheckBox>())
             {
                 switch (checkBox.Content)
@@ -66,20 +54,14 @@ namespace PL.Pages
                     case "Empty":
                     case "Maitenance":
                     case "Busy":
-                        if ((checkBox.IsChecked ?? false))//false is unreacable
-                        {
-                            statusFuncs.Add((Drone d) => d.State.ToString() == (string)checkBox.Content);
-                        }
-
+                        if ((checkBox.IsChecked ?? false))//false is unreachable
+                            statusFuncs.Add((DroneForList d) => d.State.ToString() == (string)checkBox.Content);
                         break;
                     case "Light":
                     case "Mid":
                     case "Heavy":
-                        if ((checkBox.IsChecked ?? false))//false is unreacable
-                        {
-                            weightFuncs.Add((Drone d) => d.Weight.ToString() == (string)checkBox.Content);
-                        }
-
+                        if ((checkBox.IsChecked ?? false))//false is unreachable
+                            weightFuncs.Add((DroneForList d) => d.Weight.ToString() == (string)checkBox.Content);
                         break;
                     case "Collected_View":
                         break;
@@ -89,9 +71,7 @@ namespace PL.Pages
             }
 
             Drones.Clear();
-
-            drones.Where(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
-
+            MainWindow.BL.GetAllDronesWhere(d => (weightFuncs.Any(f => f(d)) || weightFuncs.Count == 0) && (statusFuncs.Any(f => f(d)) || statusFuncs.Count == 0)).ToList().ForEach(elem => Drones.Add(elem));
         }
 
         private void Collected_view(object sender, RoutedEventArgs e)
@@ -119,7 +99,7 @@ namespace PL.Pages
                     menue = new DroneViewTab(id ?? -1);
                     break;
                 case "package view":
-                    menue = new PackageForDroneViewTab(drones.Where(d => d.Package?.Id == id).ElementAt(0).Package);
+                    menue = new PackageForDroneViewTab(id);
                     break;
                 default:
                     throw new InvalidOperationException();

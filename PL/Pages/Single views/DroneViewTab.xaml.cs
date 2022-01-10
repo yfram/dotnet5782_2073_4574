@@ -209,7 +209,7 @@ namespace PL.Pages
             {
                 PackageView = new Window
                 {
-                    Content = new PackageForDroneViewTab(BLdrone.Package),
+                    Content = new PackageForDroneViewTab(BLdrone.Package.Id),
                     Title = $"package {BLdrone.Package.Id}",
                     SizeToContent = SizeToContent.WidthAndHeight,
                     ResizeMode = ResizeMode.CanResize

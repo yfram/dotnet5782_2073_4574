@@ -1,4 +1,5 @@
 ﻿using BO;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace PL.Pages
@@ -10,10 +11,12 @@ namespace PL.Pages
     {
         private PackageInTransfer BLpackage { get => Resources["package"] as PackageInTransfer; set => Resources["package"] = value; }
 
-        public PackageForDroneViewTab(PackageInTransfer p)
+        public PackageForDroneViewTab(int? id)
         {
+            if (id is null) return;
             InitializeComponent();
-            BLpackage = p;
+            BLpackage = MainWindow.BL.GetDroneById(MainWindow.BL.GetAllDronesWhere(d =>
+                d.PassingPckageId == (int)id).First().Id).Package;
         }
 
         public void update(PackageInTransfer newPkg)
