@@ -319,7 +319,7 @@ namespace BlApi
                 {
 
                     double time = Idal.ReleaseDroneFromCharge(DroneId, outTime, -1);
-                    bLdrone.Battery += elecRate[4] * time > 100 ? 100 : elecRate[4] * time;
+                    bLdrone.Battery = (elecRate[4] * time + bLdrone.Battery) > 100 ? 100 : elecRate[4] * time + bLdrone.Battery;
                     bLdrone.State = DroneState.Empty;
                 }
                 else
@@ -497,7 +497,7 @@ namespace BlApi
                 Location locSend = new(DALsend.Longitude, DALsend.Lattitude), locRecv = new(DALrecv.Longitude, DALrecv.Lattitude);
 
                 bool inDelivery = DALpkg.PickUp is not null;
-                pckTransfer = new PackageInTransfer(pkgId, inDelivery, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, inDelivery? DistanceTo(droneForList.CurrentLocation, locRecv) : DistanceTo(droneForList.CurrentLocation, locSend));
+                pckTransfer = new PackageInTransfer(pkgId, inDelivery, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, inDelivery ? DistanceTo(droneForList.CurrentLocation, locRecv) : DistanceTo(droneForList.CurrentLocation, locSend));
             }
 
             return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
