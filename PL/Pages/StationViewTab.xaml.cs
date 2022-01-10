@@ -40,7 +40,6 @@ namespace PL.Pages
         {
             GridMain.Children.Clear();
             UIElement menue = new DronesForStationView(BLstation.Id);
-
             GridMain.Children.Add(menue);
         }
     }

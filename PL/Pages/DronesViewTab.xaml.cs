@@ -16,6 +16,7 @@ namespace PL.Pages
     /// </summary>
     public partial class DronesViewTab : UserControl
     {
+
         public ObservableCollection<Drone> Drones { get; set; } = new();
 
         public List<Drone> drones;
@@ -29,58 +30,23 @@ namespace PL.Pages
             drones = new(Drones.Where(d => true).ToArray());
 
             InitializeComponent();
-
             var droneView = (CollectionViewSource)Resources["DronesGroup"];
             droneView.GroupDescriptions.Clear();
-
-            GotFocus += DronesViewTab_GotFocus;
         }
 
-        private void DronesViewTab_GotFocus(object sender, RoutedEventArgs e)
+        public void CollapsePullUp()
         {
-            if (!gridOpen || e.OriginalSource is not Button button)
-            {
-                return;
-            }
+            if (!gridOpen) return;
+            PullUpMenueContainer.Collapse(250);
+            gridOpen = false;
+        }
 
+        public void RefreshBl()
+        {
             Drones.Clear();
             drones.Clear();
             MainWindow.BL.GetAllDrones().ToList().ForEach(d => Drones.Add(MainWindow.BL.GetDroneById(d.Id)));
             drones = new(Drones.Where(d => true).ToArray());
-
-            //this way only the exit button acctualy closes the update view
-            if (button.Name == "ExitButton" && PullUpMenueContainer.Height != 0)
-            {
-                DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-                myDoubleAnimation.From = 150;
-                myDoubleAnimation.To = 0;
-                myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-                Storyboard.SetTargetName(myDoubleAnimation, "PullUpMenueContainer");
-                Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-                Storyboard storyboard = new Storyboard();
-
-                storyboard.Children.Add(myDoubleAnimation);
-                BeginStoryboard(storyboard);
-
-                PullUpMenueContainer.Children.Clear();
-
-                gridOpen = false;
-            }
-            if (AddMenue.Height != 0)
-            {
-                ButtonOpenMenu.Visibility = Visibility.Visible;
-                DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-                myDoubleAnimation.From = 150;
-                myDoubleAnimation.To = 0;
-                myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-                Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
-                Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-                Storyboard storyboard = new Storyboard();
-
-                storyboard.Children.Add(myDoubleAnimation);
-                BeginStoryboard(storyboard);
-                gridOpen = false;
-            }
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -141,15 +107,7 @@ namespace PL.Pages
         private void ShowMenue(int? id, string typeOfMenue)
         {
             gridOpen = true;
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 0;
-            myDoubleAnimation.To = 150;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "PullUpMenueContainer");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
-
-            PullUpMenueContainer.Children.Clear();
+            PullUpMenueContainer.Expand(250, 150);
             UIElement menue = new();
             switch (typeOfMenue)
             {
@@ -164,9 +122,6 @@ namespace PL.Pages
                 default:
                     throw new InvalidOperationException();
             }
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
-
             PullUpMenueContainer.Children.Add(menue);
         }
 

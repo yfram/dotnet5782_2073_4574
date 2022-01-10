@@ -13,11 +13,14 @@ namespace PL.Pages
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
         private Window PackageView = null;
+
+        BackgroundWorker bw;
+        bool Stop = false;
+
         public DroneViewTab(int id)
         {
             InitializeComponent();
             BLdrone = MainWindow.BL.GetDroneById(id);
-
             UpdateChargeButton();
             UpdateDroneNextOp();
 
@@ -41,8 +44,12 @@ namespace PL.Pages
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+        }
+
+        private void RefreshParentBl()
+        {
+            ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl();
         }
 
         private void Charge_Click(object sender, RoutedEventArgs e)
@@ -66,7 +73,7 @@ namespace PL.Pages
             UpdateDroneNextOp();
             UpdateChargeButton();
 
-            Exit();
+            RefreshParentBl();
         }
 
         private void UpdateChargeButton()
@@ -150,7 +157,7 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
-            Exit();
+            RefreshParentBl();
         }
 
         private void UpdateView()
@@ -158,12 +165,9 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
         }
 
-
-        BackgroundWorker bw;
-        bool Stop = false;
-        private void start(object sender, RoutedEventArgs e)
+        private void Start(object sender, RoutedEventArgs e)
         {
-          bw  = new();
+            bw = new();
 
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
@@ -179,16 +183,17 @@ namespace PL.Pages
 
                      );
             };
-            bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) => {
+            bw.ProgressChanged += (object? sender, ProgressChangedEventArgs args) =>
+            {
                 BLdrone = MainWindow.BL.GetDroneById(BLdrone.Id);
                 UpdatePackage();
             };
-            
+
             bw.RunWorkerAsync();
 
         }
 
-        private void pause(object sender, RoutedEventArgs e)
+        private void Pause(object sender, RoutedEventArgs e)
         {
             Stop = true;
             UpdateDroneNextOp();
