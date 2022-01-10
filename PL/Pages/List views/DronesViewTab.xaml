@@ -80,7 +80,7 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package Id  " Binding="{Binding Path=PassingPckageId}">
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package Id  " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="MouseDoubleClick" Handler="PackageId_DoubleClicked"/>
