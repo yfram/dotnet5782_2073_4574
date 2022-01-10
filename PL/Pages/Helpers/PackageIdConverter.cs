@@ -14,6 +14,7 @@ namespace PL.Pages
         {
             if (value is not int valueAsInt) return null;
             if (valueAsInt < 0) return String.Empty;
+            else if (parameter == null) return value;
             return parameter as string switch
             {
                 "sender" => MainWindow.BL.GetPackageById(valueAsInt).Sender.Name,
