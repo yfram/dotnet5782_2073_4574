@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PL.Pages"
              xmlns:extended="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:c="clr-namespace:BO;assembly=BL" x:Class="PL.Pages.PackagesViewTab"
+             xmlns:c="clr-namespace:BO;assembly=BL" x:Class="PL.Pages.PackagesViewTab"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -99,28 +99,10 @@
             <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by reciver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
 
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
-        <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddCustomer" HorizontalAlignment="Right" Width="58"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="sender id:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="recivier id:" VerticalAlignment="Top"/>
-            <TextBox x:Name="Sid" materialDesign:HintAssist.Hint="sender id" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="Rid" materialDesign:HintAssist.Hint="recivier id"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <ComboBox x:Name="Weight" HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">
-                <ComboBoxItem Content="Light" IsSelected="True"></ComboBoxItem>
-                <ComboBoxItem Content="Mid"></ComboBoxItem>
-                <ComboBoxItem Content="Heavy"></ComboBoxItem>
-            </ComboBox>
-
-            <ComboBox x:Name="Priority" HorizontalAlignment="Left" Margin="479,31,0,0" VerticalAlignment="Top" Width="120">
-                <ComboBoxItem Content="Normal" IsSelected="True"></ComboBoxItem>
-                <ComboBoxItem Content="Fast"></ComboBoxItem>
-                <ComboBoxItem Content="Urgent"></ComboBoxItem>
-            </ComboBox>
-        </Grid>
-
-        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-        </Grid>
+        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
+                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c"
+                Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <local:PullGrid x:Name="PullUpContainer" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 
 </UserControl>

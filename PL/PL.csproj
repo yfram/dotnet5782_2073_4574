@@ -34,17 +34,4 @@
 				<Resource Include="stations.png" />
 		</ItemGroup>
 
-		<ItemGroup>
-				<Compile Update="Pages\Sub views\PackageForDroneViewTab.xaml.cs">
-						<SubType>Code</SubType>
-				</Compile>
-		</ItemGroup>
-
-		<ItemGroup>
-				<Page Update="Pages\Sub views\PackageForDroneViewTab.xaml">
-						<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-						<SubType>Designer</SubType>
-				</Page>
-		</ItemGroup>
-
 </Project>

@@ -121,12 +121,5 @@ namespace PL.Pages
             }
             ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
         }
-
-        private void PackageId_DoubleClicked(object sender, MouseButtonEventArgs e)
-        {
-            if (((TextBlock)((DataGridCell)sender).Content).Text == String.Empty) return;
-            packageViewInTheMiddle = true;
-            ShowMenue(Convert.ToInt32(((TextBlock)((DataGridCell)sender).Content).Text), "package view");
-        }
     }
 }
