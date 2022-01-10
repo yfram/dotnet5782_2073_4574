@@ -12,6 +12,7 @@ namespace BLApi
     {
         private static readonly int earthRadius = 6371;
 
+        // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
         internal static double Bearing(Location source, Location destination)
         {
 
