@@ -61,7 +61,7 @@ namespace Dal
             for (int i = 0; i < 10; i++)
                 Customers.Add(InitCustumer(i, random));
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 40; i++)
                 Packages.Add(InitPackage(random));
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
@@ -71,20 +71,18 @@ namespace Dal
             for (int i = 0; i < Packages.Count; i++)
             {
                 Package temp = Packages[i];
+                temp.DroneId = null;
                 temp.Created = DateTime.Now.AddHours(random.Next(0, 500));//gives a good range of times
                 int state = random.Next(0, 5);
-                if (state != 0)
+                bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
+                if (state != 0 && hasDrone)
                 {
-                    bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
-                    if (hasDrone)
-                    {
                         if (state > 0) // Associated
                             temp.Associated = ((DateTime)temp.Created).AddMinutes(random.Next(1, 3000));
                         if (state > 1) // PickUp
                             temp.PickUp = ((DateTime)temp.Associated).AddMinutes(random.Next(1, 3000));
                         if (state > 2) // Delivered
                             temp.Delivered = ((DateTime)temp.PickUp).AddMinutes(random.Next(1, 3000));
-                    }
                     Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);
                     if (state != 4)
                         dronesWithoutPackages.Remove(d); // if the state is "delivered" so the drone hasn't a package now.

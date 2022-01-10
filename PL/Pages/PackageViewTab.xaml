@@ -45,6 +45,18 @@
                 </Style>
             </Button.Style>
         </Button>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="911,100,0,0" VerticalAlignment="Top" Background="#FFF3214E" Click="DeletePackage">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=TimeToDeliver}" Value="{x:Null}">
+                            <!--,Converter={StaticResource NotNullConvertor}-->
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            </Button>
 
     </Grid>
 </UserControl>

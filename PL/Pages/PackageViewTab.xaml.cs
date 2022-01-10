@@ -20,8 +20,8 @@ namespace PL.Pages
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            ((PackagesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
+            ((PackagesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
         }
 
         private void OpenDrone(object sender, RoutedEventArgs e)
@@ -55,6 +55,12 @@ namespace PL.Pages
 
             };
             w.Show();
+        }
+
+        private void DeletePackage(object sender, RoutedEventArgs e)
+        {
+            MainWindow.BL.DeletePackage(BLpackage.Id);
+            Exit();
         }
     }
 
