@@ -79,10 +79,7 @@ namespace PL.Pages
             var droneView = (CollectionViewSource)Resources["DronesGroup"];
             droneView.GroupDescriptions.Clear();
             if (((CheckBox)sender).IsChecked.HasValue && ((CheckBox)sender).IsChecked.Value)
-            {
                 droneView.GroupDescriptions.Add(new PropertyGroupDescription("State"));
-            }
-
         }
 
         private void ShowMenue(int? id, string typeOfMenue)
@@ -107,13 +104,11 @@ namespace PL.Pages
             PullUpMenueContainer.Children.Add(menue);
         }
 
-        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
-        {
-            ShowMenue(null, "drone add");
-        }
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e) => ShowMenue(null, "drone add");
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
+            //this if allows to render the package view with out being overwritten
             if (packageViewInTheMiddle)
             {
                 packageViewInTheMiddle = false;
