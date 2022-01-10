@@ -14,10 +14,6 @@
     </UserControl.Resources>
     <Grid Background="#3e5c76" DataContext="{DynamicResource package}">
         <TextBlock FontSize="15" Name="CustomerId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Id, StringFormat=Package id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>
-        <!--<TextBox Name ="CustomerPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=PhoneNumber,Mode=OneTime}"/>
-        
-        <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update" Margin="15,92,822,0" VerticalAlignment="Top"/>-->
-
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Button>
@@ -28,8 +24,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="630,108,0,0" Text="{Binding Path=TimeToDeliver, StringFormat= delivering time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="172,15,0,0" Text="{Binding Path=Priority, StringFormat= Priority: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="305,16,0,0" Text="{Binding Path=Weight, StringFormat= weghit: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Content="{Binding Path=Sender.Id}" ContentStringFormat="sender id: {0}" HorizontalAlignment="Left" Margin="83,92,0,0" VerticalAlignment="Top" Width="96" Click="OpenCustomer" Tag="{Binding Path=Sender}" />
-        <Button Content="{Binding Path=Reciver.Id}" ContentStringFormat="reciver id: {0}" HorizontalAlignment="Left" Margin="220,92,0,0" VerticalAlignment="Top" Width="93" Click="OpenCustomer" Tag="{Binding Path=Reciver}" />
+        <Button Content="{Binding Path=Sender.Id}" ContentStringFormat="sender id: {0}" HorizontalAlignment="Left" Margin="83,92,0,0" VerticalAlignment="Top" Width="114" Click="OpenCustomer" Tag="{Binding Path=Sender}" />
+        <Button Content="{Binding Path=Reciver.Id}" ContentStringFormat="reciver id: {0}" HorizontalAlignment="Left" Margin="220,92,0,0" VerticalAlignment="Top" Width="109" Click="OpenCustomer" Tag="{Binding Path=Reciver}" />
         <Button  Content="{Binding Drone.Id}" ContentStringFormat="drone id: {0}" HorizontalAlignment="Left" Margin="352,92,0,0" VerticalAlignment="Top" Width="109" Click="OpenDrone" Tag="{Binding Path=Drone}">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -56,7 +52,7 @@
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            </Button>
+        </Button>
 
     </Grid>
 </UserControl>

@@ -15,13 +15,11 @@ namespace PL.Pages
         {
             InitializeComponent();
             BLpackage = MainWindow.BL.GetPackageById(id);
-
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((PackagesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((PackagesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            ((PackagesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
 
         private void OpenDrone(object sender, RoutedEventArgs e)
@@ -29,15 +27,14 @@ namespace PL.Pages
             var button = sender as Button;
             var d = button.Tag as DroneForPackage;
 
-            var w = new Window
+            new Window
             {
                 Content = new DroneForPackageWindow(d),
                 Title = $"drone {d.Id}",
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.CanResize
 
-            };
-            w.Show();
+            }.Show();
         }
 
         private void OpenCustomer(object sender, RoutedEventArgs e)
@@ -46,15 +43,14 @@ namespace PL.Pages
             var button = sender as Button;
             var d = button.Tag as CustomerForPackage;
 
-            var w = new Window
+            new Window
             {
                 Content = new CustomerForPackageWindow(d),
                 Title = $"customer {d.Id}",
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.CanResize
 
-            };
-            w.Show();
+            }.Show();
         }
 
         private void DeletePackage(object sender, RoutedEventArgs e)
