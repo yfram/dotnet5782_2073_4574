@@ -226,6 +226,7 @@ namespace Dal
             UpdateRunNumber();
             Package p = new Package(runNumber, senderId, recevirId, weight, packagePriority);
             p.Created = DateTime.Now;
+            p.DroneId = null;
             AddObject(runNumber, p);
         }
 

@@ -49,5 +49,8 @@ namespace BlApi
         IEnumerable<dynamic> GetObjectsWhere<T>(Func<T, bool> func);
 
         #endregion
+
+        void DeletePackage(int packageId);
+        
     }
 }

@@ -151,7 +151,6 @@ namespace BlApi
             }
         }
 
-        //https://stackoverflow.com/questions/7356629/how-to-move-x-distance-in-any-direction-from-geo-coordinates
         // https://www.igismap.com/formula-to-find-bearing-or-heading-angle-between-two-points-latitude-longitude/
         private bool makeProgress(Location destination)
         {

@@ -1060,5 +1060,15 @@ namespace BlApi
                 _ => throw new InvalidOperationException()
             };
         }
+
+
+        public void DeletePackage(int packageId)
+        {
+            if (GetDALPackage(packageId).DroneId is null)
+            {
+                Idal.DeletePackage(packageId);
+            }
+        }
+
     }
 }
