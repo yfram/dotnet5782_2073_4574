@@ -21,6 +21,7 @@
                 <Setter Property="Height" Value="25"/>
             </Style>
             <CollectionViewSource x:Key="DronesGroup" Source="{Binding Drones}"/>
+            <local:PackageIdConverter x:Key="packageIdConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="#DBD8E3">
@@ -72,14 +73,14 @@
             </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="From     " Binding="{Binding Path=Package.Sender.Id}" />
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="To           " Binding="{Binding Path=Package.Reciver.Id}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="From     " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}, ConverterParameter=sender}" />
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="To           " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}, ConverterParameter=reciver}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Current location" Binding="{Binding Path=CurrentLocation}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Battery        " Binding="{Binding Path=Battery, StringFormat={}{0:0.00}%}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package Id  " Binding="{Binding Path=Package.Id}">
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package Id  " Binding="{Binding Path=PassingPckageId}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="MouseDoubleClick" Handler="PackageId_DoubleClicked"/>
