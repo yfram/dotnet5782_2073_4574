@@ -23,10 +23,6 @@ namespace PL.Pages
             BLdrone = MainWindow.BL.GetDroneById(id);
             UpdateChargeButton();
             UpdateDroneNextOp();
-
-            UpdateButton.GotFocus += UpdateButton_Click;
-            DroneNextOp.GotFocus += DroneNextOp_Click;
-            Charge.GotFocus += Charge_Click;
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
@@ -128,24 +124,17 @@ namespace PL.Pages
 
         private void DroneNextOp_Click(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
-                {
                     MainWindow.BL.AssignPackage(BLdrone.Id);
-                }
                 else
                 {
                     Package p = MainWindow.BL.GetPackageById(BLdrone.Package.Id);
                     if (p.TimeToPickup.HasValue)
-                    {
                         MainWindow.BL.DeliverPackage(BLdrone.Id);
-                    }
                     else if (p.TimeToPair.HasValue)
-                    {
                         MainWindow.BL.PickUpPackage(BLdrone.Id);
-                    }
                 }
                 UpdateView();
 
@@ -199,8 +188,6 @@ namespace PL.Pages
             Stop = true;
             UpdateDroneNextOp();
             UpdateChargeButton();
-
-            //bw.CancelAsync();
         }
 
         private void OpenPackage(object sender, RoutedEventArgs e)

@@ -30,10 +30,10 @@
         <TextBlock FontSize="13" Name ="DroneState" HorizontalAlignment="Left" Margin="236,54,0,0" Text="{Binding Path=State, StringFormat=Currently {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <TextBlock FontSize="13" Name ="DroneWeight" HorizontalAlignment="Left" Margin="236,100,0,0" Text="{Binding Path=Weight, StringFormat=Weight group: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"  Foreground="RoyalBlue"/>
         <Button Click="UpdateButton_Click"  Name="UpdateButton" Content="Update model" Margin="15,92,822,0" VerticalAlignment="Top"/>
-        <Button Name="Charge" Style = "{StaticResource simulatorVis}"  HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
+        <Button Name="Charge" Click="Charge_Click" Style = "{StaticResource simulatorVis}"  HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top"/>
 
         <TextBox materialDesign:HintAssist.Hint="Time to charge"  Name="ChargeTime" HorizontalAlignment="Left" Margin="540,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Name="DroneNextOp" Style = "{StaticResource simulatorVis}" HorizontalAlignment="Left" Margin="790,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004" />
+        <Button Name="DroneNextOp" Click="DroneNextOp_Click" Style = "{StaticResource simulatorVis}" HorizontalAlignment="Left" Margin="790,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.522,-0.004" />
         <TextBlock HorizontalAlignment="Left" Margin="10,348,0,0" Text="model: " TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black"/>
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
