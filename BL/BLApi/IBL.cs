@@ -42,6 +42,10 @@ namespace BlApi
         IEnumerable<DroneForList> GetAllDrones();
         IEnumerable<CustomerForList> GetAllCustomers();
         IEnumerable<PackageForList> GetAllPackages();
+        IEnumerable<StationForList> GetAllStationsWhere(Func<PackageForList, bool> func);
+        IEnumerable<DroneForList> GetAllDronesWhere(Func<DroneForList, bool> func);
+        IEnumerable<CustomerForList> GetAllCustomersWhere(Func<CustomerForList, bool> func);
+        IEnumerable<PackageForList> GetAllPackagesWhere(Func<PackageForList, bool> func);
 
         IEnumerable<PackageForList> GetPackagesWithoutDrone();
         IEnumerable<StationForList> GetStationsWithCharges();
@@ -51,6 +55,6 @@ namespace BlApi
         #endregion
 
         void DeletePackage(int packageId);
-        
+
     }
 }

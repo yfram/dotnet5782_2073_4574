@@ -897,10 +897,19 @@ namespace BlApi
         public void DeletePackage(int packageId)
         {
             if (GetDALPackage(packageId).DroneId is null)
-            {
                 Idal.DeletePackage(packageId);
-            }
         }
 
+        public IEnumerable<StationForList> GetAllStationsWhere(Func<StationForList, bool> func) =>
+            GetObjectsWhere(func).Cast<StationForList>();
+
+        public IEnumerable<DroneForList> GetAllDronesWhere(Func<DroneForList, bool> func) =>
+            GetObjectsWhere(func).Cast<DroneForList>();
+
+        public IEnumerable<CustomerForList> GetAllCustomersWhere(Func<CustomerForList, bool> func) =>
+            GetObjectsWhere(func).Cast<CustomerForList>();
+
+        public IEnumerable<PackageForList> GetAllPackagesWhere(Func<PackageForList, bool> func) =>
+            GetObjectsWhere(func).Cast<PackageForList>();
     }
 }
