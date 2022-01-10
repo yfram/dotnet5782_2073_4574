@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="PL.Pages.AddDroneTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:PL.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="1000">
+    <Grid Background="#3d5a80">
+        <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddDrone" HorizontalAlignment="Right" Width="58"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Drone ID:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Drone Model:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Weight group:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="400,10,0,0" TextWrapping="Wrap" Text="Starting Station ID:" VerticalAlignment="Top"/>
+        <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+        <TextBox x:Name="NewModel" materialDesign:HintAssist.Hint="Model"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+        <ComboBox x:Name="NewWeight" HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="Light"></ComboBoxItem>
+            <ComboBoxItem Content="Mid"></ComboBoxItem>
+            <ComboBoxItem Content="Heavy"></ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="Stations" HorizontalAlignment="Left" Margin="400,31,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
+            <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Button>
+    </Grid>
+</UserControl>

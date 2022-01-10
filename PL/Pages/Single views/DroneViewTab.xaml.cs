@@ -40,6 +40,7 @@ namespace PL.Pages
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            RefreshParentBl();
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)

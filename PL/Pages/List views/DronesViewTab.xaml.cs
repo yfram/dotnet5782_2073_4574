@@ -38,6 +38,7 @@ namespace PL.Pages
         {
             if (!gridOpen) return;
             PullUpMenueContainer.Collapse(250);
+            RefreshBl();
             gridOpen = false;
         }
 
@@ -112,6 +113,7 @@ namespace PL.Pages
             switch (typeOfMenue)
             {
                 case "drone add":
+                    menue = new AddDroneTab();
                     break;
                 case "drone view":
                     menue = new DroneViewTab(id ?? -1);
@@ -125,44 +127,9 @@ namespace PL.Pages
             PullUpMenueContainer.Children.Add(menue);
         }
 
-        private void AddDrone(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                MainWindow.BL.AddDrone(new(int.Parse(NewId.Text), NewModel.Text,
-                                NewWeight.Text switch { "Light" => WeightGroup.Light, "Mid" => WeightGroup.Mid, "Heavy" => WeightGroup.Heavy, _ => throw new InvalidOperationException() },
-                                new Random().NextDouble() * 100, DroneState.Maitenance, new(),
-                                MainWindow.BL.GetStationById(int.Parse(Stations.Text)).LocationOfStation));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            NewId.Text = "";
-            NewModel.Text = "";
-            NewWeight.SelectedIndex = -1;
-            Stations.SelectedIndex = -1;
-            Focus();
-        }
-
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)sender).Visibility = Visibility.Collapsed;
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 0;
-            myDoubleAnimation.To = 150;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(250));
-            Storyboard.SetTargetName(myDoubleAnimation, "AddMenue");
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
-
-            storyboard.Children.Add(myDoubleAnimation);
-            BeginStoryboard(storyboard);
-
-            gridOpen = true;
-
-            MainWindow.BL.GetStationsWithCharges().ToList().ForEach(s => Stations.Items.Add(s.Id));
+            ShowMenue(null, "drone add");
         }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
