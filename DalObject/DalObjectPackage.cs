@@ -26,7 +26,10 @@ namespace Dal
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
+            {
                 throw new ArgumentException($"the Package {id} does not exist!");
+            }
+
             return DataSource.Packages[ix];
         }
         private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);

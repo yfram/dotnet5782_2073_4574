@@ -112,7 +112,7 @@ namespace Dal
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} is not exsist in {typeof(T).Name} or it type is not int so it cant use as an id!");
+                throw new ArgumentException($"the property {propName} is not exist in {typeof(T).Name} or it type is not int so it cant use as an id!");
             }
 
             foreach (XElement elem in ObjectsRoot.Elements())
@@ -125,7 +125,7 @@ namespace Dal
                 }
             }
 
-            throw new ArgumentException($"the id {id} is not exsist!");
+            throw new ArgumentException($"the id {id} is not exist!");
         }
 
         public void AddObject<T>(int id, T obj) where T : new()
@@ -156,7 +156,7 @@ namespace Dal
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} does not exsist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
+                throw new ArgumentException($"the property {propName} does not exist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
             }
 
             bool found = false;
@@ -189,7 +189,7 @@ namespace Dal
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+                throw new ArgumentException($"the property {propName} is not exist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
             }
 
             bool found = false;
@@ -383,7 +383,7 @@ namespace Dal
             Station s = GetObject<Station>(stationId);
             if (s.ChargeSlots <= 0)
             {
-                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
+                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it sash only {s.ChargeSlots} empty slots!");
             }
 
             s.ChargeSlots -= 1;

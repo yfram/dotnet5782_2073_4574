@@ -56,7 +56,7 @@
             </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Reciver  " Binding="{Binding Path=NameOfReciver}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Receiver  " Binding="{Binding Path=NameOfReciver}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Sender  " Binding="{Binding Path=NameOfSender}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Priority  " Binding="{Binding Path=Priority}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
@@ -88,7 +88,7 @@
                 <ComboBoxItem Content="accepted"/>
             </ComboBox>
             <CheckBox x:Name="CollectedSender" Tag="Sender" Content="Group by sender" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
-            <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by reciver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+            <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by receiver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
         <Button Style="{StaticResource AddButtonStyle}"
                 Background="{DynamicResource PackagesAddButtonBrush}"

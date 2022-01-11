@@ -1,14 +1,10 @@
 ﻿using BO;
 using System;
 using static System.Math;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLApi
 {
-    class LocationUtil
+    internal class LocationUtil
     {
         private static readonly int earthRadius = 6371;
 
@@ -40,7 +36,9 @@ namespace BLApi
             double lat2 = Loc2.Latitude; double lon2 = Loc2.Longitude;
 
             if (lat1 == lat2 && lon1 == lon2)
+            {
                 return 0;
+            }
 
             double rlat1 = PI * lat1 / 180;
             double rlat2 = PI * lat2 / 180;

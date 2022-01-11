@@ -34,7 +34,7 @@ namespace DalApi
                       BindingFlags.Public | BindingFlags.Static).GetValue(null);
             if (dal == null)
             {
-                throw new DalConfigException($"Class {dalPkg} is not a singleton or a wrong propertry name for Instance was given");
+                throw new DalConfigException($"Class {dalPkg} is not a singleton or a wrong property name for Instance was given");
             }
 
             return dal;

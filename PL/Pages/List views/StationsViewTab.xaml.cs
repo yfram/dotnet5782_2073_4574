@@ -1,13 +1,10 @@
 ﻿using BlApi;
 using BO;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media.Animation;
 
 namespace PL.Pages
 {
@@ -33,7 +30,11 @@ namespace PL.Pages
 
         public void CollapsePullUp()
         {
-            if (!gridOpen) return;
+            if (!gridOpen)
+            {
+                return;
+            }
+
             PullUpMenueContainer.Collapse(250);
             RefreshBl();
             gridOpen = false;
@@ -51,7 +52,9 @@ namespace PL.Pages
             StationsGroup.GroupDescriptions.Clear();
 
             if (Collected_View.SelectedIndex == (int)SelectdStates.No)
+            {
                 return;
+            }
 
             string prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
             StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
@@ -68,7 +71,10 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView)
+            {
                 return;
+            }
+
             PullUpMenueContainer.Children.Add(new StationViewTab(StationsView[((DataGridRow)sender).GetIndex()].Id));
             PullUpMenueContainer.Expand(250, 150);
             gridOpen = true;

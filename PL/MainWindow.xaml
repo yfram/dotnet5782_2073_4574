@@ -47,7 +47,7 @@
                     </StackPanel>
                 </materialDesign:PopupBox>
             </StackPanel>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="Gil&amp;Jhon Inc."/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="Gil&amp;John Inc."/>
         </Grid>
         <Grid x:Name="GridMenu" Width="70" HorizontalAlignment="Left" Background="#2A2438">
             <Grid.Effect>

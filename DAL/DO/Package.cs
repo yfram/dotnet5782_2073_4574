@@ -50,7 +50,7 @@ namespace DO
 
         public override string ToString()
         {
-            return $"Package {Id} to: {RecevirId} from:{SenderId}\nArriving in aprox.." +
+            return $"Package {Id} to: {RecevirId} from:{SenderId}\nArriving in approx.." +
                 $"{(DroneId is not null ? $"\nDroneId: {DroneId}" : "")}";
         }
     }

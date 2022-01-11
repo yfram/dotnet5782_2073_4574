@@ -53,16 +53,24 @@ namespace Dal
             Config.ElecRatePercent = random.NextDouble() * 2 + 10;
 
             for (int i = 0; i < 15; i++)
+            {
                 Stations.Add(InitStation(i, random));
+            }
 
             for (int i = 0; i < 5; i++)
+            {
                 Drones.Add(InitDrone(i, random));
+            }
 
             for (int i = 0; i < 10; i++)
+            {
                 Customers.Add(InitCustumer(i, random));
+            }
 
             for (int i = 0; i < 40; i++)
+            {
                 Packages.Add(InitPackage(random));
+            }
 
             Packages.Sort(Comparer<Package>.Create((i1, i2) => i1.PackagePriority.CompareTo(i2.PackagePriority)));
 
@@ -77,21 +85,33 @@ namespace Dal
                 bool hasDrone = dronesWithoutPackages.Exists(d => d.Weight >= temp.Weight);
                 if (state != 0 && hasDrone)
                 {
-                        if (state > 0) // Associated
-                            temp.Associated = ((DateTime)temp.Created).AddMinutes(random.Next(1, 3000));
-                        if (state > 1) // PickUp
-                            temp.PickUp = ((DateTime)temp.Associated).AddMinutes(random.Next(1, 3000));
-                        if (state > 2) // Delivered
-                            temp.Delivered = ((DateTime)temp.PickUp).AddMinutes(random.Next(1, 3000));
+                    if (state > 0) // Associated
+                    {
+                        temp.Associated = ((DateTime)temp.Created).AddMinutes(random.Next(1, 3000));
+                    }
+
+                    if (state > 1) // PickUp
+                    {
+                        temp.PickUp = ((DateTime)temp.Associated).AddMinutes(random.Next(1, 3000));
+                    }
+
+                    if (state > 2) // Delivered
+                    {
+                        temp.Delivered = ((DateTime)temp.PickUp).AddMinutes(random.Next(1, 3000));
+                    }
+
                     Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);
                     if (state != 4)
+                    {
                         dronesWithoutPackages.Remove(d); // if the state is "delivered" so the drone hasn't a package now.
+                    }
+
                     temp.DroneId = d.Id;
                 }
                 Packages[i] = temp;
             }
         }
-        
+
         #region Init functions
         private static Package InitPackage(Random random)
         {

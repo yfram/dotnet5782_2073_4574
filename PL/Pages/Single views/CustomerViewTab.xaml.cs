@@ -51,7 +51,9 @@ namespace PL.Pages
             int id = int.Parse(((TextBlock)((Button)sender).Content).Text);
             var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
             if (l.Count() == 0)
+            {
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);
+            }
 
             PackageForCustomer p = l.First();
             new Window

@@ -1,12 +1,9 @@
 ﻿using BlApi;
 using BO;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 
 namespace PL.Pages
 {
@@ -29,7 +26,11 @@ namespace PL.Pages
 
         public void CollapsePullUp()
         {
-            if (!gridOpen) return;
+            if (!gridOpen)
+            {
+                return;
+            }
+
             PullUpMenueContainer.Collapse(250);
             RefreshBl();
             gridOpen = false;

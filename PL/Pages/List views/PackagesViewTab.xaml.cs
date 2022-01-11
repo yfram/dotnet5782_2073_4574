@@ -1,13 +1,11 @@
 ﻿using BlApi;
 using BO;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media.Animation;
 
 namespace PL.Pages
 {
@@ -32,7 +30,11 @@ namespace PL.Pages
 
         public void CollapsePullUp()
         {
-            if (!gridOpen) return;
+            if (!gridOpen)
+            {
+                return;
+            }
+
             gridOpen = false;
             PullUpContainer.Collapse(250);
             PullUpContainer.Children.Clear();
@@ -55,7 +57,10 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView)
+            {
                 return;
+            }
+
             PackageForList p = ((DataGridRow)sender).DataContext as PackageForList ?? throw new();
             PullUpContainer.Children.Add(new PackageViewTab(p.Id));
             PullUpContainer.Expand(250, 150);
@@ -72,7 +77,11 @@ namespace PL.Pages
 
         private IEnumerable<PackageForList> FilterState()
         {
-            if (!(FilterByState.IsChecked ?? false)) return Bl.GetAllPackages();
+            if (!(FilterByState.IsChecked ?? false))
+            {
+                return Bl.GetAllPackages();
+            }
+
             string check = ((ComboBoxItem)StateFilter.SelectedItem).Content.ToString().Replace(" ", "");
             return Bl.GetObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
                 Cast<PackageForList>();
@@ -80,8 +89,16 @@ namespace PL.Pages
 
         private IEnumerable<PackageForList> FilterDate()
         {
-            if (StartDate.Value is null || EndDate.Value is null) return Bl.GetAllPackages();
-            if (!(FilterByDate.IsChecked ?? false)) return Bl.GetAllPackages();
+            if (StartDate.Value is null || EndDate.Value is null)
+            {
+                return Bl.GetAllPackages();
+            }
+
+            if (!(FilterByDate.IsChecked ?? false))
+            {
+                return Bl.GetAllPackages();
+            }
+
             List<PackageForList> datePackages =
                 Bl.GetObjectsWhere<Package>(p => p.TimePickedUp >= StartDate.Value && p.TimePickedUp <= EndDate.Value).
                 Cast<PackageForList>().ToList();
@@ -90,17 +107,25 @@ namespace PL.Pages
 
         private void Collected_view(object sender, RoutedEventArgs e)
         {
-            if (sender is not CheckBox senderAsCheckBox) return;
-            //becuase of the order of the && operator this works
+            if (sender is not CheckBox senderAsCheckBox)
+            {
+                return;
+            }
+            //because of the order of the && operator this works
             if ((string)(senderAsCheckBox.Tag) == "Sender" && CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
+            {
                 CollectedReciver.IsChecked = !senderAsCheckBox.IsChecked;
+            }
             else if (CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
+            {
                 CollectedSender.IsChecked = !senderAsCheckBox.IsChecked;
+            }
+
             var packageView = (CollectionViewSource)Resources["PackagesGroup"];
             packageView.GroupDescriptions.Clear();
             if (senderAsCheckBox.IsChecked.Value)
             {
-                packageView.GroupDescriptions.Add(new PropertyGroupDescription(senderAsCheckBox.Tag == "Reciver" ?
+                packageView.GroupDescriptions.Add(new PropertyGroupDescription(senderAsCheckBox.Tag == "Receiver" ?
                     "NameOfReciver" : "NameOfSender"));
             }
 

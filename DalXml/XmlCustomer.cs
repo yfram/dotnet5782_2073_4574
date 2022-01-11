@@ -44,13 +44,13 @@ namespace Dal
 
             if (e is null)
             {
-                throw new ArgumentException($"the id {c.Id} is not exsist!");
+                throw new ArgumentException($"the id {c.Id} is not exist!");
             }
 
             e.Element("Name").Value = c.Name;
             e.Element("Phone").Value = c.Phone;
             e.Element("Longitude").Value = c.Longitude.ToString();
-            e.Element("Lattitude").Value = c.Lattitude.ToString();
+            e.Element("Latitude").Value = c.Lattitude.ToString();
 
             ObjectsRoot.Save($"Data/Customers.xml");
         }
@@ -78,7 +78,7 @@ namespace Dal
                         Id = Int32.Parse(s.Element("Id").Value),
                         Name = s.Element("Name").Value,
                         Phone = s.Element("Phone").Value,
-                        Lattitude = Double.Parse(s.Element("Lattitude").Value),
+                        Lattitude = Double.Parse(s.Element("Latitude").Value),
                         Longitude = Double.Parse(s.Element("Longitude").Value)
                     });
         }
@@ -91,7 +91,7 @@ namespace Dal
                 new XElement("Id", p.Id),
                 new XElement("Name", p.Name),
                 new XElement("Phone", p.Phone),
-                new XElement("Lattitude", p.Lattitude),
+                new XElement("Latitude", p.Lattitude),
                 new XElement("Longitude", p.Longitude)
                 ));
 

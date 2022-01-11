@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BlApi.Exceptions;
+using BLApi;
 using BO;
+using System;
 using System.Threading;
 using static BlApi.BL;
-using BlApi.Exceptions;
-using BLApi;
 
 namespace BlApi
 {
-    class Simulator
+    internal class Simulator
     {
-        BL bl;// why not use the singolton?
-        int id;
-        Action update;
-        Func<bool> stop;//why?
-        double speed = 3;
-        int msTimer = 1000;
-        bool wayToMaitenance = false;
-        Drone d;
+        private BL bl;// why not use the singleton?
+        private int id;
+        private Action update;
+        private Func<bool> stop;//why?
+        private double speed = 3;
+        private int msTimer = 1000;
+        private bool wayToMaitenance = false;
+        private Drone d;
 
         /// <summary>
         /// Starts up the simulator on the drone <paramref name="_DroneId"/>.
@@ -53,7 +49,10 @@ namespace BlApi
                         break;
                 }
                 if (d.Battery < 0)
+                {
                     throw new Exception();
+                }
+
                 update.Invoke();
                 bl.UpdateDroneName(d.Id, d.Model, d.Battery, d.CurrentLocation);
                 Thread.Sleep(msTimer);
@@ -85,7 +84,7 @@ namespace BlApi
             }
             else
             {
-                if (!StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enouth battery - snd to charge
+                if (!StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enough battery - send to charge
                 {
                     bl.SendDroneToCharge(id);
                     wayToMaitenance = true;
@@ -95,9 +94,9 @@ namespace BlApi
         }
 
         /// <summary>
-        /// 
+        /// The operation to be done if <c>d</c> is busy
         /// </summary>
-        /// <exception cref="Exception">Thrown </exception>
+        /// <exception cref="InvalidOperationException"></exception>
         private void DroneBusy()
         {
             Package p = bl.GetPackageById(d.Package.Id);
@@ -125,20 +124,23 @@ namespace BlApi
             }
             else
             {
-                throw new Exception();
+                throw new InvalidOperationException();
             }
-
             if (d.Battery < 0)
-                throw new Exception();
-
+            {
+                throw new InvalidOperationException();
+            }
         }
 
+        /// <summary>
+        /// The operation to be done if <c>d</c> is in maintenance
+        /// </summary>
         private void DroneMaitenance()
         {
             if (d.Battery >= 100)
             {
                 d.Battery = Math.Min(100, d.Battery);
-                bl.ReleaseDrone(id, DateTime.Now); // don't care time, it's enyway has 100% battery.
+                bl.ReleaseDrone(id, DateTime.Now); // don't care time, it's anyway has 100% battery.
             }
             else
             {
@@ -146,6 +148,10 @@ namespace BlApi
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns><para>true</para>if the operation succeed</returns>
         private bool StartNewDelivery()
         {
             try
@@ -164,12 +170,16 @@ namespace BlApi
         {
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
             if (distance > bl.ElecOfDrone(id) * d.Battery)
+            {
                 throw new Exception();
+            }
 
             double mySpeed = speed;
 
             if (speed >= distance)
+            {
                 mySpeed = speed - distance; // force progress == distance at end!
+            }
 
             d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
 

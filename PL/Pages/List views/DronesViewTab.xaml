@@ -73,7 +73,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16" Text="Filter By:"/>
             <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
             <CheckBox Content="Empty" Margin="150,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-            <CheckBox Content="Maitenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Maintenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Busy" Margin="150,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>

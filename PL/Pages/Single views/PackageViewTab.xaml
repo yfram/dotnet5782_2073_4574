@@ -23,7 +23,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="630,75,0,0" Text="{Binding Path=TimePickedUp, StringFormat= pickup time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="630,108,0,0" Text="{Binding Path=TimeDeliverd, StringFormat= delivering time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="172,15,0,0" Text="{Binding Path=Priority, StringFormat= Priority: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="305,16,0,0" Text="{Binding Path=Weight, StringFormat= weghit: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="305,16,0,0" Text="{Binding Path=Weight, StringFormat= weight: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Button Content="{Binding Path=Sender.Id}" ContentStringFormat="sender id: {0}" HorizontalAlignment="Left" Margin="83,92,0,0" VerticalAlignment="Top" Width="114" Click="OpenCustomer" Tag="{Binding Path=Sender}" />
         <Button Content="{Binding Path=Reciver.Id}" ContentStringFormat="reciver id: {0}" HorizontalAlignment="Left" Margin="220,92,0,0" VerticalAlignment="Top" Width="109" Click="OpenCustomer" Tag="{Binding Path=Reciver}" />
         <Button  Content="{Binding Drone.Id}" ContentStringFormat="drone id: {0}" HorizontalAlignment="Left" Margin="352,92,0,0" VerticalAlignment="Top" Width="109" Click="OpenDrone" Tag="{Binding Path=Drone}">

@@ -13,7 +13,11 @@ namespace PL.Pages
 
         public PackageForDroneViewTab(int? id)
         {
-            if (id is null) return;
+            if (id is null)
+            {
+                return;
+            }
+
             InitializeComponent();
             BLpackage = BlApi.BlFactory.GetBl().GetDroneById(BlApi.BlFactory.GetBl().GetAllDronesWhere(d =>
                 d.PassingPckageId == (int)id).First().Id).Package;

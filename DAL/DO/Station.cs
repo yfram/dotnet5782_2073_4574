@@ -19,7 +19,7 @@
 
         public override string ToString()
         {
-            return $"id: {Id}\n name: {Name}\n Longitude: {Longitude}\n Lattitude: {Lattitude}\n ChargeSlots: {ChargeSlots}";
+            return $"id: {Id}\n name: {Name}\n Longitude: {Longitude}\n Latitude: {Lattitude}\n ChargeSlots: {ChargeSlots}";
         }
     }
 }
