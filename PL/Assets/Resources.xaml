@@ -57,15 +57,4 @@
         <Setter Property="CellStyle" Value="{StaticResource {x:Type DataGridCell}}"/>
         <Setter Property="RowStyle" Value="{StaticResource {x:Type DataGridRow}}"/>
     </Style>
-
-    <Style x:Key="ItemCotainerRow" TargetType="DataGridRow">
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{x:Null}" />
-                <Setter Property="BorderThickness" Value="0"/>
-            </Trigger>
-        </Style.Triggers>
-        <Setter Property="Background" Value="{x:Null}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-    </Style>
 </ResourceDictionary>
