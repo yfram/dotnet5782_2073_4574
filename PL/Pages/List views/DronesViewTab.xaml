@@ -28,12 +28,6 @@
                   ItemsSource="{Binding IsAsync=True}"
                   Background="{DynamicResource DronesGridBrushBack}"
                   Foreground="{DynamicResource DronesGridBrushFore}" Margin="0,69,0,0">
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="DataGridRow" BasedOn="{StaticResource ItemCotainerRow}">
-                    <Setter Property="Foreground" Value="{DynamicResource DronesGridBrushFore}"/>
-                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
-                </Style>
-            </DataGrid.ItemContainerStyle>
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
