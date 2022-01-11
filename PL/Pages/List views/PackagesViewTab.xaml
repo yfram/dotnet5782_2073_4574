@@ -100,7 +100,7 @@
         </Grid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
-                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c"
+                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#BE68C4"
                 Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <local:PullGrid x:Name="PullUpContainer" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>

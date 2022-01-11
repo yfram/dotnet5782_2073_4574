@@ -125,7 +125,8 @@
                 <ComboBoxItem Content="Group by number of slots"/>
             </ComboBox>
         </Grid>
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
+                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#70C496" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 
