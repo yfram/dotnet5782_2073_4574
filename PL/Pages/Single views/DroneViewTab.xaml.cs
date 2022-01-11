@@ -109,16 +109,16 @@ namespace PL.Pages
                 return;
             }
             Package p = Bl.GetPackageById(BLdrone.Package.Id);
-            if (p.TimeToDeliver.HasValue)
+            if (p.TimeDeliverd.HasValue)
             {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
             }
 
-            if (p.TimeToPickup.HasValue)
+            if (p.TimePickedUp.HasValue)
             {
                 DroneNextOp.Content = "deliver the package";
             }
-            else if (p.TimeToPair.HasValue)
+            else if (p.TimePaired.HasValue)
             {
                 DroneNextOp.Content = "Pick up the package";
             }
@@ -133,9 +133,9 @@ namespace PL.Pages
                 else
                 {
                     Package p = Bl.GetPackageById(BLdrone.Package.Id);
-                    if (p.TimeToPickup.HasValue)
+                    if (p.TimePickedUp.HasValue)
                         Bl.DeliverPackage(BLdrone.Id);
-                    else if (p.TimeToPair.HasValue)
+                    else if (p.TimePaired.HasValue)
                         Bl.PickUpPackage(BLdrone.Id);
                 }
                 UpdateView();

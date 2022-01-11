@@ -83,7 +83,7 @@ namespace PL.Pages
             if (StartDate.Value is null || EndDate.Value is null) return Bl.GetAllPackages();
             if (!(FilterByDate.IsChecked ?? false)) return Bl.GetAllPackages();
             List<PackageForList> datePackages =
-                Bl.GetObjectsWhere<Package>(p => p.TimeToPickup >= StartDate.Value && p.TimeToPickup <= EndDate.Value).
+                Bl.GetObjectsWhere<Package>(p => p.TimePickedUp >= StartDate.Value && p.TimePickedUp <= EndDate.Value).
                 Cast<PackageForList>().ToList();
             return datePackages;
         }

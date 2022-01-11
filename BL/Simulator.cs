@@ -13,26 +13,33 @@ namespace BlApi
 {
     class Simulator
     {
-        BL bl;
+        BL bl;// why not use the singolton?
         int id;
         Action update;
-        Func<bool> stop;
+        Func<bool> stop;//why?
         double speed = 3;
         int msTimer = 1000;
         bool wayToMaitenance = false;
         Drone d;
 
-        public Simulator(BL _bl , int _DroneId, Action _update, Func<bool> _stop)
+        /// <summary>
+        /// Starts up the simulator on the drone <paramref name="_DroneId"/>.
+        /// When the simulator updates the drone it will call <paramref name="_update"/>.
+        /// </summary>
+        /// <param name="_bl">The bl instance to work off of</param>
+        /// <param name="_DroneId">The drone the simulator runs on</param>
+        /// <param name="_update">The action to be invoked when the drone is updated</param>
+        /// <param name="_stop"></param>
+        /// <exception cref="Exception"></exception>
+        public Simulator(BL _bl, int _DroneId, Action _update, Func<bool> _stop)
         {
             bl = _bl;
             id = _DroneId;
             update = _update;
             stop = _stop;
-
-            while(!stop())
+            while (!stop())
             {
                 d = bl.GetDroneById(id);
-
                 switch (d.State)
                 {
                     case DroneState.Empty:
@@ -48,12 +55,14 @@ namespace BlApi
                 if (d.Battery < 0)
                     throw new Exception();
                 update.Invoke();
-                bl.UpdateDroneName(d.Id, d.Model, d.Battery , d.CurrentLocation);
-
+                bl.UpdateDroneName(d.Id, d.Model, d.Battery, d.CurrentLocation);
                 Thread.Sleep(msTimer);
             }
         }
 
+        /// <summary>
+        /// The operation to be done if <c>d</c> is empty
+        /// </summary>
         private void DroneEmpty()
         {
             if (wayToMaitenance)
@@ -65,7 +74,7 @@ namespace BlApi
                     Station s = bl.GetStationById((int)closestId);
                     if (bl.ElecOfDrone(id) * d.Battery <= LocationUtil.DistanceTo(d.CurrentLocation, s.LocationOfStation))
                     {
-                        bool finish = MakeProgress(s.LocationOfStation );
+                        bool finish = MakeProgress(s.LocationOfStation);
                         if (finish)
                         {
                             wayToMaitenance = false;
@@ -74,7 +83,6 @@ namespace BlApi
                     }
                 }
             }
-
             else
             {
                 if (!StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enouth battery - snd to charge
@@ -83,18 +91,22 @@ namespace BlApi
                     wayToMaitenance = true;
                 }
             }
-            
+
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="Exception">Thrown </exception>
         private void DroneBusy()
         {
             Package p = bl.GetPackageById(d.Package.Id);
 
-            if (p.TimeToDeliver is not null)
+            if (p.TimeDeliverd is not null)
             {
                 throw new Exception();
             }
-            else if (p.TimeToPickup is not null)
+            else if (p.TimePickedUp is not null)
             {
                 bool finish = MakeProgress(d.Package.DropOffLocation);
                 if (finish)
@@ -102,7 +114,7 @@ namespace BlApi
                     bl.DeliverPackage(d.Id, true);
                 }
             }
-            else if(p.TimeToPair is not null) // need deliver.
+            else if (p.TimePaired is not null) // need deliver.
             {
 
                 bool finish = MakeProgress(d.Package.PickUpLocation);
@@ -147,7 +159,7 @@ namespace BlApi
             }
         }
 
-        
+
         private bool MakeProgress(Location destination)
         {
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
@@ -163,7 +175,7 @@ namespace BlApi
 
             double bearing = LocationUtil.Bearing(d.CurrentLocation, destination);
 
-            Location newLoc = LocationUtil.UpdateLocation(new Location(d.CurrentLocation.Longitude , d.CurrentLocation.Latitude), mySpeed, bearing);
+            Location newLoc = LocationUtil.UpdateLocation(new Location(d.CurrentLocation.Longitude, d.CurrentLocation.Latitude), mySpeed, bearing);
             d.CurrentLocation = newLoc;
             if (LocationUtil.IsNear(newLoc, destination))
             {

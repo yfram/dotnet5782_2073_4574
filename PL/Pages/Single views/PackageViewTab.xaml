@@ -18,10 +18,10 @@
             <materialDesign:PackIcon Kind="FullscreenExit"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Button>
 
-        <TextBlock HorizontalAlignment="Left" Margin="630,12,0,0"  Text="{Binding Path=TimeToPackage, StringFormat= creation time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="630,41,0,0" Text="{Binding Path=TimeToPair, StringFormat= pairing time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="630,75,0,0" Text="{Binding Path=TimeToPickup, StringFormat= pickup time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="630,108,0,0" Text="{Binding Path=TimeToDeliver, StringFormat= delivering time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="630,12,0,0"  Text="{Binding Path=TimePackaged, StringFormat= creation time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="630,41,0,0" Text="{Binding Path=TimePaired, StringFormat= pairing time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="630,75,0,0" Text="{Binding Path=TimePickedUp, StringFormat= pickup time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="630,108,0,0" Text="{Binding Path=TimeDeliverd, StringFormat= delivering time: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="172,15,0,0" Text="{Binding Path=Priority, StringFormat= Priority: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="305,16,0,0" Text="{Binding Path=Weight, StringFormat= weghit: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Button Content="{Binding Path=Sender.Id}" ContentStringFormat="sender id: {0}" HorizontalAlignment="Left" Margin="83,92,0,0" VerticalAlignment="Top" Width="114" Click="OpenCustomer" Tag="{Binding Path=Sender}" />
@@ -34,7 +34,7 @@
                         <DataTrigger Binding="{Binding Path=Drone}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Hidden"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=TimeToDeliver}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Path=TimeDeliverd}" Value="{x:Null}">
                             <Setter Property="IsEnabled" Value="True"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -45,7 +45,7 @@
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=TimeToDeliver}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Path=TimeDeliverd}" Value="{x:Null}">
                             <!--,Converter={StaticResource NotNullConvertor}-->
                             <Setter Property="Visibility" Value="Hidden"/>
                         </DataTrigger>

@@ -566,7 +566,7 @@ namespace BlApi
             ans.Sender = sender;
             ans.Reciver = recv;
 
-            ans.TimeToPackage = dALpkg.Created;
+            ans.TimePackaged = dALpkg.Created;
 
             if (dALpkg.DroneId.HasValue)
             {
@@ -574,9 +574,9 @@ namespace BlApi
                 DroneForPackage drone = new DroneForPackage(BLdrone.Id, BLdrone.Battery, BLdrone.CurrentLocation);
                 ans.Drone = drone;
 
-                ans.TimeToPair = dALpkg.Associated;
-                ans.TimeToPickup = dALpkg.PickUp;
-                ans.TimeToDeliver = dALpkg.Delivered;
+                ans.TimePaired = dALpkg.Associated;
+                ans.TimePickedUp = dALpkg.PickUp;
+                ans.TimeDeliverd = dALpkg.Delivered;
             }
             return ans;
         }
@@ -850,11 +850,11 @@ namespace BlApi
         private PackageStatus GetPackageState(Package p)
         {
 
-            return p.TimeToDeliver is not null ?
+            return p.TimeDeliverd is not null ?
                    PackageStatus.Accepted :
-                   (p.TimeToPickup is not null ?
+                   (p.TimePickedUp is not null ?
                    PackageStatus.PickedUp :
-                   (p.TimeToPair is not null ?
+                   (p.TimePaired is not null ?
                    PackageStatus.Paired :
                    PackageStatus.Initialized));
         }

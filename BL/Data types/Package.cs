@@ -5,7 +5,7 @@ namespace BO
     public class Package
     {
 
-        public Package(int id, CustomerForPackage sender, CustomerForPackage reciver, WeightGroup weight, PriorityGroup priority, DroneForPackage drone, DateTime? timeToPackage, DateTime? timeToPair, DateTime? timeToPickup, DateTime? timeToDeliver)
+        public Package(int id, CustomerForPackage sender, CustomerForPackage reciver, WeightGroup weight, PriorityGroup priority, DroneForPackage drone, DateTime? TimePackaged, DateTime? TimePaired, DateTime? TimePickedUp, DateTime? TimeDeliverd)
         {
             Id = id;
             Sender = sender;
@@ -13,10 +13,10 @@ namespace BO
             Weight = weight;
             Priority = priority;
             Drone = drone;
-            TimeToPackage = timeToPackage;
-            TimeToPair = timeToPair;
-            TimeToPickup = timeToPickup;
-            TimeToDeliver = timeToDeliver;
+            TimePackaged = TimePackaged;
+            TimePaired = TimePaired;
+            TimePickedUp = TimePickedUp;
+            TimeDeliverd = TimeDeliverd;
         }
 
         public Package()
@@ -29,10 +29,10 @@ namespace BO
         public WeightGroup Weight { get; set; }
         public PriorityGroup Priority { get; set; }
         public DroneForPackage Drone { get; set; }
-        public DateTime? TimeToPackage { get; set; }
-        public DateTime? TimeToPair { get; set; }
-        public DateTime? TimeToPickup { get; set; }
-        public DateTime? TimeToDeliver { get; set; }
+        public DateTime? TimePackaged { get; set; }
+        public DateTime? TimePaired { get; set; }
+        public DateTime? TimePickedUp { get; set; }
+        public DateTime? TimeDeliverd { get; set; }
 
 #pragma warning disable CS8524 
         public override string ToString() => $"Id: {Id}\n Sender ID: {Sender.Id}\n Reciver ID: {Reciver.Id}\nPriority: " +
