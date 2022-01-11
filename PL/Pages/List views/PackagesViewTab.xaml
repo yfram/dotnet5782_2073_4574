@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <c:PackageForList x:Key="PackagesView"/>
 
@@ -99,9 +99,9 @@
             <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by reciver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
 
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
-                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#BE68C4"
-                Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}"
+                Background="{DynamicResource PackagesAddButtonBrush}"
+                Click="ButtonOpenMenu_Click"/>
         <local:PullGrid x:Name="PullUpContainer" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 

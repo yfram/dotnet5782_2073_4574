@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PL.Pages"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="PL.Pages.StationsViewTab"
+            x:Class="PL.Pages.StationsViewTab"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type DataGridColumnHeader}">
                 <Setter Property="Foreground" Value="{DynamicResource StationsHeaderBrushFore}"/>
@@ -125,8 +125,9 @@
                 <ComboBoxItem Content="Group by number of slots"/>
             </ComboBox>
         </Grid>
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
-                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#70C496" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}"
+                Background="{DynamicResource StationsAddButtonBrush}" 
+                Click="ButtonOpenMenu_Click" />
         <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 

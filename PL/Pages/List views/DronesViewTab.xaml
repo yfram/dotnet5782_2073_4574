@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type DataGridColumnHeader}">
                 <Setter Property="Foreground" Value="{DynamicResource DronesHeaderBrushFore}"/>
@@ -112,10 +112,9 @@
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
-        <Button Content="+" Foreground="Black" BorderThickness="0" 
-                x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" 
-                Background="{DynamicResource AddButtonBack}" Click="ButtonOpenMenu_Click" 
-                HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}"
+                Background="{DynamicResource DronesAddButtonBrush}"
+                Click="ButtonOpenMenu_Click"/>
         <local:PullGrid x:Name="PullUpMenueContainer" VerticalAlignment="Bottom" Height="0" Margin="0,0,0,0"/>
     </Grid>
 </UserControl>
