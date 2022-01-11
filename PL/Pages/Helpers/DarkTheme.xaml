@@ -10,12 +10,13 @@
 
     <SolidColorBrush x:Key="CustomersHeaderBrushBack" Color="#6C94E6"/>
     <SolidColorBrush x:Key="CustomersHeaderBrushFore" Color="#2C66DB"/>
-    <SolidColorBrush x:Key="CustomersGridBrushBack" Color="#1545A3"/>
+    <SolidColorBrush x:Key="CustomersGridBrushBack" Color="#0d3075"/>
     <SolidColorBrush x:Key="CustomersGridBrushFore" Color="#88A9EB"/>
 
     <SolidColorBrush x:Key="StationsGridBack" Color="#014C59"/>
     <SolidColorBrush x:Key="StationsGridFore" Color="#67A9B5"/>
-    <SolidColorBrush x:Key="StationsExpnaderBack" Color="#0E2C32"/>
+    <SolidColorBrush x:Key="StationsHeaderBrushFore" Color="#67A9B5"/>
+    <SolidColorBrush x:Key="StationsHeaderBrushBack" Color="#0E2C32"/>
 
     <SolidColorBrush x:Key="PackagesGridBack" Color="#560963"/>
     <SolidColorBrush x:Key="PackagesGridFore" Color="#cf9cdb"/>
