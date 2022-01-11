@@ -13,13 +13,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource HeaderStyle}">
                 <Setter Property="Foreground" Value="{DynamicResource CustomersHeaderBrushFore}"/>
                 <Setter Property="Background" Value="{DynamicResource CustomersHeaderBrushBack}"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <DataGrid x:Name="CustomerGrid" 
                   ItemsSource="{Binding Path=CustomersView}" 
