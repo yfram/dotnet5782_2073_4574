@@ -17,8 +17,8 @@ namespace PL.Pages
             else if (parameter == null) return value;
             return parameter as string switch
             {
-                "sender" => MainWindow.BL.GetPackageById(valueAsInt).Sender.Name,
-                "reciver" => MainWindow.BL.GetPackageById(valueAsInt).Reciver.Name,
+                "sender" => BlApi.BlFactory.GetBl().GetPackageById(valueAsInt).Sender.Name,
+                "reciver" => BlApi.BlFactory.GetBl().GetPackageById(valueAsInt).Reciver.Name,
                 _ => throw new NotImplementedException()
             };
         }

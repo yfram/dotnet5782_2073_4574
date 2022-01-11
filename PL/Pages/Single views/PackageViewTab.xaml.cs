@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,11 +11,12 @@ namespace PL.Pages
     public partial class PackageViewTab : UserControl
     {
         private Package BLpackage { get => Resources["package"] as Package; set => Resources["package"] = value; }
+        private IBL Bl { get => BlFactory.GetBl(); }
 
         public PackageViewTab(int id)
         {
             InitializeComponent();
-            BLpackage = MainWindow.BL.GetPackageById(id);
+            BLpackage = Bl.GetPackageById(id);
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
@@ -55,7 +57,7 @@ namespace PL.Pages
 
         private void DeletePackage(object sender, RoutedEventArgs e)
         {
-            MainWindow.BL.DeletePackage(BLpackage.Id);
+            Bl.DeletePackage(BLpackage.Id);
             Exit();
         }
     }
