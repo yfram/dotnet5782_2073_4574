@@ -12,7 +12,7 @@
     <UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+				<ResourceDictionary Source="/Assets/Resources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 			<src:PackageInTransfer x:Key="package"/>
 		</ResourceDictionary>
