@@ -9,18 +9,24 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <c:CustomerForList x:Key="CustomersView"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <c:CustomerForList x:Key="CustomersView"/>
 
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Foreground" Value="#3E065F"/>
-            <Setter Property="Background" Value="#D669"/>
-            <Setter Property="TextElement.FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="Foreground" Value="{DynamicResource CustomersHeaderBrushFore}"/>
+                <Setter Property="Background" Value="{DynamicResource CustomersHeaderBrushBack}"/>
+                <Setter Property="TextElement.FontWeight" Value="Bold"/>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#DBD8E3">
-        <DataGrid x:Name="CustomerGrid" ItemsSource="{Binding Path=CustomersView}"   Background="#352F44" Foreground="#CAF0F8" 
+    <Grid Background="{x:Null}">
+        <DataGrid x:Name="CustomerGrid" ItemsSource="{Binding Path=CustomersView}" 
+                  Background="{DynamicResource CustomersGridBrushBack}" Foreground="{DynamicResource CustomersGridBrushFore}" 
                   CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch">
 
@@ -35,23 +41,23 @@
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
                     <Setter Property="BorderThickness" Value="0"/>
                 </Style>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#352F44" />
+                            <Setter Property="Background" Value="{DynamicResource CustomersGridBrushBack}" />
                         </Trigger>
                     </Style.Triggers>
-                    <Setter Property="Background" Value="#352F44"/>
+                    <Setter Property="Background" Value="{x:Null}"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
 
         <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" 
-                VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+                VerticalAlignment="Bottom" Background="#A9B5CC" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
         <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 
