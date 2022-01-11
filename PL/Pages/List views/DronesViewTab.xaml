@@ -62,8 +62,13 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
-        <Grid x:Name="FilterGrid" Margin="0,0,0,381" Background="#DBD8E3">
+        <Grid x:Name="FilterGrid" Background="#DBD8E3" Height="69" VerticalAlignment="Top">
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16" Text="Filter By:"/>
             <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>

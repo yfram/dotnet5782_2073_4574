@@ -37,6 +37,14 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="Height" Value="25"/>
     </Style>
+    <Style TargetType="{x:Type DataGridRow}">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{x:Null}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style TargetType="{x:Type DataGridCell}">
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="BorderThickness" Value="0"/>

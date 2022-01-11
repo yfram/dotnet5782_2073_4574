@@ -71,6 +71,11 @@
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
             </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,381" Background="#DBD8E3">
             <ComboBox  Name="Collected_View" HorizontalAlignment="Center" Margin="0,10,0,0"
