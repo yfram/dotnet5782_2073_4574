@@ -15,7 +15,7 @@ namespace PL.Pages
         {
             if (id is null) return;
             InitializeComponent();
-            BLpackage = MainWindow.BL.GetDroneById(MainWindow.BL.GetAllDronesWhere(d =>
+            BLpackage = BlApi.BlFactory.GetBl().GetDroneById(MainWindow.BL.GetAllDronesWhere(d =>
                 d.PassingPckageId == (int)id).First().Id).Package;
         }
 
