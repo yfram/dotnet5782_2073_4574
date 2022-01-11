@@ -13,12 +13,12 @@ namespace PL.Pages
         {
             InitializeComponent();
 
-            ListOfDrones.ItemsSource = MainWindow.BL.GetStationById(stationId).ChargingDrones;
+            ListOfDrones.ItemsSource = BlApi.BlFactory.GetBl().GetStationById(stationId).ChargingDrones;
         }
+
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((StationViewTab)Parent).Focusable = true;
-            ((StationViewTab)Parent).Focus();
+            ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
     }
 }
