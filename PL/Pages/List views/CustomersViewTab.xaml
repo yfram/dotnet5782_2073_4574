@@ -11,39 +11,21 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <c:CustomerForList x:Key="CustomersView"/>
-
-            <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                 <Setter Property="Foreground" Value="{DynamicResource CustomersHeaderBrushFore}"/>
                 <Setter Property="Background" Value="{DynamicResource CustomersHeaderBrushBack}"/>
-                <Setter Property="TextElement.FontWeight" Value="Bold"/>
-                <Setter Property="Height" Value="25"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <Grid Background="{x:Null}">
-        <DataGrid x:Name="CustomerGrid" ItemsSource="{Binding Path=CustomersView}" 
-                  Background="{DynamicResource CustomersGridBrushBack}" Foreground="{DynamicResource CustomersGridBrushFore}" 
-                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch">
-
-            <DataGrid.Columns>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packae on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
-            </DataGrid.Columns>
-            <DataGrid.Resources>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="{x:Null}"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
+    
+    <Grid>
+        <DataGrid x:Name="CustomerGrid" 
+                  ItemsSource="{Binding Path=CustomersView}" 
+                  Background="{DynamicResource CustomersGridBrushBack}" 
+                  Foreground="{DynamicResource CustomersGridBrushFore}">
+            <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
@@ -53,12 +35,20 @@
                     <Setter Property="Background" Value="{x:Null}"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
-            </DataGrid.Resources>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packae on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
+            </DataGrid.Columns>
         </DataGrid>
-
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" 
-                VerticalAlignment="Bottom" Background="#A9B5CC" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}" 
+                Background="{DynamicResource CustomersAddButtonBrush}" 
+                Click="ButtonOpenMenu_Click"/>
         <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
-
 </UserControl>
