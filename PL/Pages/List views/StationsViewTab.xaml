@@ -14,8 +14,8 @@
                 <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type DataGridColumnHeader}">
-                <Setter Property="Foreground" Value="{DynamicResource StationsGridFore}"/>
-                <Setter Property="Background" Value="{DynamicResource StationsGridBack}"/>
+                <Setter Property="Foreground" Value="{DynamicResource StationsHeaderBrushFore}"/>
+                <Setter Property="Background" Value="{DynamicResource StationsHeaderBrushBack}"/>
                 <Setter Property="TextElement.FontWeight" Value="Bold"/>
                 <Setter Property="Height" Value="25"/>
             </Style>
@@ -26,7 +26,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#DBD8E3">
+    <Grid>
         <DataGrid x:Name="DroneGrid" DataContext="{StaticResource StationsGroup}" 
                   ItemsSource="{Binding IsAsync=True}"  Background="{DynamicResource StationsGridBack}" Foreground="{DynamicResource StationsGridFore}" 
                   CanUserSortColumns="False" IsReadOnly="True"
@@ -75,10 +75,10 @@
             </DataGrid.GroupStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn Width="Auto" Header="  Empty  " Binding="{Binding Path=AmountOfEmptyPorts}"/>
-                <DataGridTextColumn Width="Auto" Header="  Full  " Binding="{Binding Path=AmountOfFullPorts}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Empty  " Binding="{Binding Path=AmountOfEmptyPorts}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Full  " Binding="{Binding Path=AmountOfFullPorts}"/>
             </DataGrid.Columns>
 
             <DataGrid.Resources>
