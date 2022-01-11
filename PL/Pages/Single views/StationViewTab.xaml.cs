@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,18 +12,20 @@ namespace PL.Pages
     public partial class StationViewTab : UserControl
     {
         private Station BLstation { get => Resources["station"] as Station; set => Resources["station"] = value; }
+        private IBL Bl { get => BlFactory.GetBl(); }
+
         public StationViewTab(int id)
         {
             InitializeComponent();
-            BLstation = MainWindow.BL.GetStationById(id);
+            BLstation = Bl.GetStationById(id);
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.BL.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
-                BLstation = MainWindow.BL.GetStationById(BLstation.Id);
+                Bl.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
+                BLstation = Bl.GetStationById(BLstation.Id);
             }
             catch (Exception ex)
             {
