@@ -48,6 +48,7 @@
         <Setter Property="CanUserReorderColumns" Value="False"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="CellStyle" Value="{StaticResource {x:Type DataGridCell}}"/>
         <Setter Property="RowStyle" Value="{StaticResource {x:Type DataGridRow}}"/>
     </Style>
