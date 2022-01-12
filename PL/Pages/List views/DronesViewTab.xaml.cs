@@ -42,10 +42,11 @@ namespace PL.Pages
             gridOpen = false;
         }
 
-        public void RefreshBl()
+        public DronesViewTab RefreshBl()
         {
             Drones.Clear();
             Bl.GetAllDrones().ToList().ForEach(d => Drones.Add(d));
+            return this;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

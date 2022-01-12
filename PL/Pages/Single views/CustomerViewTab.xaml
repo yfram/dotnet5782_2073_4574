@@ -17,7 +17,7 @@
         <TextBox Name ="CustomerPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="48,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="98" Text="{Binding Path=PhoneNumber,Mode=OneTime}"/>
         <TextBlock FontSize="13" Name="CustomerLocation" HorizontalAlignment="Left" Margin="236,17,0,0" Text="{Binding CustomerLocation,StringFormat=Location: {0}}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBox Name ="CustomerName" HorizontalAlignment="Left" Margin="223,54,0,0" Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-       
+
         <Button Click="UpdateButton_Click" Name="UpdateButton" Content="Update" Margin="15,92,822,0" VerticalAlignment="Top"/>
 
         <Button x:Name="ExitButton" Click="Exit" Margin="0,0,0,118" Background="Red" BorderThickness="0" HorizontalAlignment="Right" Width="32" Padding="0">
@@ -42,6 +42,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <TextBlock HorizontalAlignment="Left" Margin="680,26,0,0" Text="Packages from customer" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="892,26,0,0" Text="Packages to customer" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

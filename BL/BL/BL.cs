@@ -734,13 +734,13 @@ namespace BL
                 {
                     Customer blCustomer = GetCustomerById(customer.Id);
                     int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                    p.Delivered is null).Count();
+                    p.Delivered is not null).Count();
                     int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                    p.Delivered is not null).Count();
-                    int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
                     p.Delivered is null).Count();
-                    int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                    int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
                     p.Delivered is not null).Count();
+                    int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                    p.Delivered is null).Count();
                     yield return new CustomerForList(blCustomer.Id, blCustomer.Name, blCustomer.PhoneNumber, sentAccepted,
                         sentOnTheWay, accepted, onTheWay);
                 }

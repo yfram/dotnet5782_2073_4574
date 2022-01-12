@@ -19,7 +19,7 @@
     <Grid Background="{StaticResource DronesGridBrushFore}" DataContext="{DynamicResource package}" Margin="10,0,0,10">
         <TextBlock TextWrapping="Wrap" Text="{Binding Path=Id, StringFormat=Package id: {0}}" Margin="10,10,203,100"/>
         <TextBlock HorizontalAlignment="Left" Margin="0,62,0,0" Text="{Binding Path=Customer.Id, StringFormat=customer Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="15,0,0,0" Text="{Binding Path=Weight, StringFormat=weight: {0}}"  TextWrapping="Wrap" VerticalAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,100,0,0" Text="{Binding Path=Weight, StringFormat=weight: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="144,10,0,0" Text="{Binding Path=Priority, StringFormat=Priority: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="144,62,0,0" Text="{Binding Path=Status, StringFormat=status: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
 

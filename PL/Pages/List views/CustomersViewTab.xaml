@@ -39,10 +39,10 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Sent Accepted" Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Sent on Way" Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Get Accept" Binding="{Binding Path=NumberPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Get on Way" Binding="{Binding Path=NumberPackagesOnTheWay}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Style="{StaticResource AddButtonStyle}" 
