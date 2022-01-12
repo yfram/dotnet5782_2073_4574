@@ -1,45 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-		<PropertyGroup>
-				<OutputType>WinExe</OutputType>
-				<TargetFramework>net5.0-windows</TargetFramework>
-				<Nullable>enable</Nullable>
-				<UseWPF>true</UseWPF>
-				<Platforms>AnyCPU;x86</Platforms>
-		</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<Platforms>AnyCPU;x86</Platforms>
+		<ApplicationIcon>Assets\drone.ico</ApplicationIcon>
+	</PropertyGroup>
 
-		<ItemGroup>
-				<None Remove="Assets\customers.png" />
-				<None Remove="Assets\stations.png" />
-				<None Remove="customers.png" />
-				<None Remove="drone.png" />
-				<None Remove="drones.png" />
-				<None Remove="stations.png" />
-		</ItemGroup>
+	<ItemGroup>
+		<None Remove="customers.png" />
+		<None Remove="stations.png" />
+		<None Remove="customers.png" />
+		<None Remove="drone.png" />
+		<None Remove="drones.png" />
+		<None Remove="stations.png" />
+	</ItemGroup>
 
-		<ItemGroup>
-				<PackageReference Include="CoordinateSharp" Version="2.12.1.1" />
-				<PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
-				<PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
-		</ItemGroup>
+	<ItemGroup>
+		<Content Include="Assets\drone.ico" />
+	</ItemGroup>
 
-		<ItemGroup>
-				<ProjectReference Include="..\BL\BL.csproj" />
-		</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CoordinateSharp" Version="2.12.1.1" />
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+	</ItemGroup>
 
-		<ItemGroup>
-				<Resource Include="Assets\drone.png" />
-				<Resource Include="Assets\drones.png" />
-				<Resource Include="Assets\home.png" />
-				<Resource Include="Assets\packages.png" />
-				<Resource Include="Assets\customers.png" />
-				<Resource Include="Assets\stations.png" />
-		</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BL\BL.csproj" />
+	</ItemGroup>
 
-		<ItemGroup>
-		  <Page Update="Assets\Themes\LightTheme.xaml">
-		    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		  </Page>
-		</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Assets\drones.png" />
+		<Resource Include="Assets\home.png" />
+		<Resource Include="Assets\packages.png" />
+		<Resource Include="Assets\customers.png" />
+		<Resource Include="Assets\stations.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Assets\Themes\LightTheme.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+	</ItemGroup>
 
 </Project>
