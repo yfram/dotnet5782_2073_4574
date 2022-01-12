@@ -1,4 +1,7 @@
-﻿namespace BlApi
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BlApi
 {
 
     /// <summary>

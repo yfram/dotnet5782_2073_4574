@@ -1,4 +1,7 @@
-﻿using PL.Pages;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using PL.Pages;
 using System;
 using System.Windows;
 using System.Windows.Controls;

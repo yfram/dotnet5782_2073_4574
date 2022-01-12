@@ -1,4 +1,7 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BO;
 using System;
 using static System.Math;
 

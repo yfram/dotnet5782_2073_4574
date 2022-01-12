@@ -1,4 +1,7 @@
-﻿using BlApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
 using BO;
 using System.Windows;
 using System.Windows.Controls;

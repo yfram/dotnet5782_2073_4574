@@ -1,4 +1,7 @@
-﻿using System;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;

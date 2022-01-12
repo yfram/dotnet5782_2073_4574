@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System.Collections.Generic;
 
 namespace BO
 {

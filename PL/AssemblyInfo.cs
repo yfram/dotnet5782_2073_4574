@@ -1,3 +1,6 @@
+// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
 using System.Windows;
 
 [assembly: ThemeInfo(

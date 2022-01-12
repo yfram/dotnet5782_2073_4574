@@ -1,4 +1,7 @@
-﻿namespace Dal
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace Dal
 {
     internal class HelpXml
     {

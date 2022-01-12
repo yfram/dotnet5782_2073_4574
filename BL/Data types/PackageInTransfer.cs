@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class PackageInTransfer
     {

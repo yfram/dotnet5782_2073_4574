@@ -1,4 +1,7 @@
-﻿using BlApi.Exceptions;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi.Exceptions;
 using BO;
 using DalApi;
 using System;
