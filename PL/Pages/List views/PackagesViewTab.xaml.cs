@@ -3,6 +3,7 @@
 
 using BlApi;
 using BO;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -42,10 +43,11 @@ namespace PL.Pages
             RefreshBl();
         }
 
-        public void RefreshBl()
+        public PackagesViewTab RefreshBl()
         {
             PackagesView.Clear();
             Bl.GetAllPackages().ToList().ForEach(p => PackagesView.Add(p));
+            return this;
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -59,11 +61,14 @@ namespace PL.Pages
         {
             if (packageView)
                 return;
-
-            PackageForList p = ((DataGridRow)sender).DataContext as PackageForList ?? throw new();
-            PullUpContainer.Children.Add(new PackageViewTab(p.Id));
-            PullUpContainer.Expand(250, 150);
-            gridOpen = true;
+            try
+            {
+                PackageForList p = ((DataGridRow)sender).DataContext as PackageForList ?? throw new();
+                PullUpContainer.Children.Add(new PackageViewTab(p.Id));
+                PullUpContainer.Expand(250, 150);
+                gridOpen = true;
+            }
+            catch (Exception ex) { }
         }
 
         private void Filter(object sender, RoutedEventArgs e)

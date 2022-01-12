@@ -13,6 +13,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal HomeViewTab home = new();
+        internal DronesViewTab drones = new();
+        internal StationsViewTab stations = new();
+        internal CustomersViewTab customers = new();
+        internal PackagesViewTab packages = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -36,16 +41,23 @@ namespace PL
             ButtonOpenMenu.Visibility = Visibility.Visible;
         }
 
+        public void RefreshCurrent()
+        {
+            dynamic cur = GridMain.Children[0];
+
+            cur.RefreshBl();
+        }
+
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GridMain.Children.Clear();
             UserControl page = ((ListViewItem)((ListView)sender).SelectedItem).Name switch
             {
-                "HomeView" => new HomeViewTab(),
-                "DronesView" => new DronesViewTab(),
-                "StationsView" => new StationsViewTab(),
-                "CustomersView" => new CustomersViewTab(),
-                "PackagesView" => new PackagesViewTab(),
+                "HomeView" => home.RefreshBl(),
+                "DronesView" => drones.RefreshBl(),
+                "StationsView" => stations.RefreshBl(),
+                "CustomersView" => customers.RefreshBl(),
+                "PackagesView" => packages.RefreshBl(),
                 _ => throw new InvalidOperationException("Unreachable!"),
             };
             GridMain.Children.Add(page);

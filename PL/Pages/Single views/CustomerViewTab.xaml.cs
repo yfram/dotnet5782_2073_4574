@@ -44,7 +44,7 @@ namespace PL.Pages
 
         private void OpenPackage(object sender, RoutedEventArgs e)
         {
-            int id = int.Parse(((TextBlock)((Button)sender).Content).Text);
+            int id = int.Parse(((Button)sender).Content.ToString());
             var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
             if (!l.Any())
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);

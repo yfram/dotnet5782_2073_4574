@@ -27,5 +27,10 @@ namespace PL.Pages
             map.Home = n => n.NavigateTo(sphericalMercatorCoordinate, 1000, easing: Easing.SpringIn);
             MyMapControl.Map = map;
         }
+
+        internal HomeViewTab RefreshBl()
+        {
+            return this;
+        }
     }
 }

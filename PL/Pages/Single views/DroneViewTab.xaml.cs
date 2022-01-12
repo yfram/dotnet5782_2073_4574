@@ -21,7 +21,7 @@ namespace PL.Pages
         private Window PackageView = null;
         private BackgroundWorker bw;
         private bool Stop = false;
-        Action Refresh = null;
+        Func<DronesViewTab> refresh = null;
         internal int id;
 
         public DroneViewTab(int _id)
@@ -49,9 +49,9 @@ namespace PL.Pages
 
         private void RefreshParentBl()
         {
-            if(Refresh is null)
-                Refresh = ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl;
-            Refresh();
+            if(refresh is null)
+                refresh = ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl;
+            refresh();
         }
 
         private void Charge_Click(object sender, RoutedEventArgs e)
@@ -76,7 +76,6 @@ namespace PL.Pages
             UpdateDroneNextOp();
             UpdateChargeButton();
 
-            RefreshParentBl();
         }
 
         private void UpdateChargeButton()
@@ -187,7 +186,7 @@ namespace PL.Pages
                     BLdrone.Id,
                      () => { ((BackgroundWorker)sender).ReportProgress(0); },
 
-                     () => { return Stop; }
+                     () => { return Stop || App.Current is null; }
 
                      );
             };
@@ -195,7 +194,8 @@ namespace PL.Pages
             {
                 UpdateView();
                 UpdatePackage();
-                RefreshParentBl();
+                ((MainWindow)App.Current.MainWindow).RefreshCurrent();
+                
             };
 
             bw.RunWorkerAsync();

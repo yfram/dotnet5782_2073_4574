@@ -18,13 +18,12 @@ namespace Simulator
         private Action update;
         private Func<bool> stop;
         private double speed = 3;
-        private int msTimer = 300;
+        private int msTimer = 700;
         private bool wayToMaitenance = false;
         private Drone d;
 
         private int steps = 0;
         private Location source = null;
-        private int est = 0;
 
         /// <summary>
         /// Starts up the simulator on the drone <paramref name="_DroneId"/>.
@@ -157,7 +156,6 @@ namespace Simulator
             try
             {
                 bl.AssignPackage(id);
-                est = 0;
                 return true;
             }
             catch (BlException)

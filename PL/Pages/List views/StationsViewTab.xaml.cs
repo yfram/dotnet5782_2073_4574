@@ -3,6 +3,7 @@
 
 using BlApi;
 using BO;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -41,10 +42,11 @@ namespace PL.Pages
             gridOpen = false;
         }
 
-        public void RefreshBl()
+        public StationsViewTab RefreshBl()
         {
             StationsView.Clear();
             Bl.GetAllStations().ToList().ForEach(s => StationsView.Add(s));
+            return this;
         }
 
         private void Collected_View_SelectionChanged(object sender, RoutedEventArgs e)
@@ -71,10 +73,13 @@ namespace PL.Pages
         {
             if (packageView)
                 return;
-
-            PullUpMenueContainer.Children.Add(new StationViewTab(StationsView[((DataGridRow)sender).GetIndex()].Id));
-            PullUpMenueContainer.Expand(250, 150);
-            gridOpen = true;
+            try
+            {
+                PullUpMenueContainer.Children.Add(new StationViewTab(StationsView[((DataGridRow)sender).GetIndex()].Id));
+                PullUpMenueContainer.Expand(250, 150);
+                gridOpen = true;
+            }
+            catch (Exception ex) { }
         }
     }
 }
