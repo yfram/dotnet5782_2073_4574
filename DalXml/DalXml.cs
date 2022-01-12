@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -30,7 +31,7 @@ namespace Dal
             return ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId).Any();
         }
 
-        public static IEnumerable<T> ReadAllObjects<T>() where T : new()
+        private IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
@@ -43,7 +44,7 @@ namespace Dal
 
         }
 
-        public static IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
+        private IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
         {
             List<T> ans = new();
             IEnumerable<T> all = ReadAllObjects<T>();
@@ -57,7 +58,7 @@ namespace Dal
             return ans;
         }
 
-        public static void WriteAllObjects<T>(IEnumerable<T> write)
+        private void WriteAllObjects<T>(IEnumerable<T> write)
         {
             XElement root = new("listOfObjects");
 
@@ -74,7 +75,7 @@ namespace Dal
             root.Save($"Data/{typeof(T).Name}s.xml");
         }
 
-        public static T ReadObject<T>(XElement elem) where T : new()
+        private T ReadObject<T>(XElement elem) where T : new()
         {
             object current = new T();
             foreach (PropertyInfo FI in current.GetType().GetProperties())
@@ -102,7 +103,7 @@ namespace Dal
             return (T)current;
         }
 
-        public static T GetObject<T>(int id, string propName = "Id") where T : new()
+        private  T GetObject<T>(int id, string propName = "Id") where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
@@ -125,7 +126,7 @@ namespace Dal
             throw new ArgumentException($"the id {id} is not exist!");
         }
 
-        public static void AddObject<T>(int id, T obj) where T : new()
+        private void AddObject<T>(int id, T obj) where T : new()
         {
             try
             {
@@ -145,7 +146,7 @@ namespace Dal
 
         }
 
-        public static void DeleteObject<T>(int id, string propName = "Id") where T : new()
+        private void DeleteObject<T>(int id, string propName = "Id") where T : new()
         {
             var all = ReadAllObjects<T>();
             IEnumerable<T> ans = new List<T>();
@@ -178,7 +179,7 @@ namespace Dal
             WriteAllObjects(ans);
         }
 
-        public static void UpdateObject<T>(int id, T obj, string propName = "Id") where T : new()
+        private void UpdateObject<T>(int id, T obj, string propName = "Id") where T : new()
         {
             var all = ReadAllObjects<T>();
             IEnumerable<T> ans = new List<T>();
@@ -227,87 +228,101 @@ namespace Dal
             AddObject(runNumber, p);
         }
 
-        private static void UpdateRunNumber()
+        private void UpdateRunNumber()
         {
             var cfg = ReadConfigFile();
             cfg.runNumber += 1;
             WriteConfigFile(cfg);
         }
 
-        private static int GetRunNumber()
+        private int GetRunNumber()
         {
             return ReadConfigFile().runNumber;
         }
 
-        private static Config ReadConfigFile()
+        private Config ReadConfigFile()
         {
             var serializer = new XmlSerializer(typeof(Config));
             using var reader = XmlReader.Create("Data/config.xml");
             return (Config)serializer.Deserialize(reader);
         }
 
-        private static void WriteConfigFile(Config data)
+        private void WriteConfigFile(Config data)
         {
             var serializer = new XmlSerializer(typeof(Config));
             using var writer = XmlWriter.Create("Data/config.xml");
             serializer.Serialize(writer, data);
         }
+
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(int id, string name, double longitude, double latitude, int chargeSlots)
         {
             AddObject(id, new Station(id, name, longitude, latitude, chargeSlots));
 
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteDrone(int id)
         {
             DeleteObject<Drone>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeletePackage(int id)
         {
             DeleteObject<Package>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteStation(int id)
         {
             DeleteObject<Station>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetAllDrones()
         {
             return ReadAllObjects<Drone>();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetAllDronesWhere(Func<Drone, bool> predicate)
         {
             return ReadAllObjectsWhen(predicate);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetAllPackages()
         {
             return ReadAllObjects<Package>();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> func)
         {
             return ReadAllObjectsWhen(func);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetAllStations()
         {
             return ReadAllObjects<Station>();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate)
         {
             return ReadAllObjectsWhen(predicate);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int id)
         {
             return GetObject<Drone>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double[] GetElectricity()
         {
             Config c = ReadConfigFile();
@@ -315,16 +330,19 @@ namespace Dal
             return ans;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id)
         {
             return GetObject<Package>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int id)
         {
             return GetObject<Station>(id);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void GivePackageDrone(int packageId, int droneId)
         {
             var p = GetObject<Package>(packageId);
@@ -336,6 +354,7 @@ namespace Dal
             UpdateObject<Package>(p.Id, p);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickUpPackage(int packageId)
         {
             var p = GetObject<Package>(packageId);
@@ -344,6 +363,7 @@ namespace Dal
             UpdateObject<Package>(p.Id, p);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliverPackage(int packageId)
         {
             var p = GetObject<Package>(packageId);
@@ -351,6 +371,7 @@ namespace Dal
             UpdateObject<Package>(p.Id, p);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double ReleaseDroneFromCharge(int droneId, DateTime outDate, int stationId)
         {
 
@@ -365,6 +386,7 @@ namespace Dal
             return ans;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToCharge(int droneId, int stationId)
         {
             Station s = GetObject<Station>(stationId);
@@ -379,21 +401,25 @@ namespace Dal
             AddObject(droneId, d);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(Drone d)
         {
             UpdateObject(d.Id, d);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatePackage(Package p)
         {
             UpdateObject(p.Id, p);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(Station s)
         {
             UpdateObject(s.Id, s);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate)
         {
             return ReadAllObjectsWhen<Customer>(predicate);

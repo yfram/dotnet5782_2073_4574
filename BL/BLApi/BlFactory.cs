@@ -19,7 +19,7 @@ namespace BlApi
         {
             if (Instance == null)
             {
-                Instance = new BL();
+                Instance = new BL.BL();
             }
 
             return Instance;

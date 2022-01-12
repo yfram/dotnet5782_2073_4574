@@ -5,6 +5,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -19,6 +20,7 @@ namespace Dal
         /// <param name="latitude">Latitude for the new station</param>
         /// <param name="chargeSlots">Amount of charging ports in the new station</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(int id, string name, double longitude, double latitude, int chargeSlots)
         {
             DataSource.Stations.Add(new(GetStationIndex(id) != -1 ? throw new ArgumentException($"the Station {id} already exists!") : id, name, longitude, latitude, chargeSlots));
@@ -30,6 +32,7 @@ namespace Dal
         /// <param name="id">The id for the wanted station</param>
         /// <returns>The station with id <paramref name="id"/></returns>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int id)
         {
             int ix = GetStationIndex(id);
@@ -41,7 +44,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">The id for the wanted station</param>
         /// <returns>The index of the station with id <paramref name="id"/></returns>
-        private static int GetStationIndex(int id)
+        private int GetStationIndex(int id)
         {
             return DataSource.Stations.FindIndex(s => s.Id == id);
         }
@@ -50,6 +53,7 @@ namespace Dal
         /// Gets all stations in the data base
         /// </summary>
         /// <returns>A IEnumerable with all the stations in the data base</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetAllStations()
         {
             return new List<Station>(DataSource.Stations);
@@ -60,6 +64,7 @@ namespace Dal
         /// </summary>
         /// <param name="predicate">The function to filter stations with</param>
         /// <returns>A IEnumerable with all the stations in the data base that answer to predicate</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate)
         {
             return DataSource.Stations.Where(predicate);

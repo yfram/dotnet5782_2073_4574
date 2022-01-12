@@ -5,7 +5,7 @@ using BO;
 using System;
 using static System.Math;
 
-namespace BLApi
+namespace BL
 {
     internal class LocationUtil
     {

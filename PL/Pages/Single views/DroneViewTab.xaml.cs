@@ -33,7 +33,7 @@ namespace PL.Pages
         {
             try
             {
-                Bl.UpdateDroneName(BLdrone.Id, DroneName.Text);
+                Bl.UpdateDrone(BLdrone.Id, DroneName.Text);
                 BLdrone = Bl.GetDroneById(BLdrone.Id);
             }
             catch (Exception ex)

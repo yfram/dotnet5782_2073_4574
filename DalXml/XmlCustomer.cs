@@ -5,6 +5,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 namespace Dal
@@ -12,6 +13,7 @@ namespace Dal
     public partial class DalXml
     {
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(int id, string name, string phone, double latitude, double longitude)
         {
             var ans = GetAllCustomers();
@@ -23,6 +25,7 @@ namespace Dal
             WriteAllCustomers(ans.Append(new Customer(id, name, phone, latitude, longitude)));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteCustomer(int id)
         {
             GetCustomer(id); // check if exist
@@ -36,6 +39,7 @@ namespace Dal
             ObjectsRoot.Save($"Data/Customers.xml");
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(Customer c)
         {
 
@@ -58,6 +62,7 @@ namespace Dal
             ObjectsRoot.Save($"Data/Customers.xml");
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int id)
         {
             var all = GetAllCustomers();
@@ -71,6 +76,7 @@ namespace Dal
             throw new ArgumentException($"the id {id} is not exist!");
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> GetAllCustomers()
         {
             var ObjectsRoot = XElement.Load($"Data/Customers.xml");
