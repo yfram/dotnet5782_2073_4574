@@ -12,7 +12,6 @@
 	<ItemGroup>
 		<None Remove="customers.png" />
 		<None Remove="stations.png" />
-		<None Remove="customers.png" />
 		<None Remove="drone.png" />
 		<None Remove="drones.png" />
 		<None Remove="stations.png" />
@@ -37,8 +36,9 @@
 		<Resource Include="Assets\drones.png" />
 		<Resource Include="Assets\home.png" />
 		<Resource Include="Assets\packages.png" />
-		<Resource Include="Assets\customers.png" />
-		<Resource Include="Assets\stations.png" />
+		<Resource Include="Assets\customer.png" />
+		<Resource Include="Assets\station.png" />
+		<Resource Include="customers.png" />
 	</ItemGroup>
 
 	<ItemGroup>
