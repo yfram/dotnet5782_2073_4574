@@ -36,4 +36,10 @@
 				<Resource Include="Assets\stations.png" />
 		</ItemGroup>
 
+		<ItemGroup>
+		  <Page Update="Assets\Themes\LightTheme.xaml">
+		    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		  </Page>
+		</ItemGroup>
+
 </Project>

@@ -1,5 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="SidePanelBackBrush" Color="#2A2438"/>
+    <SolidColorBrush x:Key="TopPanelBackBrush" Color="#5C5470"/>
+
     <SolidColorBrush x:Key="DronesGridBrushFore" Color="#CAF0F8"/>
     <SolidColorBrush x:Key="DronesGridBrushBack" Color="#352F44"/>
     <SolidColorBrush x:Key="DronesHeaderBrushFore" Color="#3E065F"/>
