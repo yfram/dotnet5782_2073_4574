@@ -1,33 +1,33 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     x:Name="Light">
-    <SolidColorBrush x:Key="SidePanelBackBrush" Color="#2A2438"/>
-    <SolidColorBrush x:Key="TopPanelBackBrush" Color="#5C5470"/>
+    <SolidColorBrush x:Key="SidePanelBackBrush" Color="DarkSlateGray"/>
+    <SolidColorBrush x:Key="TopPanelBackBrush" Color="#53A3F3"/>
 
-    <SolidColorBrush x:Key="SettingsWindowBack" Color="SlateGray"/>
+    <SolidColorBrush x:Key="SettingsWindowBack" Color="#8DC2F7"/>
 
     <SolidColorBrush x:Key="DronesGridBrushFore" Color="#CAF0F8"/>
-    <SolidColorBrush x:Key="DronesGridBrushBack" Color="#352F44"/>
-    <SolidColorBrush x:Key="DronesHeaderBrushFore" Color="#3E065F"/>
-    <SolidColorBrush x:Key="DronesHeaderBrushBack" Color="#D669"/>
+    <SolidColorBrush x:Key="DronesGridBrushBack" Color="#177ADE"/>
+    <SolidColorBrush x:Key="DronesHeaderBrushFore" Color="#8DC2F7"/>
+    <SolidColorBrush x:Key="DronesHeaderBrushBack" Color="#1570CB"/>
     <SolidColorBrush x:Key="DronesAddButtonBrush" Color="#01497c"/>
-    <SolidColorBrush x:Key="DronesExpanderBack" Color="#1F1F55"/>
-    <SolidColorBrush x:Key="PackageForDroneViewBack" Color="#3c096c"/>
+    <SolidColorBrush x:Key="DronesExpanderBack" Color="#6A5CD6"/>
+    <SolidColorBrush x:Key="PackageForDroneViewBack" Color="#6F62D1"/>
 
     <SolidColorBrush x:Key="CustomersHeaderBrushBack" Color="#6C94E6"/>
-    <SolidColorBrush x:Key="CustomersHeaderBrushFore" Color="#2C66DB"/>
-    <SolidColorBrush x:Key="CustomersGridBrushBack" Color="#0d3075"/>
-    <SolidColorBrush x:Key="CustomersGridBrushFore" Color="#88A9EB"/>
-    <SolidColorBrush x:Key="CustomersAddButtonBrush" Color="#A9B5CC"/>
+    <SolidColorBrush x:Key="CustomersHeaderBrushFore" Color="#6958EE"/>
+    <SolidColorBrush x:Key="CustomersGridBrushBack" Color="#6958EE"/>
+    <SolidColorBrush x:Key="CustomersGridBrushFore" Color="#9dafd4"/>
+    <SolidColorBrush x:Key="CustomersAddButtonBrush" Color="#241C61"/>
 
-    <SolidColorBrush x:Key="StationsGridBack" Color="#014C59"/>
-    <SolidColorBrush x:Key="StationsGridFore" Color="#67A9B5"/>
-    <SolidColorBrush x:Key="StationsHeaderBrushFore" Color="#67A9B5"/>
-    <SolidColorBrush x:Key="StationsHeaderBrushBack" Color="#0E2C32"/>
-    <SolidColorBrush x:Key="StationsAddButtonBrush" Color="#0E2C32"/>
+    <SolidColorBrush x:Key="StationsGridBack" Color="#76787A"/>
+    <SolidColorBrush x:Key="StationsGridFore" Color="#b6b7b8"/>
+    <SolidColorBrush x:Key="StationsHeaderBrushFore" Color="#97999B"/>
+    <SolidColorBrush x:Key="StationsHeaderBrushBack" Color="#646668"/>
+    <SolidColorBrush x:Key="StationsAddButtonBrush" Color="#112D4A"/>
 
-    <SolidColorBrush x:Key="PackagesGridBack" Color="#560963"/>
-    <SolidColorBrush x:Key="PackagesGridFore" Color="#cf9cdb"/>
-    <SolidColorBrush x:Key="PackagesExpnaderBack" Color="#a72fc4"/>
+    <SolidColorBrush x:Key="PackagesGridBack" Color="#8B9C6D"/>
+    <SolidColorBrush x:Key="PackagesGridFore" Color="#BBC5AA"/>
+    <SolidColorBrush x:Key="PackagesExpnaderBack" Color="#C4AF91"/>
     <SolidColorBrush x:Key="PackagesAddButtonBrush" Color="#BE68C4"/>
 </ResourceDictionary>
