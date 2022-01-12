@@ -41,9 +41,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Assets\Themes\LightTheme.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
+	  <Page Update="Assets\Themes\LightTheme.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
 	</ItemGroup>
 
 </Project>

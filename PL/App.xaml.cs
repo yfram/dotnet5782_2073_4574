@@ -13,28 +13,28 @@ namespace PL
     /// </summary>
     public partial class App : Application
     {
-        private string currentTheme = "Dark";
+        internal string CurrentTheme = "Dark";
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             if (File.Exists(".userSettings"))
-                currentTheme = File.ReadAllLines(".usersettings").
+                CurrentTheme = File.ReadAllLines(".usersettings").
                     Where(l => l.StartsWith("default_theme="))
                     .First().Replace("default_theme=", "");
-            ChangeTheme(currentTheme);
+            ChangeTheme(CurrentTheme);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if (currentTheme != "Default")
-                File.WriteAllText(".usersettings", $"default_theme={currentTheme}");
+            if (CurrentTheme != "Default")
+                File.WriteAllText(".usersettings", $"default_theme={CurrentTheme}");
             base.OnExit(e);
         }
 
-        private void ChangeTheme(string themePath)
+        public void ChangeTheme(string themePath)
         {
-            currentTheme = themePath;
+            CurrentTheme = themePath;
             Resources.MergedDictionaries.Add(new ResourceDictionary()
             { Source = new Uri($@"/Assets/Themes/{themePath}Theme.xaml", UriKind.Relative) });
         }
