@@ -140,7 +140,7 @@ namespace Dal
         }
         private static Station InitStation(int i, Random random)
         {
-            return new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(),
+            return new(i, StationNames[random.Next() % StationNames.Count], 35 + random.NextDouble(), 29 + random.NextDouble() * 4,
 random.Next() % Config.MaxChargingPorts);
         }
         private static Drone InitDrone(int i, Random random)
@@ -150,7 +150,7 @@ random.Next() % Config.MaxChargingPorts);
         private static Customer InitCustumer(int i, Random random)
         {
             return new(i, CustomerNames[random.Next() % CustomerNames.Count],
-$"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 33 + random.NextDouble(), 34 + random.NextDouble());
+$"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 29 + random.NextDouble() * 4, 35 + random.NextDouble());
         }
         #endregion
     }
