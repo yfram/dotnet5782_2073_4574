@@ -12,7 +12,7 @@ namespace Dal
     public partial class DalXml
     {
 
-        public void AddCustomer(int id, string name, string phone, double lattitude, double longitude)
+        public void AddCustomer(int id, string name, string phone, double latitude, double longitude)
         {
             var ans = GetAllCustomers();
             if (ans.Where(c => c.Id == id).Count() > 0)
@@ -20,7 +20,7 @@ namespace Dal
                 throw new ArgumentException($"the customer {id} already exist");
             }
 
-            WriteAllCustomers(ans.Append(new Customer(id, name, phone, lattitude, longitude)));
+            WriteAllCustomers(ans.Append(new Customer(id, name, phone, latitude, longitude)));
         }
 
         public void DeleteCustomer(int id)
@@ -53,7 +53,7 @@ namespace Dal
             e.Element("Name").Value = c.Name;
             e.Element("Phone").Value = c.Phone;
             e.Element("Longitude").Value = c.Longitude.ToString();
-            e.Element("Latitude").Value = c.Lattitude.ToString();
+            e.Element("Latitude").Value = c.Latitude.ToString();
 
             ObjectsRoot.Save($"Data/Customers.xml");
         }
@@ -81,7 +81,7 @@ namespace Dal
                         Id = Int32.Parse(s.Element("Id").Value),
                         Name = s.Element("Name").Value,
                         Phone = s.Element("Phone").Value,
-                        Lattitude = Double.Parse(s.Element("Latitude").Value),
+                        Latitude = Double.Parse(s.Element("Latitude").Value),
                         Longitude = Double.Parse(s.Element("Longitude").Value)
                     });
         }
@@ -94,7 +94,7 @@ namespace Dal
                 new XElement("Id", p.Id),
                 new XElement("Name", p.Name),
                 new XElement("Phone", p.Phone),
-                new XElement("Latitude", p.Lattitude),
+                new XElement("Latitude", p.Latitude),
                 new XElement("Longitude", p.Longitude)
                 ));
 

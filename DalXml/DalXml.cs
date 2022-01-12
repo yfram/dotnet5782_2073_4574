@@ -252,9 +252,9 @@ namespace Dal
             using var writer = XmlWriter.Create("Data/config.xml");
             serializer.Serialize(writer, data);
         }
-        public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
+        public void AddStation(int id, string name, double longitude, double latitude, int chargeSlots)
         {
-            AddObject(id, new Station(id, name, longitude, lattitude, chargeSlots));
+            AddObject(id, new Station(id, name, longitude, latitude, chargeSlots));
 
         }
 
