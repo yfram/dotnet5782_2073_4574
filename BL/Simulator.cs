@@ -17,10 +17,13 @@ namespace Simulator
         private int id;
         private Action update;
         private Func<bool> stop;
-        private double speed = 6;
+        private double speed = 3;
         private int msTimer = 300;
         private bool wayToMaitenance = false;
         private Drone d;
+
+        private int steps = 0;
+        private Location source = null;
 
         /// <summary>
         /// Starts up the simulator on the drone <paramref name="_DroneId"/>.
@@ -59,7 +62,6 @@ namespace Simulator
                     }
 
                     update.Invoke();
-                    bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);
                 }
                 Thread.Sleep(msTimer);
             }
@@ -90,11 +92,12 @@ namespace Simulator
             }
             else
             {
-                if (!StartNewDelivery() && d.Battery != 100) // if cant start a new delivery, and has not enough battery - send to charge
+                if (!StartNewDelivery() && d.Battery < 99) // if cant start a new delivery, and has not enough battery - send to charge
                 {
                     bl.SendDroneToCharge(id);
                     wayToMaitenance = true;
                 }
+
             }
 
         }
@@ -139,7 +142,10 @@ namespace Simulator
                 bl.ReleaseDrone(id, DateTime.Now); // don't care time, it's anyway has 100% battery.
             }
             else
+            {
                 d.Battery += bl.Idal.GetElectricity()[4] * (msTimer / 1000.0); // convert ms to second
+                bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);
+            }
         }
 
         /// <summary>
@@ -167,6 +173,10 @@ namespace Simulator
         /// <exception cref="BlException"></exception>
         private bool MakeProgress(Location destination)
         {
+            if (source is null)
+                source = d.CurrentLocation;
+
+
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
             if (distance > bl.ElecOfDrone(id) * d.Battery)
                 throw new BlException("Not enough battery to complete operation", id, typeof(Drone));
@@ -176,14 +186,24 @@ namespace Simulator
             if (speed >= distance)
                 mySpeed = speed - distance; // force progress == distance at end!
 
-            d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
 
-            double bearing = LocationUtil.Bearing(d.CurrentLocation, destination);
+            double bearing = LocationUtil.Bearing(source, destination);
 
-            Location newLoc = LocationUtil.UpdateLocation(new Location(d.CurrentLocation.Longitude, d.CurrentLocation.Latitude), mySpeed, bearing);
+            Location newLoc = LocationUtil.UpdateLocation(source, steps*speed+mySpeed, bearing);
+            steps++;
+
+            d.Battery -= LocationUtil.DistanceTo(newLoc , d.CurrentLocation) * (1 / bl.ElecOfDrone(d.Id));
+
             d.CurrentLocation = newLoc;
+
+            bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);
+
             if (LocationUtil.IsNear(newLoc, destination))
+            {
+                steps = 0;
+                source = null;
                 return true;
+            }
             return false;
         }
     }

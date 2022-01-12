@@ -25,6 +25,7 @@ namespace PL.Pages
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
 
+        private IEnumerable<DroneViewTab> cache = new List<DroneViewTab>();
         public DronesViewTab()
         {
             Drones = new(Bl.GetAllDrones());
@@ -93,18 +94,25 @@ namespace PL.Pages
 
         private void ShowMenue(int? id, string typeOfMenue)
         {
-
+            PullUpMenueContainer.Children.Clear();
             UIElement menue;
             menue = typeOfMenue switch
             {
                 "drone add" => new AddDroneTab(),
-                "drone view" => new DroneViewTab(id ?? -1),
+                "drone view" => cache.Any(x=>x.id == id) ? cache.Where(x=>x.id == id).First() :  AddCache(id),
                 "package view" => new PackageForDroneViewTab(id),
                 _ => throw new InvalidOperationException(),
             };
             PullUpMenueContainer.Children.Add(menue);
             gridOpen = true;
             PullUpMenueContainer.Expand(250, 150);
+        }
+
+        private DroneViewTab AddCache(int? id)
+        {
+            var newDrone = new DroneViewTab(id ?? -1);
+            cache = cache.Append(newDrone);
+            return newDrone;
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -120,7 +128,12 @@ namespace PL.Pages
                 packageViewInTheMiddle = false;
                 return;
             }
-            ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
+            try
+            {
+                ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
+            }
+            catch (Exception)
+            {}
         }
     }
 }
