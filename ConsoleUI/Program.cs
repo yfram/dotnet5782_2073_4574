@@ -30,9 +30,7 @@ namespace ConsoleUI
                 {
                     menue = GetIntInput(openMsg);
                     if (menue > 5 || menue < 1)
-                    {
                         Console.WriteLine("Error! unrecognized op-code");
-                    }
                 } while (menue > 5 || menue < 1);
 
                 switch ((MenueOptions)menue)
@@ -69,9 +67,7 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(getListsMenu);
                 if (menue > 6 || menue < 1)
-                {
                     Console.WriteLine("Error! unrecognized op-code");
-                }
             } while (menue > 6 || menue < 1);
             IEnumerable<object> list = null;
             switch (menue)
@@ -114,9 +110,7 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(getByIdMenu);
                 if (menue > 4 || menue < 1)
-                {
                     Console.WriteLine("Error! unrecognized op-code");
-                }
             } while (menue > 4 || menue < 1);
 
             int id = GetIntInput("Enter ID:");
@@ -153,26 +147,18 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(updateMenu);
                 if (menue > 5 || menue < 1)
-                {
                     Console.WriteLine("Error! unrecognized op-code");
-                }
             } while (menue > 5 || menue < 1);
             // all need a drone
             List<int> needPackage = new() { 1, 2, 3 };
             List<int> needStation = new() { 4, 5 };
             int droneId = 0, packageId = 0, stationId = 0;
             if (menue != 3)
-            {
                 droneId = GetIntInput("Enter drone ID:");
-            }
             if (needPackage.Contains(menue))
-            {
                 packageId = GetIntInput("Enter package ID:");
-            }
             else if (needStation.Contains(menue))
-            {
                 stationId = GetIntInput("Enter station ID:");
-            }
 
             switch (menue)
             {
@@ -208,9 +194,7 @@ namespace ConsoleUI
             {
                 menue = GetIntInput(addMenu);
                 if (menue > 4 || menue < 1)
-                {
                     Console.WriteLine("Error! unrecognized op-code");
-                }
             } while (menue > 4 || menue < 1);
             switch (menue)
             {

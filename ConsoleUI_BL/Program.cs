@@ -270,9 +270,7 @@ namespace ConsoleUI_BL
             {
                 res = GetIntInput(print);
                 if (res < min || res > max)
-                {
                     Console.Write(errorMsg is null ? "" : $"{errorMsg}\n");
-                }
             } while (res < min || res > max);
             return res;
 

@@ -37,9 +37,10 @@ namespace PL.Pages
                                 new Random().NextDouble() * 100, DroneState.Maitenance, new(),
                                 Bl.GetStationById(int.Parse(Stations.Text)).LocationOfStation));
             }
-            catch (Exception ex)
+            catch (BlApi.Exceptions.ObjectAllreadyExistsException)
             {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Drone {NewId.Text} cannot be added, as it already exists",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Exit();
         }

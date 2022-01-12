@@ -110,25 +110,17 @@ namespace Dal
                 if (state != 0 && hasDrone)
                 {
                     if (state > 0) // Associated
-                    {
                         temp.Associated = ((DateTime)temp.Created).AddMinutes(random.Next(1, 3000));
-                    }
 
                     if (state > 1) // PickUp
-                    {
                         temp.PickUp = ((DateTime)temp.Associated).AddMinutes(random.Next(1, 3000));
-                    }
 
                     if (state > 2) // Delivered
-                    {
                         temp.Delivered = ((DateTime)temp.PickUp).AddMinutes(random.Next(1, 3000));
-                    }
 
                     Drone d = dronesWithoutPackages.Find(d => d.Weight >= temp.Weight);
                     if (state != 4)
-                    {
                         dronesWithoutPackages.Remove(d); // if the state is "delivered" so the drone hasn't a package now.
-                    }
 
                     temp.DroneId = d.Id;
                 }

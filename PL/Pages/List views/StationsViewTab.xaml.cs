@@ -34,9 +34,7 @@ namespace PL.Pages
         public void CollapsePullUp()
         {
             if (!gridOpen)
-            {
                 return;
-            }
 
             PullUpMenueContainer.Collapse(250);
             RefreshBl();
@@ -55,9 +53,7 @@ namespace PL.Pages
             StationsGroup.GroupDescriptions.Clear();
 
             if (Collected_View.SelectedIndex == (int)SelectdStates.No)
-            {
                 return;
-            }
 
             string prop = Collected_View.SelectedIndex == (int)SelectdStates.Number ? "AmountOfEmptyPorts" : "HasEmptyPorts";
             StationsGroup.GroupDescriptions.Add(new PropertyGroupDescription(prop));
@@ -74,9 +70,7 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView)
-            {
                 return;
-            }
 
             PullUpMenueContainer.Children.Add(new StationViewTab(StationsView[((DataGridRow)sender).GetIndex()].Id));
             PullUpMenueContainer.Expand(250, 150);

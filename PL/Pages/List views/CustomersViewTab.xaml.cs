@@ -30,9 +30,7 @@ namespace PL.Pages
         public void CollapsePullUp()
         {
             if (!gridOpen)
-            {
                 return;
-            }
 
             PullUpMenueContainer.Collapse(250);
             RefreshBl();

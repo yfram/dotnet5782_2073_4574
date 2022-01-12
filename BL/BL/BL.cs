@@ -55,9 +55,7 @@ namespace BL
                     DO.Customer customer = Idal.GetCustomer((int)associatedButNotDelivered?.SenderId);
                     Location customerLoc = new(customer.Longitude, customer.Latitude);
                     if (associatedButNotDelivered?.PickUp is not null)
-                    {
                         bLdrone.CurrentLocation = customerLoc;
-                    }
                     else // associated but not picked. the closet station to the sender
                     {
                         int? stationId = GetClosetStation(new(customer.Longitude, customer.Latitude), false);
@@ -67,9 +65,7 @@ namespace BL
                     // add battery
                     double minBattery = BatteryToDeliver((DO.Package)associatedButNotDelivered, bLdrone);
                     if (minBattery > 100)//the minimum battery needed for the delivery is larger than 100% charge
-                    {
                         throw new BlException("Not enough free stations!", bLdrone.Id, typeof(Drone));
-                    }
 
                     bLdrone.Battery = random.NextDouble() * (100 - minBattery) + minBattery;
                 }
@@ -85,9 +81,7 @@ namespace BL
                         var station = stations.ElementAt(random.Next(0, stations.Count()));
                         bLdrone.CurrentLocation = new(station.Longitude, station.Latitude);
                         if (!inCharge)
-                        {
                             Idal.SendDroneToCharge(bLdrone.Id, station.Id);
-                        }
                     }
                     else //Empty
                     {
@@ -105,17 +99,13 @@ namespace BL
                         }
                         int? id = GetClosetStation(bLdrone.CurrentLocation);
                         if (id is null)
-                        {
                             throw new BlException("No free charging stations", bLdrone.Id, typeof(Drone));
-                        }
 
                         var station = GetDALStation((int)id);
                         Location stationLoc = new(station.Longitude, station.Latitude);
                         double minBattery = LocationUtil.DistanceTo(stationLoc, bLdrone.CurrentLocation) / ElecOfDrone(bLdrone);
                         if (minBattery > 100)
-                        {
                             throw new BlException("Not enough free stations!", bLdrone.Id, typeof(Drone));
-                        }
 
                         bLdrone.Battery = random.NextDouble() * (100 - minBattery) + minBattery;
                     }
@@ -164,9 +154,7 @@ namespace BL
                     d.Battery, DroneState.Empty, d.CurrentLocation, d.Package.Id);
                 BLdrones.Add(df);
                 if (d.State == DroneState.Maitenance)
-                {
                     SendDroneToCharge(d.Id);
-                }
             }
             catch (Exception e)
             {
@@ -189,7 +177,7 @@ namespace BL
                 Idal.AddCustomer(c.Id, c.Name, c.PhoneNumber,
                     c.CustomerLocation.Latitude, c.CustomerLocation.Longitude);
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 throw new ObjectAllreadyExistsException(e.Message);
             }
@@ -452,7 +440,8 @@ namespace BL
         /// Gives the <c>Drone</c> with <paramref name="DroneId"/> the package it is assigned.
         /// </summary>
         /// <param name="DroneId"></param>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="ObjectDoesntExistException"></exception>
+        /// <exception cref="BlException"></exception>
         /// <exception cref="DroneStateException"></exception>
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickUpPackage(int DroneId, bool simulatorMode = false)
@@ -865,24 +854,16 @@ namespace BL
         private int PackagePriority(DO.Package p1, DO.Package p2, Location DroneLoc)
         {
             if ((int)p1.PackagePriority > (int)p2.PackagePriority)
-            {
                 return 1;
-            }
 
             if ((int)p1.PackagePriority < (int)p2.PackagePriority)
-            {
                 return -1;
-            }
 
             if ((int)p1.Weight > (int)p2.Weight)
-            {
                 return 1;
-            }
 
             if ((int)p1.Weight < (int)p2.Weight)
-            {
                 return -1;
-            }
 
             DO.Customer p1Cust = Idal.GetCustomer(p1.SenderId);
             DO.Customer p2Cust = Idal.GetCustomer(p2.SenderId);
@@ -929,6 +910,8 @@ namespace BL
         }
 
 
+                return 0;
+            }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         internal int? GetClosetStation(Location loc, bool toCharge = true)

@@ -2,6 +2,7 @@
 // All rights reserved
 
 using BlApi;
+using BlApi.Exceptions;
 using BO;
 using System;
 using System.ComponentModel;
@@ -31,15 +32,10 @@ namespace PL.Pages
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Bl.UpdateDrone(BLdrone.Id, DroneName.Text);
-                BLdrone = Bl.GetDroneById(BLdrone.Id);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
+            //error cannot be thrown here, because the drone definitely exists 
+            Bl.UpdateDroneName(BLdrone.Id, DroneName.Text);
+            BLdrone = Bl.GetDroneById(BLdrone.Id);
             RefreshParentBl();
         }
 
@@ -58,18 +54,19 @@ namespace PL.Pages
             try
             {
                 if (Charge.Content.ToString() == "send to charge")
-                {
                     Bl.SendDroneToCharge(BLdrone.Id);
-                }
                 else if (Charge.Content.ToString() == "release from charge")
-                {
                     Bl.ReleaseDrone(BLdrone.Id, DateTime.Now);
-                }
             }
-            catch (Exception ex)
+            catch (BlException)
+            {
+                MessageBox.Show($"No available stations can charge drone {BLdrone.Id}", "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (DroneStateException ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
             BLdrone = Bl.GetDroneById(BLdrone.Id);
             UpdateDroneNextOp();
             UpdateChargeButton();
@@ -112,18 +109,12 @@ namespace PL.Pages
             }
             Package p = Bl.GetPackageById(BLdrone.Package.Id);
             if (p.TimeDeliverd.HasValue)
-            {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
-            }
 
             if (p.TimePickedUp.HasValue)
-            {
                 DroneNextOp.Content = "deliver the package";
-            }
             else if (p.TimePaired.HasValue)
-            {
                 DroneNextOp.Content = "Pick up the package";
-            }
         }
 
         private void DroneNextOp_Click(object sender, RoutedEventArgs e)
@@ -131,25 +122,28 @@ namespace PL.Pages
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
-                {
                     Bl.AssignPackage(BLdrone.Id);
-                }
                 else
                 {
                     Package p = Bl.GetPackageById(BLdrone.Package.Id);
                     if (p.TimePickedUp.HasValue)
-                    {
                         Bl.DeliverPackage(BLdrone.Id);
-                    }
                     else if (p.TimePaired.HasValue)
-                    {
                         Bl.PickUpPackage(BLdrone.Id);
-                    }
                 }
                 UpdateView();
 
             }
-            catch (Exception ex)
+            catch (BlException ex)
+            {
+                MessageBox.Show($"The package {ex.ObjectId} cannot be delivered, as it is not associated or picked up",
+                    "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (ObjectDoesntExistException ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (DroneStateException ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -219,9 +213,7 @@ namespace PL.Pages
         private void UpdatePackage()
         {
             if (PackageView is not null)
-            {
                 ((PackageForDroneViewTab)PackageView.Content).update(Bl.GetDroneById(BLdrone.Id).Package);
-            }
         }
     }
 }

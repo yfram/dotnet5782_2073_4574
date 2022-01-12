@@ -32,9 +32,10 @@ namespace PL.Pages
             {
                 Bl.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex + 1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex + 1);
             }
-            catch (Exception ex)
+            catch (BlApi.Exceptions.ObjectAllreadyExistsException)
             {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Package {Sid.Text} cannot be added, as it already exists",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Exit();
         }

@@ -108,34 +108,24 @@ namespace Simulator
             Package p = bl.GetPackageById(d.Package.Id);
 
             if (p.TimeDeliverd is not null)
-            {
                 throw new Exception();
-            }
             else if (p.TimePickedUp is not null)
             {
                 bool finish = MakeProgress(d.Package.DropOffLocation);
                 if (finish)
-                {
                     bl.DeliverPackage(d.Id, true);
-                }
             }
             else if (p.TimePaired is not null) // need deliver.
             {
 
                 bool finish = MakeProgress(d.Package.PickUpLocation);
                 if (finish)
-                {
                     bl.PickUpPackage(id, true);
-                }
             }
             else
-            {
                 throw new InvalidOperationException();
-            }
             if (d.Battery < 0)
-            {
                 throw new InvalidOperationException();
-            }
         }
 
         /// <summary>
@@ -149,9 +139,7 @@ namespace Simulator
                 bl.ReleaseDrone(id, DateTime.Now); // don't care time, it's anyway has 100% battery.
             }
             else
-            {
                 d.Battery += bl.Idal.GetElectricity()[4] * (msTimer / 1000.0); // convert ms to second
-            }
         }
 
         /// <summary>
@@ -181,16 +169,12 @@ namespace Simulator
         {
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
             if (distance > bl.ElecOfDrone(id) * d.Battery)
-            {
                 throw new BlException("Not enough battery to complete operation", id, typeof(Drone));
-            }
 
             double mySpeed = speed;
 
             if (speed >= distance)
-            {
                 mySpeed = speed - distance; // force progress == distance at end!
-            }
 
             d.Battery -= mySpeed * (1 / bl.ElecOfDrone(d.Id));
 
