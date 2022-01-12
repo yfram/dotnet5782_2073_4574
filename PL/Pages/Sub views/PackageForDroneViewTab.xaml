@@ -10,12 +10,12 @@
              d:DesignHeight="150" d:DesignWidth="1000"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Assets/Resources.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-			<src:PackageInTransfer x:Key="package"/>
-		</ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <src:PackageInTransfer x:Key="package"/>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="{StaticResource MaterialDesignToolBackground}" DataContext="{DynamicResource package}">
         <TextBlock TextWrapping="Wrap" Text="{Binding Path=Id, StringFormat=Package id: {0}}" Margin="10,10,929,100"/>
@@ -24,7 +24,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="144,10,0,0" Text="{Binding Path=Priority, StringFormat=Priority: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="144,62,0,0" Text="{Binding Path=PickUpLocation, StringFormat=From:: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="144,102,0,0" Text="{Binding Path=DropOffLocation, StringFormat=To: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="403,10,0,0" Text="{Binding Path=distance, StringFormat=Distance: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="403,10,0,0" Text="{Binding Path=Distance, StringFormat=Distance: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="461,62,0,0" Text="{Binding Path=Sender.Id, StringFormat=Sender Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,118,0,0" Text="{Binding Path=Reciver.Id, StringFormat=Receiver Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
