@@ -27,14 +27,9 @@ Created, Associated, PickUp, Delivered));
         public Package GetPackage(int id)
         {
             int ix = GetPackageIndex(id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the Package {id} does not exist!");
-            }
-
-            return DataSource.Packages[ix];
+            return ix == -1 ? throw new ArgumentException($"the Package {id} does not exist!") : DataSource.Packages[ix];
         }
-        private int GetPackageIndex(int id)
+        private static int GetPackageIndex(int id)
         {
             return DataSource.Packages.FindIndex(p => p.Id == id);
         }

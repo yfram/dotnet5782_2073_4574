@@ -12,7 +12,7 @@ namespace Dal
             DataSource.Drones.Add(new(GetDroneIndex(id) != -1 ? throw new ArgumentException($"The drone {id} already exists") : id, model, weight));
         }
 
-        private int GetDroneIndex(int id)
+        private static int GetDroneIndex(int id)
         {
             return DataSource.Drones.FindIndex(d => d.Id == id);
         }
@@ -20,12 +20,7 @@ namespace Dal
         public Drone GetDrone(int id)
         {
             int ix = GetDroneIndex(id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the drone {id} does not exist!");
-            }
-
-            return DataSource.Drones[ix];
+            return ix == -1 ? throw new ArgumentException($"the drone {id} does not exist!") : DataSource.Drones[ix];
         }
 
         public IEnumerable<Drone> GetAllDrones()

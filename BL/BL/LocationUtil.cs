@@ -64,7 +64,7 @@ namespace BLApi
 
         internal static Location UpdateLocation(Location source, double progress, double bearing)
         {
-            Location loc = new Location(0, 0);
+            Location loc = new(0, 0);
 
             double ratio = progress / earthRadius;
 

@@ -20,17 +20,35 @@ namespace Dal
         }
 
         #region Sample data
-        private static readonly List<string> DroneModels = new List<string>()
+        private static readonly List<string> DroneModels = new()
         {
-            "DJIM1", "DJIF3", "Mavic Pro", "DJI Phantom 4","DJI Mavic 2 Zoom", "DJI Mavic 2 Pro"
+            "DJIM1",
+            "DJIF3",
+            "Mavic Pro",
+            "DJI Phantom 4",
+            "DJI Mavic 2 Zoom",
+            "DJI Mavic 2 Pro"
         };
-        private static readonly List<string> StationNames = new List<string>()
+        private static readonly List<string> StationNames = new()
         {
-            "Tel Aviv", "Bear Sheava", "Modi'in", "Jeruselam","Heifa"
+            "Tel Aviv",
+            "Bear Sheava",
+            "Modi'in",
+            "Jeruselam",
+            "Heifa"
         };
-        private static readonly List<string> CustomerNames = new List<string>()
+        private static readonly List<string> CustomerNames = new()
         {
-            "Yoni", "Gil", "Guy","Gal","Pete","Winston","Nick","Neo","Morpheus", "Trinity"
+            "Yoni",
+            "Gil",
+            "Guy",
+            "Gal",
+            "Pete",
+            "Winston",
+            "Nick",
+            "Neo",
+            "Morpheus",
+            "Trinity"
         };
         #endregion
 
@@ -43,7 +61,7 @@ namespace Dal
 
         public static void Initialize()
         {
-            Random random = new Random();
+            Random random = new();
 
             double elec = random.NextDouble() + 40;
             Config.ElecEmpty = elec;

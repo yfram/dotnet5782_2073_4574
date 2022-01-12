@@ -11,7 +11,7 @@ namespace PL.Pages
     /// </summary>
     public partial class AddPackageTab : UserControl
     {
-        private IBL Bl => BlFactory.GetBl();
+        private static IBL Bl => BlFactory.GetBl();
 
         public AddPackageTab()
         {

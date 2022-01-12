@@ -18,16 +18,11 @@
         public string Name { get; set; }
         public int AmountOfEmptyPorts { get; set; }
         public int AmountOfFullPorts { get; set; }
+        public bool HasEmptyPorts => AmountOfEmptyPorts != 0;
 
         public override string ToString()
         {
             return $"Id: {Id}\nName: {Name}";
-        }
-
-        public bool HasEmptyPorts
-        {
-            get => AmountOfEmptyPorts != 0;
-            set => HasEmptyPorts = AmountOfEmptyPorts == 0;
         }
     }
 }

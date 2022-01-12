@@ -24,13 +24,13 @@ namespace PL.Pages
         public void Expand(int time, double targetHeight)
         {
             this.Height = targetHeight;
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            DoubleAnimation myDoubleAnimation = new();
             myDoubleAnimation.From = 0;
             myDoubleAnimation.To = targetHeight;
             myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(time));
             Storyboard.SetTargetName(myDoubleAnimation, "MainGrid");
             Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
+            Storyboard storyboard = new();
 
             storyboard.Children.Add(myDoubleAnimation);
             BeginStoryboard(storyboard);
@@ -42,13 +42,13 @@ namespace PL.Pages
         /// <param name="time">In ms</param>
         public void Collapse(int time)
         {
-            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            DoubleAnimation myDoubleAnimation = new();
             myDoubleAnimation.From = this.ActualHeight;
             myDoubleAnimation.To = 0;
             myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(time));
             Storyboard.SetTargetName(myDoubleAnimation, "MainGrid");
             Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(HeightProperty));
-            Storyboard storyboard = new Storyboard();
+            Storyboard storyboard = new();
 
             storyboard.Children.Add(myDoubleAnimation);
             BeginStoryboard(storyboard);

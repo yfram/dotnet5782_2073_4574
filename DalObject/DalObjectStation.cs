@@ -15,14 +15,9 @@ namespace Dal
         public Station GetStation(int id)
         {
             int ix = GetStationIndex(id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"The Station {id} does not exist!");
-            }
-
-            return DataSource.Stations[ix];
+            return ix == -1 ? throw new ArgumentException($"The Station {id} does not exist!") : DataSource.Stations[ix];
         }
-        private int GetStationIndex(int id)
+        private static int GetStationIndex(int id)
         {
             return DataSource.Stations.FindIndex(s => s.Id == id);
         }

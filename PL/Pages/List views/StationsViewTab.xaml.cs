@@ -16,10 +16,10 @@ namespace PL.Pages
         private enum SelectdStates { No, Number, Has };
 
         public ObservableCollection<StationForList> StationsView { get; set; }
-        private IBL Bl => BlFactory.GetBl();
+        private static IBL Bl => BlFactory.GetBl();
 
         private bool gridOpen = false;
-        private bool packageView = false;
+        private readonly bool packageView = false;
 
         public StationsViewTab()
         {

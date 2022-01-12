@@ -16,15 +16,10 @@ namespace Dal
         public Customer GetCustomer(int id)
         {
             int ix = GetCustomerIndex(id);
-            if (ix == -1)
-            {
-                throw new ArgumentException($"the customer {id} does not exist!");
-            }
-
-            return DataSource.Customers[ix];
+            return ix == -1 ? throw new ArgumentException($"the customer {id} does not exist!") : DataSource.Customers[ix];
         }
 
-        private int GetCustomerIndex(int id)
+        private static int GetCustomerIndex(int id)
         {
             return DataSource.Customers.FindIndex(c => c.Id == id);
         }

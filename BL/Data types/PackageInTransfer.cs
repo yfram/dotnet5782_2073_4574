@@ -12,7 +12,7 @@
             Reciver = reciver;
             PickUpLocation = pickUpLocation;
             DropOffLocation = dropOffLocation;
-            this.distance = distance;
+            this.Distance = distance;
         }
 
         public PackageInTransfer()
@@ -27,7 +27,7 @@
         public CustomerForPackage Reciver { get; set; }
         public Location PickUpLocation { get; set; }
         public Location DropOffLocation { get; set; }
-        public double distance { get; set; }
+        public double Distance { get; set; }
 
         public override string ToString()
         {

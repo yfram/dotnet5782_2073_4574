@@ -13,7 +13,7 @@ namespace PL.Pages
     public partial class CustomerViewTab : UserControl
     {
         private Customer BLCustomer { get => Resources["customer"] as Customer; set => Resources["customer"] = value; }
-        private IBL Bl => BlFactory.GetBl();
+        private static IBL Bl => BlFactory.GetBl();
 
         public CustomerViewTab(int id)
         {
@@ -50,7 +50,7 @@ namespace PL.Pages
         {
             int id = int.Parse(((TextBlock)((Button)sender).Content).Text);
             var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
-            if (l.Count() == 0)
+            if (!l.Any())
             {
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);
             }

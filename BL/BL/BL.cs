@@ -12,10 +12,10 @@ namespace BlApi
     /// </summary>
     internal partial class BL : IBL
     {
-        private List<DroneForList> BLdrones = new();
+        private readonly List<DroneForList> BLdrones = new();
         internal IDAL Idal = DalFactory.GetDal();
         internal double[] elecRate;
-        private static Random random = new();
+        private static readonly Random random = new();
 
         /// <summary>
         /// Constructor for BL object
@@ -88,7 +88,7 @@ namespace BlApi
                     {
                         bLdrone.State = DroneState.Empty;
                         var allPackages = Idal.GetAllPackages().Where(p => p.Delivered is not null);
-                        if (allPackages.Count() != 0)
+                        if (allPackages.Any())
                         {
                             var customer = GetDALCustomer(allPackages.ToList()[random.Next(0, allPackages.Count())].RecevirId);
                             bLdrone.CurrentLocation = new(customer.Longitude, customer.Lattitude);
@@ -153,7 +153,7 @@ namespace BlApi
             {
                 Idal.AddDrone(d.Id, d.Model, (DO.WeightGroup)((int)d.Weight));
 
-                DroneForList df = new DroneForList(d.Id, d.Model, d.Weight,
+                DroneForList df = new(d.Id, d.Model, d.Weight,
                     d.Battery, DroneState.Empty, d.CurrentLocation, d.Package.Id);
                 BLdrones.Add(df);
                 if (d.State == DroneState.Maitenance)
@@ -377,12 +377,12 @@ namespace BlApi
                     IEnumerable<DO.Package> allPackages = Idal.GetAllPackagesWhere(p => p.DroneId is null);
                     IEnumerable<DO.Package> allCanWeight = allPackages.Where(p => (int)p.Weight <= (int)bLdrone.Weight);
 
-                    if (allCanWeight.Count() > 0)
+                    if (allCanWeight.Any())
                     {
                         IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, bLdrone));
 
                         List<DO.Package> allNearList = allNear.ToList();
-                        if (allNearList.Count() > 0)
+                        if (allNearList.Count > 0)
                         {
                             allNearList.Sort((p1, p2) => PackagePriority(p1, p2, bLdrone.CurrentLocation));
 
@@ -544,8 +544,8 @@ namespace BlApi
                 var DALsend = GetDALCustomer(DALpkg.SenderId);
                 var DALrecv = GetDALCustomer(DALpkg.RecevirId);
 
-                CustomerForPackage send = new CustomerForPackage(DALpkg.SenderId, DALsend.Name);
-                CustomerForPackage recv = new CustomerForPackage(DALpkg.RecevirId, DALrecv.Name);
+                CustomerForPackage send = new(DALpkg.SenderId, DALsend.Name);
+                CustomerForPackage recv = new(DALpkg.RecevirId, DALrecv.Name);
 
                 Location locSend = new(DALsend.Longitude, DALsend.Lattitude), locRecv = new(DALrecv.Longitude, DALrecv.Lattitude);
 
@@ -605,7 +605,7 @@ namespace BlApi
         public Package GetPackageById(int PackageId)
         {
             var dALpkg = GetDALPackage(PackageId);
-            Package ans = new Package();
+            Package ans = new();
 
             WeightGroup weight = (WeightGroup)(int)dALpkg.Weight;
             PriorityGroup priority = (PriorityGroup)((int)dALpkg.PackagePriority);
@@ -615,10 +615,10 @@ namespace BlApi
             ans.Priority = priority;
 
             var dALsender = GetDALCustomer(dALpkg.SenderId);
-            CustomerForPackage sender = new CustomerForPackage(dALsender.Id, dALsender.Name);
+            CustomerForPackage sender = new(dALsender.Id, dALsender.Name);
 
             var DALrecv = GetDALCustomer(dALpkg.RecevirId);
-            CustomerForPackage recv = new CustomerForPackage(DALrecv.Id, DALrecv.Name);
+            CustomerForPackage recv = new(DALrecv.Id, DALrecv.Name);
 
             ans.Sender = sender;
             ans.Reciver = recv;
@@ -628,7 +628,7 @@ namespace BlApi
             if (dALpkg.DroneId.HasValue)
             {
                 DroneForList BLdrone = BLdrones.Find(d => d.Id == dALpkg.DroneId);
-                DroneForPackage drone = new DroneForPackage(BLdrone.Id, BLdrone.Battery, BLdrone.CurrentLocation);
+                DroneForPackage drone = new(BLdrone.Id, BLdrone.Battery, BLdrone.CurrentLocation);
                 ans.Drone = drone;
 
                 ans.TimePaired = dALpkg.Associated;
@@ -811,17 +811,7 @@ namespace BlApi
             double p1Dist = DistanceTo(DroneLoc, LocP1);
             double p2Dist = DistanceTo(DroneLoc, LocP2);
 
-            if (p1Dist > p2Dist)
-            {
-                return -1;
-            }
-
-            if (p1Dist < p2Dist)
-            {
-                return 1;
-            }
-
-            return 0;
+            return p1Dist > p2Dist ? -1 : p1Dist < p2Dist ? 1 : 0;
         }
 
         private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d)
@@ -889,7 +879,7 @@ namespace BlApi
                 freeStations = freeStations.Where(s => s.ChargeSlots > 0);
             }
 
-            if (freeStations.Count() > 0)
+            if (freeStations.Any())
             {
                 DO.Station closest = freeStations.Aggregate((s1, s2) => DistanceTo(new(s1.Longitude, s1.Lattitude), loc) >
                     DistanceTo(new(s2.Longitude, s2.Lattitude), loc) ?
@@ -934,7 +924,7 @@ namespace BlApi
             return elecRate[ix];
         }
 
-        private PackageStatus GetPackageState(Package p)
+        private static PackageStatus GetPackageState(Package p)
         {
 
             return p.TimeDeliverd is not null ?
@@ -949,7 +939,7 @@ namespace BlApi
 
         public void StartSimulator(int DroneId, Action update, Func<bool> stop)
         {
-            new Simulator(this, DroneId, update, stop);
+            _ = new Simulator(this, DroneId, update, stop);
         }
 
         public IEnumerable<dynamic> GetObjectsWhere<T>(Func<T, bool> func)

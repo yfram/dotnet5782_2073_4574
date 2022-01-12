@@ -17,7 +17,7 @@ namespace PL.Pages
     {
 
         public ObservableCollection<DroneForList> Drones { get; set; }
-        private IBL Bl => BlFactory.GetBl();
+        private static IBL Bl => BlFactory.GetBl();
 
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
@@ -31,9 +31,7 @@ namespace PL.Pages
         public void CollapsePullUp()
         {
             if (!gridOpen)
-            {
                 return;
-            }
 
             PullUpMenueContainer.Collapse(250);
             RefreshBl();
@@ -101,22 +99,14 @@ namespace PL.Pages
         private void ShowMenue(int? id, string typeOfMenue)
         {
 
-            UIElement menue = new();
-            switch (typeOfMenue)
+            UIElement menue;
+            menue = typeOfMenue switch
             {
-                case "drone add":
-                    menue = new AddDroneTab();
-                    break;
-                case "drone view":
-                    menue = new DroneViewTab(id ?? -1);
-                    break;
-                case "package view":
-                    menue = new PackageForDroneViewTab(id);
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-
+                "drone add" => new AddDroneTab(),
+                "drone view" => new DroneViewTab(id ?? -1),
+                "package view" => new PackageForDroneViewTab(id),
+                _ => throw new InvalidOperationException(),
+            };
             PullUpMenueContainer.Children.Add(menue);
             gridOpen = true;
             PullUpMenueContainer.Expand(250, 150);

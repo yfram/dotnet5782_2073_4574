@@ -12,7 +12,7 @@ namespace PL.Pages
     /// </summary>
     public partial class AddDroneTab : UserControl
     {
-        private IBL Bl => BlFactory.GetBl();
+        private static IBL Bl => BlFactory.GetBl();
 
         public AddDroneTab()
         {
