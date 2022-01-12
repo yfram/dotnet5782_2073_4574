@@ -100,7 +100,7 @@ namespace PL.Pages
             }
         }
 
-        public UserControl RefreshBl()
+        public HomeViewTab RefreshBl()
         {
             MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllCustomers(), 0.1));
             MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllDrones(), 0.1));
@@ -109,9 +109,5 @@ namespace PL.Pages
             return this;
         }
 
-        internal HomeViewTab RefreshBl()
-        {
-            return this;
-        }
     }
 }
