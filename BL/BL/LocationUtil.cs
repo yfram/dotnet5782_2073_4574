@@ -38,8 +38,10 @@ namespace BLApi
 
         internal static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
         {
-            double lat1 = Loc1.Latitude; double lon1 = Loc1.Longitude;
-            double lat2 = Loc2.Latitude; double lon2 = Loc2.Longitude;
+            double lat1 = Loc1.Latitude;
+            double lon1 = Loc1.Longitude;
+            double lat2 = Loc2.Latitude;
+            double lon2 = Loc2.Longitude;
 
             if (lat1 == lat2 && lon1 == lon2)
             {

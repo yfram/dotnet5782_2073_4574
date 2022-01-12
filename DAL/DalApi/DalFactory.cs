@@ -24,7 +24,8 @@ namespace DalApi
                 throw new DalConfigException($"Package {dalType} is not found in the package list in dal-config.xml");
             }
 
-            try { Assembly.Load(dalPkg); }
+            try
+            { Assembly.Load(dalPkg); }
             catch (Exception) { throw new DalConfigException("Failed to load dal-config.xml"); }
 
             Type type = Type.GetType($"Dal.{dalPkg}, {dalPkg}");
