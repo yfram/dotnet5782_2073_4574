@@ -881,7 +881,7 @@ namespace BL
         {
             lock (Idal)
             {
-                return BatteryToDeliver(p, d) <= d.Battery;
+                return BatteryToDeliver(p, d) + 2 <= d.Battery;
             }
         }
 
@@ -922,7 +922,7 @@ namespace BL
                     freeStations = freeStations.Where(s => s.ChargeSlots > 0);
                 }
 
-                if (freeStations.Any())
+                if (freeStations.Count() > 0)
                 {
                     DO.Station closest = freeStations.Aggregate((s1, s2) => LocationUtil.DistanceTo(new(s1.Longitude, s1.Latitude), loc) >
                         LocationUtil.DistanceTo(new(s2.Longitude, s2.Latitude), loc) ?
@@ -947,7 +947,7 @@ namespace BL
             lock (Idal)
             {
                 int ix = -1;
-                if (d.State is DroneState.Empty)
+                if (d.State is DroneState.Empty || (d.State is DroneState.Busy && Idal.GetPackage((int)d.PassingPckageId).PickUp is null))
                 {
                     ix = 0;
                 }

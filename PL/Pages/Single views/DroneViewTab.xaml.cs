@@ -21,9 +21,12 @@ namespace PL.Pages
         private Window PackageView = null;
         private BackgroundWorker bw;
         private bool Stop = false;
+        Action Refresh = null;
+        internal int id;
 
         public DroneViewTab(int _id)
         {
+            id = _id;
             InitializeComponent();
             BLdrone = Bl.GetDroneById(_id);
             UpdateChargeButton();
@@ -46,7 +49,9 @@ namespace PL.Pages
 
         private void RefreshParentBl()
         {
-            ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl();
+            if(Refresh is null)
+                Refresh = ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl;
+            Refresh();
         }
 
         private void Charge_Click(object sender, RoutedEventArgs e)
@@ -122,7 +127,16 @@ namespace PL.Pages
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
-                    Bl.AssignPackage(BLdrone.Id);
+                {
+                    try
+                    {
+                        Bl.AssignPackage(BLdrone.Id);
+                    }catch(BlException ex)
+                    {
+                        MessageBox.Show(ex.Message+". try to send the drone to charge",
+                    "error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
                 else
                 {
                     Package p = Bl.GetPackageById(BLdrone.Package.Id);
