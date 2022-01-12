@@ -14,7 +14,7 @@ namespace Dal
     public partial class DalXml : IDAL
     {
         private static readonly DalXml _Instance = new();
-        public static DalXml Instance { get => _Instance; }
+        public static DalXml Instance => _Instance;
 
         public struct Config
         {

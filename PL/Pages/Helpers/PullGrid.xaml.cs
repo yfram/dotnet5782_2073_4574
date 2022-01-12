@@ -10,7 +10,7 @@ namespace PL.Pages
     /// </summary>
     public partial class PullGrid : UserControl
     {
-        public UIElementCollection Children { get => MainGrid.Children; }
+        public UIElementCollection Children => MainGrid.Children;
 
         public PullGrid()
         {

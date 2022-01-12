@@ -11,7 +11,7 @@ namespace PL.Pages
     /// </summary>
     public partial class AddCustomerTab : UserControl
     {
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         public AddCustomerTab()
         {

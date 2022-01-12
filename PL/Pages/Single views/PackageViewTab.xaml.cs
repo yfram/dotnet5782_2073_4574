@@ -11,7 +11,7 @@ namespace PL.Pages
     public partial class PackageViewTab : UserControl
     {
         private Package BLpackage { get => Resources["package"] as Package; set => Resources["package"] = value; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         public PackageViewTab(int id)
         {

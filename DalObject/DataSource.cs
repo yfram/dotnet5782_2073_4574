@@ -122,14 +122,22 @@ namespace Dal
                 (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1), null);
 
         }
-        private static Station InitStation(int i, Random random) =>
-            new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(),
-                random.Next() % Config.MaxChargingPorts);
-        private static Drone InitDrone(int i, Random random) =>
-            new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));
-        private static Customer InitCustumer(int i, Random random) =>
-            new(i, CustomerNames[random.Next() % CustomerNames.Count],
-                $"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 33 + random.NextDouble(), 34 + random.NextDouble());
+        private static Station InitStation(int i, Random random)
+        {
+            return new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(),
+random.Next() % Config.MaxChargingPorts);
+        }
+
+        private static Drone InitDrone(int i, Random random)
+        {
+            return new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));
+        }
+
+        private static Customer InitCustumer(int i, Random random)
+        {
+            return new(i, CustomerNames[random.Next() % CustomerNames.Count],
+$"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 33 + random.NextDouble(), 34 + random.NextDouble());
+        }
         #endregion
     }
 }

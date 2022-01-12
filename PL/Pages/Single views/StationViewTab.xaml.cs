@@ -12,7 +12,7 @@ namespace PL.Pages
     public partial class StationViewTab : UserControl
     {
         private Station BLstation { get => Resources["station"] as Station; set => Resources["station"] = value; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         public StationViewTab(int id)
         {

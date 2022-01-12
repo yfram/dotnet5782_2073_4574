@@ -17,7 +17,7 @@ namespace PL.Pages
     {
 
         public ObservableCollection<DroneForList> Drones { get; set; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
@@ -122,7 +122,10 @@ namespace PL.Pages
             PullUpMenueContainer.Expand(250, 150);
         }
 
-        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e) => ShowMenue(null, "drone add");
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMenue(null, "drone add");
+        }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {

@@ -14,7 +14,7 @@ namespace PL.Pages
     {
 
         public ObservableCollection<CustomerForList> CustomersView { get; set; } = new();
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         private bool gridOpen = false;
 

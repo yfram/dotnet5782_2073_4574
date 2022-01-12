@@ -21,7 +21,10 @@
         public PackageStatus Status { get; set; }
         public CustomerForPackage Customer { get; set; }
 
-        public override string ToString() => $"Id: {Id}\nPriority: {Priority}" +
-            $"\nSending to: {Customer.Name}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nPriority: {Priority}" +
+$"\nSending to: {Customer.Name}";
+        }
     }
 }

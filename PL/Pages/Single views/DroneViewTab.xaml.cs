@@ -13,7 +13,7 @@ namespace PL.Pages
     public partial class DroneViewTab : UserControl
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
         private Window PackageView = null;
         private BackgroundWorker bw;
         private bool Stop = false;

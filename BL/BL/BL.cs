@@ -824,7 +824,10 @@ namespace BlApi
             return 0;
         }
 
-        private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d) => BatteryToDeliver(p, d) <= d.Battery;
+        private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d)
+        {
+            return BatteryToDeliver(p, d) <= d.Battery;
+        }
 
         private double BatteryToDeliver(DO.Package p, DroneForList d)
         {
@@ -989,16 +992,24 @@ namespace BlApi
             }
         }
 
-        public IEnumerable<StationForList> GetAllStationsWhere(Func<StationForList, bool> func) =>
-            GetObjectsWhere(func).Cast<StationForList>();
+        public IEnumerable<StationForList> GetAllStationsWhere(Func<StationForList, bool> func)
+        {
+            return GetObjectsWhere(func).Cast<StationForList>();
+        }
 
-        public IEnumerable<DroneForList> GetAllDronesWhere(Func<DroneForList, bool> func) =>
-            GetObjectsWhere(func).Cast<DroneForList>();
+        public IEnumerable<DroneForList> GetAllDronesWhere(Func<DroneForList, bool> func)
+        {
+            return GetObjectsWhere(func).Cast<DroneForList>();
+        }
 
-        public IEnumerable<CustomerForList> GetAllCustomersWhere(Func<CustomerForList, bool> func) =>
-            GetObjectsWhere(func).Cast<CustomerForList>();
+        public IEnumerable<CustomerForList> GetAllCustomersWhere(Func<CustomerForList, bool> func)
+        {
+            return GetObjectsWhere(func).Cast<CustomerForList>();
+        }
 
-        public IEnumerable<PackageForList> GetAllPackagesWhere(Func<PackageForList, bool> func) =>
-            GetObjectsWhere(func).Cast<PackageForList>();
+        public IEnumerable<PackageForList> GetAllPackagesWhere(Func<PackageForList, bool> func)
+        {
+            return GetObjectsWhere(func).Cast<PackageForList>();
+        }
     }
 }

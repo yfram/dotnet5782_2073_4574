@@ -18,6 +18,9 @@ namespace BO
         public double Battery { get; set; }
         public DateTime TimeEnterd { get; set; }
 
-        public override string ToString() => $"Id: {Id}\nCharge: {Battery}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nCharge: {Battery}";
+        }
     }
 }

@@ -8,8 +8,10 @@ namespace Dal
     public partial class DalObject
     {
 
-        public void AddCustomer(int id, string name, string phone, double lattitude, double longitude) =>
+        public void AddCustomer(int id, string name, string phone, double lattitude, double longitude)
+        {
             DataSource.Customers.Add(new(GetCustomerIndex(id) != -1 ? throw new ArgumentException($"Cannot create the customer {id}. it is already exist!") : id, name, phone, lattitude, longitude));
+        }
 
         public Customer GetCustomer(int id)
         {
@@ -22,12 +24,19 @@ namespace Dal
             return DataSource.Customers[ix];
         }
 
-        private int GetCustomerIndex(int id) => DataSource.Customers.FindIndex(c => c.Id == id);
+        private int GetCustomerIndex(int id)
+        {
+            return DataSource.Customers.FindIndex(c => c.Id == id);
+        }
 
-        public IEnumerable<Customer> GetAllCustomers() => new List<Customer>(DataSource.Customers);
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            return new List<Customer>(DataSource.Customers);
+        }
 
-        public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate) =>
-           new List<Customer>(DataSource.Customers.Where(predicate));
-
+        public IEnumerable<Customer> GetAllCustomerssWhere(Func<Customer, bool> predicate)
+        {
+            return new List<Customer>(DataSource.Customers.Where(predicate));
+        }
     }
 }

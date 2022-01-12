@@ -29,6 +29,9 @@ namespace BO
         public int AmountOfEmptyPorts { get; set; }
         public IEnumerable<DroneInCharging> ChargingDrones { get; set; } = new List<DroneInCharging>();
 
-        public override string ToString() => $"Id: {Id}\nName: {Name}\nAt: \n{LocationOfStation}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nName: {Name}\nAt: \n{LocationOfStation}";
+        }
     }
 }

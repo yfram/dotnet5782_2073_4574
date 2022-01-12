@@ -35,8 +35,11 @@ namespace BO
         public DateTime? TimeDeliverd { get; set; }
 
 #pragma warning disable CS8524 
-        public override string ToString() => $"Id: {Id}\n Sender ID: {Sender.Id}\n Receiver ID: {Reciver.Id}\nPriority: " +
-                $"{Priority}\n" + (Drone is not null ? $"Drone Id: {Drone.Id}" : "");
+        public override string ToString()
+        {
+            return $"Id: {Id}\n Sender ID: {Sender.Id}\n Receiver ID: {Reciver.Id}\nPriority: " +
+$"{Priority}\n" + (Drone is not null ? $"Drone Id: {Drone.Id}" : "");
+        }
 #pragma warning restore CS8524
     }
 }

@@ -22,6 +22,8 @@ namespace BO
         public IEnumerable<PackageForCustomer> PackagesTo { get; set; }
 
         public override string ToString()
-        => $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nLocated At: {CustomerLocation}";
+        {
+            return $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nLocated At: {CustomerLocation}";
+        }
     }
 }

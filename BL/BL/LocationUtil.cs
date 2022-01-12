@@ -28,7 +28,10 @@ namespace BLApi
             return bearing;
         }
 
-        internal static Location ToRadian(Location loc) => new Location(loc.Longitude * PI / 180, loc.Latitude * PI / 180);
+        internal static Location ToRadian(Location loc)
+        {
+            return new Location(loc.Longitude * PI / 180, loc.Latitude * PI / 180);
+        }
 
         internal static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
         {
@@ -84,8 +87,9 @@ namespace BLApi
             return loc;
         }
 
-        internal static bool IsNear(Location a, Location b) => DistanceTo(a, b) < 2;
-
-
+        internal static bool IsNear(Location a, Location b)
+        {
+            return DistanceTo(a, b) < 2;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace PL.Pages
     public partial class CustomerViewTab : UserControl
     {
         private Customer BLCustomer { get => Resources["customer"] as Customer; set => Resources["customer"] = value; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private IBL Bl => BlFactory.GetBl();
 
         public CustomerViewTab(int id)
         {

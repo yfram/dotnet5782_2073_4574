@@ -8,9 +8,11 @@ namespace Dal
     public partial class DalObject
     {
         public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
-            DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered) =>
+            DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered)
+        {
             DataSource.Packages.Add(new(DataSource.Config.RunNumber++, senderId, recevirId, weight, packagePriority, droneId,
-                Created, Associated, PickUp, Delivered));
+Created, Associated, PickUp, Delivered));
+        }
 
         public void DeliverPackage(int packageId)
         {
@@ -32,10 +34,19 @@ namespace Dal
 
             return DataSource.Packages[ix];
         }
-        private int GetPackageIndex(int id) => DataSource.Packages.FindIndex(p => p.Id == id);
+        private int GetPackageIndex(int id)
+        {
+            return DataSource.Packages.FindIndex(p => p.Id == id);
+        }
 
-        public IEnumerable<Package> GetAllPackages() => new List<Package>(DataSource.Packages);
-        public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> predicate) => DataSource.Packages.Where(predicate);
+        public IEnumerable<Package> GetAllPackages()
+        {
+            return new List<Package>(DataSource.Packages);
+        }
 
+        public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> predicate)
+        {
+            return DataSource.Packages.Where(predicate);
+        }
     }
 }

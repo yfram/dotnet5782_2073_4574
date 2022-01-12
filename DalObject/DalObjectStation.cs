@@ -7,8 +7,10 @@ namespace Dal
 {
     public partial class DalObject
     {
-        public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots) =>
+        public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
+        {
             DataSource.Stations.Add(new(GetStationIndex(id) != -1 ? throw new ArgumentException($"the Station {id} already exists!") : id, name, longitude, lattitude, chargeSlots));
+        }
 
         public Station GetStation(int id)
         {
@@ -20,10 +22,19 @@ namespace Dal
 
             return DataSource.Stations[ix];
         }
-        private int GetStationIndex(int id) => DataSource.Stations.FindIndex(s => s.Id == id);
+        private int GetStationIndex(int id)
+        {
+            return DataSource.Stations.FindIndex(s => s.Id == id);
+        }
 
-        public IEnumerable<Station> GetAllStations() => new List<Station>(DataSource.Stations);
-        public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate) => DataSource.Stations.Where(predicate);
+        public IEnumerable<Station> GetAllStations()
+        {
+            return new List<Station>(DataSource.Stations);
+        }
 
+        public IEnumerable<Station> GetAllStationsWhere(Func<Station, bool> predicate)
+        {
+            return DataSource.Stations.Where(predicate);
+        }
     }
 }

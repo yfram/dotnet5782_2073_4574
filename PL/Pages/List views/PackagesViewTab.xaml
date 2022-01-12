@@ -62,8 +62,9 @@
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
-            <DataGrid.Resources>
-                <Style TargetType="DataGridRow">
+            <DataGrid.RowStyle>
+
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="{x:Null}" />
@@ -72,7 +73,7 @@
                     <Setter Property="Background" Value="{x:Null}"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
-            </DataGrid.Resources>
+            </DataGrid.RowStyle>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,431" Background="LightGray">
             <CheckBox Checked="Filter" Unchecked="Filter" x:Name="FilterByDate" Margin="69,17,0,0" Content="Filter only packages picked up between:" Width="247"/>
