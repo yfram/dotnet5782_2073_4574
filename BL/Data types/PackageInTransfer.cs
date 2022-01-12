@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class PackageInTransfer
     {
@@ -12,7 +15,7 @@
             Reciver = reciver;
             PickUpLocation = pickUpLocation;
             DropOffLocation = dropOffLocation;
-            this.distance = distance;
+            this.Distance = distance;
         }
 
         public PackageInTransfer()
@@ -27,8 +30,11 @@
         public CustomerForPackage Reciver { get; set; }
         public Location PickUpLocation { get; set; }
         public Location DropOffLocation { get; set; }
-        public double distance { get; set; }
+        public double Distance { get; set; }
 
-        public override string ToString() => $"Id: {Id}\nSent By: {Sender.Name}\nTo: {Reciver.Name}\nPriority: {Priority}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nSent By: {Sender.Name}\nTo: {Reciver.Name}\nPriority: {Priority}";
+        }
     }
 }

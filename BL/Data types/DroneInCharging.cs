@@ -1,4 +1,7 @@
-﻿using System;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System;
 
 namespace BO
 {
@@ -18,6 +21,9 @@ namespace BO
         public double Battery { get; set; }
         public DateTime TimeEnterd { get; set; }
 
-        public override string ToString() => $"Id: {Id}\nCharge: {Battery}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nCharge: {Battery}";
+        }
     }
 }

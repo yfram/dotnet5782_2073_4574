@@ -1,4 +1,7 @@
-﻿using DO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ namespace Dal
     public partial class DalXml
     {
 
-        public void AddCustomer(int id, string name, string phone, double lattitude, double longitude)
+        public void AddCustomer(int id, string name, string phone, double latitude, double longitude)
         {
             var ans = GetAllCustomers();
             if (ans.Where(c => c.Id == id).Count() > 0)
@@ -17,7 +20,7 @@ namespace Dal
                 throw new ArgumentException($"the customer {id} already exist");
             }
 
-            WriteAllCustomers(ans.Append(new Customer(id, name, phone, lattitude, longitude)));
+            WriteAllCustomers(ans.Append(new Customer(id, name, phone, latitude, longitude)));
         }
 
         public void DeleteCustomer(int id)
@@ -44,13 +47,13 @@ namespace Dal
 
             if (e is null)
             {
-                throw new ArgumentException($"the id {c.Id} is not exsist!");
+                throw new ArgumentException($"the id {c.Id} is not exist!");
             }
 
             e.Element("Name").Value = c.Name;
             e.Element("Phone").Value = c.Phone;
             e.Element("Longitude").Value = c.Longitude.ToString();
-            e.Element("Lattitude").Value = c.Lattitude.ToString();
+            e.Element("Latitude").Value = c.Latitude.ToString();
 
             ObjectsRoot.Save($"Data/Customers.xml");
         }
@@ -78,7 +81,7 @@ namespace Dal
                         Id = Int32.Parse(s.Element("Id").Value),
                         Name = s.Element("Name").Value,
                         Phone = s.Element("Phone").Value,
-                        Lattitude = Double.Parse(s.Element("Lattitude").Value),
+                        Latitude = Double.Parse(s.Element("Latitude").Value),
                         Longitude = Double.Parse(s.Element("Longitude").Value)
                     });
         }
@@ -91,7 +94,7 @@ namespace Dal
                 new XElement("Id", p.Id),
                 new XElement("Name", p.Name),
                 new XElement("Phone", p.Phone),
-                new XElement("Lattitude", p.Lattitude),
+                new XElement("Latitude", p.Latitude),
                 new XElement("Longitude", p.Longitude)
                 ));
 

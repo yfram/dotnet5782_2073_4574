@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class PackageForCustomer
     {
@@ -21,7 +24,10 @@
         public PackageStatus Status { get; set; }
         public CustomerForPackage Customer { get; set; }
 
-        public override string ToString() => $"Id: {Id}\nPriority: {Priority}" +
-            $"\nSending to: {Customer.Name}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nPriority: {Priority}" +
+$"\nSending to: {Customer.Name}";
+        }
     }
 }

@@ -1,10 +1,19 @@
-﻿using System;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System;
 using System.Reflection;
 
 namespace DalApi
 {
     public class DalFactory
     {
+        /// <summary>
+        /// Get the working DAL object
+        /// </summary>
+        /// <param name="force">set to true if use of xml/dal-config.xaml is wanted</param>
+        /// <returns>The working DAL object</returns>
+        /// <exception cref="DalConfigException"></exception>
         public static IDAL GetDal(bool force = false)
         {
 
@@ -25,7 +34,8 @@ namespace DalApi
                 throw new DalConfigException($"Package {dalType} is not found in the package list in dal-config.xml");
             }
 
-            try { Assembly.Load(dalPkg); }
+            try
+            { Assembly.Load(dalPkg); }
             catch (Exception) { throw new DalConfigException("Failed to load dal-config.xml"); }
 
             Type type = Type.GetType($"{dalNamspace}.{dalClass}, {dalPkg}");
@@ -38,7 +48,7 @@ namespace DalApi
                       BindingFlags.Public | BindingFlags.Static).GetValue(null);
             if (dal == null)
             {
-                throw new DalConfigException($"Class {dalPkg} is not a singleton or a wrong propertry name for Instance was given");
+                throw new DalConfigException($"Class {dalPkg} is not a singleton or a wrong property name for Instance was given");
             }
 
             return dal;

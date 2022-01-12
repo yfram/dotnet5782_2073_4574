@@ -1,4 +1,7 @@
-﻿using BlApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
 using BO;
 using System;
 using System.Collections.Generic;
@@ -7,8 +10,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace PL.Pages
 {
@@ -19,7 +20,7 @@ namespace PL.Pages
     {
 
         public ObservableCollection<DroneForList> Drones { get; set; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private static IBL Bl => BlFactory.GetBl();
 
         private bool gridOpen = false;
         private bool packageViewInTheMiddle = false;
@@ -32,7 +33,9 @@ namespace PL.Pages
 
         public void CollapsePullUp()
         {
-            if (!gridOpen) return;
+            if (!gridOpen)
+                return;
+
             PullUpMenueContainer.Collapse(250);
             RefreshBl();
             gridOpen = false;
@@ -46,7 +49,10 @@ namespace PL.Pages
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is not CheckBox senderAsCheckBox) return;
+            if (sender is not CheckBox senderAsCheckBox)
+            {
+                return;
+            }
 
             List<Func<DroneForList, bool>> weightFuncs = new();
             List<Func<DroneForList, bool>> statusFuncs = new();
@@ -55,16 +61,22 @@ namespace PL.Pages
                 switch (checkBox.Content)
                 {
                     case "Empty":
-                    case "Maitenance":
+                    case "Maintenance":
                     case "Busy":
                         if ((checkBox.IsChecked ?? false))//false is unreachable
+                        {
                             statusFuncs.Add((DroneForList d) => d.State.ToString() == (string)checkBox.Content);
+                        }
+
                         break;
                     case "Light":
                     case "Mid":
                     case "Heavy":
                         if ((checkBox.IsChecked ?? false))//false is unreachable
+                        {
                             weightFuncs.Add((DroneForList d) => d.Weight.ToString() == (string)checkBox.Content);
+                        }
+
                         break;
                     case "Collected_View":
                         break;
@@ -82,34 +94,31 @@ namespace PL.Pages
             var droneView = (CollectionViewSource)Resources["DronesGroup"];
             droneView.GroupDescriptions.Clear();
             if (((CheckBox)sender).IsChecked.HasValue && ((CheckBox)sender).IsChecked.Value)
+            {
                 droneView.GroupDescriptions.Add(new PropertyGroupDescription("State"));
+            }
         }
 
         private void ShowMenue(int? id, string typeOfMenue)
         {
-            
-            UIElement menue = new();
-            switch (typeOfMenue)
+
+            UIElement menue;
+            menue = typeOfMenue switch
             {
-                case "drone add":
-                    menue = new AddDroneTab();
-                    break;
-                case "drone view":
-                    menue = new DroneViewTab(id ?? -1);
-                    break;
-                case "package view":
-                    menue = new PackageForDroneViewTab(id);
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-            
+                "drone add" => new AddDroneTab(),
+                "drone view" => new DroneViewTab(id ?? -1),
+                "package view" => new PackageForDroneViewTab(id),
+                _ => throw new InvalidOperationException(),
+            };
             PullUpMenueContainer.Children.Add(menue);
             gridOpen = true;
             PullUpMenueContainer.Expand(250, 150);
         }
 
-        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e) => ShowMenue(null, "drone add");
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMenue(null, "drone add");
+        }
 
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {

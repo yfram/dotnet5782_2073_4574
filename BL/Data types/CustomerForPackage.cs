@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class CustomerForPackage
     {
@@ -18,6 +21,8 @@
         public string Name { get; set; }
 
         public override string ToString()
-        => $"Id: {Id}\n Name: {Name}";
+        {
+            return $"Id: {Id}\n Name: {Name}";
+        }
     }
 }

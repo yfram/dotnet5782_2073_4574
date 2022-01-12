@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class DroneForList
     {
@@ -25,7 +28,10 @@
         public Location CurrentLocation { get; set; }
         public int? PassingPckageId { get; set; } = null;
 
-        public override string ToString() => $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: {CurrentLocation.ToString().Replace("\n", "\t")}\n" +
-                $"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {(PassingPckageId == -1 ? "None" : PassingPckageId)}") }";
+        public override string ToString()
+        {
+            return $"Id: {Id}\nModel: {Model}\nCharge: {Battery}\nCurrently at: {CurrentLocation.ToString().Replace("\n", "\t")}\n" +
+$"State: {State}\n{(PassingPckageId is null ? "" : $"Package Id: {(PassingPckageId == -1 ? "None" : PassingPckageId)}") }";
+        }
     }
 }

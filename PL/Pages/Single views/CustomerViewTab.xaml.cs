@@ -1,4 +1,8 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
+using BO;
 using System;
 using System.Linq;
 using System.Windows;
@@ -12,54 +16,57 @@ namespace PL.Pages
     public partial class CustomerViewTab : UserControl
     {
         private Customer BLCustomer { get => Resources["customer"] as Customer; set => Resources["customer"] = value; }
+        private static IBL Bl => BlFactory.GetBl();
+
         public CustomerViewTab(int id)
         {
             InitializeComponent();
-            BLCustomer = MainWindow.BL.GetCustomerById(id);
+            BLCustomer = Bl.GetCustomerById(id);
+        }
 
-            UpdateButton.GotFocus += UpdateButton_Click;
+        private void Exit(object sender = null, RoutedEventArgs e = null)
+        {
+            ((CustomersViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+        }
+
+        private void RefreshParentBl()
+        {
+            ((CustomersViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl();
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.BL.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
-                BLCustomer = MainWindow.BL.GetCustomerById(BLCustomer.Id);
+                Bl.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
+                BLCustomer = Bl.GetCustomerById(BLCustomer.Id);
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void Exit(object sender = null, RoutedEventArgs e = null)
-        {
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((DronesViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            RefreshParentBl();
         }
 
         private void OpenPackage(object sender, RoutedEventArgs e)
         {
-            int id = int.Parse(((Button)sender).Content.ToString());
+            int id = int.Parse(((TextBlock)((Button)sender).Content).Text);
             var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
-            if (l.Count() == 0)
+            if (!l.Any())
             {
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);
             }
 
-            PackageForCustomer p = l.ElementAt(0);
-            var w = new Window
+            PackageForCustomer p = l.First();
+            new Window
             {
                 Content = new PackageForCustomerViewTab(p),
                 Title = $"package {id}",
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.CanResize
 
-            };
-            w.Show();
-
+            }.Show();
         }
     }
 }

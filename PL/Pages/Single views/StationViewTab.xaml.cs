@@ -1,4 +1,8 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
+using BO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,29 +15,29 @@ namespace PL.Pages
     public partial class StationViewTab : UserControl
     {
         private Station BLstation { get => Resources["station"] as Station; set => Resources["station"] = value; }
+        private static IBL Bl => BlFactory.GetBl();
+
         public StationViewTab(int id)
         {
             InitializeComponent();
-            BLstation = MainWindow.BL.GetStationById(id);
+            BLstation = Bl.GetStationById(id);
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.BL.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
-                BLstation = MainWindow.BL.GetStationById(BLstation.Id);
+                Bl.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
+                BLstation = Bl.GetStationById(BLstation.Id);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        public void Exit(object sender, RoutedEventArgs e)
+        private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focusable = true;
-            ((StationsViewTab)((Grid)((Grid)Parent).Parent).Parent).Focus();
+            ((StationsViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
 
         private void View_Drones(object sender, RoutedEventArgs e)

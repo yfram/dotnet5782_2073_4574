@@ -1,4 +1,7 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BO;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -13,9 +16,13 @@ namespace PL.Pages
 
         public PackageForDroneViewTab(int? id)
         {
-            if (id is null) return;
+            if (id is null)
+            {
+                return;
+            }
+
             InitializeComponent();
-            BLpackage = MainWindow.BL.GetDroneById(MainWindow.BL.GetAllDronesWhere(d =>
+            BLpackage = BlApi.BlFactory.GetBl().GetDroneById(BlApi.BlFactory.GetBl().GetAllDronesWhere(d =>
                 d.PassingPckageId == (int)id).First().Id).Package;
         }
 

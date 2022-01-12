@@ -10,7 +10,7 @@
              d:DesignHeight="150" d:DesignWidth="1000"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <src:Customer x:Key="customer" x:Name="customer"/>
+        <src:Customer x:Key="customer"/>
     </UserControl.Resources>
     <Grid Background="#3e5c76" DataContext="{DynamicResource customer}">
         <TextBlock FontSize="15" Name="CustomerId" HorizontalAlignment="Left" Margin="10,0,0,98" Text="{Binding Id, StringFormat=Customer id: {0}}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="48" Width="68"  RenderTransformOrigin="0.961,0.544"/>

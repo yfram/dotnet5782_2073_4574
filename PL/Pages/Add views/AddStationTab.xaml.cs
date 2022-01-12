@@ -2,7 +2,6 @@
 // All rights reserved
 
 using BlApi;
-using BO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,27 +9,28 @@ using System.Windows.Controls;
 namespace PL.Pages
 {
     /// <summary>
-    /// Interaction logic for AddPackageTab.xaml
+    /// Interaction logic for AddStationTab.xaml
     /// </summary>
-    public partial class AddPackageTab : UserControl
+    public partial class AddStationTab : UserControl
     {
-        private static IBL Bl => BlFactory.GetBl();
+        private IBL Bl = BlFactory.GetBl();
 
-        public AddPackageTab()
+        public AddStationTab()
         {
             InitializeComponent();
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((PackagesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+            ((StationsViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
 
-        private void AddPackage(object sender, RoutedEventArgs e)
+        private void AddStation(object sender, RoutedEventArgs e)
         {
             try
             {
-                Bl.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex + 1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex + 1);
+                Bl.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0, 0), int.Parse(NewSlots.Text)));
+
             }
             catch (Exception ex)
             {

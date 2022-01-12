@@ -1,4 +1,7 @@
-﻿using DalApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
@@ -14,11 +17,11 @@ namespace ConsoleUI
         {
             IDAL d = DalFactory.GetDal();
 
-            string openMsg = "Welcome to John&G Drones administiration system!\n" +
-                "for add menue, press 1\n" +
-                "for update menue, press 2\n" +
-                "for get by id menue, press 3\n" +
-                "for get lists menue, press 4\n" +
+            string openMsg = "Welcome to John&G Drones administration system!\n" +
+                "for add menu, press 1\n" +
+                "for update menu, press 2\n" +
+                "for get by id menu, press 3\n" +
+                "for get lists menu, press 4\n" +
                 "to exit press 5";
             int menue;
             while (true)//you can exit on case MenueOptions.Exit
@@ -59,7 +62,7 @@ namespace ConsoleUI
                 "to get the drones list press 2\n" +
                 "to get the customers list press 3\n" +
                 "to get the packages list press 4\n" +
-                "to get a list of all packages wihtout drones press 5\n" +
+                "to get a list of all packages without drones press 5\n" +
                 "to get a list of all the available stations press 6";
             int menue;
             do
@@ -189,7 +192,7 @@ namespace ConsoleUI
                     d.ReleaseDroneFromCharge(droneId, DateTime.Now, stationId);
                     break;
                 default:
-                    break; ;
+                    break;
             }
 
         }
@@ -199,7 +202,7 @@ namespace ConsoleUI
             string addMenu = "to add a base station, press 1\n" +
                 "to add a drone, press 2\n" +
                 "to add a new customer, press 3\n" +
-                "to add a new packeage for delivering, press 4";
+                "to add a new package for delivering, press 4";
             int menue;
             do
             {
@@ -213,7 +216,7 @@ namespace ConsoleUI
             {
                 case 1:
                     d.AddStation(GetIntInput("Enter ID:"), GetStringInput("Enter name:"),
-                        GetDoubleInput("Enter drone position(longitude):"), GetDoubleInput("Enter drone position(lattitude):"),
+                        GetDoubleInput("Enter drone position(longitude):"), GetDoubleInput("Enter drone position(latitude):"),
                         GetIntInput("Enter amount of charge slots:"));
                     break;
                 case 2:
@@ -222,14 +225,14 @@ namespace ConsoleUI
                     break;
                 case 3:
                     d.AddCustomer(GetIntInput("Enter ID"), GetStringInput("Enter name:"), GetStringInput("Enter phone number"),
-                        GetDoubleInput("Enter customer position(longitude):"), GetDoubleInput("Enter customer position(lattitude):"));
+                        GetDoubleInput("Enter customer position(longitude):"), GetDoubleInput("Enter customer position(latitude):"));
                     break;
                 case 4:
                     d.AddPackage(GetIntInput("Enter sender ID:"),
-                        GetIntInput("Enter reciver ID:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
-                        (Priority)GetEnumInput("Enter prioraty(1 for low, 2 for mid, 3 for high)", 1, 3),
+                        GetIntInput("Enter receiver ID:"), (WeightGroup)GetEnumInput("Enter weight group(1 for light, 2 for mid, 3 for heavy)", 1, 3),
+                        (Priority)GetEnumInput("Enter priority(1 for low, 2 for mid, 3 for high)", 1, 3),
                         -1, GetDateTimeInput("Enter time to package:"), GetDateTimeInput("Enter time to get drone:"),
-                        GetDateTimeInput("Enter time to get package:"), GetDateTimeInput("Enter time to recive:"));
+                        GetDateTimeInput("Enter time to get package:"), GetDateTimeInput("Enter time to receive:"));
                     break;
             }
         }

@@ -1,4 +1,7 @@
-﻿using DalApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
@@ -24,20 +27,14 @@ namespace Dal
 
         public bool isInCharge(int droneId)
         {
-            var all = ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId);
-            if (all.Count() > 0)
-            {
-                return true;
-            }
-
-            return false;
+            return ReadAllObjects<DroneCharge>().Where(s => s.DroneId == droneId).Any();
         }
 
-        public IEnumerable<T> ReadAllObjects<T>() where T : new()
+        public static IEnumerable<T> ReadAllObjects<T>() where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
-            List<T> ans = new List<T>();
+            List<T> ans = new();
             foreach (XElement elem in ObjectsRoot.Elements())
             {
                 ans.Add(ReadObject<T>(elem));
@@ -46,7 +43,7 @@ namespace Dal
 
         }
 
-        public IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
+        public static IEnumerable<T> ReadAllObjectsWhen<T>(Func<T, bool> func) where T : new()
         {
             List<T> ans = new();
             IEnumerable<T> all = ReadAllObjects<T>();
@@ -60,13 +57,13 @@ namespace Dal
             return ans;
         }
 
-        public void WriteAllObjects<T>(IEnumerable<T> write)
+        public static void WriteAllObjects<T>(IEnumerable<T> write)
         {
-            XElement root = new XElement("listOfObjects");
+            XElement root = new("listOfObjects");
 
             foreach (T elem in write)
             {
-                XElement current = new XElement(typeof(T).Name);
+                XElement current = new(typeof(T).Name);
                 foreach (PropertyInfo FI in typeof(T).GetProperties())
                 {
                     current.Add(new XElement(FI.Name, FI.GetValue(elem)));
@@ -77,7 +74,7 @@ namespace Dal
             root.Save($"Data/{typeof(T).Name}s.xml");
         }
 
-        public T ReadObject<T>(XElement elem) where T : new()
+        public static T ReadObject<T>(XElement elem) where T : new()
         {
             object current = new T();
             foreach (PropertyInfo FI in current.GetType().GetProperties())
@@ -105,14 +102,14 @@ namespace Dal
             return (T)current;
         }
 
-        public T GetObject<T>(int id, string propName = "Id") where T : new()
+        public static T GetObject<T>(int id, string propName = "Id") where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} is not exsist in {typeof(T).Name} or it type is not int so it cant use as an id!");
+                throw new ArgumentException($"the property {propName} is not exist in {typeof(T).Name} or it type is not int so it cant use as an id!");
             }
 
             foreach (XElement elem in ObjectsRoot.Elements())
@@ -125,21 +122,21 @@ namespace Dal
                 }
             }
 
-            throw new ArgumentException($"the id {id} is not exsist!");
+            throw new ArgumentException($"the id {id} is not exist!");
         }
 
-        public void AddObject<T>(int id, T obj) where T : new()
+        public static void AddObject<T>(int id, T obj) where T : new()
         {
             try
             {
                 GetObject<T>(id);
                 throw new ArgumentException($"cannot add the {typeof(T)} with id {id} because it is exist");
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 WriteAllObjects<T>(ReadAllObjects<T>().Append(obj));
             }
-            catch (FileNotFoundException f)
+            catch (FileNotFoundException)
             {
                 var param = new List<T>() { obj };
                 WriteAllObjects<T>(param);
@@ -148,7 +145,7 @@ namespace Dal
 
         }
 
-        public void DeleteObject<T>(int id, string propName = "Id") where T : new()
+        public static void DeleteObject<T>(int id, string propName = "Id") where T : new()
         {
             var all = ReadAllObjects<T>();
             IEnumerable<T> ans = new List<T>();
@@ -156,7 +153,7 @@ namespace Dal
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} does not exsist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
+                throw new ArgumentException($"the property {propName} does not exist in {typeof(T).Name} or its type is not int, so it can't be used as an id!");
             }
 
             bool found = false;
@@ -165,7 +162,7 @@ namespace Dal
             {
                 if ((int)prop.GetValue(elem) != id)
                 {
-                    ans.Append(elem);
+                    ans = ans.Append(elem);
                 }
                 else
                 {
@@ -181,7 +178,7 @@ namespace Dal
             WriteAllObjects(ans);
         }
 
-        public void UpdateObject<T>(int id, T obj, string propName = "Id") where T : new()
+        public static void UpdateObject<T>(int id, T obj, string propName = "Id") where T : new()
         {
             var all = ReadAllObjects<T>();
             IEnumerable<T> ans = new List<T>();
@@ -189,7 +186,7 @@ namespace Dal
             var prop = typeof(T).GetProperty(propName);
             if (prop is null || prop.PropertyType != typeof(int))
             {
-                throw new ArgumentException($"the property {propName} is not exsist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
+                throw new ArgumentException($"the property {propName} is not exist in {obj.GetType().Name} or it type is not int so it cant use as an id!");
             }
 
             bool found = false;
@@ -224,44 +221,40 @@ namespace Dal
         {
             int runNumber = GetRunNumber();
             UpdateRunNumber();
-            Package p = new Package(runNumber, senderId, recevirId, weight, packagePriority);
+            Package p = new(runNumber, senderId, recevirId, weight, packagePriority);
             p.Created = DateTime.Now;
             p.DroneId = null;
             AddObject(runNumber, p);
         }
 
-        private void UpdateRunNumber()
+        private static void UpdateRunNumber()
         {
             var cfg = ReadConfigFile();
             cfg.runNumber += 1;
             WriteConfigFile(cfg);
         }
 
-        private int GetRunNumber()
+        private static int GetRunNumber()
         {
             return ReadConfigFile().runNumber;
         }
 
-        private Config ReadConfigFile()
+        private static Config ReadConfigFile()
         {
             var serializer = new XmlSerializer(typeof(Config));
-            using (var reader = XmlReader.Create("Data/config.xml"))
-            {
-                return (Config)serializer.Deserialize(reader);
-            }
+            using var reader = XmlReader.Create("Data/config.xml");
+            return (Config)serializer.Deserialize(reader);
         }
 
-        private void WriteConfigFile(Config data)
+        private static void WriteConfigFile(Config data)
         {
             var serializer = new XmlSerializer(typeof(Config));
-            using (var writer = XmlWriter.Create("Data/config.xml"))
-            {
-                serializer.Serialize(writer, data);
-            }
+            using var writer = XmlWriter.Create("Data/config.xml");
+            serializer.Serialize(writer, data);
         }
-        public void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots)
+        public void AddStation(int id, string name, double longitude, double latitude, int chargeSlots)
         {
-            AddObject(id, new Station(id, name, longitude, lattitude, chargeSlots));
+            AddObject(id, new Station(id, name, longitude, latitude, chargeSlots));
 
         }
 
@@ -335,7 +328,7 @@ namespace Dal
         public void GivePackageDrone(int packageId, int droneId)
         {
             var p = GetObject<Package>(packageId);
-            var d = GetObject<Drone>(droneId); // only check if exist
+            _ = GetObject<Drone>(droneId); //TODO: add catch
 
             p.DroneId = droneId;
             p.Associated = DateTime.Now;
@@ -361,15 +354,9 @@ namespace Dal
         public double ReleaseDroneFromCharge(int droneId, DateTime outDate, int stationId)
         {
 
-            Station s;
-            if (stationId > -1)
-            {
-                s = GetObject<Station>(stationId);
-            }
-            else // if the id of the station is not valid, find the station via the drone
-            {
-                s = GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
-            }
+            Station s = stationId > -1
+                ? GetObject<Station>(stationId)
+                : GetObject<Station>(ReadAllObjects<DroneCharge>().Where(d => d.DroneId == droneId).ElementAt(0).StationId);
             s.ChargeSlots += 1;
             stationId = s.Id;
             UpdateObject(stationId, s);
@@ -383,13 +370,13 @@ namespace Dal
             Station s = GetObject<Station>(stationId);
             if (s.ChargeSlots <= 0)
             {
-                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it hass only {s.ChargeSlots} empty slots!");
+                throw new ArgumentException($"cannot send the drone {droneId} to charge at {stationId} because it sash only {s.ChargeSlots} empty slots!");
             }
 
             s.ChargeSlots -= 1;
             UpdateObject(stationId, s);
-            DroneCharge d = new DroneCharge(droneId, stationId, DateTime.Now);
-            AddObject<DroneCharge>(droneId, d);
+            DroneCharge d = new(droneId, stationId, DateTime.Now);
+            AddObject(droneId, d);
         }
 
         public void UpdateDrone(Drone d)

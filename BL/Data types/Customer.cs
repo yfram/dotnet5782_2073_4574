@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System.Collections.Generic;
 
 namespace BO
 {
@@ -22,6 +25,8 @@ namespace BO
         public IEnumerable<PackageForCustomer> PackagesTo { get; set; }
 
         public override string ToString()
-        => $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nLocated At: {CustomerLocation}";
+        {
+            return $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nLocated At: {CustomerLocation}";
+        }
     }
 }

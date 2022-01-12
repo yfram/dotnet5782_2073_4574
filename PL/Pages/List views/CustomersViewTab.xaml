@@ -4,74 +4,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PL.Pages"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:c="clr-namespace:BO;assembly=BL" x:Class="PL.Pages.CustomersViewTab"
+             xmlns:c="clr-namespace:BO;assembly=BL" x:Class="PL.Pages.CustomersViewTab"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
-        <c:CustomerForList x:Key="CustomersView"/>
-
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Foreground" Value="#3E065F"/>
-            <Setter Property="Background" Value="#D669"/>
-            <Setter Property="TextElement.FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="25"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource HeaderStyle}">
+                <Setter Property="Foreground" Value="{DynamicResource CustomersHeaderBrushFore}"/>
+                <Setter Property="Background" Value="{DynamicResource CustomersHeaderBrushBack}"/>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#DBD8E3">
-        <!-- , Converter={StaticResource DronesConvertor}, ConverterParameter=1-->
-        <DataGrid x:Name="CustomerGrid" ItemsSource="{Binding Path=CustomersView}"   Background="#352F44" Foreground="#CAF0F8" 
-                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch">
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
-                <DataGridTextColumn Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
-                <DataGridTextColumn Width="Auto" Header="  Packae on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
-                <DataGridTextColumn Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
-                <DataGridTextColumn Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
-
-            </DataGrid.Columns>
-
-            <DataGrid.Resources>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-                <Style TargetType="DataGridRow">
+    <Grid>
+        <DataGrid x:Name="CustomerGrid" 
+                  ItemsSource="{Binding Path=CustomersView}" 
+                  Background="{DynamicResource CustomersGridBrushBack}" 
+                  Foreground="{DynamicResource CustomersGridBrushFore}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#352F44" />
+                            <Setter Property="Background" Value="{DynamicResource CustomersGridBrushBack}" />
                         </Trigger>
                     </Style.Triggers>
-                    <Setter Property="Background" Value="#352F44"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
-            </DataGrid.Resources>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name  " Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Phone  " Binding="{Binding Path=PhoneNumber}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  package you sent  " Binding="{Binding Path=NumberOfSentPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package on way  " Binding="{Binding Path=NumberOfSentPackagesOnTheWay}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Package you get  " Binding="{Binding Path=NumberPackagesAccepted}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Packages for you  " Binding="{Binding Path=NumberPackagesOnTheWay}"/>
+            </DataGrid.Columns>
         </DataGrid>
-
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c" Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
-        <Grid Name="AddMenue" Background="#3d5a80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-            <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" GotFocus="AddCustomer" HorizontalAlignment="Right" Width="58"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Customer ID:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="Customer Name:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Customer Phone:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="350,10,0,0" TextWrapping="Wrap" Text="Customer Longtitude:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="480,10,0,0" TextWrapping="Wrap" Text="Customer Latitude:" VerticalAlignment="Top"/>
-
-            <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewPhone" materialDesign:HintAssist.Hint="Phone"  HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewLong" materialDesign:HintAssist.Hint="Longtitude"  HorizontalAlignment="Left" Margin="350,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-            <TextBox x:Name="NewLat" materialDesign:HintAssist.Hint="Latitude"  HorizontalAlignment="Left" Margin="480,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
-
-        </Grid>
-
-        <Grid Name="UpdateMenue" Background="#358f80" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom">
-        </Grid>
+        <Button Style="{StaticResource AddButtonStyle}" 
+                Background="{DynamicResource CustomersAddButtonBrush}" 
+                Click="ButtonOpenMenu_Click"/>
+        <local:PullGrid x:Name="PullUpMenueContainer" Height="0" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
-
 </UserControl>

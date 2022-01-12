@@ -1,8 +1,8 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
 using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
 
 namespace PL.Pages
@@ -12,7 +12,10 @@ namespace PL.Pages
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
+            {
                 return false;
+            }
+
             return true;
         }
 

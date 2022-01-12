@@ -12,27 +12,24 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <c:PackageForList x:Key="PackagesView"/>
-
-            <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource HeaderStyle}">
                 <Setter Property="Foreground" Value="{DynamicResource PackagesGridFore}"/>
                 <Setter Property="Background" Value="{DynamicResource PackagesGridBack}"/>
-                <Setter Property="TextElement.FontWeight" Value="Bold"/>
-                <Setter Property="Height" Value="25"/>
             </Style>
+
             <CollectionViewSource x:Key="PackagesGroup"                               
 				Source="{Binding PackagesView}">
             </CollectionViewSource>
+            <c:PackageForList x:Key="PackagesView"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{x:Null}">
+    <Grid>
         <DataGrid x:Name="PackageGrid" DataContext="{StaticResource PackagesGroup}" ItemsSource="{Binding IsAsync=True}"   
                   Background="{DynamicResource PackagesGridBack}" Foreground="{DynamicResource PackagesGridFore}" 
-                  CanUserSortColumns="False" IsReadOnly="True" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="0,69,0,0" 
-                  HorizontalAlignment="Stretch">
+                  Margin="0,69,0,0">
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
@@ -59,19 +56,15 @@
             </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Reciver  " Binding="{Binding Path=NameOfReciver}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Receiver  " Binding="{Binding Path=NameOfReciver}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Name Of Sender  " Binding="{Binding Path=NameOfSender}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Priority  " Binding="{Binding Path=Priority}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Status  " Binding="{Binding Path=Status}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
-            <DataGrid.Resources>
+            <DataGrid.RowStyle>
 
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-                <Style TargetType="DataGridRow">
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="{x:Null}" />
@@ -80,7 +73,7 @@
                     <Setter Property="Background" Value="{x:Null}"/>
                     <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
-            </DataGrid.Resources>
+            </DataGrid.RowStyle>
         </DataGrid>
         <Grid x:Name="FilterGrid" Margin="0,0,0,431" Background="LightGray">
             <CheckBox Checked="Filter" Unchecked="Filter" x:Name="FilterByDate" Margin="69,17,0,0" Content="Filter only packages picked up between:" Width="247"/>
@@ -96,12 +89,11 @@
                 <ComboBoxItem Content="accepted"/>
             </ComboBox>
             <CheckBox x:Name="CollectedSender" Tag="Sender" Content="Group by sender" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
-            <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by reciver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
+            <CheckBox x:Name="CollectedReciver" Tag="Reciver" Content="Group by receiver" Margin="655,41,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
-
-        <Button Content="+" Foreground="Black" BorderThickness="0" x:Name="ButtonOpenMenu"
-                Margin="0,0,10,10" VerticalAlignment="Bottom" Background="#01497c"
-                Click="ButtonOpenMenu_Click" HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}"
+                Background="{DynamicResource PackagesAddButtonBrush}"
+                Click="ButtonOpenMenu_Click"/>
         <local:PullGrid x:Name="PullUpContainer" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
     </Grid>
 

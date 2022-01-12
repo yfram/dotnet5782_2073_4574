@@ -1,4 +1,7 @@
-﻿using DO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using DO;
 using System;
 using System.Collections.Generic;
 
@@ -6,9 +9,9 @@ namespace DalApi
 {
     public interface IDAL
     {
-        void AddStation(int id, string name, double longitude, double lattitude, int chargeSlots);
+        void AddStation(int id, string name, double longitude, double latitude, int chargeSlots);
         void AddDrone(int id, string model, WeightGroup weight);
-        void AddCustomer(int id, string name, string phone, double lattitude, double longitude);
+        void AddCustomer(int id, string name, string phone, double latitude, double longitude);
         void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered);
         void GivePackageDrone(int packageId, int droneId);

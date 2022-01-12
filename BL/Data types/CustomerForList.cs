@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class CustomerForList
     {
@@ -23,8 +26,11 @@
         public int NumberPackagesAccepted { get; set; }
         public int NumberPackagesOnTheWay { get; set; }
 
-        public override string ToString() => $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nNumber of packages sent: " +
-            $"{NumberOfSentPackagesAccepted + NumberOfSentPackagesOnTheWay}\nNumber of recived packages: " +
-            $"{NumberPackagesAccepted}\nNumber of packages on the way: {NumberPackagesOnTheWay}";
+        public override string ToString()
+        {
+            return $"Id: {Id}\n Name: {Name}\n Phone: {PhoneNumber}\nNumber of packages sent: " +
+$"{NumberOfSentPackagesAccepted + NumberOfSentPackagesOnTheWay}\nNumber of received packages: " +
+$"{NumberPackagesAccepted}\nNumber of packages on the way: {NumberPackagesOnTheWay}";
+        }
     }
 }

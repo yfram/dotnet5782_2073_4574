@@ -1,4 +1,7 @@
-﻿using BlApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
 using System;
 using System.Collections.Generic;
 
@@ -35,12 +38,12 @@ namespace ConsoleUI_BL
         private static void Main(string[] args)
         {
             BlApi.IBL Bl = BlFactory.GetBl();
-            string openMsg = "Welcome to John&G Drones administiration system!";
+            string openMsg = "Welcome to John&G Drones administration system!";
 
-            string mainMsg = "\nfor add menue, press 1\n" +
-                "for update menue, press 2\n" +
-                "for get by id menue, press 3\n" +
-                "for get lists menue, press 4\n" +
+            string mainMsg = "\nfor add menu, press 1\n" +
+                "for update menu, press 2\n" +
+                "for get by id menu, press 3\n" +
+                "for get lists menu, press 4\n" +
                 "to exit press 5";
             Console.Write(openMsg);
             while (true)
@@ -72,7 +75,7 @@ namespace ConsoleUI_BL
         {
             string msg = "to see a list of all stations, press 1\n" +
                 "to see a list of all drones, press 2\n" +
-                "to see a list of all customres, press 3\n" +
+                "to see a list of all customers, press 3\n" +
                 "to see a list of all packages, press 4\n" +
                 "to see a list of all unpaired packages, press 5\n" +
                 "to see a list of all stations with open slots, press 6";
@@ -196,7 +199,7 @@ namespace ConsoleUI_BL
             string msg = "to add a base station, press 1\n" +
                 "to add a drone, press 2\n" +
                 "to add a new customer, press 3\n" +
-                "to add a new packeage for delivering, press 4";
+                "to add a new package for delivering, press 4";
             try
             {
                 AddMenue menue = (AddMenue)(GetIntInputInRange(msg, 1, 4, "No such option") - 1);
@@ -204,7 +207,7 @@ namespace ConsoleUI_BL
                 {
                     case AddMenue.Station:
                         Bl.AddStation(new(GetIntInput("Enter ID:"), GetStringInput("Enter name:"),
-                            new(GetDoubleInput("Enter station position(longitude):"), GetDoubleInput("Enter station position(lattitude):")),
+                            new(GetDoubleInput("Enter station position(longitude):"), GetDoubleInput("Enter station position(latitude):")),
                             GetIntInput("Enter amount of charge slots:")));
                         break;
                     case AddMenue.Drone:
@@ -217,14 +220,14 @@ namespace ConsoleUI_BL
                     case AddMenue.Customer:
                         Bl.AddCustomer(new(GetIntInput("Enter ID number:"), GetStringInput("Enter name:"),
                             GetStringInput("Enter phone number:"),
-                            new(GetDoubleInput("Enter custumer position(longitude):"), GetDoubleInput("Enter customer position(lattitude):")),
+                            new(GetDoubleInput("Enter customer position(longitude):"), GetDoubleInput("Enter customer position(latitude):")),
                             new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
                         break;
                     case AddMenue.Package:
                         Bl.AddPackage(new(new Random().Next(), new(Bl.GetCustomerById(GetIntInput("Enter sender ID:"))),
-                            new(Bl.GetCustomerById(GetIntInput("Enter reciver ID:"))),
+                            new(Bl.GetCustomerById(GetIntInput("Enter receiver ID:"))),
                             (BO.WeightGroup)(GetIntInputInRange("Enter weight group(1 for light, 2 for mid, 3 for heavy):", 1, 3) + 1),
-                            (BO.PriorityGroup)(GetIntInputInRange("Enter prioriyt group(1 for low, 2 for mid, 3 for high):", 1, 3) + 1),
+                            (BO.PriorityGroup)(GetIntInputInRange("Enter priority group(1 for low, 2 for mid, 3 for high):", 1, 3) + 1),
                             null, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue));
                         break;
                 }

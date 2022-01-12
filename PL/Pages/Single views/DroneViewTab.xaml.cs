@@ -1,4 +1,7 @@
-﻿using BlApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BlApi;
 using BO;
 using System;
 using System.ComponentModel;
@@ -13,11 +16,10 @@ namespace PL.Pages
     public partial class DroneViewTab : UserControl
     {
         private Drone BLdrone { get => Resources["drone"] as Drone; set => Resources["drone"] = value; }
-        private IBL Bl { get => BlFactory.GetBl(); }
+        private static IBL Bl => BlFactory.GetBl();
         private Window PackageView = null;
-
-        BackgroundWorker bw;
-        bool Stop = false;
+        private BackgroundWorker bw;
+        private bool Stop = false;
 
         public DroneViewTab(int id)
         {
@@ -109,16 +111,16 @@ namespace PL.Pages
                 return;
             }
             Package p = Bl.GetPackageById(BLdrone.Package.Id);
-            if (p.TimeToDeliver.HasValue)
+            if (p.TimeDeliverd.HasValue)
             {
                 throw new InvalidOperationException("cannot deliver package that has been delivered");
             }
 
-            if (p.TimeToPickup.HasValue)
+            if (p.TimePickedUp.HasValue)
             {
                 DroneNextOp.Content = "deliver the package";
             }
-            else if (p.TimeToPair.HasValue)
+            else if (p.TimePaired.HasValue)
             {
                 DroneNextOp.Content = "Pick up the package";
             }
@@ -129,14 +131,20 @@ namespace PL.Pages
             try
             {
                 if (BLdrone.State == BO.DroneState.Empty)
+                {
                     Bl.AssignPackage(BLdrone.Id);
+                }
                 else
                 {
                     Package p = Bl.GetPackageById(BLdrone.Package.Id);
-                    if (p.TimeToPickup.HasValue)
+                    if (p.TimePickedUp.HasValue)
+                    {
                         Bl.DeliverPackage(BLdrone.Id);
-                    else if (p.TimeToPair.HasValue)
+                    }
+                    else if (p.TimePaired.HasValue)
+                    {
                         Bl.PickUpPackage(BLdrone.Id);
+                    }
                 }
                 UpdateView();
 
@@ -211,7 +219,9 @@ namespace PL.Pages
         private void UpdatePackage()
         {
             if (PackageView is not null)
+            {
                 ((PackageForDroneViewTab)PackageView.Content).update(Bl.GetDroneById(BLdrone.Id).Package);
+            }
         }
     }
 }

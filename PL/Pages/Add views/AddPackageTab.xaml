@@ -10,7 +10,7 @@
     <Grid Name="AddMenue" Background="#3d5a80" Margin="0,0,0,0" VerticalAlignment="Bottom">
         <Button Name="AddButton"  Content="Add" Margin="0,108,10,10" Click="AddPackage" HorizontalAlignment="Right" Width="58"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="sender id:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="recivier id:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="103,10,0,0" TextWrapping="Wrap" Text="receiver id:" VerticalAlignment="Top"/>
         <TextBox x:Name="Sid" materialDesign:HintAssist.Hint="sender id" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         <TextBox x:Name="Rid" materialDesign:HintAssist.Hint="recivier id"  HorizontalAlignment="Left" Margin="103,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         <ComboBox x:Name="Weight" HorizontalAlignment="Left" Margin="244,31,0,0" VerticalAlignment="Top" Width="120">

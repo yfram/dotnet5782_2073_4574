@@ -1,4 +1,7 @@
-﻿namespace BO
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+namespace BO
 {
     public class StationForList
     {
@@ -18,13 +21,11 @@
         public string Name { get; set; }
         public int AmountOfEmptyPorts { get; set; }
         public int AmountOfFullPorts { get; set; }
+        public bool HasEmptyPorts => AmountOfEmptyPorts != 0;
 
-        public override string ToString() => $"Id: {Id}\nName: {Name}";
-
-        public bool HasEmptyPorts
+        public override string ToString()
         {
-            get { return AmountOfEmptyPorts != 0; }
-            set { HasEmptyPorts = AmountOfEmptyPorts == 0; }
+            return $"Id: {Id}\nName: {Name}";
         }
     }
 }

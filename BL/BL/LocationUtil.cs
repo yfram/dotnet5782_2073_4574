@@ -1,14 +1,13 @@
-﻿using BO;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using BO;
 using System;
 using static System.Math;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLApi
 {
-    class LocationUtil
+    internal class LocationUtil
     {
         private static readonly int earthRadius = 6371;
 
@@ -37,14 +36,17 @@ namespace BLApi
             return new Location(loc.Longitude * PI / 180, loc.Latitude * PI / 180);
         }
 
-
         internal static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
         {
-            double lat1 = Loc1.Latitude; double lon1 = Loc1.Longitude;
-            double lat2 = Loc2.Latitude; double lon2 = Loc2.Longitude;
+            double lat1 = Loc1.Latitude;
+            double lon1 = Loc1.Longitude;
+            double lat2 = Loc2.Latitude;
+            double lon2 = Loc2.Longitude;
 
             if (lat1 == lat2 && lon1 == lon2)
+            {
                 return 0;
+            }
 
             double rlat1 = PI * lat1 / 180;
             double rlat2 = PI * lat2 / 180;
@@ -65,9 +67,9 @@ namespace BLApi
             };
         }
 
-        internal static Location UpdateLocation(Location source, double progress , double bearing)
+        internal static Location UpdateLocation(Location source, double progress, double bearing)
         {
-            Location loc = new Location(0, 0);
+            Location loc = new(0, 0);
 
             double ratio = progress / earthRadius;
 
@@ -83,7 +85,7 @@ namespace BLApi
 
             loc.Longitude = source.Longitude + Atan2(Sin(bearingRad) * Sin(ratio) * Cos(sourceRad.Latitude)
                 ,
-                Cos(ratio) - Sin(sourceRad.Latitude) * Sin(loc.Latitude * PI/180 )) * 180 / PI;
+                Cos(ratio) - Sin(sourceRad.Latitude) * Sin(loc.Latitude * PI / 180)) * 180 / PI;
 
             loc.Longitude = (loc.Longitude + 540) % 360 - 180;
 
@@ -94,7 +96,5 @@ namespace BLApi
         {
             return DistanceTo(a, b) < 2;
         }
-
-
     }
 }

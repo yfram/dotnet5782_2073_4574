@@ -6,47 +6,28 @@
     xmlns:local="clr-namespace:PL.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="PL.Pages.DronesViewTab"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" 
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800" 
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+                <ResourceDictionary Source="/Assets/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource HeaderStyle}">
                 <Setter Property="Foreground" Value="{DynamicResource DronesHeaderBrushFore}"/>
                 <Setter Property="Background" Value="{DynamicResource DronesHeaderBrushBack}"/>
-                <Setter Property="TextElement.FontWeight" Value="Bold"/>
-                <Setter Property="Height" Value="25"/>
             </Style>
             <CollectionViewSource x:Key="DronesGroup" Source="{Binding Drones}"/>
             <local:PackageIdConverter x:Key="packageIdConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="#DBD8E3">
+
+    <Grid>
         <DataGrid x:Name="DroneGrid" DataContext="{StaticResource DronesGroup}" 
                   ItemsSource="{Binding IsAsync=True}"
                   Background="{DynamicResource DronesGridBrushBack}"
-                  Foreground="{DynamicResource DronesGridBrushFore}" 
-                  CanUserSortColumns="False" IsReadOnly="True" 
-                  CanUserResizeColumns="False" CanUserReorderColumns="False" 
-                  AutoGenerateColumns="False" Margin="0,69,0,0" 
-                  HorizontalAlignment="Stretch">
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{x:Null}" />
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Foreground" Value="{DynamicResource DronesGridBrushFore}"/>
-                    <Setter Property="Background" Value="{x:Null}"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
-                </Style>
-            </DataGrid.ItemContainerStyle>
+                  Foreground="{DynamicResource DronesGridBrushFore}" Margin="0,69,0,0">
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
@@ -74,48 +55,34 @@
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header=" Id  " Binding="{Binding Path=Id}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="From     " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}, ConverterParameter=sender}" />
-                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="To           " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}, ConverterParameter=reciver}"/>
+                <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="To           " Binding="{Binding Path=PassingPckageId, Converter={StaticResource packageIdConverter}, ConverterParameter=receiver}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Current location" Binding="{Binding Path=CurrentLocation}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="Battery        " Binding="{Binding Path=Battery, StringFormat={}{0:0.00}%}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Model  " Binding="{Binding Path=Model}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  State  " Binding="{Binding Path=State}"/>
                 <DataGridTextColumn ElementStyle="{StaticResource Centering}" Width="Auto" Header="  Weight group  " Binding="{Binding Path=Weight}"/>
             </DataGrid.Columns>
-            <DataGrid.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="BorderThickness" Value="0"/>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
                 </Style>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Foreground" Value="{DynamicResource DronesGridBrushFore}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{x:Null}" />
-                            <Setter Property="Foreground" Value="{DynamicResource DronesGridBrushFore}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
+            </DataGrid.RowStyle>
         </DataGrid>
-        <Grid x:Name="FilterGrid" Margin="0,0,0,381">
+        <Grid x:Name="FilterGrid" Background="#DBD8E3" Height="69" VerticalAlignment="Top">
             <TextBlock HorizontalAlignment="Left" Margin="116,16,0,0"  VerticalAlignment="Top" Text="State:"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16"><Run Text="Filter "/><Run Text="by:"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="16" Text="Filter By:"/>
             <TextBlock HorizontalAlignment="Left" Margin="400,16,0,0" VerticalAlignment="Top" Text="Maximum weight:"/>
             <CheckBox Content="Empty" Margin="150,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-            <CheckBox Content="Maitenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+            <CheckBox Content="Maintenance" Margin="150,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Busy" Margin="150,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Light" Margin="499,24,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Mid" Margin="499,35,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox Content="Heavy" Margin="499,46,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
             <CheckBox x:Name="Collected_View" Content="Collected_View" Margin="655,23,0,0" Checked="Collected_view" Unchecked="Collected_view" RenderTransformOrigin="-0.104,0.508" Width="136"/>
         </Grid>
-        <Button Content="+" Foreground="Black" BorderThickness="0" 
-                x:Name="ButtonOpenMenu" Margin="0,0,10,10" VerticalAlignment="Bottom" 
-                Background="{DynamicResource AddButtonBack}" Click="ButtonOpenMenu_Click" 
-                HorizontalAlignment="Right"/>
+        <Button Style="{StaticResource AddButtonStyle}"
+                Background="{DynamicResource DronesAddButtonBrush}"
+                Click="ButtonOpenMenu_Click"/>
         <local:PullGrid x:Name="PullUpMenueContainer" VerticalAlignment="Bottom" Height="0" Margin="0,0,0,0"/>
     </Grid>
 </UserControl>

@@ -2,35 +2,38 @@
 // All rights reserved
 
 using BlApi;
-using BO;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace PL.Pages
 {
     /// <summary>
-    /// Interaction logic for AddPackageTab.xaml
+    /// Interaction logic for AddCustomerTab.xaml
     /// </summary>
-    public partial class AddPackageTab : UserControl
+    public partial class AddCustomerTab : UserControl
     {
         private static IBL Bl => BlFactory.GetBl();
 
-        public AddPackageTab()
+        public AddCustomerTab()
         {
             InitializeComponent();
         }
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((PackagesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+            ((CustomersViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
         }
 
-        private void AddPackage(object sender, RoutedEventArgs e)
+        private void AddCustomer(object sender, RoutedEventArgs e)
         {
             try
             {
-                Bl.AddPackage(int.Parse(Sid.Text), int.Parse(Rid.Text), (WeightGroup)(((ComboBox)Weight).SelectedIndex + 1), (PriorityGroup)((ComboBox)(Priority)).SelectedIndex + 1);
+                Bl.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,
+                    new(Double.Parse(NewLong.Text), Double.Parse(NewLat.Text)),
+                    new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
+
             }
             catch (Exception ex)
             {

@@ -12,7 +12,7 @@
     <UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Pages/Helpers/Resources.xaml"/>
+				<ResourceDictionary Source="/Assets/Resources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 			<src:PackageInTransfer x:Key="package"/>
 		</ResourceDictionary>
@@ -26,7 +26,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="144,102,0,0" Text="{Binding Path=DropOffLocation, StringFormat=To: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="403,10,0,0" Text="{Binding Path=distance, StringFormat=Distance: {0}}"  TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="461,62,0,0" Text="{Binding Path=Sender.Id, StringFormat=Sender Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,118,0,0" Text="{Binding Path=Reciver.Id, StringFormat=Recivier Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,118,0,0" Text="{Binding Path=Reciver.Id, StringFormat=Receiver Id: {0}}" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

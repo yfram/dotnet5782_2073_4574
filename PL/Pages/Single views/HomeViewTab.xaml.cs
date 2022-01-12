@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
+using System.Windows.Controls;
 
 namespace PL.Pages
 {

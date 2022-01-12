@@ -1,4 +1,6 @@
-﻿using BlApi;
+﻿// File {filename} created by Yoni Fram and Gil Kovshi
+// All rights reserved
+
 using PL.Pages;
 using System;
 using System.Windows;
@@ -11,7 +13,6 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static IBL BL = BlFactory.GetBl();
         public MainWindow()
         {
             InitializeComponent();
@@ -33,27 +34,15 @@ namespace PL
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GridMain.Children.Clear();
-            UserControl page;
-            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+            UserControl page = ((ListViewItem)((ListView)sender).SelectedItem).Name switch
             {
-                case "HomeView":
-                    page = new HomeViewTab();
-                    break;
-                case "DronesView":
-                    page = new DronesViewTab();
-                    break;
-                case "StationsView":
-                    page = new StationsViewTab();
-                    break;
-                case "CustomersView":
-                    page = new CustomersViewTab();
-                    break;
-                case "PackagesView":
-                    page = new PackagesViewTab();
-                    break;
-                default:
-                    throw new InvalidOperationException("Unreachable!");
-            }
+                "HomeView" => new HomeViewTab(),
+                "DronesView" => new DronesViewTab(),
+                "StationsView" => new StationsViewTab(),
+                "CustomersView" => new CustomersViewTab(),
+                "PackagesView" => new PackagesViewTab(),
+                _ => throw new InvalidOperationException("Unreachable!"),
+            };
             GridMain.Children.Add(page);
         }
     }
