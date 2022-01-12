@@ -25,6 +25,11 @@ namespace PL
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
+        private void OpenSettings(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow.Visibility = Visibility.Visible;
+        }
+
         private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
