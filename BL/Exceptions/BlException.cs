@@ -8,8 +8,8 @@ namespace BlApi.Exceptions
 {
     public class BlException : Exception
     {
-        internal int ObjectId;
-        internal Type TypeOfWrongObject;
+        public int ObjectId;
+        public Type TypeOfWrongObject;
 
         public BlException(string message, int id, Type typeOfWrongObject) : base(message)
         {
