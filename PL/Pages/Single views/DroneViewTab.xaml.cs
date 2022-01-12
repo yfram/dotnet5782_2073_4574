@@ -211,12 +211,12 @@ namespace PL.Pages
 
         private void OpenPackage(object sender, RoutedEventArgs e)
         {
-            if (PackageView is null)
+            if (PackageView is null && BLdrone.Package is not null)
             {
                 PackageView = new Window
                 {
                     Content = new PackageForDroneViewTab(BLdrone.Package.Id),
-                    Title = $"package {BLdrone.Package.Id}",
+                    Title = $"package",
                     SizeToContent = SizeToContent.WidthAndHeight,
                     ResizeMode = ResizeMode.CanResize
                 };
