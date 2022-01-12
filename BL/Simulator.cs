@@ -2,22 +2,23 @@
 // All rights reserved
 
 using BlApi.Exceptions;
-using BLApi;
 using BO;
 using System;
 using System.Threading;
-using static BlApi.BL;
+using static BL.BL;
+using BlApi;
+using BL;
 
-namespace BlApi
+namespace Simulator
 {
     internal class Simulator
     {
-        private BL bl => BlFactory.GetBl() as BL;
+        private BL.BL bl => BlFactory.GetBl() as BL.BL;
         private int id;
         private Action update;
         private Func<bool> stop;
-        private double speed = 3;
-        private int msTimer = 1000;
+        private double speed = 6;
+        private int msTimer = 300;
         private bool wayToMaitenance = false;
         private Drone d;
 
@@ -37,24 +38,29 @@ namespace BlApi
             stop = _stop;
             while (!stop())
             {
-                d = bl.GetDroneById(id);
-                switch (d.State)
+                lock (bl)
                 {
-                    case DroneState.Empty:
-                        DroneEmpty();
-                        break;
-                    case DroneState.Busy:
-                        DroneBusy();
-                        break;
-                    case DroneState.Maitenance:
-                        DroneMaitenance();
-                        break;
-                }
-                if (d.Battery < 0)
-                    throw new Exception();
+                    d = bl.GetDroneById(id);
+                    switch (d.State)
+                    {
+                        case DroneState.Empty:
+                            DroneEmpty();
+                            break;
+                        case DroneState.Busy:
+                            DroneBusy();
+                            break;
+                        case DroneState.Maitenance:
+                            DroneMaitenance();
+                            break;
+                    }
+                    if (d.Battery < 0)
+                    {
+                        throw new Exception();
+                    }
 
-                update.Invoke();
-                bl.UpdateDroneName(d.Id, d.Model, d.Battery, d.CurrentLocation);
+                    update.Invoke();
+                    bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);
+                }
                 Thread.Sleep(msTimer);
             }
         }

@@ -3,6 +3,7 @@
 
 using DO;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -21,6 +22,7 @@ namespace Dal
         /// </summary>
         /// <param name="droneId">ID of the wanted drone</param>
         /// <returns><code>true</code>If the drone is charging<code>false</code>If the drone is not charging</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool isInCharge(int droneId)
         {
             return DataSource.DroneCharges.Exists(dc => dc.DroneId == droneId);
@@ -30,6 +32,7 @@ namespace Dal
         /// Get DalObject's charging data
         /// </summary>
         /// <returns>An array that contains all of DalObject's charging data</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double[] GetElectricity()
             => new double[] { DataSource.Config.ElecEmpty, DataSource.Config.ElecLow, DataSource.Config.ElecMid, DataSource.Config.ElecHigh, DataSource.Config.ElecRatePercent
     };
@@ -41,6 +44,7 @@ namespace Dal
         /// </summary>
         /// <param name="s">The new station</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(Station s)
         {
             int ix = GetStationIndex(s.Id);
@@ -55,6 +59,7 @@ namespace Dal
         /// </summary>
         /// <param name="s">The new package</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdatePackage(Package p)
         {
             int ix = GetPackageIndex(p.Id);
@@ -69,6 +74,7 @@ namespace Dal
         /// </summary>
         /// <param name="c">The new customer</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(Customer c)
         {
             int ix = GetCustomerIndex(c.Id);
@@ -82,6 +88,7 @@ namespace Dal
         /// </summary>
         /// <param name="d">The new drone</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDrone(Drone d)
         {
             int ix = GetDroneIndex(d.Id);
@@ -99,6 +106,7 @@ namespace Dal
         /// </summary>
         /// <param name="packageId">The package to associate</param>
         /// <param name="droneId">The drone to associate to</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void GivePackageDrone(int packageId, int droneId)
         {
             int index = GetPackageIndex(packageId);
@@ -113,6 +121,7 @@ namespace Dal
         /// Picks up the package with id <paramref name="packageId"/>
         /// </summary>
         /// <param name="packageId">The id for the package to pick up</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickUpPackage(int packageId)
         {
             int index = GetPackageIndex(packageId);
@@ -126,6 +135,7 @@ namespace Dal
         /// </summary>
         /// <param name="droneId">The id for the drone to charge</param>
         /// <param name="stationId">The id for the station to send to</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToCharge(int droneId, int stationId)
         {
             int droneIndex = GetDroneIndex(droneId);
@@ -146,6 +156,7 @@ namespace Dal
         /// <param name="stationId">The id of the station that <paramref name="droneId"/> is at</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double ReleaseDroneFromCharge(int droneId, DateTime outTime, int stationId = -1)
         {
             double ans = 0;
@@ -173,6 +184,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">Id of the station to delete</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteStation(int id)
         {
             int ix = GetStationIndex(id);
@@ -188,6 +200,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">Id of the package to delete</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeletePackage(int id)
         {
             int ix = GetPackageIndex(id);
@@ -202,6 +215,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">Id of the station to delete</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteCustomer(int id)
         {
             int ix = GetCustomerIndex(id);
@@ -216,6 +230,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">Id of the drone to delete</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteDrone(int id)
         {
             int ix = GetDroneIndex(id);

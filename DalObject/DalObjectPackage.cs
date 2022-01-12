@@ -5,6 +5,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -22,6 +23,7 @@ namespace Dal
         /// <param name="Associated">Time the package was associated</param>
         /// <param name="PickUp">Time the package was picked up</param>
         /// <param name="Delivered">Time the package was delivered</param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered)
         {
@@ -35,6 +37,7 @@ Created, Associated, PickUp, Delivered));
         /// <param name="id">The id for the wanted package</param>
         /// <returns>The package with id <paramref name="id"/></returns>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliverPackage(int packageId)
         {
 
@@ -50,6 +53,7 @@ Created, Associated, PickUp, Delivered));
         /// </summary>
         /// <param name="id">The id for the wanted package</param>
         /// <returns>The index of the package with id <paramref name="id"/></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackage(int id)
         {
             int ix = GetPackageIndex(id);
@@ -61,7 +65,7 @@ Created, Associated, PickUp, Delivered));
         /// </summary>
         /// <param name="id">The id for the wanted package</param>
         /// <returns>The index of the package with id <paramref name="id"/></returns>
-        private static int GetPackageIndex(int id)
+        private int GetPackageIndex(int id)
         {
             return DataSource.Packages.FindIndex(p => p.Id == id);
         }
@@ -70,6 +74,7 @@ Created, Associated, PickUp, Delivered));
         /// Gets all packages in the data base
         /// </summary>
         /// <returns>A IEnumerable with all the packages in the data base</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetAllPackages()
         {
             return new List<Package>(DataSource.Packages);
@@ -80,6 +85,7 @@ Created, Associated, PickUp, Delivered));
         /// </summary>
         /// <param name="predicate">The function to filter packages with</param>
         /// <returns>A IEnumerable with all the packages in the data base that answer to predicate</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> predicate)
         {
             return DataSource.Packages.Where(predicate);

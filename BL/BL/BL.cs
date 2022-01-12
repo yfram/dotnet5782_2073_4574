@@ -7,8 +7,10 @@ using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BlApi;
+using System.Runtime.CompilerServices;
 
-namespace BlApi
+namespace BL
 {
     /// <summary>
     /// Business layer class, extends IBL
@@ -101,7 +103,7 @@ namespace BlApi
 
                         var station = GetDALStation((int)id);
                         Location stationLoc = new(station.Longitude, station.Latitude);
-                        double minBattery = DistanceTo(stationLoc, bLdrone.CurrentLocation) / ElecOfDrone(bLdrone);
+                        double minBattery = LocationUtil.DistanceTo(stationLoc, bLdrone.CurrentLocation) / ElecOfDrone(bLdrone);
                         if (minBattery > 100)
                             throw new BlException("Not enough free stations!", bLdrone.Id, typeof(Drone));
 
@@ -120,6 +122,7 @@ namespace BlApi
         /// Station to add
         /// </param>
         /// <exception cref="ObjectAllreadyExistsException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(Station s)
         {
             try
@@ -140,6 +143,7 @@ namespace BlApi
         /// Drone to add
         /// </param>
         /// <exception cref="ObjectAllreadyExistsException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(Drone d)
         {
             try
@@ -165,6 +169,7 @@ namespace BlApi
         /// Customer to add
         /// </param>
         /// <exception cref="ObjectAllreadyExistsException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(Customer c)
         {
             try
@@ -185,6 +190,7 @@ namespace BlApi
         /// Package to add
         /// </param>
         /// <exception cref="ObjectAllreadyExistsException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddPackage(Package p)
         {
             try
@@ -207,6 +213,7 @@ namespace BlApi
         /// <param name="sid">
         /// sender id to add
         /// </param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddPackage(int sid, int rid, WeightGroup w, PriorityGroup p)
         {
             Idal.AddPackage(sid, rid, (DO.WeightGroup)((int)w), ((DO.Priority)(int)p), null, null, null, null, null);
@@ -221,21 +228,29 @@ namespace BlApi
         /// <param name="newModel">
         /// New model name
         /// </param>
-        public void UpdateDroneName(int id, string newModel, double newBattery = -1, Location newLocation = null)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void UpdateDrone(int id, string newModel, double newBattery = -1, Location newLocation = null)
         {
-            DO.Drone DALdrone = GetDALDrone(id);
-            DALdrone.Model = newModel == "" ? DALdrone.Model : newModel;
-            Idal.UpdateDrone(DALdrone);
-            IEnumerable<DroneForList> myDrone = BLdrones.Where(d => d.Id == id);
-            if (myDrone.Count() == 1)
+            lock (Idal)
             {
-                DroneForList BLdrone = myDrone.ElementAt(0);
-                BLdrone.Model = DALdrone.Model;
-                if (newBattery >= 0)
-                    BLdrone.Battery = newBattery;
+                DO.Drone DALdrone = GetDALDrone(id);
+                DALdrone.Model = newModel == "" ? DALdrone.Model : newModel;
+                Idal.UpdateDrone(DALdrone);
+                IEnumerable<DroneForList> myDrone = BLdrones.Where(d => d.Id == id);
+                if (myDrone.Count() == 1)
+                {
+                    DroneForList BLdrone = myDrone.ElementAt(0);
+                    BLdrone.Model = DALdrone.Model;
+                    if (newBattery >= 0)
+                    {
+                        BLdrone.Battery = newBattery;
+                    }
 
-                if (newLocation is not null)
-                    BLdrone.CurrentLocation = newLocation;
+                    if (newLocation is not null)
+                    {
+                        BLdrone.CurrentLocation = newLocation;
+                    }
+                }
             }
         }
 
@@ -246,12 +261,16 @@ namespace BlApi
         /// <param name="newName"></param>
         /// <param name="newChargeSlots"></param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStation(int id, string newName = "", int newEmptyChargeSlots = -1)
         {
-            DO.Station station = GetDALStation(id);
-            station.Name = newName != "" ? newName : station.Name;
-            station.ChargeSlots = newEmptyChargeSlots == -1 ? station.ChargeSlots : newEmptyChargeSlots;
-            Idal.UpdateStation(station);
+            lock (Idal)
+            {
+                DO.Station station = GetDALStation(id);
+                station.Name = newName != "" ? newName : station.Name;
+                station.ChargeSlots = newEmptyChargeSlots == -1 ? station.ChargeSlots : newEmptyChargeSlots;
+                Idal.UpdateStation(station);
+            }
         }
 
         /// <summary>
@@ -260,18 +279,15 @@ namespace BlApi
         /// <param name="id"></param>
         /// <param name="newName"></param>
         /// <param name="newPhone"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomer(int id, string newName = "", string newPhone = "")
         {
-            DO.Customer customer = GetDALCustomer(id);
-            customer.Name = newName != "" ? newName : customer.Name;
-            customer.Phone = newPhone != "" ? newPhone : customer.Phone;
-            try
+            lock (Idal)
             {
+                DO.Customer customer = GetDALCustomer(id);
+                customer.Name = newName != "" ? newName : customer.Name;
+                customer.Phone = newPhone != "" ? newPhone : customer.Phone;
                 Idal.UpdateCustomer(customer);
-            }
-            catch (ArgumentException)
-            {
-                throw new ObjectDoesntExistException();
             }
         }
 
@@ -282,39 +298,47 @@ namespace BlApi
         /// <exception cref="BlException"></exception>
         /// <exception cref="ObjectDoesntExistException"></exception>
         /// <exception cref="DroneStateException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SendDroneToCharge(int DroneId)
         {
-            DroneForList drone = BLdrones.Find(d => d.Id == DroneId);
-            if (drone is not null && drone.State == DroneState.Empty)
+            lock (Idal)
             {
-                int? closestId = GetClosetStation(drone.CurrentLocation);
-                if (closestId is not null)
+                DroneForList drone = BLdrones.Find(d => d.Id == DroneId);
+                if (drone is not null && drone.State == DroneState.Empty)
                 {
-                    DO.Station closest = GetDALStation((int)closestId);
-                    double distance = DistanceTo(new(closest.Longitude, closest.Latitude), drone.CurrentLocation);
-                    double batteryNeed = distance / ElecOfDrone(drone);
-                    if (batteryNeed <= drone.Battery)
+                    int? closestId = GetClosetStation(drone.CurrentLocation);
+                    if (closestId is not null)
                     {
-                        drone.Battery -= batteryNeed;
-                        drone.CurrentLocation = new(closest.Longitude, closest.Latitude);
-                        drone.State = DroneState.Maitenance;
-                        Idal.SendDroneToCharge(drone.Id, closest.Id);
+                        DO.Station closest = GetDALStation((int)closestId);
+                        double distance = LocationUtil.DistanceTo(new(closest.Longitude, closest.Latitude), drone.CurrentLocation);
+                        double batteryNeed = distance / ElecOfDrone(drone);
+                        if (batteryNeed <= drone.Battery)
+                        {
+                            drone.Battery -= batteryNeed;
+                            drone.CurrentLocation = new(closest.Longitude, closest.Latitude);
+                            drone.State = DroneState.Maitenance;
+                            Idal.SendDroneToCharge(drone.Id, closest.Id);
+                        }
+                        else
+                        {
+                            throw new BlException($"There are no empty stations that {DroneId} has enough battery to fly to!" +
+                                $" It needs {batteryNeed}% but only has {drone.Battery}%");
+                        }
                     }
                     else
                     {
-                        throw new BlException($"There are no empty stations that {DroneId} has enough battery to fly to!" +
-                            $" It needs {batteryNeed}% but only has {drone.Battery}%");
+                        throw new BlException($"there are no empty stations for {DroneId}!");
                     }
                 }
                 else
-                    throw new BlException($"there are no empty stations for {DroneId}!");
-            }
-            else
-            {
-                if (drone is null)
-                    throw new ObjectDoesntExistException($"the drone {DroneId} does not exist!");
+                {
+                    if (drone is null)
+                    {
+                        throw new ObjectDoesntExistException($"the drone {DroneId} does not exist!");
+                    }
 
-                throw new DroneStateException($"A drone can only be sent to charge if it is empty!The drone {drone.Id} is currently {drone.State}");
+                    throw new DroneStateException($"A drone can only be sent to charge if it is empty!The drone {drone.Id} is currently {drone.State}");
+                }
             }
         }
 
@@ -325,25 +349,33 @@ namespace BlApi
         /// <param name="time"></param>
         /// <exception cref="DroneStateException"></exception>
         /// <exception cref="ObjectDoesntExistException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void ReleaseDrone(int DroneId, DateTime outTime)
         {
-            DO.Drone dALdrone = GetDALDrone(DroneId);
-            DroneForList bLdrone = BLdrones.Find(d => d.Id == DroneId);
-
-            if (bLdrone is not null)
+            lock (Idal)
             {
-                if (bLdrone.State == DroneState.Maitenance)
-                {
+                DO.Drone dALdrone = GetDALDrone(DroneId);
+                DroneForList bLdrone = BLdrones.Find(d => d.Id == DroneId);
 
-                    double time = Idal.ReleaseDroneFromCharge(DroneId, outTime, -1);
-                    bLdrone.Battery = (elecRate[4] * time + bLdrone.Battery) > 100 ? 100 : elecRate[4] * time + bLdrone.Battery;
-                    bLdrone.State = DroneState.Empty;
+                if (bLdrone is not null)
+                {
+                    if (bLdrone.State == DroneState.Maitenance)
+                    {
+
+                        double time = Idal.ReleaseDroneFromCharge(DroneId, outTime, -1);
+                        bLdrone.Battery = (elecRate[4] * time + bLdrone.Battery) > 100 ? 100 : elecRate[4] * time + bLdrone.Battery;
+                        bLdrone.State = DroneState.Empty;
+                    }
+                    else
+                    {
+                        throw new DroneStateException($"the drone {DroneId} can be release only if it's already charging! It is currently {bLdrone.State}");
+                    }
                 }
                 else
-                    throw new DroneStateException($"the drone {DroneId} can be release only if it's already charging! It is currently {bLdrone.State}");
+                {
+                    throw new ObjectDoesntExistException($"the drone {DroneId} does not exist!");
+                }
             }
-            else
-                throw new ObjectDoesntExistException($"the drone {DroneId} does not exist!");
         }
 
         /// <summary>
@@ -353,43 +385,55 @@ namespace BlApi
         /// <exception cref="BlException"></exception>
         /// <exception cref="DroneStateException"></exception>
         /// <exception cref="ObjectDoesntExistException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AssignPackage(int DroneId)
         {
-            DroneForList bLdrone = BLdrones.Find(d => d.Id == DroneId);
-            if (bLdrone is not null)
+            lock (Idal)
             {
-                if (bLdrone.State == DroneState.Empty)
+                DroneForList bLdrone = BLdrones.Find(d => d.Id == DroneId);
+                if (bLdrone is not null)
                 {
-                    IEnumerable<DO.Package> allPackages = Idal.GetAllPackagesWhere(p => p.DroneId is null);
-                    IEnumerable<DO.Package> allCanWeight = allPackages.Where(p => (int)p.Weight <= (int)bLdrone.Weight);
-
-                    if (allCanWeight.Any())
+                    if (bLdrone.State == DroneState.Empty)
                     {
-                        IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, bLdrone));
+                        IEnumerable<DO.Package> allPackages = Idal.GetAllPackagesWhere(p => p.DroneId is null);
+                        IEnumerable<DO.Package> allCanWeight = allPackages.Where(p => (int)p.Weight <= (int)bLdrone.Weight);
 
-                        List<DO.Package> allNearList = allNear.ToList();
-                        if (allNearList.Count > 0)
+                        if (allCanWeight.Any())
                         {
-                            allNearList.Sort((p1, p2) => PackagePriority(p1, p2, bLdrone.CurrentLocation));
+                            IEnumerable<DO.Package> allNear = allCanWeight.Where(p => DroneHaveEnoughBattery(p, bLdrone));
 
-                            int PackageId = allNearList[0].Id;
+                            List<DO.Package> allNearList = allNear.ToList();
+                            if (allNearList.Count > 0)
+                            {
+                                allNearList.Sort((p1, p2) => PackagePriority(p1, p2, bLdrone.CurrentLocation));
 
-                            bLdrone.State = DroneState.Busy;
-                            bLdrone.PassingPckageId = PackageId;
+                                int PackageId = allNearList[0].Id;
 
-                            Idal.GivePackageDrone(PackageId, bLdrone.Id); // change drone id in package, change time associating
+                                bLdrone.State = DroneState.Busy;
+                                bLdrone.PassingPckageId = PackageId;
+
+                                Idal.GivePackageDrone(PackageId, bLdrone.Id); // change drone id in package, change time associating
+                            }
+                            else
+                            {
+                                throw new BlException($"there are no free packages for the drone {DroneId}", DroneId, typeof(Drone));
+                            }
                         }
                         else
+                        {
                             throw new BlException($"there are no free packages for the drone {DroneId}", DroneId, typeof(Drone));
+                        }
                     }
                     else
-                        throw new BlException($"there are no free packages for the drone {DroneId}", DroneId, typeof(Drone));
+                    {
+                        throw new DroneStateException($"the drone {DroneId} cannot be associated because it is not empty! currently {bLdrone.State}");
+                    }
                 }
                 else
-                    throw new DroneStateException($"the drone {DroneId} cannot be associated because it is not empty! currently {bLdrone.State}");
+                {
+                    throw new ObjectDoesntExistException($"the drone {DroneId} is not exist!");
+                }
             }
-            else
-                throw new ObjectDoesntExistException($"the drone {DroneId} is not exist!");
         }
 
         /// <summary>
@@ -399,77 +443,97 @@ namespace BlApi
         /// <exception cref="ObjectDoesntExistException"></exception>
         /// <exception cref="BlException"></exception>
         /// <exception cref="DroneStateException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PickUpPackage(int DroneId, bool simulatorMode = false)
         {
-            DroneForList bLdrone = BLdrones.First(d => d.Id == DroneId);
-
-            if (bLdrone.State == DroneState.Busy)
+            lock (Idal)
             {
-                int PackageId = bLdrone.PassingPckageId is null ?
-                    throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
-                    (int)bLdrone.PassingPckageId;
-                DO.Package p = GetDALPackage(PackageId);
-                if (p.Associated is not null && p.PickUp is null)
-                {
-                    DO.Customer Sender = GetDALCustomer(p.SenderId);
-                    Location SenderLoc = new(Sender.Longitude, Sender.Latitude);
-                    if (!simulatorMode)
-                    {
-                        double batteryNeed = (1 / elecRate[0]) * DistanceTo(bLdrone.CurrentLocation, SenderLoc);
-                        if (batteryNeed > bLdrone.Battery)
-                            throw new BlException($"Not enough battery of {bLdrone.Id}, need {batteryNeed}, has {bLdrone.Battery}");
+                DroneForList bLdrone = BLdrones.First(d => d.Id == DroneId);
 
-                        bLdrone.Battery -= batteryNeed;
+                if (bLdrone.State == DroneState.Busy)
+                {
+                    int PackageId = bLdrone.PassingPckageId is null ?
+                        throw new ObjectDoesntExistException($"The drone with ID {DroneId} is not paired to a package!") :
+                        (int)bLdrone.PassingPckageId;
+                    DO.Package p = GetDALPackage(PackageId);
+                    if (p.Associated is not null && p.PickUp is null)
+                    {
+                        DO.Customer Sender = GetDALCustomer(p.SenderId);
+                        Location SenderLoc = new(Sender.Longitude, Sender.Latitude);
+                        if (!simulatorMode)
+                        {
+                            double batteryNeed = (1 / elecRate[0]) * LocationUtil.DistanceTo(bLdrone.CurrentLocation, SenderLoc);
+                            if (batteryNeed > bLdrone.Battery)
+                            {
+                                throw new BlException($"not enough battery of {bLdrone.Id}, need {batteryNeed}, has {bLdrone.Battery}");
+                            }
+
+                            bLdrone.Battery -= batteryNeed;
+                        }
+                        bLdrone.CurrentLocation = SenderLoc;
+                        Idal.PickUpPackage(PackageId);
                     }
-                    bLdrone.CurrentLocation = SenderLoc;
-                    Idal.PickUpPackage(PackageId);
+                    else
+                    {
+                        throw new BlException("the package is not associated or picked up", PackageId, p.GetType());
+                    }
                 }
                 else
-                    throw new BlException("The package is not associated or picked up", PackageId, p.GetType());
+                {
+                    throw new DroneStateException($"cannot pick up with drone that is not busy! the current state is {bLdrone.State}");
+                }
             }
-            else
-                throw new DroneStateException($"Cannot pick up with drone that is not busy! the current state is {bLdrone.State}");
         }
 
         /// <summary>
         /// Releases the package from the <c>Drone</c> with the ID <paramref name="droneId"/>
         /// </summary>
         /// <param name="droneId"></param>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliverPackage(int droneId, bool simulatorMode = false)
         {
-            DroneForList BLdrone = BLdrones.First(d => d.Id == droneId);
-
-            if (BLdrone.State == DroneState.Busy)
+            lock (Idal)
             {
-                int PackageId = BLdrone.PassingPckageId is null ?
-                    throw new ObjectDoesntExistException($"The drone with ID {droneId} is not paired to a package!") :
-                    (int)BLdrone.PassingPckageId;
-                DO.Package p = GetDALPackage(PackageId);
-                if (p.PickUp is not null && p.Delivered is null)
+                DroneForList BLdrone = BLdrones.First(d => d.Id == droneId);
+
+                if (BLdrone.State == DroneState.Busy)
                 {
-                    DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
-                    Location RecvLoc = new(Recv.Longitude, Recv.Latitude);
-                    if (!simulatorMode)
+                    int PackageId = BLdrone.PassingPckageId is null ?
+                        throw new ObjectDoesntExistException($"The drone with ID {droneId} is not paired to a package!") :
+                        (int)BLdrone.PassingPckageId;
+                    DO.Package p = GetDALPackage(PackageId);
+                    if (p.PickUp is not null && p.Delivered is null)
                     {
-                        double batteryNeed = 1 / ElecOfDrone(BLdrone) * DistanceTo(BLdrone.CurrentLocation, RecvLoc);
-                        if (batteryNeed > BLdrone.Battery)
-                            throw new BlException($"Drone {BLdrone.Id} does not have enough battery, it needs {batteryNeed}%, but has {BLdrone.Battery}%");
+                        DO.Customer Recv = Idal.GetCustomer(p.RecevirId);
+                        Location RecvLoc = new(Recv.Longitude, Recv.Latitude);
+                        if (!simulatorMode)
+                        {
+                            double batteryNeed = 1 / ElecOfDrone(BLdrone) * LocationUtil.DistanceTo(BLdrone.CurrentLocation, RecvLoc);
+                            if (batteryNeed > BLdrone.Battery)
+                            {
+                                throw new BlException($"Drone {BLdrone.Id} does not have enough battery, it needs {batteryNeed}%, but has {BLdrone.Battery}%");
+                            }
 
-                        BLdrone.Battery -= batteryNeed;
+                            BLdrone.Battery -= batteryNeed;
+                        }
+                        BLdrone.CurrentLocation = RecvLoc;
+                        BLdrone.State = DroneState.Empty;
+
+                        BLdrone.PassingPckageId = null;
+
+                        p.Delivered = DateTime.Now;
+                        Idal.UpdatePackage(p);
                     }
-                    BLdrone.CurrentLocation = RecvLoc;
-                    BLdrone.State = DroneState.Empty;
-
-                    BLdrone.PassingPckageId = null;
-
-                    p.Delivered = DateTime.Now;
-                    Idal.UpdatePackage(p);
+                    else
+                    {
+                        throw new BlException($"The package {PackageId}'s state is not \"pick up\"!");
+                    }
                 }
                 else
-                    throw new BlException($"The package {PackageId}'s state is not \"pick up\"!");
+                {
+                    throw new ObjectDoesntExistException($"the drone {droneId} is not exist!");
+                }
             }
-            else
-                throw new ObjectDoesntExistException($"the drone {droneId} is not exist!");
         }
 
         /// <summary>
@@ -477,17 +541,23 @@ namespace BlApi
         /// </summary>
         /// <param name="StationId"></param>
         /// <returns>BO.Sattion</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStationById(int StationId)
         {
-            var dALstation = GetDALStation(StationId);
-            List<DroneInCharging> charged = new();
-            foreach (DroneForList bLDrone in BLdrones)
+            lock (Idal)
             {
-                if (bLDrone.State == DroneState.Maitenance && bLDrone.CurrentLocation.Latitude == dALstation.Latitude && bLDrone.CurrentLocation.Longitude == dALstation.Longitude)
-                    charged.Add(new DroneInCharging(bLDrone.Id, bLDrone.Battery));
-            }
+                var dALstation = GetDALStation(StationId);
+                List<DroneInCharging> charged = new();
+                foreach (DroneForList bLDrone in BLdrones)
+                {
+                    if (bLDrone.State == DroneState.Maitenance && bLDrone.CurrentLocation.Latitude == dALstation.Latitude && bLDrone.CurrentLocation.Longitude == dALstation.Longitude)
+                    {
+                        charged.Add(new DroneInCharging(bLDrone.Id, bLDrone.Battery));
+                    }
+                }
 
-            return new Station(dALstation.Id, dALstation.Name, new(dALstation.Longitude, dALstation.Latitude), dALstation.ChargeSlots, charged);
+                return new Station(dALstation.Id, dALstation.Name, new(dALstation.Longitude, dALstation.Latitude), dALstation.ChargeSlots, charged);
+            }
         }
 
         /// <summary>
@@ -495,30 +565,34 @@ namespace BlApi
         /// </summary>
         /// <param name="droneId"></param>
         /// <returns>BO.Drone</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDroneById(int droneId)
         {
-            var dALdrone = GetDALDrone(droneId);
-            DroneForList droneForList = BLdrones.Find(d => d.Id == droneId);
-            PackageInTransfer pckTransfer = null;
-
-            if (droneForList.State == DroneState.Busy)
+            lock (Idal)
             {
-                int pkgId = (int)droneForList.PassingPckageId;
-                var DALpkg = GetDALPackage(pkgId);
+                var dALdrone = GetDALDrone(droneId);
+                DroneForList droneForList = BLdrones.Find(d => d.Id == droneId);
+                PackageInTransfer pckTransfer = null;
 
-                var DALsend = GetDALCustomer(DALpkg.SenderId);
-                var DALrecv = GetDALCustomer(DALpkg.RecevirId);
+                if (droneForList.State == DroneState.Busy)
+                {
+                    int pkgId = (int)droneForList.PassingPckageId;
+                    var DALpkg = GetDALPackage(pkgId);
 
-                CustomerForPackage send = new(DALpkg.SenderId, DALsend.Name);
-                CustomerForPackage recv = new(DALpkg.RecevirId, DALrecv.Name);
+                    var DALsend = GetDALCustomer(DALpkg.SenderId);
+                    var DALrecv = GetDALCustomer(DALpkg.RecevirId);
 
-                Location locSend = new(DALsend.Longitude, DALsend.Latitude), locRecv = new(DALrecv.Longitude, DALrecv.Latitude);
+                    CustomerForPackage send = new(DALpkg.SenderId, DALsend.Name);
+                    CustomerForPackage recv = new(DALpkg.RecevirId, DALrecv.Name);
 
-                bool inDelivery = DALpkg.PickUp is not null;
-                pckTransfer = new PackageInTransfer(pkgId, inDelivery, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, inDelivery ? DistanceTo(droneForList.CurrentLocation, locRecv) : DistanceTo(droneForList.CurrentLocation, locSend));
+                    Location locSend = new(DALsend.Longitude, DALsend.Latitude), locRecv = new(DALrecv.Longitude, DALrecv.Latitude);
+
+                    bool inDelivery = DALpkg.PickUp is not null;
+                    pckTransfer = new PackageInTransfer(pkgId, inDelivery, (WeightGroup)(int)DALpkg.Weight, (PriorityGroup)(int)DALpkg.PackagePriority, send, recv, locSend, locRecv, inDelivery ? LocationUtil.DistanceTo(droneForList.CurrentLocation, locRecv) : LocationUtil.DistanceTo(droneForList.CurrentLocation, locSend));
+                }
+
+                return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
             }
-
-            return new Drone(droneForList.Id, droneForList.Model, droneForList.Weight, droneForList.Battery, droneForList.State, pckTransfer, droneForList.CurrentLocation);
         }
 
         /// <summary>
@@ -526,36 +600,44 @@ namespace BlApi
         /// </summary>
         /// <param name="CustomerId"></param>
         /// <returns>BO.Customer</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomerById(int CustomerId)
         {
-            var dALcustomer = GetDALCustomer(CustomerId);
-
-            List<PackageForCustomer> pkgFrom = new();
-            List<PackageForCustomer> pkgTo = new();
-            IEnumerable<DO.Package> dALpackages = Idal.GetAllPackages();
-
-            foreach (DO.Package dp in dALpackages)
+            lock (Idal)
             {
-                if (dp.Associated is not null) // if the package is in the process of delivering
-                {
-                    if (dp.SenderId == CustomerId || dp.RecevirId == CustomerId)
-                    {
-                        PackageStatus status = dp.Delivered is not null ? PackageStatus.Accepted : (dp.PickUp is not null ? PackageStatus.PickedUp :
-                            dp.Associated is not null ? PackageStatus.Paired : PackageStatus.Initialized);
-                        PackageForCustomer pkgForCustomer = new(dp.Id, (WeightGroup)(int)dp.Weight,
-                            (PriorityGroup)(int)dp.PackagePriority, status,
-                            new CustomerForPackage(CustomerId, dALcustomer.Name));
+                var dALcustomer = GetDALCustomer(CustomerId);
 
-                        if (dp.SenderId == CustomerId)
-                            pkgFrom.Add(pkgForCustomer);
-                        else
-                            pkgTo.Add(pkgForCustomer);
+                List<PackageForCustomer> pkgFrom = new();
+                List<PackageForCustomer> pkgTo = new();
+                IEnumerable<DO.Package> dALpackages = Idal.GetAllPackages();
+
+                foreach (DO.Package dp in dALpackages)
+                {
+                    if (dp.Associated is not null) // if the package is in the process of delivering
+                    {
+                        if (dp.SenderId == CustomerId || dp.RecevirId == CustomerId)
+                        {
+                            PackageStatus status = dp.Delivered is not null ? PackageStatus.Accepted : (dp.PickUp is not null ? PackageStatus.PickedUp :
+                                dp.Associated is not null ? PackageStatus.Paired : PackageStatus.Initialized);
+                            PackageForCustomer pkgForCustomer = new(dp.Id, (WeightGroup)(int)dp.Weight,
+                                (PriorityGroup)(int)dp.PackagePriority, status,
+                                new CustomerForPackage(CustomerId, dALcustomer.Name));
+
+                            if (dp.SenderId == CustomerId)
+                            {
+                                pkgFrom.Add(pkgForCustomer);
+                            }
+                            else
+                            {
+                                pkgTo.Add(pkgForCustomer);
+                            }
+                        }
                     }
                 }
-            }
 
-            return new Customer(dALcustomer.Id, dALcustomer.Name, dALcustomer.Phone,
-                new(dALcustomer.Longitude, dALcustomer.Latitude), pkgFrom, pkgTo);
+                return new Customer(dALcustomer.Id, dALcustomer.Name, dALcustomer.Phone,
+                    new(dALcustomer.Longitude, dALcustomer.Latitude), pkgFrom, pkgTo);
+            }
         }
 
         /// <summary>
@@ -563,52 +645,60 @@ namespace BlApi
         /// </summary>
         /// <param name="PackageId"></param>
         /// <returns>BO.Package</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Package GetPackageById(int PackageId)
         {
-            var dALpkg = GetDALPackage(PackageId);
-            Package ans = new();
-
-            WeightGroup weight = (WeightGroup)(int)dALpkg.Weight;
-            PriorityGroup priority = (PriorityGroup)((int)dALpkg.PackagePriority);
-
-            ans.Id = PackageId;
-            ans.Weight = weight;
-            ans.Priority = priority;
-
-            var dALsender = GetDALCustomer(dALpkg.SenderId);
-            CustomerForPackage sender = new(dALsender.Id, dALsender.Name);
-
-            var DALrecv = GetDALCustomer(dALpkg.RecevirId);
-            CustomerForPackage recv = new(DALrecv.Id, DALrecv.Name);
-
-            ans.Sender = sender;
-            ans.Reciver = recv;
-
-            ans.TimePackaged = dALpkg.Created;
-
-            if (dALpkg.DroneId.HasValue)
+            lock (Idal)
             {
-                DroneForList BLdrone = BLdrones.Find(d => d.Id == dALpkg.DroneId);
-                DroneForPackage drone = new(BLdrone.Id, BLdrone.Battery, BLdrone.CurrentLocation);
-                ans.Drone = drone;
+                var dALpkg = GetDALPackage(PackageId);
+                Package ans = new();
 
-                ans.TimePaired = dALpkg.Associated;
-                ans.TimePickedUp = dALpkg.PickUp;
-                ans.TimeDeliverd = dALpkg.Delivered;
+                WeightGroup weight = (WeightGroup)(int)dALpkg.Weight;
+                PriorityGroup priority = (PriorityGroup)((int)dALpkg.PackagePriority);
+
+                ans.Id = PackageId;
+                ans.Weight = weight;
+                ans.Priority = priority;
+
+                var dALsender = GetDALCustomer(dALpkg.SenderId);
+                CustomerForPackage sender = new(dALsender.Id, dALsender.Name);
+
+                var DALrecv = GetDALCustomer(dALpkg.RecevirId);
+                CustomerForPackage recv = new(DALrecv.Id, DALrecv.Name);
+
+                ans.Sender = sender;
+                ans.Reciver = recv;
+
+                ans.TimePackaged = dALpkg.Created;
+
+                if (dALpkg.DroneId.HasValue)
+                {
+                    DroneForList BLdrone = BLdrones.Find(d => d.Id == dALpkg.DroneId);
+                    DroneForPackage drone = new(BLdrone.Id, BLdrone.Battery, BLdrone.CurrentLocation);
+                    ans.Drone = drone;
+
+                    ans.TimePaired = dALpkg.Associated;
+                    ans.TimePickedUp = dALpkg.PickUp;
+                    ans.TimeDeliverd = dALpkg.Delivered;
+                }
+                return ans;
             }
-            return ans;
         }
 
         /// <summary>
         /// Returns a list of all stations
         /// </summary>
         /// <returns>List of BO.StationForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationForList> GetAllStations()
         {
-            foreach (var station in Idal.GetAllStations())
+            lock (Idal)
             {
-                Station blStation = GetStationById(station.Id);
-                yield return new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count());
+                foreach (var station in Idal.GetAllStations())
+                {
+                    Station blStation = GetStationById(station.Id);
+                    yield return new StationForList(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count());
+                }
             }
         }
 
@@ -616,36 +706,44 @@ namespace BlApi
         /// Returns a list of all drones
         /// </summary>
         /// <returns>List of BO.DroneForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneForList> GetAllDrones()
         {
-            List<DroneForList> ret = new();
-            foreach (var drone in Idal.GetAllDrones())
+            lock (Idal)
             {
-                Drone blDrone = GetDroneById(drone.Id);
-                ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1 : blDrone.Package.Id)));
+                List<DroneForList> ret = new();
+                foreach (var drone in Idal.GetAllDrones())
+                {
+                    Drone blDrone = GetDroneById(drone.Id);
+                    ret.Add(new(blDrone.Id, blDrone.Model, blDrone.Weight, blDrone.Battery, blDrone.State, blDrone.CurrentLocation, (blDrone.Package is null ? -1 : blDrone.Package.Id)));
+                }
+                return ret;
             }
-            return ret;
         }
 
         /// <summary>
         /// Returns a list of all customers
         /// </summary>
         /// <returns>List of BO.CustomerForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerForList> GetAllCustomers()
         {
-            foreach (var customer in Idal.GetAllCustomers())
+            lock (Idal)
             {
-                Customer blCustomer = GetCustomerById(customer.Id);
-                int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                p.Delivered is null).Count();
-                int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
-                p.Delivered is not null).Count();
-                int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
-                p.Delivered is null).Count();
-                int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
-                p.Delivered is not null).Count();
-                yield return new CustomerForList(blCustomer.Id, blCustomer.Name, blCustomer.PhoneNumber, sentAccepted,
-                    sentOnTheWay, accepted, onTheWay);
+                foreach (var customer in Idal.GetAllCustomers())
+                {
+                    Customer blCustomer = GetCustomerById(customer.Id);
+                    int sentAccepted = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
+                    p.Delivered is null).Count();
+                    int sentOnTheWay = Idal.GetAllPackages().Where(p => p.SenderId == blCustomer.Id &&
+                    p.Delivered is not null).Count();
+                    int accepted = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                    p.Delivered is null).Count();
+                    int onTheWay = Idal.GetAllPackages().Where(p => p.RecevirId == blCustomer.Id &&
+                    p.Delivered is not null).Count();
+                    yield return new CustomerForList(blCustomer.Id, blCustomer.Name, blCustomer.PhoneNumber, sentAccepted,
+                        sentOnTheWay, accepted, onTheWay);
+                }
             }
         }
 
@@ -653,12 +751,16 @@ namespace BlApi
         /// Returns a list of all Packages
         /// </summary>
         /// <returns>List of BO.PackageForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<PackageForList> GetAllPackages()
         {
-            foreach (var package in Idal.GetAllPackages())
+            lock (Idal)
             {
-                Package blPackage = GetPackageById(package.Id);
-                yield return new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage));
+                foreach (var package in Idal.GetAllPackages())
+                {
+                    Package blPackage = GetPackageById(package.Id);
+                    yield return new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, GetPackageState(blPackage));
+                }
             }
         }
 
@@ -666,12 +768,16 @@ namespace BlApi
         /// Returns a list of all unpaired packages
         /// </summary>
         /// <returns>List of BO.PackageForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<PackageForList> GetPackagesWithoutDrone()
         {
-            foreach (var package in Idal.GetAllPackagesWhere(p => p.DroneId is null))
+            lock (Idal)
             {
-                Package blPackage = GetPackageById(package.Id);
-                yield return new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, PackageStatus.Initialized);
+                foreach (var package in Idal.GetAllPackagesWhere(p => p.DroneId is null))
+                {
+                    Package blPackage = GetPackageById(package.Id);
+                    yield return new(blPackage.Id, blPackage.Sender.Name, blPackage.Reciver.Name, blPackage.Weight, blPackage.Priority, PackageStatus.Initialized);
+                }
             }
         }
 
@@ -679,12 +785,16 @@ namespace BlApi
         /// Returns a list of all stations with open charging ports
         /// </summary>
         /// <returns>List of BO.StationForList</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationForList> GetStationsWithCharges()
         {
-            foreach (var station in Idal.GetAllStationsWhere(s => s.ChargeSlots > 0))
+            lock (Idal)
             {
-                Station blStation = GetStationById(station.Id);
-                yield return new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count());
+                foreach (var station in Idal.GetAllStationsWhere(s => s.ChargeSlots > 0))
+                {
+                    Station blStation = GetStationById(station.Id);
+                    yield return new(blStation.Id, blStation.Name, blStation.AmountOfEmptyPorts, blStation.ChargingDrones.Count());
+                }
             }
         }
 
@@ -761,112 +871,108 @@ namespace BlApi
             Location LocP1 = new(p1Cust.Longitude, p1Cust.Latitude);
             Location LocP2 = new(p2Cust.Longitude, p2Cust.Latitude);
 
-            double p1Dist = DistanceTo(DroneLoc, LocP1);
-            double p2Dist = DistanceTo(DroneLoc, LocP2);
+            double p1Dist = LocationUtil.DistanceTo(DroneLoc, LocP1);
+            double p2Dist = LocationUtil.DistanceTo(DroneLoc, LocP2);
 
             return p1Dist > p2Dist ? -1 : p1Dist < p2Dist ? 1 : 0;
         }
 
         private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d)
         {
-            return BatteryToDeliver(p, d) <= d.Battery;
+            lock (Idal)
+            {
+                return BatteryToDeliver(p, d) <= d.Battery;
+            }
         }
 
         private double BatteryToDeliver(DO.Package p, DroneForList d)
         {
-            var sender = GetDALCustomer(p.SenderId);
-            Location senderLoc = new(sender.Longitude, sender.Latitude);
-
-            var recv = GetDALCustomer(p.RecevirId);
-            Location recvLoc = new(recv.Longitude, recv.Latitude);
-
-            int? stationId = GetClosetStation(recvLoc);
-            if (stationId is null)
-                return double.PositiveInfinity;
-
-            DO.Station closest = GetDALStation((int)stationId);
-            Location closestLoc = new(closest.Longitude, closest.Latitude);
-
-            double battery = (1 / elecRate[0]) * DistanceTo(d.CurrentLocation, senderLoc) +
-                (1 / elecRate[(int)p.Weight]) * DistanceTo(recvLoc, senderLoc) +
-                (1 / elecRate[0]) * DistanceTo(closestLoc, recvLoc);
-            return battery;
-        }
-
-        internal static double DistanceTo(Location Loc1, Location Loc2, char unit = 'K')
-        {
-            double lat1 = Loc1.Latitude;
-            double lon1 = Loc1.Longitude;
-            double lat2 = Loc2.Latitude;
-            double lon2 = Loc2.Longitude;
-
-            if (lat1 == lat2 && lon1 == lon2)
-                return 0;
-
-            double rlat1 = Math.PI * lat1 / 180;
-            double rlat2 = Math.PI * lat2 / 180;
-            double theta = lon1 - lon2;
-            double rtheta = Math.PI * theta / 180;
-            double dist =
-                Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) *
-                Math.Cos(rlat2) * Math.Cos(rtheta);
-            dist = Math.Acos(dist);
-            dist = dist * 180 / Math.PI;
-            dist = dist * 60 * 1.1515;
-            return unit switch
+            lock (Idal)
             {
-                'K' => dist * 1.609344,
-                'N' => dist * 0.8684,
-                'M' => dist,
-                _ => throw new NotSupportedException($"Unit type '{unit}' not supported yet"),
-            };
+                var sender = GetDALCustomer(p.SenderId);
+                Location senderLoc = new(sender.Longitude, sender.Latitude);
+
+                var recv = GetDALCustomer(p.RecevirId);
+                Location recvLoc = new(recv.Longitude, recv.Latitude);
+
+                int? stationId = GetClosetStation(recvLoc);
+                if (stationId is null)
+                {
+                    return double.PositiveInfinity;
+                }
+
+                DO.Station closest = GetDALStation((int)stationId);
+                Location closestLoc = new(closest.Longitude, closest.Latitude);
+
+                double battery = (1 / elecRate[0]) * LocationUtil.DistanceTo(d.CurrentLocation, senderLoc) +
+                    (1 / elecRate[(int)p.Weight]) * LocationUtil.DistanceTo(recvLoc, senderLoc) +
+                    (1 / elecRate[0]) * LocationUtil.DistanceTo(closestLoc, recvLoc);
+                return battery;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         internal int? GetClosetStation(Location loc, bool toCharge = true)
         {
-            IEnumerable<DO.Station> freeStations = Idal.GetAllStations();
-            if (toCharge)
-                freeStations = freeStations.Where(s => s.ChargeSlots > 0);
-
-            if (freeStations.Any())
+            lock (Idal)
             {
-                DO.Station closest = freeStations.Aggregate((s1, s2) => DistanceTo(new(s1.Longitude, s1.Latitude), loc) >
-                    DistanceTo(new(s2.Longitude, s2.Latitude), loc) ?
-                    s2 : s1);
-                return closest.Id;
+                IEnumerable<DO.Station> freeStations = Idal.GetAllStations();
+                if (toCharge)
+                {
+                    freeStations = freeStations.Where(s => s.ChargeSlots > 0);
+                }
+
+                if (freeStations.Any())
+                {
+                    DO.Station closest = freeStations.Aggregate((s1, s2) => LocationUtil.DistanceTo(new(s1.Longitude, s1.Latitude), loc) >
+                        LocationUtil.DistanceTo(new(s2.Longitude, s2.Latitude), loc) ?
+                        s2 : s1);
+                    return closest.Id;
+                }
+                return null;
             }
-            return null;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         internal double ElecOfDrone(int Id)
         {
-            return ElecOfDrone(GetAllDrones().Where(d => d.Id == Id).First());
+            lock (Idal)
+            {
+                return ElecOfDrone(GetAllDrones().Where(d => d.Id == Id).First());
+            }
         }
 
         private double ElecOfDrone(DroneForList d)
         {
-            int ix = -1;
-            if (d.State is DroneState.Empty)
-                ix = 0;
-            else if (d.State is DroneState.Busy)
+            lock (Idal)
             {
-                switch (Idal.GetPackage((int)d.PassingPckageId).Weight)
+                int ix = -1;
+                if (d.State is DroneState.Empty)
                 {
-                    case DO.WeightGroup.Light:
-                        ix = 1;
-                        break;
-                    case DO.WeightGroup.Mid:
-                        ix = 2;
-                        break;
-                    case DO.WeightGroup.Heavy:
-                        ix = 3;
-                        break;
+                    ix = 0;
                 }
-            }
-            else
-                throw new InvalidOperationException($"The drone {d.Id} is in maintenance");
+                else if (d.State is DroneState.Busy)
+                {
+                    switch (Idal.GetPackage((int)d.PassingPckageId).Weight)
+                    {
+                        case DO.WeightGroup.Light:
+                            ix = 1;
+                            break;
+                        case DO.WeightGroup.Mid:
+                            ix = 2;
+                            break;
+                        case DO.WeightGroup.Heavy:
+                            ix = 3;
+                            break;
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"The drone {d.Id} is in maintenance");
+                }
 
-            return elecRate[ix];
+                return elecRate[ix];
+            }
         }
 
         private static PackageStatus GetPackageState(Package p)
@@ -884,63 +990,94 @@ namespace BlApi
 
         public void StartSimulator(int DroneId, Action update, Func<bool> stop)
         {
-            _ = new Simulator(DroneId, update, stop);
+            _ = new Simulator.Simulator(DroneId, update, stop);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<dynamic> GetObjectsWhere<T>(Func<T, bool> func)
         {
-            IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
+            lock (Idal)
             {
-                "Drone" => GetAllDrones(),
-                "Station" => GetAllStations(),
-                "Customer" => GetAllCustomers(),
-                "Package" => GetAllPackages(),
-                _ => throw new InvalidOperationException()
-            };
-            foreach (var item in listRet)
-            {
-                if (func(typeof(T).Name.Contains("ForList") ? item : GetObject(item.Id, item.GetType().Name)))
-                    yield return item;
+                IEnumerable<dynamic> listRet = typeof(T).Name.Replace("ForList", "") switch
+                {
+                    "Drone" => GetAllDrones(),
+                    "Station" => GetAllStations(),
+                    "Customer" => GetAllCustomers(),
+                    "Package" => GetAllPackages(),
+                    _ => throw new InvalidOperationException()
+                };
+                foreach (var item in listRet)
+                {
+                    if (func(typeof(T).Name.Contains("ForList") ? item : GetObject(item.Id, item.GetType().Name)))
+                    {
+                        yield return item;
+                    }
+                }
             }
         }
 
         private dynamic GetObject(int id, string typeOf)
         {
-            return typeOf switch
+            lock (Idal)
             {
-                "Drone" => GetDroneById(id),
-                "Station" => GetStationById(id),
-                "Customer" => GetCustomerById(id),
-                "Package" => GetPackageById(id),
-                _ => throw new InvalidOperationException()
-            };
+                return typeOf switch
+                {
+                    "Drone" => GetDroneById(id),
+                    "Station" => GetStationById(id),
+                    "Customer" => GetCustomerById(id),
+                    "Package" => GetPackageById(id),
+                    _ => throw new InvalidOperationException()
+                };
+            }
         }
 
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeletePackage(int packageId)
         {
-            if (GetDALPackage(packageId).DroneId is null)
-                Idal.DeletePackage(packageId);
+            lock (Idal)
+            {
+                if (GetDALPackage(packageId).DroneId is null)
+                {
+                    Idal.DeletePackage(packageId);
+                }
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationForList> GetAllStationsWhere(Func<StationForList, bool> func)
         {
-            return GetObjectsWhere(func).Cast<StationForList>();
+            lock (Idal)
+            {
+                return GetObjectsWhere(func).Cast<StationForList>();
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneForList> GetAllDronesWhere(Func<DroneForList, bool> func)
         {
-            return GetObjectsWhere(func).Cast<DroneForList>();
+            lock (Idal)
+            {
+                return GetObjectsWhere(func).Cast<DroneForList>();
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerForList> GetAllCustomersWhere(Func<CustomerForList, bool> func)
         {
-            return GetObjectsWhere(func).Cast<CustomerForList>();
+            lock (Idal)
+            {
+                return GetObjectsWhere(func).Cast<CustomerForList>();
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<PackageForList> GetAllPackagesWhere(Func<PackageForList, bool> func)
         {
-            return GetObjectsWhere(func).Cast<PackageForList>();
+            lock (Idal)
+            {
+                return GetObjectsWhere(func).Cast<PackageForList>();
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -17,6 +18,7 @@ namespace Dal
         /// <param name="model">Model for new drone</param>
         /// <param name="weight">Weight group for the new drone</param>
         /// <exception cref="ArgumentException"></exception>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(int id, string model, WeightGroup weight)
         {
             DataSource.Drones.Add(new(GetDroneIndex(id) != -1 ? throw new ArgumentException($"The drone {id} already exists") : id, model, weight));
@@ -28,7 +30,7 @@ namespace Dal
         /// <param name="id">The id for the wanted drone</param>
         /// <returns>The drone with id <paramref name="id"/></returns>
         /// <exception cref="ArgumentException"></exception>
-        private static int GetDroneIndex(int id)
+        private int GetDroneIndex(int id)
         {
             return DataSource.Drones.FindIndex(d => d.Id == id);
         }
@@ -38,6 +40,7 @@ namespace Dal
         /// </summary>
         /// <param name="id">The id for the wanted drone</param>
         /// <returns>The index of the drone with id <paramref name="id"/></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int id)
         {
             int ix = GetDroneIndex(id);
@@ -49,6 +52,7 @@ namespace Dal
         /// </summary>
         /// <param name="predicate">The function to filter drones with</param>
         /// <returns>A IEnumerable with all the drones in the data drone that answer to predicate</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetAllDrones()
         {
             return new List<Drone>(DataSource.Drones);
@@ -59,6 +63,7 @@ namespace Dal
         /// </summary>
         /// <param name="predicate">The function to filter drones with</param>
         /// <returns>A IEnumerable with all the drones in the data drone that answer to predicate</returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetAllDronesWhere(Func<Drone, bool> predicate)
         {
             return new List<Drone>(DataSource.Drones.Where(predicate));

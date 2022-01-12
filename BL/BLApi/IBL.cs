@@ -21,7 +21,7 @@ namespace BlApi
         #endregion
 
         #region Update Options
-        void UpdateDroneName(int id, string newModel, double battery = -1, Location newLocation = null);
+        void UpdateDrone(int id, string newModel, double battery = -1, Location newLocation = null);
         void SendDroneToCharge(int DroneId);
         void ReleaseDrone(int DroneId, System.DateTime time);
         void AssignPackage(int DroneId);

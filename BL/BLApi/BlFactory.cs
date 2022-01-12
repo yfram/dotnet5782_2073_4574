@@ -18,7 +18,9 @@ namespace BlApi
         public static IBL GetBl()
         {
             if (Instance == null)
-                Instance = new BL();
+            {
+                Instance = new BL.BL();
+            }
 
             return Instance;
         }

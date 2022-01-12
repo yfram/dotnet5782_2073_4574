@@ -159,7 +159,7 @@ namespace ConsoleUI_BL
                 switch (menue)
                 {
                     case UpdateMenue.DroneName:
-                        bl.UpdateDroneName(GetIntInput("Enter drone id:"), GetStringInput("Enter new name:"));
+                        bl.UpdateDrone(GetIntInput("Enter drone id:"), GetStringInput("Enter new name:"));
                         break;
                     case UpdateMenue.Station:
                         bl.UpdateStation(GetIntInput("Enter station ID:"), GetStringInput("Enter new name(enter if no update):"),
