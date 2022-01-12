@@ -947,7 +947,7 @@ namespace BL
             lock (Idal)
             {
                 int ix = -1;
-                if (d.State is DroneState.Empty)
+                if (d.State is DroneState.Empty || (d.State is DroneState.Busy && Idal.GetPackage((int)d.PassingPckageId).PickUp is null))
                 {
                     ix = 0;
                 }
