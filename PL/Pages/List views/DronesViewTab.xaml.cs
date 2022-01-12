@@ -50,9 +50,7 @@ namespace PL.Pages
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox senderAsCheckBox)
-            {
                 return;
-            }
 
             List<Func<DroneForList, bool>> weightFuncs = new();
             List<Func<DroneForList, bool>> statusFuncs = new();
@@ -64,18 +62,14 @@ namespace PL.Pages
                     case "Maintenance":
                     case "Busy":
                         if ((checkBox.IsChecked ?? false))//false is unreachable
-                        {
                             statusFuncs.Add((DroneForList d) => d.State.ToString() == (string)checkBox.Content);
-                        }
 
                         break;
                     case "Light":
                     case "Mid":
                     case "Heavy":
                         if ((checkBox.IsChecked ?? false))//false is unreachable
-                        {
                             weightFuncs.Add((DroneForList d) => d.Weight.ToString() == (string)checkBox.Content);
-                        }
 
                         break;
                     case "Collected_View":
@@ -94,9 +88,7 @@ namespace PL.Pages
             var droneView = (CollectionViewSource)Resources["DronesGroup"];
             droneView.GroupDescriptions.Clear();
             if (((CheckBox)sender).IsChecked.HasValue && ((CheckBox)sender).IsChecked.Value)
-            {
                 droneView.GroupDescriptions.Add(new PropertyGroupDescription("State"));
-            }
         }
 
         private void ShowMenue(int? id, string typeOfMenue)

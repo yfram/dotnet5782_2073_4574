@@ -36,16 +36,9 @@ namespace PL.Pages
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Bl.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
-                BLCustomer = Bl.GetCustomerById(BLCustomer.Id);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //error cannot be thrown here, because the customer definitely exists 
+            Bl.UpdateCustomer(BLCustomer.Id, CustomerName.Text, CustomerPhone.Text);
+            BLCustomer = Bl.GetCustomerById(BLCustomer.Id);
             RefreshParentBl();
         }
 
@@ -54,9 +47,7 @@ namespace PL.Pages
             int id = int.Parse(((TextBlock)((Button)sender).Content).Text);
             var l = BLCustomer.PackagesFrom.Where(p => p.Id == id);
             if (!l.Any())
-            {
                 l = BLCustomer.PackagesTo.Where(p => p.Id == id);
-            }
 
             PackageForCustomer p = l.First();
             new Window

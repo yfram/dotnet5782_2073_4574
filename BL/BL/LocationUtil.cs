@@ -44,9 +44,7 @@ namespace BLApi
             double lon2 = Loc2.Longitude;
 
             if (lat1 == lat2 && lon1 == lon2)
-            {
                 return 0;
-            }
 
             double rlat1 = PI * lat1 / 180;
             double rlat2 = PI * lat2 / 180;

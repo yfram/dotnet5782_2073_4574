@@ -32,9 +32,10 @@ namespace PL.Pages
                 Bl.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0, 0), int.Parse(NewSlots.Text)));
 
             }
-            catch (Exception ex)
+            catch (BlApi.Exceptions.ObjectAllreadyExistsException)
             {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Station {NewId.Text} cannot be added, as it already exists",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Exit();
         }

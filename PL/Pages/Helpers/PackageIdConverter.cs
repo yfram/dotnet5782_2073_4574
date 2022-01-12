@@ -12,18 +12,12 @@ namespace PL.Pages
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not int valueAsInt)
-            {
                 return null;
-            }
 
             if (valueAsInt < 0)
-            {
                 return String.Empty;
-            }
             else if (parameter == null)
-            {
                 return value;
-            }
 
             return parameter as string switch
             {

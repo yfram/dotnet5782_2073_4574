@@ -45,9 +45,7 @@ namespace Dal
         {
             int ix = GetStationIndex(s.Id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Station {s.Id} does not exist!");
-            }
 
             DataSource.Stations[ix] = s;
         }
@@ -61,9 +59,7 @@ namespace Dal
         {
             int ix = GetPackageIndex(p.Id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Package {p.Id} does not exist!");
-            }
 
             DataSource.Packages[ix] = p;
         }
@@ -77,10 +73,7 @@ namespace Dal
         {
             int ix = GetCustomerIndex(c.Id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Customer {c.Id} does not exist!");
-            }
-
             DataSource.Customers[ix] = c;
         }
 
@@ -93,9 +86,7 @@ namespace Dal
         {
             int ix = GetDroneIndex(d.Id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Drone {d.Id} does not exist!");
-            }
 
             DataSource.Drones[ix] = d;
         }
@@ -159,9 +150,7 @@ namespace Dal
         {
             double ans = 0;
             if (stationId < 0)
-            {
                 stationId = DataSource.DroneCharges.Find(dc => dc.DroneId == droneId).StationId;
-            }
 
             int stationIndex = GetStationIndex(stationId);
             Station tmp1 = DataSource.Stations[stationIndex];
@@ -169,9 +158,7 @@ namespace Dal
 
             DataSource.Stations[stationIndex] = tmp1;
             if (!DataSource.DroneCharges.Exists(d => d.DroneId == droneId && d.StationId == stationId))
-            {
                 throw new ArgumentException($"cannot find the droncharge with the drone id {droneId}");
-            }
 
             ans = outTime.Subtract(DataSource.DroneCharges.Find(d => d.DroneId == droneId && d.StationId == stationId).Enter).TotalSeconds;
             DataSource.DroneCharges.RemoveAll(d => d.DroneId == droneId && d.StationId == stationId);
@@ -190,9 +177,7 @@ namespace Dal
         {
             int ix = GetStationIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Station {id} does not exist!");
-            }
 
             DataSource.Stations.RemoveAt(ix);
 
@@ -207,9 +192,7 @@ namespace Dal
         {
             int ix = GetPackageIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Package {id} does not exist!");
-            }
 
             DataSource.Packages.RemoveAt(ix);
         }
@@ -223,9 +206,7 @@ namespace Dal
         {
             int ix = GetCustomerIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Customer {id} does not exist!");
-            }
 
             DataSource.Customers.RemoveAt(ix);
         }
@@ -239,9 +220,7 @@ namespace Dal
         {
             int ix = GetDroneIndex(id);
             if (ix == -1)
-            {
                 throw new ArgumentException($"the Drone {id} does not exist!");
-            }
 
             DataSource.Drones.RemoveAt(ix);
         }

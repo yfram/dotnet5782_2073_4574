@@ -34,9 +34,7 @@ namespace PL.Pages
         public void CollapsePullUp()
         {
             if (!gridOpen)
-            {
                 return;
-            }
 
             gridOpen = false;
             PullUpContainer.Collapse(250);
@@ -60,9 +58,7 @@ namespace PL.Pages
         private void Row_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (packageView)
-            {
                 return;
-            }
 
             PackageForList p = ((DataGridRow)sender).DataContext as PackageForList ?? throw new();
             PullUpContainer.Children.Add(new PackageViewTab(p.Id));
@@ -81,9 +77,7 @@ namespace PL.Pages
         private IEnumerable<PackageForList> FilterState()
         {
             if (!(FilterByState.IsChecked ?? false))
-            {
                 return Bl.GetAllPackages();
-            }
 
             string check = ((ComboBoxItem)StateFilter.SelectedItem).Content.ToString().Replace(" ", "");
             return Bl.GetObjectsWhere<PackageForList>(p => p.Status.ToString().ToLower() == check).
@@ -93,14 +87,10 @@ namespace PL.Pages
         private IEnumerable<PackageForList> FilterDate()
         {
             if (StartDate.Value is null || EndDate.Value is null)
-            {
                 return Bl.GetAllPackages();
-            }
 
             if (!(FilterByDate.IsChecked ?? false))
-            {
                 return Bl.GetAllPackages();
-            }
 
             List<PackageForList> datePackages =
                 Bl.GetObjectsWhere<Package>(p => p.TimePickedUp >= StartDate.Value && p.TimePickedUp <= EndDate.Value).
@@ -111,18 +101,12 @@ namespace PL.Pages
         private void Collected_view(object sender, RoutedEventArgs e)
         {
             if (sender is not CheckBox senderAsCheckBox)
-            {
                 return;
-            }
             //because of the order of the && operator this works
             if ((string)(senderAsCheckBox.Tag) == "Sender" && CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
-            {
                 CollectedReciver.IsChecked = !senderAsCheckBox.IsChecked;
-            }
             else if (CollectedReciver.IsChecked.Value && CollectedSender.IsChecked.Value)
-            {
                 CollectedSender.IsChecked = !senderAsCheckBox.IsChecked;
-            }
 
             var packageView = (CollectionViewSource)Resources["PackagesGroup"];
             packageView.GroupDescriptions.Clear();

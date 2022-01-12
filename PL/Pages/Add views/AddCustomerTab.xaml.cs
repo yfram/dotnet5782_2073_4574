@@ -31,13 +31,14 @@ namespace PL.Pages
             try
             {
                 Bl.AddCustomer(new(int.Parse(NewId.Text), NewName.Text, NewPhone.Text,
-                    new(Double.Parse(NewLong.Text), Double.Parse(NewLat.Text)),
+                    new(Double.Parse(NewLong.Text), double.Parse(NewLat.Text)),
                     new List<BO.PackageForCustomer>(), new List<BO.PackageForCustomer>()));
 
             }
-            catch (Exception ex)
+            catch (BlApi.Exceptions.ObjectAllreadyExistsException)
             {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Customer {NewId.Text} cannot be added, as it already exists",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Exit();
         }
