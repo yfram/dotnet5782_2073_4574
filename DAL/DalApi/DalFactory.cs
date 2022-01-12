@@ -10,6 +10,10 @@ namespace DalApi
 
             string dalType = DalConfig.DalName;
             string dalPkg = DalConfig.DalPackages[dalType];
+            string dalClass = DalConfig.DalClass[dalType];
+            string dalNamspace = DalConfig.DalNamspace[dalType];
+            string DalInstance = DalConfig.DalInstance[dalType];
+
             if (force)
             {
                 dalType = "list";
@@ -24,13 +28,13 @@ namespace DalApi
             try { Assembly.Load(dalPkg); }
             catch (Exception) { throw new DalConfigException("Failed to load dal-config.xml"); }
 
-            Type type = Type.GetType($"Dal.{dalPkg}, {dalPkg}");
+            Type type = Type.GetType($"{dalNamspace}.{dalClass}, {dalPkg}");
             if (type == null)
             {
-                throw new DalConfigException($"Class {dalPkg} was not found in the {dalPkg}.dll");
+                throw new DalConfigException($"Class {dalClass} was not found in the {dalPkg}.dll");
             }
 
-            IDAL dal = (IDAL)type.GetProperty("Instance",
+            IDAL dal = (IDAL)type.GetProperty(DalInstance,
                       BindingFlags.Public | BindingFlags.Static).GetValue(null);
             if (dal == null)
             {

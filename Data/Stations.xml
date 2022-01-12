@@ -12,7 +12,7 @@
     <Name>Modi'in</Name>
     <Longitude>33.375441652897486</Longitude>
     <Lattitude>34.43940050920444</Lattitude>
-    <ChargeSlots>3</ChargeSlots>
+    <ChargeSlots>2</ChargeSlots>
   </Station>
   <Station>
     <Id>2</Id>
@@ -26,7 +26,7 @@
     <Name>Bear Sheava</Name>
     <Longitude>33.36111435730062</Longitude>
     <Lattitude>34.099599697673504</Lattitude>
-    <ChargeSlots>4</ChargeSlots>
+    <ChargeSlots>3</ChargeSlots>
   </Station>
   <Station>
     <Id>4</Id>
@@ -61,7 +61,7 @@
     <Name>Jeruselam</Name>
     <Longitude>33.19353829240126</Longitude>
     <Lattitude>34.46959772169106</Lattitude>
-    <ChargeSlots>2</ChargeSlots>
+    <ChargeSlots>1</ChargeSlots>
   </Station>
   <Station>
     <Id>9</Id>
@@ -75,7 +75,7 @@
     <Name>Heifa</Name>
     <Longitude>33.329577702251065</Longitude>
     <Lattitude>34.44774170287314</Lattitude>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
     <Id>11</Id>
