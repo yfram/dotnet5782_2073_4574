@@ -22,10 +22,10 @@ namespace PL.Pages
         private BackgroundWorker bw;
         private bool Stop = false;
 
-        public DroneViewTab(int id)
+        public DroneViewTab(int _id)
         {
             InitializeComponent();
-            BLdrone = Bl.GetDroneById(id);
+            BLdrone = Bl.GetDroneById(_id);
             UpdateChargeButton();
             UpdateDroneNextOp();
         }
@@ -34,7 +34,7 @@ namespace PL.Pages
         {
 
             //error cannot be thrown here, because the drone definitely exists 
-            Bl.UpdateDroneName(BLdrone.Id, DroneName.Text);
+            Bl.UpdateDrone(BLdrone.Id, DroneName.Text);
             BLdrone = Bl.GetDroneById(BLdrone.Id);
             RefreshParentBl();
         }
@@ -181,6 +181,7 @@ namespace PL.Pages
             {
                 UpdateView();
                 UpdatePackage();
+                RefreshParentBl();
             };
 
             bw.RunWorkerAsync();

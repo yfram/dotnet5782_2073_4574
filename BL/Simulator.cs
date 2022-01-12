@@ -17,8 +17,8 @@ namespace Simulator
         private int id;
         private Action update;
         private Func<bool> stop;
-        private double speed = 3;
-        private int msTimer = 1000;
+        private double speed = 6;
+        private int msTimer = 300;
         private bool wayToMaitenance = false;
         private Drone d;
 

@@ -880,7 +880,9 @@ namespace BL
         private bool DroneHaveEnoughBattery(DO.Package p, DroneForList d)
         {
             lock (Idal)
+            {
                 return BatteryToDeliver(p, d) <= d.Battery;
+            }
         }
 
         private double BatteryToDeliver(DO.Package p, DroneForList d)
@@ -908,10 +910,6 @@ namespace BL
                 return battery;
             }
         }
-
-
-                return 0;
-            }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         internal int? GetClosetStation(Location loc, bool toCharge = true)
