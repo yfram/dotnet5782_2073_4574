@@ -9,7 +9,7 @@ namespace Dal
     public partial class DalObject : DalApi.IDAL
     {
         private static readonly DalObject _Instance = new();
-        public static DalObject Instance => _Instance;
+        public static DalObject InstanceObject { get => _Instance; }
 
         static DalObject()
         {
