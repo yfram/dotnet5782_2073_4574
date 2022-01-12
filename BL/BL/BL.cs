@@ -396,7 +396,8 @@ namespace BlApi
         /// Gives the <c>Drone</c> with <paramref name="DroneId"/> the package it is assigned.
         /// </summary>
         /// <param name="DroneId"></param>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="ObjectDoesntExistException"></exception>
+        /// <exception cref="BlException"></exception>
         /// <exception cref="DroneStateException"></exception>
         public void PickUpPackage(int DroneId, bool simulatorMode = false)
         {
@@ -416,7 +417,7 @@ namespace BlApi
                     {
                         double batteryNeed = (1 / elecRate[0]) * DistanceTo(bLdrone.CurrentLocation, SenderLoc);
                         if (batteryNeed > bLdrone.Battery)
-                            throw new BlException($"not enough battery of {bLdrone.Id}, need {batteryNeed}, has {bLdrone.Battery}");
+                            throw new BlException($"Not enough battery of {bLdrone.Id}, need {batteryNeed}, has {bLdrone.Battery}");
 
                         bLdrone.Battery -= batteryNeed;
                     }
@@ -424,10 +425,10 @@ namespace BlApi
                     Idal.PickUpPackage(PackageId);
                 }
                 else
-                    throw new BlException("the package is not associated or picked up", PackageId, p.GetType());
+                    throw new BlException("The package is not associated or picked up", PackageId, p.GetType());
             }
             else
-                throw new DroneStateException($"cannot pick up with drone that is not busy! the current state is {bLdrone.State}");
+                throw new DroneStateException($"Cannot pick up with drone that is not busy! the current state is {bLdrone.State}");
         }
 
         /// <summary>

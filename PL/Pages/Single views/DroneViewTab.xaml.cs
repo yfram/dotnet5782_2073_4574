@@ -134,7 +134,16 @@ namespace PL.Pages
                 UpdateView();
 
             }
-            catch (Exception ex)
+            catch (BlException ex)
+            {
+                MessageBox.Show($"The package {ex.ObjectId} cannot be delivered, as it is not associated or picked up",
+                    "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (ObjectDoesntExistException ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (DroneStateException ex)
             {
                 MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

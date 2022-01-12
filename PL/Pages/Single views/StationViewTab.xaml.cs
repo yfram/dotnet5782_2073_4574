@@ -25,15 +25,9 @@ namespace PL.Pages
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Bl.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
-                BLstation = Bl.GetStationById(BLstation.Id);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //we know the station exists
+            Bl.UpdateStation(BLstation.Id, StationName.Text, int.Parse(EmptySlots.Text));
+            BLstation = Bl.GetStationById(BLstation.Id);
         }
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
