@@ -62,6 +62,9 @@ namespace Dal
         internal static List<DroneCharge> DroneCharges { get; set; } = new();
         internal static Config Configuration { get; set; } = new();
 
+        /// <summary>
+        /// Initialize the data base
+        /// </summary>
         public static void Initialize()
         {
             Random random = new();
@@ -148,12 +151,10 @@ namespace Dal
             return new(i, StationNames[random.Next() % StationNames.Count], 33 + random.NextDouble(), 34 + random.NextDouble(),
 random.Next() % Config.MaxChargingPorts);
         }
-
         private static Drone InitDrone(int i, Random random)
         {
             return new(i, DroneModels[random.Next() % DroneModels.Count], (WeightGroup)(random.Next(1, 4)));
         }
-
         private static Customer InitCustumer(int i, Random random)
         {
             return new(i, CustomerNames[random.Next() % CustomerNames.Count],

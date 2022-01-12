@@ -12,10 +12,10 @@ namespace BlApi
 {
     internal class Simulator
     {
-        private BL bl;// why not use the singleton?
+        private BL bl => BlFactory.GetBl() as BL;
         private int id;
         private Action update;
-        private Func<bool> stop;//why?
+        private Func<bool> stop;
         private double speed = 3;
         private int msTimer = 1000;
         private bool wayToMaitenance = false;
@@ -30,9 +30,8 @@ namespace BlApi
         /// <param name="_update">The action to be invoked when the drone is updated</param>
         /// <param name="_stop"></param>
         /// <exception cref="Exception"></exception>
-        public Simulator(BL _bl, int _DroneId, Action _update, Func<bool> _stop)
+        public Simulator(int _DroneId, Action _update, Func<bool> _stop)
         {
-            bl = _bl;
             id = _DroneId;
             update = _update;
             stop = _stop;
@@ -152,9 +151,9 @@ namespace BlApi
         }
 
         /// <summary>
-        /// 
+        /// Assigns a package to <c>d</c> 
         /// </summary>
-        /// <returns><para>true</para>if the operation succeed</returns>
+        /// <returns><code>true</code>If the operation succeeded <code>false</code>If the operation failed</returns>
         private bool StartNewDelivery()
         {
             try
@@ -168,13 +167,18 @@ namespace BlApi
             }
         }
 
-
+        /// <summary>
+        /// Makes a step in the direction of <paramref name="destination"/>
+        /// </summary>
+        /// <param name="destination">Final target</param>
+        /// <returns><code>true</code>If the drone is at <paramref name="destination"/><code>false</code>If the drone is not yet at <paramref name="destination"/></returns>
+        /// <exception cref="BlException"></exception>
         private bool MakeProgress(Location destination)
         {
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
             if (distance > bl.ElecOfDrone(id) * d.Battery)
             {
-                throw new Exception();
+                throw new BlException("Not enough battery to complete operation", id, typeof(Drone));
             }
 
             double mySpeed = speed;
@@ -191,16 +195,8 @@ namespace BlApi
             Location newLoc = LocationUtil.UpdateLocation(new Location(d.CurrentLocation.Longitude, d.CurrentLocation.Latitude), mySpeed, bearing);
             d.CurrentLocation = newLoc;
             if (LocationUtil.IsNear(newLoc, destination))
-            {
                 return true;
-            }
-
             return false;
-        }
-
-        private bool IsNear(Location a, Location b)
-        {
-            return DistanceTo(a, b) < 2;
         }
     }
 }

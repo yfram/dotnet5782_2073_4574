@@ -8,6 +8,12 @@ namespace DalApi
 {
     public class DalFactory
     {
+        /// <summary>
+        /// Get the working DAL object
+        /// </summary>
+        /// <param name="force">set to true if use of xml/dal-config.xaml is wanted</param>
+        /// <returns>The working DAL object</returns>
+        /// <exception cref="DalConfigException"></exception>
         public static IDAL GetDal(bool force = false)
         {
 

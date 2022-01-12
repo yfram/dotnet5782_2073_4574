@@ -10,6 +10,18 @@ namespace Dal
 {
     public partial class DalObject
     {
+        /// <summary>
+        /// Add a new package to the data base
+        /// </summary>
+        /// <param name="senderId">Sender's ID for the new package</param>
+        /// <param name="recevirId">Receiver's ID for the new package</param>
+        /// <param name="weight">Weight group for the new package</param>
+        /// <param name="packagePriority">Priority group for the new package</param>
+        /// <param name="droneId">The id for the paired drone of the new package</param>
+        /// <param name="Created">Time the package was created</param>
+        /// <param name="Associated">Time the package was associated</param>
+        /// <param name="PickUp">Time the package was picked up</param>
+        /// <param name="Delivered">Time the package was delivered</param>
         public void AddPackage(int senderId, int recevirId, WeightGroup weight, Priority packagePriority, int? droneId,
             DateTime? Created, DateTime? Associated, DateTime? PickUp, DateTime? Delivered)
         {
@@ -17,6 +29,12 @@ namespace Dal
 Created, Associated, PickUp, Delivered));
         }
 
+        /// <summary>
+        /// Gets the package with id <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">The id for the wanted package</param>
+        /// <returns>The package with id <paramref name="id"/></returns>
+        /// <exception cref="ArgumentException"></exception>
         public void DeliverPackage(int packageId)
         {
 
@@ -27,21 +45,41 @@ Created, Associated, PickUp, Delivered));
             DataSource.Packages.RemoveAt(packageIndex);
         }
 
+        /// <summary>
+        /// Get the index of the package with id <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">The id for the wanted package</param>
+        /// <returns>The index of the package with id <paramref name="id"/></returns>
         public Package GetPackage(int id)
         {
             int ix = GetPackageIndex(id);
             return ix == -1 ? throw new ArgumentException($"the Package {id} does not exist!") : DataSource.Packages[ix];
         }
+
+        /// <summary>
+        /// Get the index of the package with id <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">The id for the wanted package</param>
+        /// <returns>The index of the package with id <paramref name="id"/></returns>
         private static int GetPackageIndex(int id)
         {
             return DataSource.Packages.FindIndex(p => p.Id == id);
         }
 
+        /// <summary>
+        /// Gets all packages in the data base
+        /// </summary>
+        /// <returns>A IEnumerable with all the packages in the data base</returns>
         public IEnumerable<Package> GetAllPackages()
         {
             return new List<Package>(DataSource.Packages);
         }
 
+        /// <summary>
+        /// Gets all packages in the data base that answer to predicate
+        /// </summary>
+        /// <param name="predicate">The function to filter packages with</param>
+        /// <returns>A IEnumerable with all the packages in the data base that answer to predicate</returns>
         public IEnumerable<Package> GetAllPackagesWhere(Func<Package, bool> predicate)
         {
             return DataSource.Packages.Where(predicate);
