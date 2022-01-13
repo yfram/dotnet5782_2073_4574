@@ -17,12 +17,11 @@ namespace Simulator
         private int id;
         private Action update;
         private Func<bool> stop;
-        private double speed = 3;
+        private double speed = 30;
         private int msTimer = 700;
         private bool wayToMaitenance = false;
         private Drone d;
 
-        private int steps = 0;
         private Location source = null;
 
         /// <summary>
@@ -172,8 +171,7 @@ namespace Simulator
         /// <exception cref="BlException"></exception>
         private bool MakeProgress(Location destination)
         {
-            if (source is null)
-                source = d.CurrentLocation;
+            source = d.CurrentLocation;
 
 
             double distance = LocationUtil.DistanceTo(d.CurrentLocation, destination);
@@ -183,26 +181,23 @@ namespace Simulator
                 throw new BlException("Not enough battery to complete operation", id, typeof(Drone));
             }
 
-            double mySpeed = speed;
+            double actualSpeed = speed;
 
             if (speed >= distance)
-                mySpeed = speed - distance; // force progress == distance at end!
+                actualSpeed = speed - distance; // force progress == distance at end!
 
 
             double bearing = LocationUtil.Bearing(source, destination);
 
-            Location newLoc = LocationUtil.UpdateLocation(source, steps * speed + mySpeed, bearing);
-            steps++;
+            Location newLoc = LocationUtil.UpdateLocation(source,  actualSpeed, bearing);
 
             d.Battery -= LocationUtil.DistanceTo(newLoc, d.CurrentLocation) * (1 / bl.ElecOfDrone(d.Id));
             d.CurrentLocation = newLoc;
 
             bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);
 
-            if (LocationUtil.IsNear(newLoc, destination))
+            if (LocationUtil.IsNear(newLoc, destination,speed/2)) // because the bearing calc is not exact when calculate two near points, check if it is close enought
             {
-                steps = 0;
-                source = null;
                 return true;
             }
             return false;

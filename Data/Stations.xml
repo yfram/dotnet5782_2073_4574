@@ -5,7 +5,7 @@
     <Name>gil</Name>
     <Longitude>30</Longitude>
     <Latitude>29</Latitude>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
     <Id>7</Id>
@@ -19,7 +19,7 @@
     <Name>h</Name>
     <Longitude>29</Longitude>
     <Latitude>30</Latitude>
-    <ChargeSlots>4</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
     <Id>99</Id>
