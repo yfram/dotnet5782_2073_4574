@@ -18,7 +18,7 @@ namespace BL
     internal partial class BL : IBL
     {
         private readonly List<DroneForList> BLdrones = new();
-        internal IDAL Idal = DalFactory.GetDal();
+        internal IDAL Idal = DalFactory.GetDal(refresh: true);
         internal double[] elecRate;
         private static readonly Random random = new();
 

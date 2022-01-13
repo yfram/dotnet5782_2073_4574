@@ -14,9 +14,10 @@ namespace DalApi
         /// <param name="force">set to true if use of xml/dal-config.xaml is wanted</param>
         /// <returns>The working DAL object</returns>
         /// <exception cref="DalConfigException"></exception>
-        public static IDAL GetDal(bool force = false)
+        public static IDAL GetDal(bool force = false , bool refresh = false)
         {
-
+            if (refresh)
+                DalConfig.Refresh();
             string dalType = DalConfig.DalName;
             string dalPkg = DalConfig.DalPackages[dalType];
             string dalClass = DalConfig.DalClass[dalType];

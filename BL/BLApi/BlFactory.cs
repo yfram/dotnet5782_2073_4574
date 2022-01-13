@@ -25,5 +25,9 @@ namespace BlApi
             return Instance;
         }
 
+        public static void Init()
+        {
+            Instance = new BL.BL();
+        }
     }
 }

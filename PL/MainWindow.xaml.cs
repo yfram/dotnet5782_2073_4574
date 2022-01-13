@@ -48,6 +48,15 @@ namespace PL
             cur.RefreshBl();
         }
 
+        public void RefreshAll()
+        {
+            home.RefreshBl();
+            drones.RefreshBl();
+            stations.RefreshBl();
+            customers.RefreshBl();
+            packages.RefreshBl();
+    }
+
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GridMain.Children.Clear();
