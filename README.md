@@ -8,11 +8,11 @@
 * Advanced WPF features:
   * Themes
   * Convertors
-  * Use of data triggers
+  * Use of triggers
     * Data triggers
     * Property triggers
-    * Use of graphics(animation)
-    * use of styles
+   * Use of graphics(animation)
+   * use of styles
 * Added a map
 * Added option to change data source during runtime
 * Use of external libraries
