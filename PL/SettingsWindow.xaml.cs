@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace PL
 {
@@ -30,7 +31,19 @@ namespace PL
             Directory.EnumerateFiles(@"Pl/Assets/Themes").ToList().ForEach(f =>
                 ThemeOptions.Items.Add(f.Replace("Theme.xaml", "").Remove(0, f.LastIndexOf('\\') + 1)));
             ThemeOptions.SelectedIndex = ThemeOptions.Items.IndexOf(((App)Application.Current).CurrentTheme);
+        }
 
+        private void changeDal(object sender, RoutedEventArgs e)
+        {
+            XElement dalConfig = XElement.Load(@"xml\dal-config.xml");
+            string current = dalConfig.Element("dal").Value;
+            dalConfig.Element("dal").Value = current == "list" ? "xml" : "list";
+
+            dalConfig.Save(@"xml\dal-config.xml");
+
+            BlApi.BlFactory.Init();
+
+            ((MainWindow)Application.Current.MainWindow).RefreshAll();
         }
 
         private void ApplyChanges(object sender, RoutedEventArgs e)

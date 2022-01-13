@@ -12,8 +12,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Station ID:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="155,2,0,0" TextWrapping="Wrap" Text="Station Name:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="295,5,0,0" TextWrapping="Wrap" Text="Slots amount:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="481,2,0,0" TextWrapping="Wrap" Text="Longtitude:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="674,2,0,0" TextWrapping="Wrap" Text="Latitude:" VerticalAlignment="Top"/>
+
         <TextBox x:Name="NewId" materialDesign:HintAssist.Hint="ID" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         <TextBox x:Name="NewName" materialDesign:HintAssist.Hint="Name"  HorizontalAlignment="Left" Margin="155,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
         <TextBox x:Name="NewSlots" materialDesign:HintAssist.Hint="Slots"  HorizontalAlignment="Left" Margin="295,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+        <TextBox x:Name="NewLong" HorizontalAlignment="Left" Margin="481,31,0,0" materialDesign:HintAssist.Hint="longtitude" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="NewLat" HorizontalAlignment="Left" Margin="672,31,0,0" materialDesign:HintAssist.Hint="latitude" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
     </Grid>
 </UserControl>

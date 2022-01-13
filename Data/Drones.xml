@@ -5,4 +5,9 @@
     <Model>gil</Model>
     <Weight>Heavy</Weight>
   </Drone>
+  <Drone>
+    <Id>9</Id>
+    <Model>jog</Model>
+    <Weight>Heavy</Weight>
+  </Drone>
 </listOfObjects>

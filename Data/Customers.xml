@@ -1,2 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<listOfObjects/>
+<listOfObjects>
+  <Customer>
+    <Id>1</Id>
+    <Name>gil</Name>
+    <Phone>000</Phone>
+    <Latitude>35</Latitude>
+    <Longitude>31</Longitude>
+  </Customer>
+  <Customer>
+    <Id>2</Id>
+    <Name>john</Name>
+    <Phone>000</Phone>
+    <Latitude>35</Latitude>
+    <Longitude>30</Longitude>
+  </Customer>
+  <Customer>
+    <Id>3</Id>
+    <Name>xyz</Name>
+    <Phone>000</Phone>
+    <Latitude>41</Latitude>
+    <Longitude>32</Longitude>
+  </Customer>
+</listOfObjects>
