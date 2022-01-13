@@ -25,24 +25,29 @@ namespace PL
     /// </summary>
     public partial class SettingsWindow : UserControl
     {
+        private int curState;
+
         public SettingsWindow()
         {
             InitializeComponent();
             Directory.EnumerateFiles(@"Pl/Assets/Themes").ToList().ForEach(f =>
                 ThemeOptions.Items.Add(f.Replace("Theme.xaml", "").Remove(0, f.LastIndexOf('\\') + 1)));
             ThemeOptions.SelectedIndex = ThemeOptions.Items.IndexOf(((App)Application.Current).CurrentTheme);
-        }
 
-        private void changeDal(object sender, RoutedEventArgs e)
-        {
             XElement dalConfig = XElement.Load(@"xml\dal-config.xml");
             string current = dalConfig.Element("dal").Value;
-            dalConfig.Element("dal").Value = current == "list" ? "xml" : "list";
+            curState = DataOptions.SelectedIndex = current == "list" ? 0 : 1;
+        }
 
+        private void ChangeDal()
+        {
+            XElement dalConfig = XElement.Load(@"xml\dal-config.xml");
+            dalConfig.Element("dal").Value = (DataOptions.SelectedIndex == 0 ? "list" : "xml");
             dalConfig.Save(@"xml\dal-config.xml");
 
             BlApi.BlFactory.Init();
 
+            ((MainWindow)Application.Current.MainWindow).RefreshCurrent();
             ((MainWindow)Application.Current.MainWindow).RefreshAll();
         }
 
@@ -58,6 +63,12 @@ namespace PL
                 Pages.HomeViewTab.ShowStations = StationsCheck.IsChecked ?? false;
                 Pages.HomeViewTab.ShowCustomers = CustomersCheck.IsChecked ?? false;
                 ((MainWindow)Application.Current.MainWindow).RefreshCurrent();
+            }
+
+            if (DataOptions.SelectedIndex != curState)
+            {
+                curState = DataOptions.SelectedIndex;
+                ChangeDal();
             }
         }
 

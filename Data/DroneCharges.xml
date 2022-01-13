@@ -5,4 +5,9 @@
     <StationId>9</StationId>
     <Enter>2022-01-13T10:21:24.4807396+02:00</Enter>
   </DroneCharge>
+  <DroneCharge>
+    <DroneId>9</DroneId>
+    <StationId>3</StationId>
+    <Enter>2022-01-13T12:07:07.4158069+02:00</Enter>
+  </DroneCharge>
 </listOfObjects>

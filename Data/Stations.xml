@@ -19,7 +19,7 @@
     <Name>h</Name>
     <Longitude>29</Longitude>
     <Latitude>30</Latitude>
-    <ChargeSlots>5</ChargeSlots>
+    <ChargeSlots>4</ChargeSlots>
   </Station>
   <Station>
     <Id>99</Id>
