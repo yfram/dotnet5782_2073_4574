@@ -1,2 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<listOfObjects />
+<listOfObjects>
+  <DroneCharge>
+    <DroneId>4</DroneId>
+    <StationId>9</StationId>
+    <Enter>2022-01-13T10:21:24.4807396+02:00</Enter>
+  </DroneCharge>
+</listOfObjects>

@@ -1,6 +1,7 @@
 ﻿// File {filename} created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +22,11 @@ namespace PL.Pages
 
         private void Exit(object sender = null, RoutedEventArgs e = null)
         {
-            ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+            try
+            {
+                ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).CollapsePullUp();
+            }
+            catch (Exception ex) { }
         }
     }
 }

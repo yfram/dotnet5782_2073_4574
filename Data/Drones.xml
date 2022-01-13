@@ -1,28 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <listOfObjects>
   <Drone>
-    <Id>0</Id>
-    <Model>DJI Phantom 4</Model>
-    <Weight>Light</Weight>
-  </Drone>
-  <Drone>
-    <Id>1</Id>
-    <Model>DJIF3</Model>
-    <Weight>Light</Weight>
-  </Drone>
-  <Drone>
-    <Id>2</Id>
-    <Model>Mavic Pro</Model>
-    <Weight>Heavy</Weight>
-  </Drone>
-  <Drone>
-    <Id>3</Id>
-    <Model>DJI Mavic 2 Pro</Model>
-    <Weight>Heavy</Weight>
-  </Drone>
-  <Drone>
     <Id>4</Id>
-    <Model>DJI Mavic 2 Zoom</Model>
-    <Weight>Light</Weight>
+    <Model>gil</Model>
+    <Weight>Heavy</Weight>
   </Drone>
 </listOfObjects>
