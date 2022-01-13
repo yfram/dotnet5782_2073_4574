@@ -28,14 +28,32 @@ namespace PL
         {
             InitializeComponent();
             Directory.EnumerateFiles(@"Pl/Assets/Themes").ToList().ForEach(f =>
-                Options.Items.Add(f.Replace("Theme.xaml", "").Remove(0, f.LastIndexOf('\\') + 1)));
-            Options.SelectedIndex = Options.Items.IndexOf(((App)Application.Current).CurrentTheme);
+                ThemeOptions.Items.Add(f.Replace("Theme.xaml", "").Remove(0, f.LastIndexOf('\\') + 1)));
+            ThemeOptions.SelectedIndex = ThemeOptions.Items.IndexOf(((App)Application.Current).CurrentTheme);
+
         }
 
         private void ApplyChanges(object sender, RoutedEventArgs e)
         {
             ((Grid)Parent).Visibility = Visibility.Collapsed;
-            ((App)Application.Current).ChangeTheme(Options.SelectedItem as string ?? "Dark");
+
+            ((App)Application.Current).ChangeTheme(ThemeOptions.SelectedItem as string ?? "Dark");
+
+            if (MapGrid.Visibility == Visibility.Visible)// this means we are on the home tab
+            {
+                Pages.HomeViewTab.ShowDrones = DronesCheck.IsChecked ?? false;
+                Pages.HomeViewTab.ShowStations = StationsCheck.IsChecked ?? false;
+                Pages.HomeViewTab.ShowCustomers = CustomersCheck.IsChecked ?? false;
+                ((MainWindow)Application.Current.MainWindow).RefreshCurrent();
+            }
+        }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (((MainWindow)Application.Current.MainWindow).GridMain.Children[0] is Pages.HomeViewTab)
+                MapGrid.Visibility = Visibility.Visible;
+            else
+                MapGrid.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -33,6 +33,11 @@ namespace PL.Pages
             [@"Pl/Assets/station.png"] = 1,
             [@"Pl/Assets/customer.png"] = 2,
         };
+
+        public static bool ShowDrones { get; set; } = true;
+        public static bool ShowStations { get; set; } = true;
+        public static bool ShowCustomers { get; set; } = true;
+
         private static IBL Bl => BlFactory.GetBl();
 
         public HomeViewTab()
@@ -103,9 +108,12 @@ namespace PL.Pages
         public HomeViewTab RefreshBl()
         {
             MyMapControl.Map.Layers.Remove(l => l is WritableLayer);
-            MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllDrones(), 0.1));
-            MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllCustomers(), 0.1));
-            MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllStations(), 0.075));
+            if (ShowCustomers)
+                MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllCustomers(), 0.1));
+            if (ShowStations)
+                MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllStations(), 0.075));
+            if (ShowDrones)
+                MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllDrones(), 0.1));
             MyMapControl.Refresh();
             return this;
         }

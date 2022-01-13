@@ -76,22 +76,22 @@ namespace Dal
             Config.ElecHigh = elec / 8;
             Config.ElecRatePercent = random.NextDouble() * 2 + 10;
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Stations.Add(InitStation(i, random));
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 40; i++)
             {
                 Drones.Add(InitDrone(i, random));
             }
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Customers.Add(InitCustumer(i, random));
             }
 
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 150; i++)
             {
                 Packages.Add(InitPackage(random));
             }
@@ -131,17 +131,17 @@ namespace Dal
         #region Init functions
         private static Package InitPackage(Random random)
         {
-            int reciver = random.Next() % 10;
+            int reciver = random.Next() % 100;
             int i = Config.RunNumber;
             Config.RunNumber++;
-            return new(i, Customers[i % 10].Id, Customers[reciver == i % 10 ? ((i + 1) % Customers.Count) : reciver].Id,
+            return new(i, Customers[i % 100].Id, Customers[reciver == i % 100 ? ((i + 1) % Customers.Count) : reciver].Id,
                 (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1), null);
 
         }
         private static Station InitStation(int i, Random random)
         {
-            return new(i, StationNames[random.Next() % StationNames.Count], 35 + random.NextDouble(), 29 + random.NextDouble() * 4,
-random.Next() % Config.MaxChargingPorts);
+            return new(i, StationNames[random.Next() % StationNames.Count], 35.1 + random.NextDouble(), 31.1 + random.NextDouble() * 4,
+            random.Next() % Config.MaxChargingPorts);
         }
         private static Drone InitDrone(int i, Random random)
         {
@@ -150,7 +150,7 @@ random.Next() % Config.MaxChargingPorts);
         private static Customer InitCustumer(int i, Random random)
         {
             return new(i, CustomerNames[random.Next() % CustomerNames.Count],
-$"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 29 + random.NextDouble() * 4, 35 + random.NextDouble());
+            $"+972-5{random.Next() % 10}{random.Next(1000000, 9999999)}", 31.1 + random.NextDouble() * 4, 35.1 + random.NextDouble());
         }
         #endregion
     }

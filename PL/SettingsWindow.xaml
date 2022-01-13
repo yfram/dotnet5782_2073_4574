@@ -5,10 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PL"
              mc:Ignorable="d" 
-             Height="300" Width="500">
+             Height="300" Width="500"
+             IsVisibleChanged="UserControl_IsVisibleChanged">
     <Grid Background="{DynamicResource SettingsWindowBack}" d:Background="SlateGray">
-        <TextBlock Text="Theme:" FontSize="25" Margin="105,0,295,0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="Options" FontSize="17" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Height="33" Width="150" Margin="210,0,0,0"/>
+        <TextBlock Text="Theme:" FontSize="25" Margin="95,35,305,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="ThemeOptions" FontSize="17" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Width="150" Margin="275,35,0,0"/>
         <Button Content="Apply" Click="ApplyChanges" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="415,258,0,0"/>
+        <TextBlock Text="Data base source:" FontSize="25" Margin="56,90,244,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="DataOptions" FontSize="17" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Width="150" Margin="275,95,0,0">
+            <ComboBoxItem Content="Sample data"/>
+            <ComboBoxItem Content="Xml"/>
+        </ComboBox>
+        <Grid x:Name="MapGrid" Margin="75,150,0,0" Visibility="Collapsed">
+            <TextBlock Text="Show on map:" FontSize="25" VerticalAlignment="Top" Margin="0,0,245,0"/>
+            <CheckBox x:Name="DronesCheck" Content="Drones" IsChecked="True"  FontSize="17" Margin="202,2,103,115"/>
+            <CheckBox x:Name="StationsCheck"  Content="Stations" IsChecked="True" FontSize="17" Margin="202,35,93,80"/>
+            <CheckBox x:Name="CustomersCheck"  Content="Customers" IsChecked="True" FontSize="17" Margin="202,70,77,40"/>
+        </Grid>
     </Grid>
 </UserControl>

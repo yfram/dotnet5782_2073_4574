@@ -45,7 +45,7 @@ namespace PL
         {
             dynamic cur = GridMain.Children[0];
 
-            cur.RefreshBl();
+            cur = cur.RefreshBl();
         }
 
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)

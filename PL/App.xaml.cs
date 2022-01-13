@@ -28,7 +28,7 @@ namespace PL
         protected override void OnExit(ExitEventArgs e)
         {
             if (CurrentTheme != "Default")
-                File.WriteAllText(".usersettings", $"default_theme={CurrentTheme}");
+                File.WriteAllTextAsync(".usersettings", $"default_theme={CurrentTheme}\n");
             base.OnExit(e);
         }
 
