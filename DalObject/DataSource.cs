@@ -81,17 +81,17 @@ namespace Dal
                 Stations.Add(InitStation(i, random));
             }
 
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Drones.Add(InitDrone(i, random));
             }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Customers.Add(InitCustumer(i, random));
             }
 
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 40; i++)
             {
                 Packages.Add(InitPackage(random));
             }
@@ -131,10 +131,10 @@ namespace Dal
         #region Init functions
         private static Package InitPackage(Random random)
         {
-            int reciver = random.Next() % 100;
+            int reciver = random.Next() % 20;
             int i = Config.RunNumber;
             Config.RunNumber++;
-            return new(i, Customers[i % 100].Id, Customers[reciver == i % 100 ? ((i + 1) % Customers.Count) : reciver].Id,
+            return new(i, Customers[i % 20].Id, Customers[reciver == i % 20 ? ((i + 1) % Customers.Count) : reciver].Id,
                 (WeightGroup)(random.Next() % 3 + 1), (Priority)(i % 3 + 1), null);
 
         }
