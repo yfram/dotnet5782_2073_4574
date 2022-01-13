@@ -38,7 +38,7 @@ namespace PL.Pages
         public HomeViewTab()
         {
             InitializeComponent();
-            var map = new Map();
+            Map map = new Map();
             map.Layers.Add(OpenStreetMap.CreateTileLayer());
             var centerOfJerusalem = new Point(34.78309563131772, 31.38728300557323);
             var sphericalMercatorCoordinate = SphericalMercator.FromLonLat(centerOfJerusalem.X, centerOfJerusalem.Y).AsPoint();
@@ -47,10 +47,10 @@ namespace PL.Pages
             RefreshBl();
         }
 
-        private ILayer GetMarkerLayer(IEnumerable<dynamic> objects, double scale)
+        private WritableLayer GetMarkerLayer(IEnumerable<dynamic> objects, double scale)
         {
             List<Point> points = new();
-            var ly = new WritableLayer();
+            WritableLayer ly = new WritableLayer();
             Point pt;
             Feature feature;
             foreach (dynamic o in objects)
@@ -102,8 +102,9 @@ namespace PL.Pages
 
         public HomeViewTab RefreshBl()
         {
-            MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllCustomers(), 0.1));
+            MyMapControl.Map.Layers.Remove(l => l is WritableLayer);
             MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllDrones(), 0.1));
+            MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllCustomers(), 0.1));
             MyMapControl.Map.Layers.Add(GetMarkerLayer(Bl.GetAllStations(), 0.075));
             MyMapControl.Refresh();
             return this;

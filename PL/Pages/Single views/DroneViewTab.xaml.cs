@@ -130,9 +130,10 @@ namespace PL.Pages
                     try
                     {
                         Bl.AssignPackage(BLdrone.Id);
-                    }catch(BlException ex)
+                    }
+                    catch (BlException ex)
                     {
-                        MessageBox.Show(ex.Message+". try to send the drone to charge",
+                        MessageBox.Show(ex.Message + ". try to send the drone to charge",
                     "error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
@@ -174,6 +175,7 @@ namespace PL.Pages
 
         private void Start(object sender, RoutedEventArgs e)
         {
+            DroneNextOp.IsEnabled = PackageId.IsEnabled = false;
             bw = new();
 
             bw.WorkerSupportsCancellation = true;
@@ -204,6 +206,7 @@ namespace PL.Pages
 
         private void Pause(object sender, RoutedEventArgs e)
         {
+            DroneNextOp.IsEnabled = PackageId.IsEnabled = true;
             Stop = true;
             UpdateDroneNextOp();
             UpdateChargeButton();
