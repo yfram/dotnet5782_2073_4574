@@ -1,8 +1,18 @@
 # dotnet5782_2073_4574
 
-this is the text of Gil
+## Bonuses ##
 
-shnizel2 word
-shnizel random
-
-Ex0 Final commit
+* Location of the drone changes every step in the simulator
+* Multiple simulators can be run at the same time
+* Use of structure 2 in DAL
+* Advanced WPF features:
+  * Themes
+  * Convertors
+  * Use of data triggers
+    * Data triggers
+    * Property triggers
+    * Use of graphics(animation)
+    * use of styles
+* Added a map
+* Added option to change data source during runtime
+* Use of external libraries
