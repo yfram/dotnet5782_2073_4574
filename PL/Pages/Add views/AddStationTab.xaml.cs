@@ -29,7 +29,7 @@ namespace PL.Pages
         {
             try
             {
-                Bl.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(0, 0), int.Parse(NewSlots.Text)));
+                Bl.AddStation(new(int.Parse(NewId.Text), NewName.Text, new(double.Parse(NewLong.Text), double.Parse(NewLat.Text)), int.Parse(NewSlots.Text)));
 
             }
             catch (BlApi.Exceptions.ObjectAllreadyExistsException)

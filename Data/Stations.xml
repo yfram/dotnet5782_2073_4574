@@ -7,18 +7,25 @@
     <Latitude>29</Latitude>
     <ChargeSlots>6</ChargeSlots>
   </Station>
-    <Station>
-        <Id>7</Id>
-        <Name>g</Name>
-        <Longitude>28</Longitude>
-        <Latitude>30</Latitude>
-        <ChargeSlots>6</ChargeSlots>
-    </Station>
-    <Station>
-        <Id>3</Id>
-        <Name>h</Name>
-        <Longitude>29</Longitude>
-        <Latitude>30</Latitude>
-        <ChargeSlots>5</ChargeSlots>
-    </Station>
+  <Station>
+    <Id>7</Id>
+    <Name>g</Name>
+    <Longitude>28</Longitude>
+    <Latitude>30</Latitude>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
+    <Id>3</Id>
+    <Name>h</Name>
+    <Longitude>29</Longitude>
+    <Latitude>30</Latitude>
+    <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <Id>99</Id>
+    <Name>john</Name>
+    <Longitude>31</Longitude>
+    <Latitude>30</Latitude>
+    <ChargeSlots>1</ChargeSlots>
+  </Station>
 </listOfObjects>
