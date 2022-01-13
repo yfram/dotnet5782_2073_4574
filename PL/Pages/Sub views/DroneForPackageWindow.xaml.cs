@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File DroneForPackageWindow.xaml.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using BO;

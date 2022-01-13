@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File DroneViewTab.xaml.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using BlApi;
@@ -49,7 +49,7 @@ namespace PL.Pages
 
         private void RefreshParentBl()
         {
-            if(refresh is null)
+            if (refresh is null)
                 refresh = ((DronesViewTab)((Grid)((PullGrid)((Grid)Parent).Parent).Parent).Parent).RefreshBl;
             refresh();
         }
@@ -197,7 +197,7 @@ namespace PL.Pages
                 UpdateView();
                 UpdatePackage();
                 ((MainWindow)App.Current.MainWindow).RefreshCurrent();
-                
+
             };
 
             bw.RunWorkerAsync();

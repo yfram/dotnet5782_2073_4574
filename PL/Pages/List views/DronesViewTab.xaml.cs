@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File DronesViewTab.xaml.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using BlApi;
@@ -100,7 +100,7 @@ namespace PL.Pages
             menue = typeOfMenue switch
             {
                 "drone add" => new AddDroneTab(),
-                "drone view" => cache.Any(x=>x.id == id) ? cache.Where(x=>x.id == id).First() :  AddCache(id),
+                "drone view" => cache.Any(x => x.id == id) ? cache.Where(x => x.id == id).First() : AddCache(id),
                 "package view" => new PackageForDroneViewTab(id),
                 _ => throw new InvalidOperationException(),
             };
@@ -134,7 +134,7 @@ namespace PL.Pages
                 ShowMenue(Drones[((DataGridRow)sender).GetIndex()].Id, "drone view");
             }
             catch (Exception)
-            {}
+            { }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File Simulator.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using BlApi.Exceptions;
@@ -191,10 +191,10 @@ namespace Simulator
 
             double bearing = LocationUtil.Bearing(source, destination);
 
-            Location newLoc = LocationUtil.UpdateLocation(source, steps*speed+mySpeed, bearing);
+            Location newLoc = LocationUtil.UpdateLocation(source, steps * speed + mySpeed, bearing);
             steps++;
 
-            d.Battery -= LocationUtil.DistanceTo(newLoc , d.CurrentLocation) * (1 / bl.ElecOfDrone(d.Id));
+            d.Battery -= LocationUtil.DistanceTo(newLoc, d.CurrentLocation) * (1 / bl.ElecOfDrone(d.Id));
             d.CurrentLocation = newLoc;
 
             bl.UpdateDrone(d.Id, d.Model, d.Battery, d.CurrentLocation);

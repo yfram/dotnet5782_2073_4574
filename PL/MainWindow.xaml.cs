@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File MainWindow.xaml.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using PL.Pages;
@@ -55,7 +55,7 @@ namespace PL
             stations.RefreshBl();
             customers.RefreshBl();
             packages.RefreshBl();
-    }
+        }
 
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

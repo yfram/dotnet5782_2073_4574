@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File DalXml.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using DalApi;
@@ -93,7 +93,7 @@ namespace Dal
             return (T)current;
         }
 
-        private  T GetObject<T>(int id, string propName = "Id") where T : new()
+        private T GetObject<T>(int id, string propName = "Id") where T : new()
         {
             var ObjectsRoot = XElement.Load($"Data/{typeof(T).Name}s.xml");
 

@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File DalFactory.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 using System;
@@ -14,7 +14,7 @@ namespace DalApi
         /// <param name="force">set to true if use of xml/dal-config.xaml is wanted</param>
         /// <returns>The working DAL object</returns>
         /// <exception cref="DalConfigException"></exception>
-        public static IDAL GetDal(bool force = false , bool refresh = false)
+        public static IDAL GetDal(bool force = false, bool refresh = false)
         {
             if (refresh)
                 DalConfig.Refresh();

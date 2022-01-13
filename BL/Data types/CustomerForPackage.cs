@@ -1,4 +1,4 @@
-﻿// File {filename} created by Yoni Fram and Gil Kovshi
+﻿// File CustomerForPackage.cs created by Yoni Fram and Gil Kovshi
 // All rights reserved
 
 namespace BO
