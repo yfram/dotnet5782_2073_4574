@@ -90,9 +90,9 @@ namespace BL
             return loc;
         }
 
-        internal static bool IsNear(Location a, Location b)
+        internal static bool IsNear(Location a, Location b , double radius)
         {
-            return DistanceTo(a, b) < 2;
+            return DistanceTo(a, b) < radius;
         }
     }
 }
