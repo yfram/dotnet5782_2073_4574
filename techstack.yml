@@ -1,0 +1,147 @@
+repo_name: yfram/dotnet5782_2073_4574
+report_id: '019d50e4ae608a503b4c5cde26295e02'
+version: 0.1
+repo_type: Public
+timestamp: '2023-12-20T09:13:40+00:00'
+requested_by: gilkov
+provider: github
+branch: master
+detected_tools_count: 11
+tools:
+- name: C#
+  description: Simple, general-purpose, object-oriented programming language for the
+    .NET platform
+  website_url: http://csharp.net
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source: Repo Metadata
+- name: ".NET"
+  description: A free, cross-platform, open source developer platform for building
+    many different types of applications
+  website_url: http://www.microsoft.com/net/
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Frameworks (Full Stack)
+  image_url: https://img.stackshare.io/service/1014/IoPy1dce_400x400.png
+  detection_source: PL/PL.csproj
+  last_updated_by: Yoni Fram
+  last_updated_on: 2021-12-05 14:14:17.000000000 Z
+- name: ".NET Core"
+  description: An Open Source, General-Purpose Development Platform Maintained by
+    Microsoft and the .NET Community
+  website_url: https://docs.microsoft.com/en-us/dotnet/core/
+  version: '5.0'
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Frameworks (Full Stack)
+  image_url: https://img.stackshare.io/service/6403/default_91fc1f0ee315262794273aa1387eaf8fed8436e6.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/BL/BL.csproj
+  detection_source: BL/BL.csproj
+  last_updated_by: Gil
+  last_updated_on: 2021-11-03 16:05:46.000000000 Z
+- name: ASP.NET Core
+  description: A cross-platform .NET framework for building modern cloud-based web
+    applications on Windows, Mac, or Linux
+  website_url: docs.microsoft.com/en-us/aspnet/core/
+  version: '5.0'
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Frameworks (Full Stack)
+  image_url: https://img.stackshare.io/service/11331/asp.net-core.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/BL/BL.csproj
+  detection_source: BL/BL.csproj
+  last_updated_by: Gil
+  last_updated_on: 2021-11-03 16:05:46.000000000 Z
+- name: pgvector
+  description: Open-source vector similarity search for Postgres
+  website_url: https://github.com/pgvector/pgvector/
+  open_source: false
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Database Tools
+  image_url: https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png
+  detection_source: log.txt
+  last_updated_by: Yoni Fram
+  last_updated_on: 2022-01-13 10:01:46.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
+- name: NuGet
+  description: The package manager for .NET
+  website_url: https://www.nuget.org/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Package Managers
+  image_url: https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg
+  detection_source: PL/PL.csproj
+  last_updated_by: Yoni Fram
+  last_updated_on: 2021-12-05 14:14:17.000000000 Z
+- name: Visual Studio
+  description: State-of-the-art tools and services that you can use to create great
+    apps for devices, the cloud, and everything in between.
+  website_url: http://msdn.microsoft.com/en-us/vstudio/aa718325.aspx
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Integrated Development Environment
+  image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source: dotnet5782_2073_4574.sln
+  last_updated_by: Yoni Fram
+  last_updated_on: 2022-01-10 16:06:09.000000000 Z
+- name: LangChain
+  description: Build AI apps with LLMs through composability
+  website_url: https://github.com/hwchase17/langchain
+  open_source: true
+  hosted_saas: false
+  category: Communications
+  sub_category: Large Language Model Tools
+  image_url: https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg
+  detection_source: log.txt
+  last_updated_by: Yoni Fram
+  last_updated_on: 2022-01-13 10:01:46.000000000 Z
+- name: Extended.Wpf.Toolkit
+  description: Extended WPF Toolkit is the number one collection of WPF controls,
+    components and utilities for creating next generation Windows applications
+  package_url: https://www.nuget.org/Extended.Wpf.Toolkit
+  version: 4.2.0
+  license: MS-PL
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: NuGet Packages
+  image_url: https://img.stackshare.io/package/13414/default_58586312c472dfb09866d07812bed5501fb0b524.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/PL/PL.csproj
+  detection_source: PL/PL.csproj
+  last_updated_by: Yoni Fram
+  last_updated_on: 2022-01-12 18:08:03.000000000 Z
+- name: MaterialDesignThemes
+  description: ResourceDictionary instances containing Material Design templates and
+    styles for WPF controls in the MahApps library
+  package_url: https://www.nuget.org/MaterialDesignThemes
+  version: 4.3.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: NuGet Packages
+  image_url: https://img.stackshare.io/package/13770/default_1ec7b75e4d233f940c213992649575a79a936406.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/PL/PL.csproj
+  detection_source: PL/PL.csproj
+  last_updated_by: Yoni Fram
+  last_updated_on: 2022-01-12 16:35:00.000000000 Z
