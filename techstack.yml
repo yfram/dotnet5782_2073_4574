@@ -2,7 +2,7 @@ repo_name: yfram/dotnet5782_2073_4574
 report_id: '019d50e4ae608a503b4c5cde26295e02'
 version: 0.1
 repo_type: Public
-timestamp: '2023-12-20T09:13:40+00:00'
+timestamp: '2024-01-05T08:19:42+00:00'
 requested_by: gilkov
 provider: github
 branch: master
@@ -17,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574
   detection_source: Repo Metadata
 - name: ".NET"
   description: A free, cross-platform, open source developer platform for building
@@ -28,6 +29,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1014/IoPy1dce_400x400.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/PL/PL.csproj
   detection_source: PL/PL.csproj
   last_updated_by: Yoni Fram
   last_updated_on: 2021-12-05 14:14:17.000000000 Z
@@ -69,6 +71,7 @@ tools:
   category: Data Stores
   sub_category: Database Tools
   image_url: https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/log.txt
   detection_source: log.txt
   last_updated_by: Yoni Fram
   last_updated_on: 2022-01-13 10:01:46.000000000 Z
@@ -80,6 +83,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574
   detection_source: Repo Metadata
 - name: NuGet
   description: The package manager for .NET
@@ -89,6 +93,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/PL/PL.csproj
   detection_source: PL/PL.csproj
   last_updated_by: Yoni Fram
   last_updated_on: 2021-12-05 14:14:17.000000000 Z
@@ -101,6 +106,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Integrated Development Environment
   image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/dotnet5782_2073_4574.sln
   detection_source: dotnet5782_2073_4574.sln
   last_updated_by: Yoni Fram
   last_updated_on: 2022-01-10 16:06:09.000000000 Z
@@ -112,6 +118,7 @@ tools:
   category: Communications
   sub_category: Large Language Model Tools
   image_url: https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg
+  detection_source_url: https://github.com/yfram/dotnet5782_2073_4574/blob/master/log.txt
   detection_source: log.txt
   last_updated_by: Yoni Fram
   last_updated_on: 2022-01-13 10:01:46.000000000 Z
